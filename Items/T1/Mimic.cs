@@ -34,7 +34,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public Mimic() {
             modelPathName = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/Mimic.prefab";
-            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/mimicIcon.png";
+            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/mimicIcon.png";
         }
 
         protected override void LoadBehavior() {

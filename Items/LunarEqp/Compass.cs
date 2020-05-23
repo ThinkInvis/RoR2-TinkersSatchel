@@ -25,7 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public Compass() {
             modelPathName = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/SilverCompass.prefab";
-            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/compassIcon.png";
+            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/compassIcon.png";
             onAttrib += (tokenIdent, namePrefix) => {
                 LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE","<style=cDeath>{0} seeks a path...</style>");
                 LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE_2P","<style=cDeath>You seek a path...</style>");
