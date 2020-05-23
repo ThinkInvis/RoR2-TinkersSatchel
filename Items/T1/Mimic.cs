@@ -14,10 +14,10 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
 
         [AutoItemConfig("Time between batches of re-mimics.", AutoItemConfigFlags.None, 0f, float.MaxValue)]
-        public float decayRate {get; private set;} = 5f;
+        public float decayRate {get; private set;} = 3f;
 
         [AutoItemConfig("Chance for each individual Mimic to re-mimic per proc.", AutoItemConfigFlags.None, 0f, 1f)]
-        public float decayChance {get; private set;} = 0.25f;
+        public float decayChance {get; private set;} = 0.15f;
         
         //[AutoItemConfig("If true, will not be added to drop tables; will instead have a chance to replace normal items on pickup. NYI!")]
         //public bool isCamo {get; private set;} = false;
