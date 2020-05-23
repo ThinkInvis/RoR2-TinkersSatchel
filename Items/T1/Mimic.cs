@@ -18,6 +18,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoItemConfig("Chance for each individual Mimic to re-mimic per proc.", AutoItemConfigFlags.None, 0f, 1f)]
         public float decayChance {get; private set;} = 0.15f;
+
+        [AutoItemConfig("No more than this many Mimics (per player) will change at the same time. Recommended to keep at a low number (below 100) for performance reasons.", AutoItemConfigFlags.None, 0, int.MaxValue)]
+        public int lagLimit {get; private set;} = 50;
         
         //[AutoItemConfig("If true, will not be added to drop tables; will instead have a chance to replace normal items on pickup. NYI!")]
         //public bool isCamo {get; private set;} = false;
