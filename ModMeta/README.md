@@ -48,6 +48,14 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 ## Changelog
 
+**1.1.1**
+
+- Fixed missing buff icon for Artifact of Tactics.
+- Mimic count is now displayed per-item, and is no longer added to the item's normal display count.
+- Mimics no longer randomly decide to stop being mimics during shuffles.
+- Individual Mimics can no longer shuffle from an item to the same item. Swaps between two are still fair game.
+- Tweaked Mimic default config settings. Added a new setting to help reduce lag at extremely high itemcounts (limits maximum number of changes per shuffle).
+
 **1.1.0**
 
 - ADDED ITEM: Armor Crystal!
