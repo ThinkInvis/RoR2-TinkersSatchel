@@ -4,9 +4,6 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using R2API.Utils;
-using UnityEngine.Networking;
-using R2API;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

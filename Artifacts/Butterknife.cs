@@ -1,10 +1,6 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using R2API.Utils;
+﻿using R2API.Utils;
 using RoR2;
-using System;
 using TILER2;
-using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Butterknife : Artifact<Butterknife> {
