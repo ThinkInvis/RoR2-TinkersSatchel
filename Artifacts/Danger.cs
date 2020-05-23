@@ -9,7 +9,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override string displayName => "Artifact of Danger";
 
         protected override string NewLangName(string langid = null) => displayName;
-        protected override string NewLangDesc(string langid = null) => "Players can be killed with one hit.";
+        protected override string NewLangDesc(string langid = null) => "Players can be killed in one hit.";
 
         public Danger() {
             iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_on.png";
