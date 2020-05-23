@@ -34,10 +34,23 @@ namespace ThinkInvisible.TinkersSatchel {
             foreach(ItemBoilerplate x in masterItemList) {
                 x.SetupConfig(cfgFile);
             }
-
+            
+            int longestName = 0;
             foreach(ItemBoilerplate x in masterItemList) {
                 x.SetupAttributes("TINKSATCH", "TKSCH");
-                Debug.Log("TKSCH"+x.itemCodeName + ": " + (x is Equipment ? ("EQP"+((int)((Equipment)x).regIndex).ToString()) : ((int)((Item)x).regIndex).ToString()));
+                if(x.itemCodeName.Length > longestName) longestName = x.itemCodeName.Length;
+            }
+
+            Debug.Log("TinkersSatchel: index dump follows (pairs of name / index):");
+            foreach(ItemBoilerplate x in masterItemList) {
+                if(x is Equipment eqp)
+                    Debug.Log("Equipment TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)eqp.regIndex).ToString());
+                else if(x is Item item)
+                    Debug.Log("     Item TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)item.regIndex).ToString());
+                else if(x is Artifact afct)
+                    Debug.Log(" Artifact TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)afct.regIndex).ToString());
+                else
+                    Debug.Log("    Other TKSCH"+x.itemCodeName.PadRight(longestName) + " / N/A");
             }
         }
 
