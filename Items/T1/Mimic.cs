@@ -37,13 +37,13 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override void LoadBehavior() {
             On.RoR2.Inventory.GiveItem += On_InvGiveItem;
             On.RoR2.Inventory.RemoveItem += On_InvRemoveItem;
-            //On.RoR2.UI.ItemInventoryDisplay.UpdateDisplay += On_IIDUpdateDisplay;
+            On.RoR2.UI.ItemInventoryDisplay.UpdateDisplay += On_IIDUpdateDisplay;
         }
 
         protected override void UnloadBehavior() {
             On.RoR2.Inventory.GiveItem -= On_InvGiveItem;
             On.RoR2.Inventory.RemoveItem -= On_InvRemoveItem;
-            //On.RoR2.UI.ItemInventoryDisplay.UpdateDisplay -= On_IIDUpdateDisplay;
+            On.RoR2.UI.ItemInventoryDisplay.UpdateDisplay -= On_IIDUpdateDisplay;
         }
         
         private void On_InvGiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count) {
@@ -90,7 +90,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        /*private void On_IIDUpdateDisplay(On.RoR2.UI.ItemInventoryDisplay.orig_UpdateDisplay orig, RoR2.UI.ItemInventoryDisplay self) {
+        private void On_IIDUpdateDisplay(On.RoR2.UI.ItemInventoryDisplay.orig_UpdateDisplay orig, RoR2.UI.ItemInventoryDisplay self) {
             orig(self);
             Inventory inv = (Inventory)typeof(RoR2.UI.ItemInventoryDisplay).GetFieldCached("inventory").GetValue(self);
             var mim = inv?.gameObject.GetComponent<MimicInventory>();
@@ -98,21 +98,27 @@ namespace ThinkInvisible.TinkersSatchel {
                 List<RoR2.UI.ItemIcon> icons = (List<RoR2.UI.ItemIcon>)typeof(RoR2.UI.ItemInventoryDisplay).GetFieldCached("itemIcons").GetValue(self);
                 foreach(var icon in icons) {
                     ItemIndex ind = (ItemIndex)typeof(RoR2.UI.ItemIcon).GetFieldCached("itemIndex").GetValue(icon);
+                    var mimTextPfx = "\n<color=#C18FE0>+";
+                    //strip original mimic text, if any
+                    var origInd = icon.stackText.text.IndexOf(mimTextPfx);
+                    if(origInd >= 0)
+                        icon.stackText.text = icon.stackText.text.Substring(0, origInd);
+
                     if(!mim.mimickedCounts.ContainsKey(ind)) continue;
-                    var mimTextPfx = "\n<color=#44ff44>+";
+                    
+                    //add new mimic text
+                    int count = (int)typeof(RoR2.UI.ItemIcon).GetFieldCached("itemCount").GetValue(icon);
+                    icon.SetItemIndex(ind, Mathf.Max(count-mim.mimickedCounts[ind], 0));
                     var mimText = mimTextPfx + mim.mimickedCounts[ind] + "</color>";
                     if(!icon.stackText.enabled) {
                         icon.stackText.enabled = true;
-                        icon.stackText.text = mimText;
+                        icon.stackText.text = ((count == mim.mimickedCounts[ind]) ? "0" : "") + mimText;
                     } else {
-                        var origInd = icon.stackText.text.IndexOf(mimTextPfx);
-                        if(origInd >= 0)
-                            icon.stackText.text = icon.stackText.text.Substring(0, origInd);
                         icon.stackText.text += mimText;
                     }
                 }
             }
-        }*/
+        }
 	}
 
     public class MimicInventory : MonoBehaviour {
