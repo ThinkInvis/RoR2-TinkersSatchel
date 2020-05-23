@@ -2,7 +2,7 @@
 
 A mod for Risk of Rain 2. Built with BepInEx and R2API.
 
-Adds items to the game, all of which may or may not be a little weird.
+Adds items and artifacts to the game, all of which may or may not be a little weird.
 
 ## Installation
 

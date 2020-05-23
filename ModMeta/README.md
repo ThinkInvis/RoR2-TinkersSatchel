@@ -12,7 +12,7 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 ## Description
 
-This is a collection of items -- and maybe artifacts at some point in the future -- which sprung from me thinking "hey, what if...?," writing the idea in a file, and forgetting about it (until now).
+This is a collection of items and artifacts which sprung from me thinking "hey, what if...?," writing the idea in a file, and forgetting about it (until now).
 
 ### Current Additions
 
@@ -21,19 +21,40 @@ This is a collection of items -- and maybe artifacts at some point in the future
 - Mostly-Tame Mimic: "Mimics your other items at random."
 	- Each individual stack has a small chance over time to switch which item it's mimicking.
 
+#### Tier-2 Item
+
+- Armor Crystal: "Gain armor by hoarding money."
+
 #### Lunar Equipment
 
 - Silver Compass: "Shows you a path... but it will be fraught with danger."
 	- Pings the Teleporter and adds TWO stacks of Challenge of the Mountain, only ONE of which will count towards extra rewards.
 
+#### Artifact
+
+- Tactics: "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor."
+- Suppression: "Players take heavily increased damage while airborne."
+- Haste: "All combatants attack 10x faster and deal 1/20x damage."
+- Danger: "Players can be killed in one hit."
+	- Removes this now-redundant functionality from Artifact of Glass.
+
 ## Issues/TODO
 
 - Items have no DisplayRules.
+- Armor Crystal needs a better model.
 - Jigglebones on Mimic lid (and a less half-assed model) may happen eventually.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
 ## Changelog
+
+**1.1.0**
+
+- ADDED ITEM: Armor Crystal!
+- ADDED ARTIFACTS: Danger, Tactics, Suppression, Haste!
+	- Migrated Artifact of Danger from mod GlassArtifactOHP.
+- Index dump during game startup is now much prettier.
+- GitHub repo is now licensed (GNU GPL3).
 
 **1.0.0**
 

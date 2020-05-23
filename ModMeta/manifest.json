@@ -1,11 +1,11 @@
 {
   "name": "TinkersSatchel",
-  "version_number": "1.0.0",
+  "version_number": "1.1.0",
   "website_url": "https://github.com/ThinkInvis/RoR2-TinkersSatchel",
-  "description": "An adequate assortment of anomalous additions (mostly items).",
+  "description": "An adequate assortment of anomalous additions (mostly items/artifacts).",
   "dependencies": [
     "bbepis-BepInExPack-3.2.0",
     "tristanmcpherson-R2API-2.4.21",
-    "ThinkInvis-TILER2-1.2.1"
+    "ThinkInvis-TILER2-1.3.0"
   ]
 }
