@@ -73,7 +73,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         protected override void LoadBehavior() {
-            OnPreRecalcStats += Evt_TILER2OnPreRecalcStats;
+            GetStatCoefficients += Evt_TILER2GetStatCoefficients;
             if(IsActiveAndEnabled()) {
                 foreach(var cm in AliveList())
                     if(cm.hasBody) AddWard(cm.GetBody());
@@ -85,10 +85,10 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterMaster.OnBodyStart -= On_CMOnBodyStart;
             foreach(var w in TacticsWard.instances)
                 UnityEngine.Object.Destroy(w.gameObject);
-            OnPreRecalcStats -= Evt_TILER2OnPreRecalcStats;
+            GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
         }
         
-        private void Evt_TILER2OnPreRecalcStats(CharacterBody sender, StatHookEventArgs args) {
+        private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             var totalBuffs = Mathf.Max(sender.GetBuffCount(tacticsBuff) - 1, 0);
             args.moveSpeedMultAdd += totalBuffs * speedMod;
             args.baseDamageAdd += totalBuffs * damageMod;
