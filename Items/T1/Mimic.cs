@@ -47,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
         
         private void On_InvGiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count) {
-            if(count <= 0) {
+            if(count <= 0 || MimicInventory.internalOpInProgress) {
                 orig(self, itemIndex, count);
                 return;
             }
@@ -82,6 +82,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void On_InvRemoveItem(On.RoR2.Inventory.orig_RemoveItem orig, Inventory self, ItemIndex itemIndex, int count) {
             int origCount = self.GetItemCount(itemIndex);
             orig(self, itemIndex, count);
+            if(MimicInventory.internalOpInProgress) return;
             if(count > 0 && itemIndex != regIndex) {
                 var minv = self.gameObject.GetComponent<MimicInventory>();
                 if(!minv) return;
@@ -122,6 +123,8 @@ namespace ThinkInvisible.TinkersSatchel {
         internal bool nothingToMimic = false;
         internal Inventory ownerInventory;
 
+        public static bool internalOpInProgress {get; private set;} = false;
+
         public MimicInventory() {
             _mimickedCounts = new Dictionary<ItemIndex, int>();
             mimickedCounts = new ReadOnlyDictionary<ItemIndex, int>(_mimickedCounts);
@@ -138,12 +141,27 @@ namespace ThinkInvisible.TinkersSatchel {
         private void Shuffle() {
             var iarr = (int[])typeof(Inventory).GetFieldCached("itemStacks").GetValue(ownerInventory);
             var iarrSel = iarr.Select((val,ind) => new KeyValuePair<int,int>(ind,val)).Where(x=>x.Value>0 && x.Key != (int)Mimic.instance.regIndex).ToArray();
+            if(iarrSel.Length <= 1) return;
+            internalOpInProgress = true;
             //int countToShuffle = Mathf.Min(count, Mathf.FloorToInt(Mimic.instance.mimicRng.nextNormalizedFloat * count * Mimic.instance.decayChance * 2f));)
+            int totalChanged = 0;
             for(int i = 0; i < totalMimics; i++) {
                 if(Mimic.instance.itemRng.nextNormalizedFloat > Mimic.instance.decayChance) continue;
-                AddMimic(iarrSel);
-                RemoveMimic();
+                totalChanged++;
+                
+                var toRemove = Mimic.instance.itemRng.NextElementUniform(_mimickedCounts.Keys.ToArray());
+                var toAdd = (ItemIndex)Mimic.instance.itemRng.NextElementUniform(iarrSel.Where(x => x.Key != (int)toRemove).ToArray()).Key;
+
+                if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
+                else _mimickedCounts[toAdd] ++;
+                _mimickedCounts[toRemove] --;
+                if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
+                ownerInventory.GiveItem(toAdd);
+                ownerInventory.RemoveItem(toRemove);
+
+                if(totalChanged > Mimic.instance.lagLimit) break;
             }
+            internalOpInProgress = false;
         }
 
         internal void RemoveMimic() {
@@ -152,21 +170,27 @@ namespace ThinkInvisible.TinkersSatchel {
             _mimickedCounts[toRemove] --;
             totalMimics--;
             if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
+            internalOpInProgress = true;
             ownerInventory.RemoveItem(toRemove);
+            internalOpInProgress = false;
         }
         internal bool AddMimic(KeyValuePair<int,int>[] iarrSel) {
             var toAdd = (ItemIndex)Mimic.instance.itemRng.NextElementUniform(iarrSel).Key;
             if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
             else _mimickedCounts[toAdd] ++;
             totalMimics++;
+            internalOpInProgress = true;
             ownerInventory.GiveItem(toAdd);
+            internalOpInProgress = false;
             return true;
         }
         internal void AddMimic(ItemIndex addedIndex, int addedCount) {
             if(!_mimickedCounts.ContainsKey(addedIndex)) _mimickedCounts.Add(addedIndex, addedCount);
             else _mimickedCounts[addedIndex] += addedCount;
             totalMimics += addedCount;
+            internalOpInProgress = true;
             ownerInventory.GiveItem(addedIndex, addedCount);
+            internalOpInProgress = false;
         }
         internal void MaybeRemoveMimics(ItemIndex removedIndex, int removedCount, int totalCount) {
             if(!_mimickedCounts.ContainsKey(removedIndex)) return;
