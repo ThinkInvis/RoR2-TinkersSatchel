@@ -42,7 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     canStack = true,
                     isDebuff = false,
                     name = namePrefix + "TacticsBuff",
-                    iconPath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/tactics_on.png"
+                    iconPath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png"
                 });
                 tacticsBuff = BuffAPI.Add(tacticsBuffDef);
 
