@@ -22,7 +22,11 @@ namespace ThinkInvisible.TinkersSatchel {
         
         internal static FilingDictionary<ItemBoilerplate> masterItemList = new FilingDictionary<ItemBoilerplate>();
         
+        internal static BepInEx.Logging.ManualLogSource _logger;
+
         private TinkersSatchelPlugin() {
+            _logger = Logger;
+
             using(var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TinkersSatchel.tinkerssatchel_assets")) {
                 var bundle = AssetBundle.LoadFromStream(stream);
                 var provider = new AssetBundleResourcesProvider("@TinkersSatchel", bundle);
@@ -41,16 +45,16 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(x.itemCodeName.Length > longestName) longestName = x.itemCodeName.Length;
             }
 
-            Debug.Log("TinkersSatchel: index dump follows (pairs of name / index):");
+            Logger.LogMessage("Index dump follows (pairs of name / index):");
             foreach(ItemBoilerplate x in masterItemList) {
                 if(x is Equipment eqp)
-                    Debug.Log("Equipment TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)eqp.regIndex).ToString());
+                    Logger.LogMessage("Equipment TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)eqp.regIndex).ToString());
                 else if(x is Item item)
-                    Debug.Log("     Item TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)item.regIndex).ToString());
+                    Logger.LogMessage ("     Item TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)item.regIndex).ToString());
                 else if(x is Artifact afct)
-                    Debug.Log(" Artifact TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)afct.regIndex).ToString());
+                    Logger.LogMessage(" Artifact TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)afct.regIndex).ToString());
                 else
-                    Debug.Log("    Other TKSCH"+x.itemCodeName.PadRight(longestName) + " / N/A");
+                    Logger.LogMessage("    Other TKSCH"+x.itemCodeName.PadRight(longestName) + " / N/A");
             }
         }
 

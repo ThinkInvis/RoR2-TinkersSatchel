@@ -33,7 +33,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     return !IsActiveAndEnabled();
                 });
             } else {
-                Debug.LogError("TinkersSatchel: failed to apply IL patch (Artifact of Danger)! Artifact will not work.");
+                TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger)! Artifact will not work.");
             }
         }
     }
