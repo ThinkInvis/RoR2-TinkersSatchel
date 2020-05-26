@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [BepInDependency(TILER2Plugin.ModGuid, "1.3.0")]
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ResourcesAPI), nameof(PlayerAPI), nameof(PrefabAPI))]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
-        public const string ModVer = "1.1.1";
+        public const string ModVer = "1.1.2";
         public const string ModName = "TinkersSatchel";
         public const string ModGuid = "com.ThinkInvisible.TinkersSatchel";
 

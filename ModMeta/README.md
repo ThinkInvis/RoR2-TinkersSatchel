@@ -48,6 +48,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 ## Changelog
 
+**1.1.2**
+
+- Artifact of Danger no longer applies OHP to enemies while disabled.
+- Severely nerfed default config settings for Armor Crystal.
+- Now uses plugin-specific console logger.
+
 **1.1.1**
 
 - Fixed missing buff icon for Artifact of Tactics.
