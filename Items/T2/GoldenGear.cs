@@ -13,11 +13,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoUpdateEventInfo(AutoUpdateEventFlags.InvalidateDescToken)]
         [AutoItemConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoItemConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
-        public int goldAmt {get;private set;} = 3;
+        public int goldAmt {get;private set;} = 10;
         
         [AutoUpdateEventInfo(AutoUpdateEventFlags.InvalidateDescToken)]
         [AutoItemConfig("Exponential factor of GoldAmt scaling per additional point of armor.", AutoItemConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float goldExp {get;private set;} = 0.02f;
+        public float goldExp {get;private set;} = 0.075f;
         
         [AutoUpdateEventInfo(AutoUpdateEventFlags.InvalidateDescToken)]
         [AutoItemConfig("Inverse-exponential multiplier for reduced GoldAmt per stack (higher = more powerful).", AutoItemConfigFlags.PreventNetMismatch, 0f, 0.999f)]
