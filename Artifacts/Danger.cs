@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
 using System;
 using TILER2;
@@ -29,8 +30,9 @@ namespace ThinkInvisible.TinkersSatchel {
             bool ILFound = c.TryGotoNext(
                 x=>x.MatchCallOrCallvirt<CharacterBody>("set_hasOneShotProtection"));
             if(ILFound) {
-                c.EmitDelegate<Func<bool, bool>>((origSet)=>{
-                    return !IsActiveAndEnabled();
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<bool, CharacterBody, bool>>((origSet, body)=>{
+                    return body.isPlayerControlled && !IsActiveAndEnabled();
                 });
             } else {
                 TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger)! Artifact will not work.");
