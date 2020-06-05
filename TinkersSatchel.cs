@@ -24,7 +24,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         internal static BepInEx.Logging.ManualLogSource _logger;
 
-        private TinkersSatchelPlugin() {
+        private void Awake() {
             _logger = Logger;
 
             using(var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TinkersSatchel.tinkerssatchel_assets")) {
@@ -56,9 +56,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 else
                     Logger.LogMessage("    Other TKSCH"+x.itemCodeName.PadRight(longestName) + " / N/A");
             }
-        }
 
-        private void Awake() {
             foreach(ItemBoilerplate x in masterItemList) {
                 x.SetupBehavior();
             }
