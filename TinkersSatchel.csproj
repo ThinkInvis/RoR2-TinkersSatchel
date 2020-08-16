@@ -76,7 +76,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)NetworkWeaver&quot; /Y&#xD;&#xA;cd &quot;$(ProjectDir)NetworkWeaver&quot;&#xD;&#xA;Unity.UNetWeaver.exe &quot;..\lib\UnityEngine.CoreModule.dll&quot; &quot;..\lib\UnityEngine.Networking.dll&quot; &quot;Patched/&quot; &quot;$(TargetFileName)&quot; &quot;$(ProjectDir)lib&quot;&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(ProjectDir)NetworkWeaver\Patched\$(TargetFileName)&quot; &quot;D:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\BepInEx\plugins\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;D:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\BepInEx\plugins\$(ProjectName)&quot; /Y&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(ProjectDir)NetworkWeaver\Patched\$(TargetFileName)&quot; &quot;D:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2 Dedicated Server\BepInEx\plugins\$(ProjectName)&quot; /Y&#xD;&#xA;&#xD;&#xA;del &quot;$(ProjectDir)NetworkWeaver\Patched\$(TargetFileName)&quot;" />
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;&#xD;&#xA;del &quot;$(ProjectDir)NetworkWeaver\Patched\$(TargetFileName)&quot;" />
   </Target>
 
 </Project>
