@@ -50,7 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         private void On_InvGiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
-            if(count <= 0 || itemIndex != regIndex) return;
+            if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
             if(!minv) minv = self.gameObject.AddComponent<MimicInventory>();
             minv.totalMimics = GetCount(self);
@@ -58,9 +58,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void On_InvRemoveItem(On.RoR2.Inventory.orig_RemoveItem orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
+            if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
             if(!minv) minv = self.gameObject.AddComponent<MimicInventory>();
-            if(count <= 0 || itemIndex != regIndex) {
+            if(itemIndex != regIndex) {
                 if(minv.fakeInv.GetRealItemCount(itemIndex) == 0)
                     minv.Redistribute(itemIndex);
             } else {
@@ -198,6 +199,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     fakeInv.itemStacks[(int)ind] --;
                 }
             }
+            AddMimics(mimicsToMove);
         }
     }
 }
