@@ -81,7 +81,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private int _totalMimics = 0;
         public int totalMimics {get => _totalMimics; internal set {
-                Debug.Log("Mimic count " + _totalMimics + " ==> " + value);
                 if(value > _totalMimics)
                     AddMimics(value - _totalMimics);
                 else if(value < _totalMimics)
@@ -146,12 +145,10 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         internal void AddMimics(int count) {
-            Debug.Log("Attempting to add " + count + " mimics, current " + _totalMimics);
             var iarrSel = GetSelection();
             if(iarrSel.Length < 1) return;
             for(int i = 0; i < count; i++) {
                 var toAdd = (ItemIndex)Mimic.instance.itemRng.NextElementUniform(iarrSel).Key;
-                Debug.Log("Adding " + toAdd);
                 if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
                 else _mimickedCounts[toAdd] ++;
                 _totalMimics++;
@@ -164,11 +161,9 @@ namespace ThinkInvisible.TinkersSatchel {
                     fakeInv.itemStacks[(int)toAdd] ++;
                 }
             }
-            Debug.Log("Add Count --> " + _totalMimics);
         }
 
         internal void RemoveMimics(int count) {
-            Debug.Log("Attempting to remove " + count + " mimics, current " + _totalMimics);
             var totalRemovals = Mathf.Min(count, _totalMimics);
             for(int i = 0; i < totalRemovals; i++) {
                 var toRemove = Mimic.instance.itemRng.NextElementUniform(_mimickedCounts.Keys.ToArray());
@@ -183,7 +178,6 @@ namespace ThinkInvisible.TinkersSatchel {
                     inventory.itemStacks[(int)toRemove] --;
                 }
             }
-            Debug.Log("Remove Count --> " + _totalMimics);
         }
         
         internal void Redistribute(ItemIndex ind) {
