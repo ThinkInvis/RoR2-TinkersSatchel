@@ -35,7 +35,18 @@ namespace ThinkInvisible.TinkersSatchel {
                     return body.isPlayerControlled && !IsActiveAndEnabled();
                 });
             } else {
-                TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger)! Artifact will not work.");
+                TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger, set OHP flag)! Artifact will not prevent OHP while enabled.");
+            }
+
+            ILFound = c.TryGotoNext(
+                x=>x.MatchCallOrCallvirt<Mathf>("Max"),
+                x=>x.MatchCallOrCallvirt<CharacterBody>("set_oneShotProtectionFraction"));
+            if(ILFound) {
+                c.Index++;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float,CharacterBody,float>>((origFrac,body)=>{return body.oneShotProtectionFraction;});
+            } else {
+                TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger, set OHP fraction)! Artifact will not add OHP during curse.");
             }
         }
     }
