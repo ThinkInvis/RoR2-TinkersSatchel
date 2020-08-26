@@ -36,7 +36,8 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Suppression: "Players take heavily increased damage while airborne."
 - Haste: "All combatants attack 10x faster and deal 1/20x damage."
 - Danger: "Players can be killed in one hit."
-	- Removes this now-redundant functionality from Artifact of Glass.
+	- Removes this now-redundant functionality from Artifact of Glass/other sources of Curse.
+	- Deactivate the artifact using the mod's config file to restore original OHP behavior.
 
 ## Issues/TODO
 
@@ -47,6 +48,15 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - See the GitHub repo for more!
 
 ## Changelog
+
+**1.2.0**
+
+- Mostly-Tame Mimic now uses TILER2.FakeInventory, causing several behavior changes:
+	- Mimics will now properly appear in inventory, logbook, stats, etc.
+	- Mimics will no longer remain as copies of an item after you lose your last real copy of that item.
+	- Display for mimicked item counts is now shared with other sources of temporary items.
+- Fixed disabling Artifact of Danger not allowing OHP while cursed.
+- Updated libraries for RoR2 1.0.
 
 **1.1.2**
 
