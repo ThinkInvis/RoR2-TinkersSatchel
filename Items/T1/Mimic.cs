@@ -78,7 +78,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private Inventory inventory;
         internal FakeInventory fakeInv;
 
-        private int _totalMimics;
+        private int _totalMimics = 0;
         public int totalMimics {get => _totalMimics; internal set {
                 if(value > _totalMimics)
                     AddMimics(value - _totalMimics);
@@ -112,7 +112,7 @@ namespace ThinkInvisible.TinkersSatchel {
             //int countToShuffle = Mathf.Min(count, Mathf.FloorToInt(Mimic.instance.mimicRng.nextNormalizedFloat * count * Mimic.instance.decayChance * 2f));)
             int totalChanged = 0;
             ItemIndex lastAdd = (ItemIndex)(-1);
-            for(int i = 0; i < totalMimics; i++) {
+            for(int i = 0; i < _totalMimics; i++) {
                 if(Mimic.instance.itemRng.nextNormalizedFloat > Mimic.instance.decayChance) continue;
                 totalChanged++;
                 
@@ -150,7 +150,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var toAdd = (ItemIndex)Mimic.instance.itemRng.NextElementUniform(iarrSel).Key;
                 if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
                 else _mimickedCounts[toAdd] ++;
-                totalMimics++;
+                _totalMimics++;
                 if(i == count - 1) {
                     inventory.GiveItem(toAdd); //only update on last item added to avoid spamming onInventoryUpdate
                     fakeInv.GiveItem(toAdd);
@@ -163,11 +163,11 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         internal void RemoveMimics(int count) {
-            var totalRemovals = Mathf.Min(count, totalMimics);
+            var totalRemovals = Mathf.Min(count, _totalMimics);
             for(int i = 0; i < totalRemovals; i++) {
                 var toRemove = Mimic.instance.itemRng.NextElementUniform(_mimickedCounts.Keys.ToArray());
                 _mimickedCounts[toRemove] --;
-                totalMimics--;
+                _totalMimics--;
                 if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
                 if(i == count - 1) {
                     fakeInv.RemoveItem(toRemove);
@@ -182,13 +182,13 @@ namespace ThinkInvisible.TinkersSatchel {
         internal void Redistribute(ItemIndex ind) {
             if(!_mimickedCounts.ContainsKey(ind)) return;
             else if(_mimickedCounts.Count == 1) {
-                RemoveMimics(totalMimics);
+                RemoveMimics(_totalMimics);
                 return;
             }
             var mimicsToMove = _mimickedCounts[ind];
             for(int i = 0; i < mimicsToMove; i++) {
                 _mimickedCounts[ind] --;
-                totalMimics--;
+                _totalMimics--;
                 if(_mimickedCounts[ind] < 1) _mimickedCounts.Remove(ind);
                 if(i == mimicsToMove - 1) {
                     inventory.RemoveItem(ind); //only update on last item added to avoid spamming onInventoryUpdate
