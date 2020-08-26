@@ -69,7 +69,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 	}
 
-    [RequireComponent(typeof(FakeInventory), typeof(Inventory))]
+    [RequireComponent(typeof(Inventory))]
     public class MimicInventory : MonoBehaviour {
         private float stopwatch = 0f;
         private readonly Dictionary<ItemIndex, int> _mimickedCounts;
@@ -94,6 +94,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void Awake() {
             inventory = GetComponent<Inventory>();
             fakeInv = GetComponent<FakeInventory>();
+            if(!fakeInv) fakeInv = gameObject.AddComponent<FakeInventory>();
         }
 
         private void FixedUpdate() {
