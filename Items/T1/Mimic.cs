@@ -7,6 +7,7 @@ using R2API.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mimic : Item<Mimic> {
@@ -71,7 +72,7 @@ namespace ThinkInvisible.TinkersSatchel {
 	}
 
     [RequireComponent(typeof(Inventory))]
-    public class MimicInventory : MonoBehaviour {
+    public class MimicInventory : NetworkBehaviour {
         private float stopwatch = 0f;
         private readonly Dictionary<ItemIndex, int> _mimickedCounts;
         public readonly ReadOnlyDictionary<ItemIndex, int> mimickedCounts;
@@ -93,12 +94,14 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void Awake() {
+            if(!NetworkServer.active) return;
             inventory = GetComponent<Inventory>();
             fakeInv = GetComponent<FakeInventory>();
             if(!fakeInv) fakeInv = gameObject.AddComponent<FakeInventory>();
         }
 
         private void FixedUpdate() {
+            if(!NetworkServer.active) return;
             stopwatch -= Time.fixedDeltaTime;
             if(stopwatch <= 0f) {
                 stopwatch = Mimic.instance.decayRate;
@@ -112,7 +115,6 @@ namespace ThinkInvisible.TinkersSatchel {
             if(iarrSel.Length <= 1) return;
             //int countToShuffle = Mathf.Min(count, Mathf.FloorToInt(Mimic.instance.mimicRng.nextNormalizedFloat * count * Mimic.instance.decayChance * 2f));)
             int totalChanged = 0;
-            ItemIndex lastAdd = (ItemIndex)(-1);
             for(int i = 0; i < _totalMimics; i++) {
                 if(Mimic.instance.itemRng.nextNormalizedFloat > Mimic.instance.decayChance) continue;
                 totalChanged++;
@@ -124,24 +126,15 @@ namespace ThinkInvisible.TinkersSatchel {
                 else _mimickedCounts[toAdd] ++;
                 _mimickedCounts[toRemove] --;
                 if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
-                inventory.itemStacks[(int)toAdd] ++;
-                inventory.itemStacks[(int)toRemove] --;
-                fakeInv.itemStacks[(int)toAdd] ++;
-                fakeInv.itemStacks[(int)toRemove] --;
-                lastAdd = toAdd;
+                fakeInv.GiveItem(toAdd);
+                fakeInv.RemoveItem(toRemove);
 
                 if(totalChanged > Mimic.instance.lagLimit) break;
-            }
-            if(totalChanged > 0) {
-                inventory.itemStacks[(int)lastAdd] --;
-                fakeInv.itemStacks[(int)lastAdd] --;
-                inventory.GiveItem(lastAdd);
-                fakeInv.GiveItem(lastAdd);
             }
         }
 
         private KeyValuePair<int, int>[] GetSelection() {
-            return inventory.itemStacks.Select((val,ind) => new KeyValuePair<int,int>(ind,val-fakeInv.itemStacks[ind])).Where(x=>x.Value>0 && x.Key != (int)Mimic.instance.regIndex).ToArray();
+            return inventory.itemStacks.Select((val,ind) => new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind))).Where(x=>x.Value>0 && x.Key != (int)Mimic.instance.regIndex).ToArray();
         }
 
         internal void AddMimics(int count) {
@@ -152,14 +145,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
                 else _mimickedCounts[toAdd] ++;
                 _totalMimics++;
-                if(i == count - 1) {
-                    inventory.GiveItem(toAdd); //only update on last item added to avoid spamming onInventoryUpdate
-                    fakeInv.GiveItem(toAdd);
-                } else {
-                    //would normally update itemAcquisitionOrder here if necessary, but mimics can only ever copy items that the target inventory already has some of
-                    inventory.itemStacks[(int)toAdd] ++;
-                    fakeInv.itemStacks[(int)toAdd] ++;
-                }
+
+                fakeInv.GiveItem(toAdd);
             }
         }
 
@@ -170,13 +157,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 _mimickedCounts[toRemove] --;
                 _totalMimics--;
                 if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
-                if(i == count - 1) {
-                    fakeInv.RemoveItem(toRemove);
-                    inventory.RemoveItem(toRemove); //only update on last item added to avoid spamming onInventoryUpdate
-                } else {
-                    fakeInv.itemStacks[(int)toRemove] --;
-                    inventory.itemStacks[(int)toRemove] --;
-                }
+
+                fakeInv.RemoveItem(toRemove);
             }
         }
         
@@ -191,13 +173,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 _mimickedCounts[ind] --;
                 _totalMimics--;
                 if(_mimickedCounts[ind] < 1) _mimickedCounts.Remove(ind);
-                if(i == mimicsToMove - 1) {
-                    inventory.RemoveItem(ind); //only update on last item added to avoid spamming onInventoryUpdate
-                    fakeInv.RemoveItem(ind);
-                } else {
-                    inventory.itemStacks[(int)ind] --;
-                    fakeInv.itemStacks[(int)ind] --;
-                }
+
+                fakeInv.RemoveItem(ind);
             }
             AddMimics(mimicsToMove);
         }
