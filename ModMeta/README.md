@@ -49,6 +49,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 ## Changelog
 
+**1.2.1**
+
+- Implements changes from TILER2 2.1.0.
+	- Mostly-Tame Mimic is now networked, and its items will now correctly appear as temporary (and not permanent) in multiplayer.
+- Bumped R2API dependency to 2.5.11.
+
 **1.2.0**
 
 - Mostly-Tame Mimic now uses TILER2.FakeInventory, causing several behavior changes:
