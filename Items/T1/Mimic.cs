@@ -37,6 +37,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public Mimic() {
             modelPathName = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/Mimic.prefab";
             iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/mimicIcon.png";
+
+            onBehav += () => {
+                FakeInventory.blacklist.Add(regIndex);
+                if(Compat_ItemStats.enabled) {
+
+                }
+            };
         }
 
         protected override void LoadBehavior() {
@@ -134,7 +141,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private KeyValuePair<int, int>[] GetSelection() {
-            return inventory.itemStacks.Select((val,ind) => new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind))).Where(x=>x.Value>0 && x.Key != (int)Mimic.instance.regIndex).ToArray();
+            return inventory.itemStacks.Select((val,ind) => new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind))).Where(x=>x.Value>0 && !FakeInventory.blacklist.Contains((ItemIndex)x.Key)).ToArray();
         }
 
         internal void AddMimics(int count) {
