@@ -49,6 +49,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 ## Changelog
 
+**1.2.2**
+
+- Implements changes from TILER2 2.2.3.
+	- Mostly-Tame Mimic is now FakeInventory blacklisted, and will not mimic other blacklisted items. Fixes incompatibility with ClassicItems (in combination with a ClassicItems update).
+- Bumped R2API dependency to 2.5.14.
+
 **1.2.1**
 
 - Implements changes from TILER2 2.1.0.
