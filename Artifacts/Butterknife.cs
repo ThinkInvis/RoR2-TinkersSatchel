@@ -3,27 +3,29 @@ using RoR2;
 using TILER2;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Butterknife : Artifact<Butterknife> {
+    public class Butterknife : Artifact_V2<Butterknife> {
         public override string displayName => "Artifact of Haste";
 
-        protected override string NewLangName(string langid = null) => displayName;
-        protected override string NewLangDesc(string langid = null) => "All combatants attack 10x faster and deal 1/20x damage.";
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetDescString(string langid = null) => "All combatants attack 10x faster and deal 1/20x damage.";
 
         private System.Reflection.MethodInfo cbDamageSetter;
         private System.Reflection.MethodInfo cbAttackSetter;
 
         public Butterknife() {
-            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/butterknife_on.png";
-            iconPathNameDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/butterknife_off.png";
+            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/butterknife_on.png";
+            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/butterknife_off.png";
             cbDamageSetter = typeof(CharacterBody).GetPropertyCached("damage").GetSetMethod(true);
             cbAttackSetter = typeof(CharacterBody).GetPropertyCached("attackSpeed").GetSetMethod(true);
         }
 
-        protected override void LoadBehavior() {
+        public override void Install() {
+            base.Install();
             On.RoR2.CharacterBody.RecalculateStats += On_CBRecalcStats;
         }
 
-        protected override void UnloadBehavior() {
+        public override void Uninstall() {
+            base.Uninstall();
             On.RoR2.CharacterBody.RecalculateStats -= On_CBRecalcStats;
         }
 
