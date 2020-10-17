@@ -49,6 +49,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 ## Changelog
 
+The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.3.0**
+
+- Implements changes from TILER2 3.0.0.
+
 **1.2.2**
 
 - Implements changes from TILER2 2.2.3.
@@ -75,23 +81,3 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Artifact of Danger no longer applies OHP to enemies while disabled.
 - Severely nerfed default config settings for Armor Crystal.
 - Now uses plugin-specific console logger.
-
-**1.1.1**
-
-- Fixed missing buff icon for Artifact of Tactics.
-- Mimic count is now displayed per-item, and is no longer added to the item's normal display count.
-- Mimics no longer randomly decide to stop being mimics during shuffles.
-- Individual Mimics can no longer shuffle from an item to the same item. Swaps between two are still fair game.
-- Tweaked Mimic default config settings. Added a new setting to help reduce lag at extremely high itemcounts (limits maximum number of changes per shuffle).
-
-**1.1.0**
-
-- ADDED ITEM: Armor Crystal!
-- ADDED ARTIFACTS: Danger, Tactics, Suppression, Haste!
-	- Migrated Artifact of Danger from mod GlassArtifactOHP.
-- Index dump during game startup is now much prettier.
-- GitHub repo is now licensed (GNU GPL3).
-
-**1.0.0**
-
-- Initial version. Adds the following items to the game: Silver Compass, Mostly-Tame Mimic.
