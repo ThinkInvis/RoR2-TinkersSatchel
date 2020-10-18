@@ -6,22 +6,24 @@ using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Danger : Artifact<Danger> {
+    public class Danger : Artifact_V2<Danger> {
         public override string displayName => "Artifact of Danger";
 
-        protected override string NewLangName(string langid = null) => displayName;
-        protected override string NewLangDesc(string langid = null) => "Players can be killed in one hit.";
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetDescString(string langid = null) => "Players can be killed in one hit.";
 
         public Danger() {
-            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_on.png";
-            iconPathNameDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_off.png";
+            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_on.png";
+            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_off.png";
         }
 
-        protected override void LoadBehavior() {
+        public override void Install() {
+            base.Install();
             IL.RoR2.CharacterBody.RecalculateStats += IL_CBRecalcStats;
         }
 
-        protected override void UnloadBehavior() {
+        public override void Uninstall() {
+            base.Uninstall();
             IL.RoR2.CharacterBody.RecalculateStats -= IL_CBRecalcStats;
         }
         

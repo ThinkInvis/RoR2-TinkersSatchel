@@ -11,17 +11,17 @@ using static TILER2.MiscUtil;
 namespace ThinkInvisible.TinkersSatchel {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
-    [BepInDependency(TILER2Plugin.ModGuid, "2.1.0")]
+    [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ResourcesAPI), nameof(PlayerAPI), nameof(PrefabAPI))]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
-        public const string ModVer = "1.2.1";
+        public const string ModVer = "1.3.0";
         public const string ModName = "TinkersSatchel";
         public const string ModGuid = "com.ThinkInvisible.TinkersSatchel";
 
         private static ConfigFile cfgFile;
         
-        internal static FilingDictionary<ItemBoilerplate> masterItemList = new FilingDictionary<ItemBoilerplate>();
+        internal static FilingDictionary<CatalogBoilerplate> masterItemList = new FilingDictionary<CatalogBoilerplate>();
         
         internal static BepInEx.Logging.ManualLogSource _logger;
 
@@ -35,32 +35,19 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             cfgFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
-            masterItemList = ItemBoilerplate.InitAll("TinkersSatchel");
-            foreach(ItemBoilerplate x in masterItemList) {
-                x.SetupConfig(cfgFile);
-            }
-            
-            int longestName = 0;
-            foreach(ItemBoilerplate x in masterItemList) {
-                x.SetupAttributes("TINKSATCH", "TKSCH");
-                if(x.itemCodeName.Length > longestName) longestName = x.itemCodeName.Length;
-            }
+            masterItemList = T2Module.InitAll<CatalogBoilerplate>(new T2Module.ModInfo {
+                displayName = "Tinker's Satchel",
+                longIdentifier = "TinkersSatchel",
+                shortIdentifier = "TKSAT",
+                mainConfigFile = cfgFile
+            });
 
-            Logger.LogMessage("Index dump follows (pairs of name / index):");
-            foreach(ItemBoilerplate x in masterItemList) {
-                if(x is Equipment eqp)
-                    Logger.LogMessage("Equipment TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)eqp.regIndex).ToString());
-                else if(x is Item item)
-                    Logger.LogMessage ("     Item TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)item.regIndex).ToString());
-                else if(x is Artifact afct)
-                    Logger.LogMessage(" Artifact TKSCH"+x.itemCodeName.PadRight(longestName) + " / "+((int)afct.regIndex).ToString());
-                else
-                    Logger.LogMessage("    Other TKSCH"+x.itemCodeName.PadRight(longestName) + " / N/A");
-            }
+            T2Module.SetupAll_PluginAwake(masterItemList);
+        }
 
-            foreach(ItemBoilerplate x in masterItemList) {
-                x.SetupBehavior();
-            }
+        private void Start() {
+            T2Module.SetupAll_PluginStart(masterItemList);
+            CatalogBoilerplate.ConsoleDump(Logger, masterItemList);
         }
     }
 }

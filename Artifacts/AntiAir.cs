@@ -2,25 +2,27 @@
 using TILER2;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class AntiAir : Artifact<AntiAir> {
+    public class AntiAir : Artifact_V2<AntiAir> {
         public override string displayName => "Artifact of Suppression";
 
-        [AutoItemConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoItemConfigFlags.None, 1f, float.MaxValue)]
+        [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]
         public float hurtMod {get; private set;} = 5f;
 
-        protected override string NewLangName(string langid = null) => displayName;
-        protected override string NewLangDesc(string langid = null) => "Players take heavily increased damage while airborne.";
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetDescString(string langid = null) => "Players take heavily increased damage while airborne.";
 
         public AntiAir() {
-            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_on.png";
-            iconPathNameDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_off.png";
+            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_on.png";
+            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_off.png";
         }
 
-        protected override void LoadBehavior() {
+        public override void Install() {
+            base.Install();
             On.RoR2.HealthComponent.TakeDamage += On_HCTakeDamage;
         }
 
-        protected override void UnloadBehavior() {
+        public override void Uninstall() {
+            base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= On_HCTakeDamage;
         }
 

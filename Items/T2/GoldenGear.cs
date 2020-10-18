@@ -6,35 +6,35 @@ using static TILER2.MiscUtil;
 using static TILER2.StatHooks;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class GoldenGear : Item<GoldenGear> {
+    public class GoldenGear : Item_V2<GoldenGear> {
         public override string displayName => "Armor Crystal";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
 
-        [AutoUpdateEventInfo(AutoUpdateEventFlags.InvalidateDescToken)]
-        [AutoItemConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoItemConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
         public int goldAmt {get;private set;} = 10;
-        
-        [AutoUpdateEventInfo(AutoUpdateEventFlags.InvalidateDescToken)]
-        [AutoItemConfig("Exponential factor of GoldAmt scaling per additional point of armor.", AutoItemConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Exponential factor of GoldAmt scaling per additional point of armor.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float goldExp {get;private set;} = 0.075f;
-        
-        [AutoUpdateEventInfo(AutoUpdateEventFlags.InvalidateDescToken)]
-        [AutoItemConfig("Inverse-exponential multiplier for reduced GoldAmt per stack (higher = more powerful).", AutoItemConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Inverse-exponential multiplier for reduced GoldAmt per stack (higher = more powerful).", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float goldReduc {get;private set;} = 0.1f;
 
-        [AutoItemConfig("Minimum possible goldAmt as affected by item stacking.", AutoItemConfigFlags.PreventNetMismatch, float.Epsilon, float.MaxValue)]
+        [AutoConfig("Minimum possible goldAmt as affected by item stacking.", AutoConfigFlags.PreventNetMismatch, float.Epsilon, float.MaxValue)]
         public float goldMin {get;private set;} = 0.0001f;
 
-        [AutoItemConfig("If true, deployables (e.g. Engineer turrets) with Armor Crystal will benefit from their master's money.",
-            AutoItemConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, deployables (e.g. Engineer turrets) with Armor Crystal will benefit from their master's money.",
+            AutoConfigFlags.PreventNetMismatch)]
         public bool inclDeploys {get;private set;} = true;
 
         public BuffIndex goldenGearBuff {get;private set;}
-        protected override string NewLangName(string langid = null) => displayName;
-        protected override string NewLangPickup(string langid = null) => "Gain armor by hoarding money.";
-        protected override string NewLangDesc(string langid = null) => "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>money</style>. The first point of <style=cIsHealing>armor</style> costs <style=cIsUtility>$" + goldAmt.ToString("N0") + "</style> <style=cStack>(-" + Pct(goldReduc) + " per stack, exponential; scales with difficulty)</style>; each subsequent point <style=cIsUtility>costs " + Pct(goldExp) + " more</style> than the last.";
-        protected override string NewLangLore(string langid = null) => "";
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetPickupString(string langid = null) => "Gain armor by hoarding money.";
+        protected override string GetDescString(string langid = null) => "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>money</style>. The first point of <style=cIsHealing>armor</style> costs <style=cIsUtility>$" + goldAmt.ToString("N0") + "</style> <style=cStack>(-" + Pct(goldReduc) + " per stack, exponential; scales with difficulty)</style>; each subsequent point <style=cIsUtility>costs " + Pct(goldExp) + " more</style> than the last.";
+        protected override string GetLoreString(string langid = null) => "";
         
         public float CalculateArmor(uint money, int stacks) {
             if(money == 0 || stacks <= 0) return 0;
@@ -44,27 +44,33 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         public GoldenGear() {
-            modelPathName = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/GoldenGear.prefab";
-            iconPathName = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/goldenGearIcon.png";
-
-            onAttrib += (tokenIdent, namePrefix) => {
-                var goldenGearBuffDef = new R2API.CustomBuff(new BuffDef {
-                    buffColor = new Color(0.85f, 0.8f, 0.3f),
-                    canStack = true,
-                    isDebuff = false,
-                    name = "TKSATGoldenGear",
-                    iconPath = "textures/bufficons/texBuffGenericShield"
-                });
-                goldenGearBuff = R2API.BuffAPI.Add(goldenGearBuffDef);
-            };
+            modelResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/GoldenGear.prefab";
+            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/goldenGearIcon.png";
         }
 
-        protected override void LoadBehavior() {
+        public override void SetupAttributes() {
+            base.SetupAttributes();
+
+            var goldenGearBuffDef = new R2API.CustomBuff(new BuffDef {
+                buffColor = new Color(0.85f, 0.8f, 0.3f),
+                canStack = true,
+                isDebuff = false,
+                name = "TKSATGoldenGear",
+                iconPath = "textures/bufficons/texBuffGenericShield"
+            });
+            goldenGearBuff = R2API.BuffAPI.Add(goldenGearBuffDef);
+        }
+
+        public override void Install() {
+            base.Install();
+
             On.RoR2.CharacterBody.FixedUpdate += On_CBFixedUpdate;
             GetStatCoefficients += Evt_TILER2GetStatCoefficients;
         }
 
-        protected override void UnloadBehavior() {
+        public override void Uninstall() {
+            base.Uninstall();
+
             On.RoR2.CharacterBody.FixedUpdate -= On_CBFixedUpdate;
             GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
         }
