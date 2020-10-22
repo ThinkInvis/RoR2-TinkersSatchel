@@ -51,6 +51,10 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.3.1**
+
+- Added extra safety checks to Artifact of Suppression.
+
 **1.3.0**
 
 - Implements changes from TILER2 3.0.0.
@@ -75,9 +79,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Display for mimicked item counts is now shared with other sources of temporary items.
 - Fixed disabling Artifact of Danger not allowing OHP while cursed.
 - Updated libraries for RoR2 1.0.
-
-**1.1.2**
-
-- Artifact of Danger no longer applies OHP to enemies while disabled.
-- Severely nerfed default config settings for Armor Crystal.
-- Now uses plugin-specific console logger.
