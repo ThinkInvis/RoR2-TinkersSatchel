@@ -28,7 +28,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void On_HCTakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             if(IsActiveAndEnabled()
+                && self.body != null
+                && self.body.teamComponent != null
                 && self.body.teamComponent.teamIndex == TeamIndex.Player
+                && self.body.characterMotor != null
                 && !self.body.characterMotor.isGrounded)
                 damageInfo.damage *= hurtMod;
             orig(self, damageInfo);
