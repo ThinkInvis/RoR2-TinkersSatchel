@@ -48,18 +48,18 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
 
-            On.RoR2.Inventory.GiveItem += On_InvGiveItem;
-            On.RoR2.Inventory.RemoveItem += On_InvRemoveItem;
+            On.RoR2.Inventory.GiveItem_ItemIndex_int += On_InvGiveItemByIndex;
+            On.RoR2.Inventory.RemoveItem_ItemIndex_int += On_InvRemoveItemByIndex;
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
-            On.RoR2.Inventory.GiveItem -= On_InvGiveItem;
-            On.RoR2.Inventory.RemoveItem -= On_InvRemoveItem;
+            On.RoR2.Inventory.GiveItem_ItemIndex_int -= On_InvGiveItemByIndex;
+            On.RoR2.Inventory.RemoveItem_ItemIndex_int -= On_InvRemoveItemByIndex;
         }
         
-        private void On_InvGiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count) {
+        private void On_InvGiveItemByIndex(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
             if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
@@ -67,7 +67,7 @@ namespace ThinkInvisible.TinkersSatchel {
             minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
         }
 
-        private void On_InvRemoveItem(On.RoR2.Inventory.orig_RemoveItem orig, Inventory self, ItemIndex itemIndex, int count) {
+        private void On_InvRemoveItemByIndex(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
             if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
