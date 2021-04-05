@@ -51,13 +51,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-            tacticsBuff = new BuffDef {
-                buffColor = Color.white,
-                canStack = true,
-                isDebuff = false,
-                name = modInfo.shortIdentifier + "TacticsBuff",
-                iconSprite = Resources.Load<Sprite>("@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png")
-            };
+            tacticsBuff = ScriptableObject.CreateInstance<BuffDef>();
+            tacticsBuff.buffColor = Color.white;
+            tacticsBuff.canStack = true;
+            tacticsBuff.isDebuff = false;
+            tacticsBuff.name = modInfo.shortIdentifier + "TacticsBuff";
+            tacticsBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_on.png");
             BuffAPI.Add(new CustomBuff(tacticsBuff));
 
             var tacticsPrefabPrefab = new GameObject("TacticsAuraPrefabPrefab");
