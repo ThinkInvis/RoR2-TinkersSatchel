@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using TILER2;
+using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class AntiAir : Artifact_V2<AntiAir> {
@@ -12,8 +13,8 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetDescString(string langid = null) => "Players take heavily increased damage while airborne.";
 
         public AntiAir() {
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_on.png";
-            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_off.png";
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/antiair_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/antiair_off.png");
         }
 
         public override void Install() {

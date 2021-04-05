@@ -35,8 +35,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public readonly ItemIndex mimicRecalcDummy;
 
         public Mimic() {
-            modelResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/Mimic.prefab";
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/mimicIcon.png";
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Mimic.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/mimicIcon.png");
         }
 
         public override void SetupBehavior() {

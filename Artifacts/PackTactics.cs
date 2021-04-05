@@ -34,8 +34,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public GameObject tacticsWardPrefab {get;private set;}
 
         public PackTactics() {
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png";
-            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_off.png";
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_off.png");
         }
 
         public override void SetupConfig() {

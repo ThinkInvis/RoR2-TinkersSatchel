@@ -13,8 +13,8 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetDescString(string langid = null) => "Players can be killed in one hit.";
 
         public Danger() {
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_on.png";
-            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/danger_off.png";
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/danger_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/danger_off.png");
         }
 
         public override void Install() {

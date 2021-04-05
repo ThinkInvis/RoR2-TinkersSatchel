@@ -25,13 +25,13 @@ namespace ThinkInvisible.TinkersSatchel {
         
         internal static BepInEx.Logging.ManualLogSource _logger;
 
+        internal static AssetBundle resources;
+
         private void Awake() {
             _logger = Logger;
 
             using(var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TinkersSatchel.tinkerssatchel_assets")) {
-                var bundle = AssetBundle.LoadFromStream(stream);
-                var provider = new AssetBundleResourcesProvider("@TinkersSatchel", bundle);
-                ResourcesAPI.AddProvider(provider);
+                resources = AssetBundle.LoadFromStream(stream);
             }
             cfgFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
