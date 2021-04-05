@@ -10,8 +10,8 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "All combatants attack 10x faster and deal 1/20x damage.";
 
-        private System.Reflection.MethodInfo cbDamageSetter;
-        private System.Reflection.MethodInfo cbAttackSetter;
+        private readonly System.Reflection.MethodInfo cbDamageSetter;
+        private readonly System.Reflection.MethodInfo cbAttackSetter;
 
         public Butterknife() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/butterknife_on.png");

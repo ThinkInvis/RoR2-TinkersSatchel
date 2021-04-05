@@ -124,9 +124,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
     internal class TacticsWard : MonoBehaviour {
         internal static List<TacticsWard> instances = new List<TacticsWard>();
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         private void Awake() {
             instances.Add(this);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         private void OnDestroy() {
             instances.Remove(this);
         }

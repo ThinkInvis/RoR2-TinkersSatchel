@@ -103,6 +103,7 @@ namespace ThinkInvisible.TinkersSatchel {
             mimickedCounts = new ReadOnlyDictionary<ItemIndex, int>(_mimickedCounts);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         private void Awake() {
             if(!NetworkServer.active) return;
             inventory = GetComponent<Inventory>();
@@ -110,6 +111,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!fakeInv) fakeInv = gameObject.AddComponent<FakeInventory>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         private void FixedUpdate() {
             if(!NetworkServer.active) return;
             stopwatch -= Time.fixedDeltaTime;
