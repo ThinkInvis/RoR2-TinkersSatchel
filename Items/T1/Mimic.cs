@@ -42,7 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupBehavior() {
             base.SetupBehavior();
 
-            FakeInventory.blacklist.Add(catalogIndex);
+            FakeInventory.blacklist.Add(itemDef);
         }
 
         public override void Install() {
@@ -146,7 +146,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private KeyValuePair<int, int>[] GetSelection() {
-            return inventory.itemStacks.Select((val,ind) => new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind))).Where(x=>x.Value>0 && !FakeInventory.blacklist.Contains((ItemIndex)x.Key)).ToArray();
+            return inventory.itemStacks.Select((val,ind) =>
+                new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind)))
+                .Where(
+                    x=>x.Value>0
+                    && !FakeInventory.blacklist.Contains(ItemCatalog.GetItemDef((ItemIndex)x.Key))
+                ).ToArray();
         }
 
         internal void AddMimics(int count) {
