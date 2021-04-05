@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using static TILER2.StatHooks;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class GoldenGear : Item<GoldenGear> {
@@ -30,7 +31,7 @@ namespace ThinkInvisible.TinkersSatchel {
             AutoConfigFlags.PreventNetMismatch)]
         public bool inclDeploys {get;private set;} = true;
 
-        public BuffIndex goldenGearBuff {get;private set;}
+        public BuffDef goldenGearBuff {get;private set;}
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Gain armor by hoarding money.";
         protected override string GetDescString(string langid = null) => "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>money</style>. The first point of <style=cIsHealing>armor</style> costs <style=cIsUtility>$" + goldAmt.ToString("N0") + "</style> <style=cStack>(-" + Pct(goldReduc) + " per stack, exponential; scales with difficulty)</style>; each subsequent point <style=cIsUtility>costs " + Pct(goldExp) + " more</style> than the last.";
@@ -51,14 +52,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var goldenGearBuffDef = new R2API.CustomBuff(new BuffDef {
-                buffColor = new Color(0.85f, 0.8f, 0.3f),
-                canStack = true,
-                isDebuff = false,
-                name = "TKSATGoldenGear",
-                iconPath = "textures/bufficons/texBuffGenericShield"
-            });
-            goldenGearBuff = R2API.BuffAPI.Add(goldenGearBuffDef);
+            goldenGearBuff = ScriptableObject.CreateInstance<BuffDef>();
+            goldenGearBuff.buffColor = new Color(0.85f, 0.8f, 0.3f);
+            goldenGearBuff.canStack = true;
+            goldenGearBuff.isDebuff = false;
+            goldenGearBuff.name = "TKSATGoldenGear";
+            goldenGearBuff.iconSprite = Resources.Load<Sprite>("textures/bufficons/texBuffGenericShield");
+            BuffAPI.Add(new CustomBuff(goldenGearBuff));
         }
 
         public override void Install() {
@@ -113,7 +113,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             int currBuffStacks = cb.GetBuffCount(goldenGearBuff);
             if(tgtBuffStacks != currBuffStacks)
-                cb.SetBuffCount(goldenGearBuff, tgtBuffStacks);
+                cb.SetBuffCount(goldenGearBuff.buffIndex, tgtBuffStacks);
         }
         
         private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {

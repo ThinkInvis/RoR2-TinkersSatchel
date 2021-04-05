@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.";
 
-        public BuffIndex tacticsBuff {get;private set;}
+        public BuffDef tacticsBuff {get;private set;}
         public GameObject tacticsWardPrefab {get;private set;}
 
         public PackTactics() {
@@ -51,15 +51,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-
-            var tacticsBuffDef = new CustomBuff(new BuffDef {
+            tacticsBuff = new BuffDef {
                 buffColor = Color.white,
                 canStack = true,
                 isDebuff = false,
                 name = modInfo.shortIdentifier + "TacticsBuff",
-                iconPath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png"
-            });
-            tacticsBuff = BuffAPI.Add(tacticsBuffDef);
+                iconSprite = Resources.Load<Sprite>("@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png")
+            };
+            BuffAPI.Add(new CustomBuff(tacticsBuff));
 
             var tacticsPrefabPrefab = new GameObject("TacticsAuraPrefabPrefab");
             tacticsPrefabPrefab.AddComponent<NetworkIdentity>();
@@ -75,7 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
             bw.Networkradius = baseRadius;
             bw.buffDuration = 1f;
             bw.interval = 1f;
-            bw.buffType = tacticsBuff;
+            bw.buffDef = tacticsBuff;
             tacticsWardPrefab = tacticsPrefabPrefab.InstantiateClone("TacticsAuraPrefab");
             UnityEngine.Object.Destroy(tacticsPrefabPrefab);
         }
