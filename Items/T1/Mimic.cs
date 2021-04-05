@@ -10,7 +10,7 @@ using System;
 using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Mimic : Item_V2<Mimic> {
+    public class Mimic : Item<Mimic> {
         public override string displayName => "Mostly-Tame Mimic";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});

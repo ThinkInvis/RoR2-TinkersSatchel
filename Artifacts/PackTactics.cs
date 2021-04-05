@@ -12,7 +12,7 @@ using Mono.Cecil.Cil;
 using static TILER2.StatHooks;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class PackTactics : Artifact_V2<PackTactics> {
+    public class PackTactics : Artifact<PackTactics> {
         public override string displayName => "Artifact of Tactics";
 
         [AutoConfig("Combatants within this distance (in meters) of teammates will buff them if Artifact of Tactics is enabled.", AutoConfigFlags.None, 0f, float.MaxValue)]

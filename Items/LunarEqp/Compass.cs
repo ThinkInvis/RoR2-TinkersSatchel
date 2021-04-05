@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Compass : Equipment_V2<Compass> {
+    public class Compass : Equipment<Compass> {
         public override string displayName => "Silver Compass";
         public override bool isLunar => true;
         public override float cooldown {get; protected set;} = 180f;

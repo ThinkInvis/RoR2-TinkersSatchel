@@ -3,7 +3,7 @@ using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class AntiAir : Artifact_V2<AntiAir> {
+    public class AntiAir : Artifact<AntiAir> {
         public override string displayName => "Artifact of Suppression";
 
         [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]

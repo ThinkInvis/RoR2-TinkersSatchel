@@ -4,7 +4,7 @@ using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Butterknife : Artifact_V2<Butterknife> {
+    public class Butterknife : Artifact<Butterknife> {
         public override string displayName => "Artifact of Haste";
 
         protected override string GetNameString(string langid = null) => displayName;

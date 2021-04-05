@@ -6,7 +6,7 @@ using static TILER2.MiscUtil;
 using static TILER2.StatHooks;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class GoldenGear : Item_V2<GoldenGear> {
+    public class GoldenGear : Item<GoldenGear> {
         public override string displayName => "Armor Crystal";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});

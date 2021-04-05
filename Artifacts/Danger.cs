@@ -6,7 +6,7 @@ using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Danger : Artifact_V2<Danger> {
+    public class Danger : Artifact<Danger> {
         public override string displayName => "Artifact of Danger";
 
         protected override string GetNameString(string langid = null) => displayName;
