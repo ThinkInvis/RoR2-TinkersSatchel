@@ -9,6 +9,10 @@ namespace ThinkInvisible.TinkersSatchel {
     public class Danger : Artifact<Danger> {
         public override string displayName => "Artifact of Danger";
 
+        [AutoConfig("If true, disabling this artifact will prevent curses (max HP reduction) from removing OHP.",
+            AutoConfigFlags.PreventNetMismatch)]
+        public bool preventCurseWhileOff { get; private set; } = false;
+
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "Players can be killed in one hit.";
 
@@ -46,9 +50,9 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ILFound) {
                 c.Index++;
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float,CharacterBody,float>>((origFrac,body)=>{return body.oneShotProtectionFraction;});
+                c.EmitDelegate<Func<float,CharacterBody,float>>((origFrac,body)=>{return preventCurseWhileOff ? body.oneShotProtectionFraction : origFrac;});
             } else {
-                TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger, set OHP fraction)! Artifact will not add OHP during curse.");
+                TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (Artifact of Danger, set OHP fraction)! Artifact's PreventCurseWhileOff config will not work.");
             }
         }
     }
