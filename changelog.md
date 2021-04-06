@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.3.2**
+
+- Compatibility changes for Risk of Rain 2 Anniversary Update.
+- Artifact of Danger will now only allow OHP while cursed if a default-disabled config option `PreventCurseWhileOff` is enabled.
+
 **1.3.1**
 
 - Added extra safety checks to Artifact of Suppression.

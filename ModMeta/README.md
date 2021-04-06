@@ -51,6 +51,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.3.2**
+
+- Compatibility changes for Risk of Rain 2 Anniversary Update.
+- Artifact of Danger will now only allow OHP while cursed if a default-disabled config option `PreventCurseWhileOff` is enabled.
+
 **1.3.1**
 
 - Added extra safety checks to Artifact of Suppression.
@@ -70,12 +75,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Implements changes from TILER2 2.1.0.
 	- Mostly-Tame Mimic is now networked, and its items will now correctly appear as temporary (and not permanent) in multiplayer.
 - Bumped R2API dependency to 2.5.11.
-
-**1.2.0**
-
-- Mostly-Tame Mimic now uses TILER2.FakeInventory, causing several behavior changes:
-	- Mimics will now properly appear in inventory, logbook, stats, etc.
-	- Mimics will no longer remain as copies of an item after you lose your last real copy of that item.
-	- Display for mimicked item counts is now shared with other sources of temporary items.
-- Fixed disabling Artifact of Danger not allowing OHP while cursed.
-- Updated libraries for RoR2 1.0.
