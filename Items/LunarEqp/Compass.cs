@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
             (useLimitPerStage == 2 ? " Works only once per stage." :
             (useLimitPerStage == 1 ? " Works only once per player per stage." :
             ""));
-        protected override string GetLoreString(string langid = null) => null;
+        protected override string GetLoreString(string langid = null) => "";
 
         public Compass() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/SilverCompass.prefab");
