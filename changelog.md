@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.3.3**
+
+- Maintenance for RoR2 updates: PC Patch v1.1.1.4.
+	- No changes were required beyond updating libraries/references.
+
 **1.3.2**
 
 - Compatibility changes for Risk of Rain 2 Anniversary Update.

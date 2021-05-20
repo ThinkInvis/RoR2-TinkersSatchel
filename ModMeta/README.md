@@ -51,6 +51,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.3.3**
+
+- Maintenance for RoR2 updates: PC Patch v1.1.1.4.
+	- No changes were required beyond updating libraries/references.
+
 **1.3.2**
 
 - Compatibility changes for Risk of Rain 2 Anniversary Update.
@@ -69,9 +74,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Implements changes from TILER2 2.2.3.
 	- Mostly-Tame Mimic is now FakeInventory blacklisted, and will not mimic other blacklisted items. Fixes incompatibility with ClassicItems (in combination with a ClassicItems update).
 - Bumped R2API dependency to 2.5.14.
-
-**1.2.1**
-
-- Implements changes from TILER2 2.1.0.
-	- Mostly-Tame Mimic is now networked, and its items will now correctly appear as temporary (and not permanent) in multiplayer.
-- Bumped R2API dependency to 2.5.11.
