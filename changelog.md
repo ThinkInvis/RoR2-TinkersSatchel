@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.3.4**
+
+- Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.
+- Fixed another incompatibility with most recent R2API.
+
 **1.3.3**
 
 - Maintenance for RoR2 updates: PC Patch v1.1.1.4.

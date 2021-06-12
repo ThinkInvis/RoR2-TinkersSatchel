@@ -51,6 +51,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.3.4**
+
+- Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.
+- Fixed another incompatibility with most recent R2API.
+
 **1.3.3**
 
 - Maintenance for RoR2 updates: PC Patch v1.1.1.4.
@@ -68,9 +73,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.3.0**
 
 - Implements changes from TILER2 3.0.0.
-
-**1.2.2**
-
-- Implements changes from TILER2 2.2.3.
-	- Mostly-Tame Mimic is now FakeInventory blacklisted, and will not mimic other blacklisted items. Fixes incompatibility with ClassicItems (in combination with a ClassicItems update).
-- Bumped R2API dependency to 2.5.14.
