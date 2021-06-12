@@ -74,7 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
             bw.buffDuration = 1f;
             bw.interval = 1f;
             bw.buffDef = tacticsBuff;
-            tacticsWardPrefab = tacticsPrefabPrefab.InstantiateClone("TacticsAuraPrefab");
+            tacticsWardPrefab = tacticsPrefabPrefab.InstantiateClone("TacticsAuraPrefab", true);
             UnityEngine.Object.Destroy(tacticsPrefabPrefab);
         }
 
