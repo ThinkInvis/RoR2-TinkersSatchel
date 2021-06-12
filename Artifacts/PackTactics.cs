@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
-using static TILER2.StatHooks;
+using static R2API.RecalculateStatsAPI;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackTactics : Artifact<PackTactics> {
