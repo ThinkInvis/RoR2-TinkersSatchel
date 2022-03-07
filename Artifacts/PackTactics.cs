@@ -57,7 +57,7 @@ namespace ThinkInvisible.TinkersSatchel {
             tacticsBuff.isDebuff = false;
             tacticsBuff.name = modInfo.shortIdentifier + "TacticsBuff";
             tacticsBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_on.png");
-            BuffAPI.Add(new CustomBuff(tacticsBuff));
+            ContentAddition.AddBuffDef(tacticsBuff);
 
             var tacticsPrefabPrefab = new GameObject("TacticsAuraPrefabPrefab");
             tacticsPrefabPrefab.AddComponent<NetworkIdentity>();
