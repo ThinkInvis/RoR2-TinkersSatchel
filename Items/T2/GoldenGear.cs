@@ -57,7 +57,7 @@ namespace ThinkInvisible.TinkersSatchel {
             goldenGearBuff.canStack = true;
             goldenGearBuff.isDebuff = false;
             goldenGearBuff.name = "TKSATGoldenGear";
-            goldenGearBuff.iconSprite = Resources.Load<Sprite>("textures/bufficons/texBuffGenericShield");
+            goldenGearBuff.iconSprite = LegacyResourcesAPI.Load<Sprite>("textures/bufficons/texBuffGenericShield");
             ContentAddition.AddBuffDef(goldenGearBuff);
         }
 
