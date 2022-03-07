@@ -1,5 +1,11 @@
 # Tinker's Satchel Changelog
 
+**1.3.5**
+
+- Compatibility update for Risk of Rain 2 Expansion 1 (SotV).
+- Updated R2API dependency to 4.0.11.
+- Updated BepInEx dependency to 5.4.1902.
+
 **1.3.4**
 
 - Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.

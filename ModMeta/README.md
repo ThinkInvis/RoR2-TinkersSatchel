@@ -51,6 +51,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.3.5**
+
+- Compatibility update for Risk of Rain 2 Expansion 1 (SotV).
+- Updated R2API dependency to 4.0.11.
+- Updated BepInEx dependency to 5.4.1902.
+
 **1.3.4**
 
 - Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.
@@ -69,7 +75,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.3.1**
 
 - Added extra safety checks to Artifact of Suppression.
-
-**1.3.0**
-
-- Implements changes from TILER2 3.0.0.
