@@ -56,6 +56,7 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Compatibility update for Risk of Rain 2 Expansion 1 (SotV).
 - Updated R2API dependency to 4.0.11.
 - Updated BepInEx dependency to 5.4.1902.
+- Updated TILER2 dependency to 5.0.2.
 
 **1.3.4**
 
