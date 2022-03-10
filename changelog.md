@@ -2,7 +2,7 @@
 
 **1.3.6**
 
-- Mostly-Tame Mimic: added hidden items to blacklist.
+- Mostly-Tame Mimic: added hidden/tierless items to blacklist.
 	- Now has its own blacklist in addition to the more general FakeInventory blacklist, to be exposed to public API in a future update.
 - Updated TILER2 dependency to 5.0.3.
 

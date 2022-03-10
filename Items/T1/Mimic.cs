@@ -46,7 +46,6 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupBehavior();
 
             FakeInventory.blacklist.Add(itemDef);
-            mimicBlacklist.UnionWith(ItemCatalog.allItemDefs.Where(x => x.hidden));
         }
 
         public override void Install() {
@@ -152,11 +151,14 @@ namespace ThinkInvisible.TinkersSatchel {
         private KeyValuePair<int, int>[] GetSelection() {
             return inventory.itemStacks.Select((val,ind) =>
                 new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind)))
-                .Where(
-                    x=>x.Value>0
-                    && !FakeInventory.blacklist.Contains(ItemCatalog.GetItemDef((ItemIndex)x.Key))
-                    && !Mimic.instance.mimicBlacklist.Contains(ItemCatalog.GetItemDef((ItemIndex)x.Key))
-                ).ToArray();
+                .Where((x)=> {
+                        var idef = ItemCatalog.GetItemDef((ItemIndex)x.Key);
+                        return x.Value > 0
+                            && !idef.hidden
+                            && idef.tier != ItemTier.NoTier
+                            && !FakeInventory.blacklist.Contains(idef)
+                            && !Mimic.instance.mimicBlacklist.Contains(idef);
+                }).ToArray();
         }
 
         internal void AddMimics(int count) {
