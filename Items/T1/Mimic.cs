@@ -34,6 +34,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public readonly ItemIndex mimicRecalcDummy;
 
+        //todo: expose this
+        internal HashSet<ItemDef> mimicBlacklist = new HashSet<ItemDef>();
+
         public Mimic() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Mimic.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/mimicIcon.png");
@@ -43,6 +46,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupBehavior();
 
             FakeInventory.blacklist.Add(itemDef);
+            mimicBlacklist.UnionWith(ItemCatalog.allItemDefs.Where(x => x.hidden));
         }
 
         public override void Install() {
@@ -151,6 +155,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 .Where(
                     x=>x.Value>0
                     && !FakeInventory.blacklist.Contains(ItemCatalog.GetItemDef((ItemIndex)x.Key))
+                    && !Mimic.instance.mimicBlacklist.Contains(ItemCatalog.GetItemDef((ItemIndex)x.Key))
                 ).ToArray();
         }
 
