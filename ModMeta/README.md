@@ -51,6 +51,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.3.6**
+
+- Mostly-Tame Mimic: added hidden items to blacklist.
+	- Now has its own blacklist in addition to the more general FakeInventory blacklist, to be exposed to public API in a future update.
+- Updated TILER2 dependency to 5.0.3.
+
 **1.3.5**
 
 - Compatibility update for Risk of Rain 2 Expansion 1 (SotV).
@@ -72,7 +78,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Compatibility changes for Risk of Rain 2 Anniversary Update.
 - Artifact of Danger will now only allow OHP while cursed if a default-disabled config option `PreventCurseWhileOff` is enabled.
-
-**1.3.1**
-
-- Added extra safety checks to Artifact of Suppression.
