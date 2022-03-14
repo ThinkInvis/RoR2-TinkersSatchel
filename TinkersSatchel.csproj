@@ -33,10 +33,6 @@
     <Reference Include="LegacyResourcesAPI">
       <HintPath>lib\LegacyResourcesAPI.dll</HintPath>
     </Reference>
-    <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>lib\MMHOOK_Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="MMHOOK_RoR2">
       <HintPath>lib\MMHOOK_RoR2.dll</HintPath>
     </Reference>
@@ -62,9 +58,15 @@
       <HintPath>..\TILER2\bin\Release\netstandard2.0\TILER2.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>lib\Unity.Addressables.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>lib\Unity.Postprocessing.Runtime.dll</HintPath>
       <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>lib\Unity.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>lib\Unity.TextMeshPro.dll</HintPath>
@@ -82,10 +84,6 @@
       <HintPath>lib\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>lib\UnityEngine.Networking.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
       <HintPath>lib\UnityEngine.ParticleSystemModule.dll</HintPath>
       <Private>false</Private>
@@ -97,7 +95,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;&#xD;&#xA;del &quot;$(ProjectDir)NetworkWeaver\Patched\$(TargetFileName)&quot;" />
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y" />
   </Target>
 
 </Project>

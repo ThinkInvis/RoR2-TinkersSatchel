@@ -5,6 +5,7 @@ using TILER2;
 using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
 using R2API;
+using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class GoldenGear : Item<GoldenGear> {
@@ -57,7 +58,8 @@ namespace ThinkInvisible.TinkersSatchel {
             goldenGearBuff.canStack = true;
             goldenGearBuff.isDebuff = false;
             goldenGearBuff.name = "TKSATGoldenGear";
-            goldenGearBuff.iconSprite = LegacyResourcesAPI.Load<Sprite>("textures/bufficons/texBuffGenericShield");
+            goldenGearBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texBuffGenericShield.tif")
+                .WaitForCompletion();
             ContentAddition.AddBuffDef(goldenGearBuff);
         }
 
