@@ -47,7 +47,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void Start() {
             T2Module.SetupAll_PluginStart(masterItemList);
-            CatalogBoilerplate.ConsoleDump(Logger, masterItemList);
         }
     }
 }
