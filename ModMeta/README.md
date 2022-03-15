@@ -20,15 +20,34 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 - Mostly-Tame Mimic: "Mimics your other items at random."
 	- Each individual stack has a small chance over time to switch which item it's mimicking.
+	- Has weighted tiers similar to a T1 chest. Tier weights can be configured.
+
+- Sturdy Mug: "Chance to shoot extra, unpredictable projectiles."
+	- Works on most dumbfire projectiles, but not missiles or ground-target AoEs.
+	- Stacks linearly past 100% (becomes a chance to fire a 2nd extra projectile, then a 3rd, etc.).
+	- Unlock by missing 1000 TOTAL projectile attacks.
 
 #### Tier-2 Item
 
 - Armor Crystal: "Gain armor by hoarding money."
 
+#### Tier-3 Item
+
+- H3AD-53T: "Your Utility skill builds a stunning static charge."
+	- Grants or refreshes charges of a buff. Running into or phasing through an enemy spends a charge to deal damage and stun.
+	- Unlock by killing a boss with a maximum damage H3AD-5T v2 explosion.
+
 #### Lunar Equipment
 
 - Silver Compass: "Shows you a path... but it will be fraught with danger."
 	- Pings the Teleporter and adds TWO stacks of Challenge of the Mountain, only ONE of which will count towards extra rewards.
+
+#### Tier-2 Void Item
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(requires Survivors of the Void DLC)
+
+- Armor Prism: "Gain massive armor by focusing your item build. Corrupts all Armor Crystals."
+	- More item types = less armor.
 
 #### Artifact
 
@@ -42,6 +61,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 ## Issues/TODO
 
 - Items have no DisplayRules.
+- H3AD-53T buff/proc needs VFX.
 - Armor Crystal needs a better model.
 - Jigglebones on Mimic lid (and a less half-assed model) may happen eventually.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
@@ -50,6 +70,14 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.4.0**
+
+- ADDED ITEMS: Armor Prism, H3AD-53T, Sturdy Mug!
+- Mostly-Tame Mimic now has weighted item tier selection (configurable).
+- Fixed missing buff icon on Armor Crystal.
+- Removed startup index dump.
+- Updated TILER2 dependency to 6.0.1.
 
 **1.3.6**
 
@@ -73,8 +101,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Maintenance for RoR2 updates: PC Patch v1.1.1.4.
 	- No changes were required beyond updating libraries/references.
-
-**1.3.2**
-
-- Compatibility changes for Risk of Rain 2 Anniversary Update.
-- Artifact of Danger will now only allow OHP while cursed if a default-disabled config option `PreventCurseWhileOff` is enabled.

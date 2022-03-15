@@ -1,5 +1,13 @@
 # Tinker's Satchel Changelog
 
+**1.4.0**
+
+- ADDED ITEMS: Armor Prism, H3AD-53T, Sturdy Mug!
+- Mostly-Tame Mimic now has weighted item tier selection (configurable).
+- Fixed missing buff icon on Armor Crystal.
+- Removed startup index dump.
+- Updated TILER2 dependency to 6.0.1.
+
 **1.3.6**
 
 - Mostly-Tame Mimic: added hidden/tierless items to blacklist.
