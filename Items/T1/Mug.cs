@@ -25,8 +25,9 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetPickupString(string langid = null) => "Chance to shoot extra, unpredictable projectiles.";
         protected override string GetDescString(string langid = null) => $"All projectile attacks gain a <style=cIsDamage>{Pct(procChance)} <style=cStack>(+{Pct(procChance)} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{spreadConeHalfAngleDegr}° of inaccuracy</style>.";
         protected override string GetLoreString(string langid = null) => "An inscription around the base reads: \"Rock and Stone!\"";
-        
-        //todo achi: miss 1k projectiles
+
+        internal UnlockableDef unlockable;
+        internal RoR2.Stats.StatDef whiffsStatDef;
 
         public Mug() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Mug.prefab");
@@ -35,14 +36,22 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatMugAchievement>();
+            LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_NAME", "...So I Fired Again");
+            LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_DESCRIPTION", "Miss 1,000 TOTAL projectile attacks.");
+
+            whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
         }
 
         public override void Install() {
             base.Install();
 
+            //main tracking
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
 
+            //blacklist
             On.EntityStates.Huntress.ArrowRain.DoFireArrowRain += ArrowRain_DoFireArrowRain;
             On.EntityStates.AimThrowableBase.FireProjectile += AimThrowableBase_FireProjectile;
             On.EntityStates.Treebot.Weapon.FireMortar2.Fire += FireMortar2_Fire;
@@ -58,6 +67,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Mage.Weapon.BaseThrowBombState.Fire += BaseThrowBombState_Fire;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
         }
+
 
         public override void Uninstall() {
             base.Uninstall();
@@ -206,4 +216,93 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
     }
+
+    public class TkSatMugAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_MUG_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_MUG_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_MUG_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_MUG_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => "TKSAT_MUG_SKILL_NAME";
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/mugIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override float ProgressForAchievement() {
+            return userProfile.statSheet.GetStatValueULong(Mug.instance.whiffsStatDef) / 1000f;
+        }
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.Projectile.ProjectileController.OnCollisionEnter += ProjectileController_OnCollisionEnter;
+            On.RoR2.Projectile.ProjectileController.OnTriggerEnter += ProjectileController_OnTriggerEnter;
+            On.RoR2.Projectile.ProjectileController.OnDestroy += ProjectileController_OnDestroy;
+            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            On.RoR2.BulletAttack.ProcessHit += BulletAttack_ProcessHit;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.Projectile.ProjectileController.OnCollisionEnter -= ProjectileController_OnCollisionEnter;
+            On.RoR2.Projectile.ProjectileController.OnTriggerEnter -= ProjectileController_OnTriggerEnter;
+            On.RoR2.Projectile.ProjectileController.OnDestroy -= ProjectileController_OnDestroy;
+            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.BulletAttack.ProcessHit -= BulletAttack_ProcessHit;
+        }
+
+        bool bulletAttackDidHit = false;
+        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
+            bulletAttackDidHit = false;
+            orig(self);
+            if(!bulletAttackDidHit && self.owner == this.localUser.cachedBodyObject) {
+                userProfile.statSheet.PushStatValue(Mug.instance.whiffsStatDef, 1UL);
+                if(ProgressForAchievement() >= 1.0f)
+                    Grant();
+            }
+        }
+
+        private bool BulletAttack_ProcessHit(On.RoR2.BulletAttack.orig_ProcessHit orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo) {
+            var retv = orig(self, ref hitInfo);
+            if(hitInfo.hitHurtBox && hitInfo.hitHurtBox.name != "TempHurtbox") {
+                bulletAttackDidHit = true;
+            }
+            return retv;
+        }
+
+        private void ProjectileController_OnCollisionEnter(On.RoR2.Projectile.ProjectileController.orig_OnCollisionEnter orig, RoR2.Projectile.ProjectileController self, Collision collision) {
+            orig(self, collision);
+            if(!collision.gameObject) return;
+            var hb = collision.gameObject.GetComponent<HurtBox>();
+            if(hb && hb.healthComponent) {
+                self.gameObject.AddComponent<ProjectileHasValidHitFlag>();
+            }
+        }
+
+        private void ProjectileController_OnTriggerEnter(On.RoR2.Projectile.ProjectileController.orig_OnTriggerEnter orig, RoR2.Projectile.ProjectileController self, Collider collider) {
+            orig(self, collider);
+            if(!collider.gameObject) return;
+            var hb = collider.gameObject.GetComponent<HurtBox>();
+            if(hb && hb.healthComponent) {
+                self.gameObject.AddComponent<ProjectileHasValidHitFlag>();
+            }
+        }
+
+        private void ProjectileController_OnDestroy(On.RoR2.Projectile.ProjectileController.orig_OnDestroy orig, RoR2.Projectile.ProjectileController self) {
+            orig(self);
+            if(!self.GetComponent<ProjectileHasValidHitFlag>()
+                && self.owner == this.localUser.cachedBodyObject) {
+                userProfile.statSheet.PushStatValue(Mug.instance.whiffsStatDef, 1UL);
+                if(ProgressForAchievement() >= 1.0f)
+                    Grant();
+            }
+
+        }
+    }
+
+    public class ProjectileHasValidHitFlag : MonoBehaviour {}
 }
