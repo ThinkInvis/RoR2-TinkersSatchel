@@ -15,22 +15,27 @@ namespace ThinkInvisible.TinkersSatchel {
         private const float HITBOX_RADIUS = 3f;
 		private const float HIT_INTERVAL = 0.5f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Fraction of base damage dealt by H3AD-53T procs with a single item copy.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float baseDamagePct { get; private set; } = 4f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Fraction of base damage dealt by H3AD-53T procs per additional item copy.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float stackDamagePct { get; private set; } = 1.5f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Stun time (in seconds) dealt by H3AD-53T procs.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float stunDuration { get; private set; } = 5f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Procs added on Utility skill cast with a single item copy.",
 			AutoConfigFlags.None, 1, int.MaxValue)]
 		public int procCount { get; private set; } = 5;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Procs added on Utility skill cast per additional item copy.",
 			AutoConfigFlags.None, 1, int.MaxValue)]
 		public int stackProcCount { get; private set; } = 3;
