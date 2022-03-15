@@ -23,7 +23,25 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfig("No more than this many Mimics (per player) will change at the same time. Recommended to keep at a low number (below 100) for performance reasons.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int lagLimit {get; private set;} = 50;
-        
+
+        [AutoConfig("Relative weight for a Mimic to prefer Tier 1 items.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableT1 { get; private set; } = 0.8f;
+
+        [AutoConfig("Relative weight for a Mimic to prefer Tier 2 items.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableT2 { get; private set; } = 0.2f;
+
+        [AutoConfig("Relative weight for a Mimic to prefer Tier 3 items.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableT3 { get; private set; } = 0.1f;
+
+        [AutoConfig("Relative weight for a Mimic to prefer Boss Tier items.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableTB { get; private set; } = 0.05f;
+
+        [AutoConfig("Relative weight for a Mimic to prefer Lunar Tier items.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableTL { get; private set; } = 0.05f;
+
+        [AutoConfig("Relative weight for a Mimic to prefer all other items.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableTX { get; private set; } = 0f;
+
         //[AutoItemConfig("If true, will not be added to drop tables; will instead have a chance to replace normal items on pickup. NYI!")]
         //public bool isCamo {get; private set;} = false;
 
@@ -127,7 +145,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void Shuffle() {
             var newTotalMimics = Mimic.instance.GetCount(inventory);
             var iarrSel = GetSelection();
-            if(iarrSel.Length <= 1) return;
+            if(iarrSel.Count <= 1) return;
             //int countToShuffle = Mathf.Min(count, Mathf.FloorToInt(Mimic.instance.mimicRng.nextNormalizedFloat * count * Mimic.instance.decayChance * 2f));)
             int totalChanged = 0;
             for(int i = 0; i < _totalMimics; i++) {
@@ -135,7 +153,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 totalChanged++;
                 
                 var toRemove = Mimic.instance.rng.NextElementUniform(_mimickedCounts.Keys.ToArray());
-                var toAdd = (ItemIndex)Mimic.instance.rng.NextElementUniform(iarrSel.Where(x => x.Key != (int)toRemove).ToArray()).Key;
+                var addOpts = iarrSel.Evaluate(Mimic.instance.rng.nextNormalizedFloat)
+                    .Where(x => x != toRemove)
+                    .ToArray();
+                if(addOpts.Length == 0) continue;
+                var toAdd = Mimic.instance.rng.NextElementUniform(addOpts);
 
                 if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
                 else _mimickedCounts[toAdd] ++;
@@ -148,24 +170,45 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        private KeyValuePair<int, int>[] GetSelection() {
-            return inventory.itemStacks.Select((val,ind) =>
-                new KeyValuePair<int,int>(ind,fakeInv.GetRealItemCount((ItemIndex)ind)))
-                .Where((x)=> {
-                        var idef = ItemCatalog.GetItemDef((ItemIndex)x.Key);
-                        return x.Value > 0
-                            && !idef.hidden
-                            && idef.tier != ItemTier.NoTier
-                            && !FakeInventory.blacklist.Contains(idef)
-                            && !Mimic.instance.mimicBlacklist.Contains(idef);
-                }).ToArray();
+        private WeightedSelection<ItemIndex[]> GetSelection() {
+            var stacks = inventory.itemStacks.Select((val, ind) =>
+                new KeyValuePair<ItemDef, int>(ItemCatalog.GetItemDef((ItemIndex)ind), fakeInv.GetRealItemCount((ItemIndex)ind)))
+                .Where((x) => {
+                    return x.Value > 0
+                        && !x.Key.hidden
+                        && x.Key.tier != ItemTier.NoTier
+                        && !FakeInventory.blacklist.Contains(x.Key)
+                        && !Mimic.instance.mimicBlacklist.Contains(x.Key);
+                }).Select(x => x.Key).GroupBy(x => x.tier)
+                .ToDictionary(x => x.Key, x => x.Select(y => y.itemIndex).ToArray());
+            var retv = new WeightedSelection<ItemIndex[]>();
+
+            foreach(var kvp in stacks) {
+                if(kvp.Value.Length == 0) continue;
+
+                var weight = Mimic.instance.chanceTableTX;
+                if(kvp.Key == ItemTier.Tier1 || kvp.Key == ItemTier.VoidTier1)
+                    weight = Mimic.instance.chanceTableT1;
+                if(kvp.Key == ItemTier.Tier2 || kvp.Key == ItemTier.VoidTier2)
+                    weight = Mimic.instance.chanceTableT2;
+                if(kvp.Key == ItemTier.Tier3 || kvp.Key == ItemTier.VoidTier3)
+                    weight = Mimic.instance.chanceTableT3;
+                if(kvp.Key == ItemTier.Boss || kvp.Key == ItemTier.VoidBoss)
+                    weight = Mimic.instance.chanceTableTB;
+                if(kvp.Key == ItemTier.Lunar)
+                    weight = Mimic.instance.chanceTableTL;
+
+                retv.AddChoice(kvp.Value, weight);
+            }
+
+            return retv;
         }
 
         internal void AddMimics(int count) {
             var iarrSel = GetSelection();
-            if(iarrSel.Length < 1) return;
+            if(iarrSel.Count < 1) return;
             for(int i = 0; i < count; i++) {
-                var toAdd = (ItemIndex)Mimic.instance.rng.NextElementUniform(iarrSel).Key;
+                var toAdd = Mimic.instance.rng.NextElementUniform(iarrSel.Evaluate(Mimic.instance.rng.nextNormalizedFloat));
                 if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
                 else _mimickedCounts[toAdd] ++;
                 _totalMimics++;
