@@ -121,7 +121,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(validBodyNames.Contains(self.body?.name))
                     cpt = self.body.gameObject.AddComponent<WranglerReceiverComponent>();
             }
-            else return retv;
+            if(!cpt) return retv;
 
             if(!self.leader?.characterBody
                 || Vector3.Distance(
