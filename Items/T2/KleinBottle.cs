@@ -33,9 +33,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 1000f;
+        const float PULL_FORCE = 2000f;
         const float PULL_RADIUS = 15f;
-        const float PULL_DURATION = 0.3f;
+        const float PULL_DURATION = 0.5f;
 
         private GameObject blackHolePrefab;
 
@@ -66,12 +66,13 @@ namespace ThinkInvisible.TinkersSatchel {
             
             var sph = tempPfb.transform.Find("Sphere");
             sph.gameObject.SetActive(false);
-            
-            var stl = tempPfb.transform.Find("SwingTrail, Light");
-            var stlPart = stl.GetComponent<ParticleSystem>();
-            var stlPartSoL = stlPart.sizeOverLifetime;
-            var mmc = new ParticleSystem.MinMaxCurve(1f, 0f);
-            stlPartSoL.size = mmc;
+
+            var sps = tempPfb.transform.Find("Sparks");
+            var spsPart = sps.GetComponent<ParticleSystem>();
+            var spsMain = spsPart.main;
+            spsMain.startSpeed = new ParticleSystem.MinMaxCurve(10f, 30f);
+            var spsShape = spsPart.shape;
+            spsShape.radius = 4f;
 
             blackHolePrefab = tempPfb.InstantiateClone("KleinBottleProcPrefab", true);
             Object.Destroy(tempPfb);
@@ -103,7 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(proc) {
                     RoR2.Projectile.ProjectileManager.instance.FireProjectile(
                         blackHolePrefab,
-                        self.body.corePosition, Quaternion.identity,
+                        self.body.footPosition, Quaternion.identity,
                         self.body.gameObject,
                         0f, 0f, false);
                 }
