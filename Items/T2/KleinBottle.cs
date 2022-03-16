@@ -5,7 +5,6 @@ using TILER2;
 using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
 using R2API;
-using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {
