@@ -112,7 +112,11 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
             if(cpt && cpt.isWrangled && self.leader?.characterBody) {
-                self.bodyInputBank.skill1.PushState(self.leader.characterBody.inputBank.skill1.down);
+                var fireEverything = self.leader.characterBody.inputBank.skill1.down;
+                self.bodyInputBank.skill1.PushState(fireEverything);
+                self.bodyInputBank.skill2.PushState(fireEverything);
+                self.bodyInputBank.skill3.PushState(fireEverything);
+                self.bodyInputBank.skill4.PushState(fireEverything);
             }
         }
 
