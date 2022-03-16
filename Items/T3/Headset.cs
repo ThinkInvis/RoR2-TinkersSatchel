@@ -124,7 +124,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self) {
 			orig(self);
-			if(!NetworkServer.active) {
+			if(!NetworkServer.active || !self) {
 				return;
 			}
 			var cpt = self.GetComponent<HeadsetComponent>();
@@ -142,6 +142,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(self.healthComponent) recentlyHit.Add(self.healthComponent.gameObject);
 
 				foreach(var hit in res) {
+					if(!hit) continue;
 					var hurtbox = hit.GetComponent<HurtBox>();
 					if(!hurtbox || !hurtbox.healthComponent
 						|| recentlyHit.Contains(hurtbox.healthComponent.gameObject)
