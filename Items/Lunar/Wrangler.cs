@@ -49,7 +49,10 @@ namespace ThinkInvisible.TinkersSatchel {
             "MegaDroneBody(Clone)",
             "MissileDroneBody(Clone)",
             "Turret1Body(Clone)",
-            "EngiTurretBody(Clone)"
+            "EngiTurretBody(Clone)",
+            "SquidTurretBody(Clone)",
+            "RoboBallGreenBuddyBody(Clone)",
+            "RoboBallRedBuddyBody(Clone)"
         };
 
 
