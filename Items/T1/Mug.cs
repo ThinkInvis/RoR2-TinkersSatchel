@@ -5,30 +5,46 @@ using TILER2;
 using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
 using R2API;
-using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mug : Item<Mug> {
+
+        ////// Item Data //////
+
         public override string displayName => "Sturdy Mug";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum degrees of spread to add to extra projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, 360f)]
-        public float spreadConeHalfAngleDegr {get;private set;} = 17.5f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Extra projectile chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float procChance {get;private set;} = 0.1f;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to shoot extra, unpredictable projectiles.";
         protected override string GetDescString(string langid = null) => $"All projectile attacks gain a <style=cIsDamage>{Pct(procChance)} <style=cStack>(+{Pct(procChance)} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{spreadConeHalfAngleDegr}° of inaccuracy</style>.";
         protected override string GetLoreString(string langid = null) => "An inscription around the base reads: \"Rock and Stone!\"";
 
+
+
+        ////// Config //////
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Maximum degrees of spread to add to extra projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, 360f)]
+        public float spreadConeHalfAngleDegr { get; private set; } = 17.5f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Extra projectile chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float procChance { get; private set; } = 0.1f;
+
+
+
+        /////// Other Fields/Properties //////
+
+        public bool ignoreMugs = false;
+
         internal UnlockableDef unlockable;
         internal RoR2.Stats.StatDef whiffsStatDef;
 
+
+
+        ////// TILER2 Module Setup //////
+        #region TILER2 Module Setup
         public Mug() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Mug.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/mugIcon.png");
@@ -68,7 +84,6 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
         }
 
-
         public override void Uninstall() {
             base.Uninstall();
 
@@ -90,10 +105,12 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Mage.Weapon.BaseThrowBombState.Fire -= BaseThrowBombState_Fire;
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
         }
+        #endregion
 
-        public bool ignoreMugs = false;
 
 
+        ////// Hooks //////
+        #region Hooks
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
             ignoreMugs = true;
             orig(self, damageInfo, victim);
@@ -215,6 +232,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 orig(self, fireProjectileInfo);
             }
         }
+        #endregion
     }
 
     public class TkSatMugAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
@@ -232,6 +250,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        bool bulletAttackDidHit = false;
 
         public override float ProgressForAchievement() {
             return userProfile.statSheet.GetStatValueULong(Mug.instance.whiffsStatDef) / 1000f;
@@ -255,7 +275,6 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.BulletAttack.ProcessHit -= BulletAttack_ProcessHit;
         }
 
-        bool bulletAttackDidHit = false;
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
             bulletAttackDidHit = false;
             orig(self);

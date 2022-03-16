@@ -5,13 +5,24 @@ using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Butterknife : Artifact<Butterknife> {
+
+        ////// Artifact Data //////
+
         public override string displayName => "Artifact of Haste";
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "All combatants attack 10x faster and deal 1/20x damage.";
 
+
+
+        ////// Other Fields/Properties //////
+
         private readonly System.Reflection.MethodInfo cbDamageSetter;
         private readonly System.Reflection.MethodInfo cbAttackSetter;
+
+
+
+        ////// TILER2 Module Setup //////
 
         public Butterknife() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/butterknife_on.png");
@@ -29,6 +40,10 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             On.RoR2.CharacterBody.RecalculateStats -= On_CBRecalcStats;
         }
+
+
+
+        ////// Hooks //////
 
         private void On_CBRecalcStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
             orig(self);

@@ -13,26 +13,41 @@ using static R2API.RecalculateStatsAPI;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackTactics : Artifact<PackTactics> {
+
+        ////// Artifact Data //////
+
         public override string displayName => "Artifact of Tactics";
-
-        [AutoConfig("Combatants within this distance (in meters) of teammates will buff them if Artifact of Tactics is enabled.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float baseRadius {get; private set;} = 25f;
-
-        [AutoConfig("Extra move speed multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float speedMod {get; private set;} = 0.05f;
-
-        [AutoConfig("Extra damage multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float damageMod {get; private set;} = 0.1f;
-
-        [AutoConfig("Extra armor added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float armorMod {get; private set;} = 15f;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.";
 
+
+
+        ////// Config //////
+
+        [AutoConfig("Combatants within this distance (in meters) of teammates will buff them if Artifact of Tactics is enabled.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float baseRadius { get; private set; } = 25f;
+
+        [AutoConfig("Extra move speed multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float speedMod { get; private set; } = 0.05f;
+
+        [AutoConfig("Extra damage multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float damageMod { get; private set; } = 0.1f;
+
+        [AutoConfig("Extra armor added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float armorMod { get; private set; } = 15f;
+
+
+
+        ////// Other Fields/Properties //////
+
         public BuffDef tacticsBuff {get;private set;}
         public GameObject tacticsWardPrefab {get;private set;}
 
+
+
+        ////// TILER2 Module Setup //////
+        #region TILER2 Module Setup
         public PackTactics() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_on.png");
             iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_off.png");
@@ -97,7 +112,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 UnityEngine.Object.Destroy(w.gameObject);
             GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
         }
-        
+        #endregion
+
+
+
+        ////// Hooks //////
+
         private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             var totalBuffs = Mathf.Max(sender.GetBuffCount(tacticsBuff) - 1, 0);
             args.moveSpeedMultAdd += totalBuffs * speedMod;
@@ -110,6 +130,10 @@ namespace ThinkInvisible.TinkersSatchel {
             if(NetworkServer.active && IsActiveAndEnabled())
                 AddWard(body);
         }
+
+
+
+        ////// Non-Public Methods //////
 
         private void AddWard(CharacterBody body) {
             var cpt = body.GetComponentInChildren<TacticsWard>()?.gameObject;

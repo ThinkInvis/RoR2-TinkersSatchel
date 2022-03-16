@@ -4,13 +4,24 @@ using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class AntiAir : Artifact<AntiAir> {
-        public override string displayName => "Artifact of Suppression";
 
-        [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]
-        public float hurtMod {get; private set;} = 5f;
+        ////// Artifact Data //////
+
+        public override string displayName => "Artifact of Suppression";
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "Players take heavily increased damage while airborne.";
+
+
+
+        ////// Config //////
+
+        [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]
+        public float hurtMod { get; private set; } = 5f;
+
+
+
+        ////// TILER2 Module Setup //////
 
         public AntiAir() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/antiair_on.png");
@@ -26,6 +37,10 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= On_HCTakeDamage;
         }
+
+
+
+        ////// Hooks //////
 
         private void On_HCTakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             if(IsActiveAndEnabled()

@@ -3,28 +3,38 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
-using R2API.Utils;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mimic : Item<Mimic> {
+
+        ////// Item Data //////
+
         public override string displayName => "Mostly-Tame Mimic";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
 
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetPickupString(string langid = null) => "Mimics your other items at random.";
+        protected override string GetDescString(string langid = null) => "Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style>. <style=cIsUtility>Every " + decayRate.ToString("N0") + " seconds</style>, the mimic has a <style=cIsUtility>" + Pct(decayChance, 1) + " chance to switch to a new item</style>.";
+        protected override string GetLoreString(string langid = null) => "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....";
+
+
+
+        ////// Config //////
+        #region Config
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time between batches of re-mimics.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float decayRate {get; private set;} = 3f;
+        public float decayRate { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance for each individual Mimic to re-mimic per proc.", AutoConfigFlags.None, 0f, 1f)]
-        public float decayChance {get; private set;} = 0.15f;
+        public float decayChance { get; private set; } = 0.15f;
 
         [AutoConfig("No more than this many Mimics (per player) will change at the same time. Recommended to keep at a low number (below 100) for performance reasons.", AutoConfigFlags.None, 0, int.MaxValue)]
-        public int lagLimit {get; private set;} = 50;
+        public int lagLimit { get; private set; } = 50;
 
         [AutoConfig("Relative weight for a Mimic to prefer Tier 1 items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableT1 { get; private set; } = 0.8f;
@@ -46,16 +56,20 @@ namespace ThinkInvisible.TinkersSatchel {
 
         //[AutoItemConfig("If true, will not be added to drop tables; will instead have a chance to replace normal items on pickup. NYI!")]
         //public bool isCamo {get; private set;} = false;
+        #endregion
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Mimics your other items at random.";
-        protected override string GetDescString(string langid = null) => "Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style>. <style=cIsUtility>Every " + decayRate.ToString("N0") + " seconds</style>, the mimic has a <style=cIsUtility>" + Pct(decayChance, 1) + " chance to switch to a new item</style>.";
-        protected override string GetLoreString(string langid = null) => "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....";
+
+
+        ////// Other Fields/Properties //////
 
         public readonly ItemIndex mimicRecalcDummy;
 
         //todo: expose this
         internal HashSet<ItemDef> mimicBlacklist = new HashSet<ItemDef>();
+
+
+
+        ////// TILER2 Module Setup //////
 
         public Mimic() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Mimic.prefab");
@@ -81,7 +95,11 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Inventory.GiveItem_ItemIndex_int -= On_InvGiveItemByIndex;
             On.RoR2.Inventory.RemoveItem_ItemIndex_int -= On_InvRemoveItemByIndex;
         }
-        
+
+
+
+        ////// Hooks //////
+
         private void On_InvGiveItemByIndex(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
             if(count <= 0) return;

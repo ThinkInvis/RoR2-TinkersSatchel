@@ -7,15 +7,26 @@ using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Danger : Artifact<Danger> {
+
+        ////// Artifact Data //////
+        
         public override string displayName => "Artifact of Danger";
+
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetDescString(string langid = null) => "Players can be killed in one hit.";
+
+
+
+        ////// Config //////
 
         [AutoConfig("If true, disabling this artifact will prevent curses (max HP reduction) from removing OHP.",
             AutoConfigFlags.PreventNetMismatch)]
         public bool preventCurseWhileOff { get; private set; } = false;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "Players can be killed in one hit.";
 
+
+        ////// TILER2 Module Setup //////
+        
         public Danger() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/danger_on.png");
             iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/danger_off.png");
@@ -30,7 +41,11 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             IL.RoR2.CharacterBody.RecalculateStats -= IL_CBRecalcStats;
         }
+
         
+
+        ////// Hooks //////
+
         private void IL_CBRecalcStats(ILContext il) {
             ILCursor c = new ILCursor(il);
             bool ILFound = c.TryGotoNext(

@@ -3,17 +3,28 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
-using static R2API.RecalculateStatsAPI;
 using R2API;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Headset : Item<Headset> {
-        private const float HITBOX_RADIUS = 3f;
-		private const float HIT_INTERVAL = 0.5f;
+
+		////// Item Data //////
+
+		public override string displayName => "H3AD-53T";
+		public override ItemTier itemTier => ItemTier.Tier3;
+		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+
+		protected override string GetNameString(string langid = null) => displayName;
+		protected override string GetPickupString(string langid = null) => "Your Utility skill builds a stunning static charge.";
+		protected override string GetDescString(string langid = null) => $"After activating your <style=cIsUtility>Utility skill</style>, the next {procCount} enemies <style=cStack>(+{stackProcCount} per stack)</style> your path crosses will <style=cIsDamage>take {Pct(baseDamagePct)} damage</style> <style=cStack>(+{Pct(stackDamagePct)} per stack)</style> and be <style=cIsUtility>stunned for {stunDuration} seconds</style>.";
+		protected override string GetLoreString(string langid = null) => "You finally found a fall too long for your long fall boots. While you could probably jury-rig the parts back together for their original purpose, this is the perfect opportunity for... innovation.\r\n\r\nUse your head.";
+
+
+
+		////// Config //////
 
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Fraction of base damage dealt by H3AD-53T procs with a single item copy.",
@@ -40,17 +51,23 @@ namespace ThinkInvisible.TinkersSatchel {
 			AutoConfigFlags.None, 1, int.MaxValue)]
 		public int stackProcCount { get; private set; } = 3;
 
-		public override string displayName => "H3AD-53T";
-		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) => "Your Utility skill builds a stunning static charge.";
-		protected override string GetDescString(string langid = null) => $"After activating your <style=cIsUtility>Utility skill</style>, the next {procCount} enemies <style=cStack>(+{stackProcCount} per stack)</style> your path crosses will <style=cIsDamage>take {Pct(baseDamagePct)} damage</style> <style=cStack>(+{Pct(stackDamagePct)} per stack)</style> and be <style=cIsUtility>stunned for {stunDuration} seconds</style>.";
-		protected override string GetLoreString(string langid = null) => "You finally found a fall too long for your long fall boots. While you could probably jury-rig the parts back together for their original purpose, this is the perfect opportunity for... innovation.\r\n\r\nUse your head.";
+
+		////// Other Fields/Properties //////
+		
+		public BuffDef headsetBuff { get; private set; }
 
 		internal UnlockableDef unlockable;
-		public BuffDef headsetBuff { get; private set; }
+
+		private const float HITBOX_RADIUS = 3f;
+		private const float HIT_INTERVAL = 0.5f;
+
+		readonly HashSet<GameObject> recentlyHit = new HashSet<GameObject>();
+
+
+
+
+		////// TILER2 Module Setup //////
 
 		public Headset() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Headset.prefab");
@@ -88,7 +105,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
 		}
 
-		private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self) {
+
+
+        ////// Hooks //////
+        #region Hooks
+        private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self) {
 			if(self.characterBody && self.characterBody.skillLocator
 				&& self.characterBody.skillLocator.FindSkillSlot(self) == SkillSlot.Utility) {
 				var count = GetCount(self.characterBody);
@@ -101,7 +122,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self);
 		}
 
-		HashSet<GameObject> recentlyHit = new HashSet<GameObject>();
 		private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self) {
 			orig(self);
 			if(!NetworkServer.active) {
@@ -140,17 +160,18 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(cpt.procCooldown <= 0) {
 					cpt.procCooldown = HIT_INTERVAL;
 
-					DamageInfo damageInfo = new DamageInfo();
-					damageInfo.attacker = self.gameObject;
-					damageInfo.inflictor = self.gameObject;
-					damageInfo.crit = false;
-					damageInfo.damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1));
-					damageInfo.damageColorIndex = DamageColorIndex.Item;
-					damageInfo.damageType = DamageType.Generic;
-					damageInfo.force = Vector3.zero;
-					damageInfo.procCoefficient = 0f;
+                    var damageInfo = new DamageInfo {
+                        attacker = self.gameObject,
+                        inflictor = self.gameObject,
+                        crit = false,
+                        damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
+                        damageColorIndex = DamageColorIndex.Item,
+                        damageType = DamageType.Generic,
+                        force = Vector3.zero,
+                        procCoefficient = 0f
+                    };
 
-					foreach(var hit in recentlyHit) {
+                    foreach(var hit in recentlyHit) {
 						var hurtbox = hit.GetComponent<HurtBox>();
 						if(!hurtbox || !hurtbox.healthComponent
 							|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
@@ -169,6 +190,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(cpt.hitsRemaining != currBuffStacks)
 				self.SetBuffCount(headsetBuff.buffIndex, cpt.hitsRemaining);
 		}
+        #endregion
     }
 
     public class HeadsetComponent : MonoBehaviour {

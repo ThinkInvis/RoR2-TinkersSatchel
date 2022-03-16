@@ -9,11 +9,23 @@ using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Wrangler : Item<Wrangler> {
+
+        ////// Item Data //////
+        
         public override string displayName => "RC Controller";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetPickupString(string langid = null) => "Nearby turrets and drones attack with you... <color=#FF7F7F>BUT no longer attack automatically.</color>";
+        protected override string GetDescString(string langid = null) => $"All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {wrange} meters</style> will <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>. Order drones to fire by holding your <style=cIsUtility>Primary skill</style>. Affected <style=cIsDamage>turrets and drones</style> gain <style=cIsDamage>{Pct(baseExtraSpeed + 1)} attack speed <style=cStack>(+{Pct(stackExtraSpeed)} per stack)</style></style>.";
+        protected override string GetLoreString(string langid = null) => "";
+
+
+
+        ////// Config //////
+        
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Extra fire rate applied at 1 stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float baseExtraSpeed { get; private set; } = 1f;
@@ -26,10 +38,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Range (m) to search for AI to override.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Nearby turrets and drones attack with you... <color=#FF7F7F>BUT no longer attack automatically.</color>";
-        protected override string GetDescString(string langid = null) => $"All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {wrange} meters</style> will <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>. Order drones to fire by holding your <style=cIsUtility>Primary skill</style>. Affected <style=cIsDamage>turrets and drones</style> gain <style=cIsDamage>{Pct(baseExtraSpeed + 1)} attack speed <style=cStack>(+{Pct(stackExtraSpeed)} per stack)</style></style>.";
-        protected override string GetLoreString(string langid = null) => "";
+
+
+        ////// Other Fields/Properties //////
 
         private readonly string[] validBodyNames = new[] {
             "Drone1Body(Clone)",
@@ -40,6 +51,11 @@ namespace ThinkInvisible.TinkersSatchel {
             "Turret1Body(Clone)",
             "EngiTurretBody(Clone)"
         };
+
+
+
+        ////// TILER2 Module Setup //////
+
         public Wrangler() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Wrangler.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/wranglerIcon.png");
@@ -73,24 +89,10 @@ namespace ThinkInvisible.TinkersSatchel {
             RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        bool IsValidWrangleTarget(CharacterMaster wrangleTarget, bool includeCount = true) {
-            return wrangleTarget && wrangleTarget.hasBody && validBodyNames.Contains(wrangleTarget.GetBody().name)
-                && wrangleTarget.aiComponents.Length > 0
-                && (!includeCount || GetCount(wrangleTarget.aiComponents[0].leader?.characterBody) > 0)
-                && Vector3.Distance(
-                    wrangleTarget.GetBody().corePosition,
-                    wrangleTarget.aiComponents[0].leader.characterBody.corePosition
-                    ) < wrange;
-        }
 
-        bool IsValidWrangleTarget(RoR2.CharacterAI.BaseAI wrangleTarget) {
-            return GetCount(wrangleTarget.leader?.characterBody) > 0 && validBodyNames.Contains(wrangleTarget.body?.name)
-                & Vector3.Distance(
-                    wrangleTarget.body.corePosition,
-                    wrangleTarget.leader.characterBody.corePosition
-                    ) < wrange;
-        }
 
+        ////// Hooks //////
+        #region Hooks
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) {
             orig(self);
             foreach(var m in CharacterMaster.instancesList) {
@@ -153,6 +155,29 @@ namespace ThinkInvisible.TinkersSatchel {
                 self.bodyInputs.desiredAimDirection = (wcpt.cachedAimPosition - self.bodyInputBank.aimOrigin).normalized;
             }
             orig(self, deltaTime);
+        }
+        #endregion
+
+
+
+        ////// Non-Public Methods //////
+
+        bool IsValidWrangleTarget(CharacterMaster wrangleTarget, bool includeCount = true) {
+            return wrangleTarget && wrangleTarget.hasBody && validBodyNames.Contains(wrangleTarget.GetBody().name)
+                && wrangleTarget.aiComponents.Length > 0
+                && (!includeCount || GetCount(wrangleTarget.aiComponents[0].leader?.characterBody) > 0)
+                && Vector3.Distance(
+                    wrangleTarget.GetBody().corePosition,
+                    wrangleTarget.aiComponents[0].leader.characterBody.corePosition
+                    ) < wrange;
+        }
+
+        bool IsValidWrangleTarget(RoR2.CharacterAI.BaseAI wrangleTarget) {
+            return GetCount(wrangleTarget.leader?.characterBody) > 0 && validBodyNames.Contains(wrangleTarget.body?.name)
+                & Vector3.Distance(
+                    wrangleTarget.body.corePosition,
+                    wrangleTarget.leader.characterBody.corePosition
+                    ) < wrange;
         }
     }
 

@@ -7,12 +7,12 @@ using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Compass : Equipment<Compass> {
+
+        ////// Equipment Data //////
+
         public override string displayName => "Silver Compass";
         public override bool isLunar => true;
         public override float cooldown {get; protected set;} = 180f;
-
-        [AutoConfig("0: Allows unlimited uses per stage. 1: Only once per character per stage. 2: Only once per stage.", AutoConfigFlags.None, 0, 2)]
-        public int useLimitPerStage {get; private set;} = 1;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>but it will be fraught with danger.</style>";
@@ -22,6 +22,17 @@ namespace ThinkInvisible.TinkersSatchel {
             (useLimitPerStage == 1 ? " Works only once per player per stage." :
             ""));
         protected override string GetLoreString(string langid = null) => "";
+
+
+
+        ////// Config //////
+
+        [AutoConfig("0: Allows unlimited uses per stage. 1: Only once per character per stage. 2: Only once per stage.", AutoConfigFlags.None, 0, 2)]
+        public int useLimitPerStage { get; private set; } = 1;
+
+
+
+        ////// TILER2 Module Setup //////
 
         public Compass() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/SilverCompass.prefab");
@@ -35,6 +46,10 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE_2P", "<style=cDeath>You seek a path...</style>");
         }
         
+
+
+        ////// Hooks //////
+
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
 			if (TeleporterInteraction.instance
                 && slot.characterBody?.master?.playerCharacterMasterController
