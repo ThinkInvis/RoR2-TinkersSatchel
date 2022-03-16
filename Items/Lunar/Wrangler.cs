@@ -168,7 +168,7 @@ namespace ThinkInvisible.TinkersSatchel {
         GameObject laserObj;
         LineRenderer laser;
         CharacterBody body;
-        static readonly Color LASER_COLOR = new Color(0.3f, 0.4f, 1f, 0.5f);
+        static readonly Color LASER_COLOR = Color.cyan;
         const float SEEK_RANGE = 200f;
         float lasWidth = 0f;
 
@@ -207,7 +207,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 body.MarkAllStatsDirty();
             cachedWranglerCount = count;
             isWrangled = count > 0;
-            lasWidth = isWrangled ? 0.02f : 0f;
+            lasWidth = isWrangled ? 0.05f : 0f;
         }
     }
 
