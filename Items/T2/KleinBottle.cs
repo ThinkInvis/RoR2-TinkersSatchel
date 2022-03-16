@@ -33,8 +33,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 2000f;
-        const float PULL_RADIUS = 15f;
+        const float PULL_FORCE = 1500f;
+        const float PULL_RADIUS = 18f;
         const float PULL_DURATION = 0.5f;
 
         private GameObject blackHolePrefab;
@@ -104,7 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(proc) {
                     RoR2.Projectile.ProjectileManager.instance.FireProjectile(
                         blackHolePrefab,
-                        self.body.footPosition, Quaternion.identity,
+                        self.body.footPosition + (Vector3.down * 0.25f), Quaternion.identity,
                         self.body.gameObject,
                         0f, 0f, false);
                 }
