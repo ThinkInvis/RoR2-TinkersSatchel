@@ -5,6 +5,7 @@ using TILER2;
 using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
 using R2API;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {
@@ -16,8 +17,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to implode on hit.";
-        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>pull</style> nearby enemies on hit.";
+        protected override string GetPickupString(string langid = null) => "Chance to push nearby enemies on taking damage.";
+        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push</style> nearby enemies after taking damage.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -32,9 +33,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 1500f;
-        const float PULL_RADIUS = 30f;
-        const float PULL_DURATION = 0.1f;
+        const float PULL_FORCE = 1000f;
+        const float PULL_RADIUS = 15f;
+        const float PULL_DURATION = 0.3f;
 
         private GameObject blackHolePrefab;
 
@@ -60,7 +61,7 @@ namespace ThinkInvisible.TinkersSatchel {
             dmg.damage = 0f;
             dmg.enabled = false;
             var force = tempPfb.GetComponent<RadialForce>();
-            force.forceMagnitude = -PULL_FORCE;
+            force.forceMagnitude = PULL_FORCE;
             force.radius = PULL_RADIUS;
             
             var sph = tempPfb.transform.Find("Sphere");
@@ -81,33 +82,31 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
 
-            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            On.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
         }
 
         public override void Uninstall() {
             base.Uninstall();
+
+            On.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
         }
 
 
 
         ////// Hooks //////
 
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
-            orig(self, damageInfo, victim);
-            var cb = damageInfo.attacker?.GetComponent<CharacterBody>();
-            if(!cb) return;
-            var m = cb.master;
-            var count = GetCount(m);
-            if(count <= 0) return;
-
-            var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
-            var proc = Util.CheckRoll(pChance, cb.master);
-            if(proc) {
-                RoR2.Projectile.ProjectileManager.instance.FireProjectile(
-                    blackHolePrefab,
-                    damageInfo.position, Quaternion.identity,
-                    damageInfo.attacker,
-                    0f, 0f, false);
+        private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker) {
+            if(NetworkServer.active && self.body && damageValue > 0f) {
+                var count = GetCount(self.body);
+                var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
+                var proc = Util.CheckRoll(pChance, self.body.master);
+                if(proc) {
+                    RoR2.Projectile.ProjectileManager.instance.FireProjectile(
+                        blackHolePrefab,
+                        self.body.corePosition, Quaternion.identity,
+                        self.body.gameObject,
+                        0f, 0f, false);
+                }
             }
         }
     }
