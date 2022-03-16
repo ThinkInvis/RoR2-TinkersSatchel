@@ -32,8 +32,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 1000f;
-        const float PULL_RADIUS = 15f;
+        const float PULL_FORCE = 500f;
+        const float PULL_RADIUS = 40f;
         const float PULL_DURATION = 0.1f;
 
         private GameObject blackHolePrefab;
