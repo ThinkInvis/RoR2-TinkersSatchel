@@ -71,7 +71,6 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.EvaluateSkillDrivers += BaseAI_EvaluateSkillDrivers;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyAim += BaseAI_UpdateBodyAim;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs += BaseAI_UpdateBodyInputs;
-            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
             On.RoR2.GenericSkill.RunRecharge += GenericSkill_RunRecharge;
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
@@ -83,7 +82,6 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.EvaluateSkillDrivers -= BaseAI_EvaluateSkillDrivers;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyAim -= BaseAI_UpdateBodyAim;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs -= BaseAI_UpdateBodyInputs;
-            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
             On.RoR2.GenericSkill.RunRecharge -= GenericSkill_RunRecharge;
 
             RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
@@ -93,92 +91,69 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
         #region Hooks
-        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) {
-            orig(self);
-            foreach(var m in CharacterMaster.instancesList) {
-                if(IsValidWrangleTarget(m) && m.aiComponents[0].leader.characterBody == self) {
-                    m.GetBody().MarkAllStatsDirty();
-                }
-            }
-        }
-
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
-            if(IsValidWrangleTarget(sender.master, false)) {
-                var count = GetCount(sender.master.aiComponents[0].leader.characterBody);
-                var cpt = sender.GetComponent<WranglerReceiverComponent>();
-                if(count <= 0) {
-                    if(cpt)
-                        cpt.HideLaser();
-                    return;
-                } else {
-                    if(!cpt) cpt = sender.gameObject.AddComponent<WranglerReceiverComponent>();
-                    cpt.ShowLaser();
-                    args.attackSpeedMultAdd += baseExtraSpeed + stackExtraSpeed * (count - 1);
-                }
-            }
+            var cpt = sender.GetComponent<WranglerReceiverComponent>();
+            if(cpt && cpt.cachedWranglerCount > 0)
+                args.attackSpeedMultAdd += baseExtraSpeed + stackExtraSpeed * (cpt.cachedWranglerCount - 1);
         }
 
         private void GenericSkill_RunRecharge(On.RoR2.GenericSkill.orig_RunRecharge orig, GenericSkill self, float dt) {
-            if(self.characterBody && IsValidWrangleTarget(self.characterBody.master)) {
-                var count = GetCount(self.characterBody.master.aiComponents[0].leader.characterBody);
-                if(count > 0) {
-                    dt *= baseExtraSpeed + stackExtraSpeed * (count - 1);
-                }
+            var cpt = self.characterBody?.GetComponent<WranglerReceiverComponent>();
+            if(cpt && cpt.cachedWranglerCount > 0) {
+                dt *= baseExtraSpeed + stackExtraSpeed * (cpt.cachedWranglerCount - 1);
             }
             orig(self, dt);
         }
 
         private void BaseAI_UpdateBodyInputs(On.RoR2.CharacterAI.BaseAI.orig_UpdateBodyInputs orig, RoR2.CharacterAI.BaseAI self) {
             orig(self);
-            if(IsValidWrangleTarget(self)) {
+            var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
+            if(cpt && cpt.isWrangled && self.leader?.characterBody) {
                 self.bodyInputBank.skill1.PushState(self.leader.characterBody.inputBank.skill1.down);
             }
         }
 
         private RoR2.CharacterAI.BaseAI.SkillDriverEvaluation BaseAI_EvaluateSkillDrivers(On.RoR2.CharacterAI.BaseAI.orig_EvaluateSkillDrivers orig, RoR2.CharacterAI.BaseAI self) {
             var retv = orig(self);
-            if(!IsValidWrangleTarget(self)) return retv;
 
-            var health = self.bodyHealthComponent?.combinedHealthFraction ?? 1f;
-            var f = System.Array.Find(self.skillDrivers, x => x.customName == "HardLeashToLeader");
-            if(f) {
-                return self.EvaluateSingleSkillDriver(in retv, f, health) ?? retv;
+            var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
+            if(!cpt) {
+                if(validBodyNames.Contains(self.body?.name))
+                    cpt = self.body.gameObject.AddComponent<WranglerReceiverComponent>();
+            }
+            else return retv;
+
+            if(!self.leader?.characterBody
+                || Vector3.Distance(
+                    self.body.corePosition,
+                    self.leader.characterBody.corePosition
+                    ) > wrange)
+                cpt.SetWranglerCount(0);
+            else
+                cpt.SetWranglerCount(GetCount(self.leader.characterBody));
+
+            if(cpt.isWrangled) {
+                //force drones to fly to leader
+                var health = self.bodyHealthComponent?.combinedHealthFraction ?? 1f;
+                var f = System.Array.Find(self.skillDrivers, x => x.customName == "HardLeashToLeader");
+                if(f) {
+                    return self.EvaluateSingleSkillDriver(in retv, f, health) ?? retv;
+                }
             }
             return retv;
         }
 
         private void BaseAI_UpdateBodyAim(On.RoR2.CharacterAI.BaseAI.orig_UpdateBodyAim orig, RoR2.CharacterAI.BaseAI self, float deltaTime) {
-            if(IsValidWrangleTarget(self)) {
-                var wcpt = self.leader.characterBody.GetComponent<WranglerSenderComponent>();
-                if(!wcpt)
-                    wcpt = self.leader.gameObject.AddComponent<WranglerSenderComponent>();
-                self.bodyInputs.desiredAimDirection = (wcpt.cachedAimPosition - self.bodyInputBank.aimOrigin).normalized;
+            var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
+            if(cpt && cpt.isWrangled && self.leader?.characterBody) {
+                var scpt = self.leader.characterBody.GetComponent<WranglerSenderComponent>();
+                if(!scpt)
+                    scpt = self.leader.gameObject.AddComponent<WranglerSenderComponent>();
+                self.bodyInputs.desiredAimDirection = (scpt.cachedAimPosition - self.bodyInputBank.aimOrigin).normalized;
             }
             orig(self, deltaTime);
         }
         #endregion
-
-
-
-        ////// Non-Public Methods //////
-
-        bool IsValidWrangleTarget(CharacterMaster wrangleTarget, bool includeCount = true) {
-            return wrangleTarget && wrangleTarget.hasBody && validBodyNames.Contains(wrangleTarget.GetBody().name)
-                && wrangleTarget.aiComponents.Length > 0
-                && (!includeCount || GetCount(wrangleTarget.aiComponents[0].leader?.characterBody) > 0)
-                && Vector3.Distance(
-                    wrangleTarget.GetBody().corePosition,
-                    wrangleTarget.aiComponents[0].leader.characterBody.corePosition
-                    ) < wrange;
-        }
-
-        bool IsValidWrangleTarget(RoR2.CharacterAI.BaseAI wrangleTarget) {
-            return GetCount(wrangleTarget.leader?.characterBody) > 0 && validBodyNames.Contains(wrangleTarget.body?.name)
-                & Vector3.Distance(
-                    wrangleTarget.body.corePosition,
-                    wrangleTarget.leader.characterBody.corePosition
-                    ) < wrange;
-        }
     }
 
     [RequireComponent(typeof(CharacterBody))]
@@ -189,6 +164,9 @@ namespace ThinkInvisible.TinkersSatchel {
         static readonly Color LASER_COLOR = Color.cyan;
         const float SEEK_RANGE = 200f;
         float lasWidth = 0f;
+
+        public int cachedWranglerCount { get; private set; } = 0;
+        public bool isWrangled { get; private set; } = false;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
@@ -206,7 +184,7 @@ namespace ThinkInvisible.TinkersSatchel {
         void Update() {
             laser.startWidth = lasWidth;
             laser.endWidth = lasWidth;
-            if(lasWidth > 0f) {
+            if(isWrangled) {
                 var aim = body.inputBank.GetAimRay();
                 var p1 = body.aimOrigin;
                 var p2 = aim.GetPoint(SEEK_RANGE);
@@ -217,12 +195,12 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public void ShowLaser() {
-            lasWidth = 0.1f;
-        }
-
-        public void HideLaser() {
-            lasWidth = 0f;
+        public void SetWranglerCount(int count) {
+            if(cachedWranglerCount != count)
+                body.MarkAllStatsDirty();
+            cachedWranglerCount = count;
+            isWrangled = count > 0;
+            lasWidth = isWrangled ? 0.1f : 0f;
         }
     }
 
