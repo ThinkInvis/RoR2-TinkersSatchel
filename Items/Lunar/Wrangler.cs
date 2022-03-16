@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Nearby turrets and drones attack with you... <color=#FF7F7F>BUT no longer attack automatically.</color>";
-        protected override string GetDescString(string langid = null) => $"All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {wrange} meters</style> will <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>. Order drones to fire by holding your <style=cIsUtility>Primary skill</style>. Affected <style=cIsDamage>turrets and drones</style> gain <style=cIsDamage>{Pct(baseExtraSpeed + 1)} attack speed <style=cStack>(+{Pct(stackExtraSpeed)} per stack)</style></style>.";
+        protected override string GetDescString(string langid = null) => $"All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {wrange} meters</style> will <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>. Order drones to fire by holding your <style=cIsUtility>Primary skill</style> keybind. Affected <style=cIsDamage>turrets and drones</style> gain <style=cIsDamage>+{Pct(baseExtraSpeed)} attack speed <style=cStack>(+{Pct(stackExtraSpeed)} per stack)</style></style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
