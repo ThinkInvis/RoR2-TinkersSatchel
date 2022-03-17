@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Shoot allies to heal them.";
+        protected override string GetPickupString(string langid = null) => "Hit allies to heal them.";
         protected override string GetDescString(string langid = null) => $"Hitting an ally with any attack heals them for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style></style>.";
         protected override string GetLoreString(string langid = null) => "";
 
