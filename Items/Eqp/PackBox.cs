@@ -118,7 +118,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void EquipmentSlot_UpdateTargets(On.RoR2.EquipmentSlot.orig_UpdateTargets orig, EquipmentSlot self, EquipmentIndex targetingEquipmentIndex, bool userShouldAnticipateTarget) {
-            if(targetingEquipmentIndex != catalogIndex || self.subcooldownTimer > 0f || self.cooldownTimer > 0f) {
+            if(targetingEquipmentIndex != catalogIndex || self.subcooldownTimer > 0f || self.stock == 0) {
                 orig(self, targetingEquipmentIndex, userShouldAnticipateTarget);
                 return;
             }
