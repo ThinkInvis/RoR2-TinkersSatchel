@@ -5,6 +5,7 @@ using TILER2;
 using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ShootToHeal : Item<ShootToHeal> {
@@ -22,6 +23,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        /////// Other Fields/Properties //////
+
+        internal UnlockableDef unlockable;
+
+
+
         ////// TILER2 Module Setup //////
         public ShootToHeal() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/ShootToHeal.prefab");
@@ -30,6 +37,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatShootToHealAchievement>();
+            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_NAME", "One-Man Band");
+            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Have 3 different musical instruments at once.");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -100,6 +113,42 @@ namespace ThinkInvisible.TinkersSatchel {
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 hb.healthComponent.Heal(count, default);
             }
+        }
+    }
+
+    public class TkSatShootToHealAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_SHOOTTOHEAL_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => ShootToHeal.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/shootToHealIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
+        }
+
+        private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+            if(this.localUser.cachedMaster == self
+                && self.inventory.GetItemCount(RoR2Content.Items.ChainLightning) > 0
+                && self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse) > 0
+                && (self.inventory.currentEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex
+                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex))
+                Grant();
         }
     }
 }
