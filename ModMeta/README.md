@@ -29,6 +29,8 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 - Percussive Maintenance: "Hit allies to heal them."
 	- Only 1 HP per stack. Best bring some attack speed!
+	- Unlock by having 3 different musical instruments at once.
+            <details><summary>Spoiler: Specifically...</summary>Ukulele, War Horn, and Gorag's Opus.</details>
 
 #### Tier-2 Item
 
@@ -83,6 +85,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.5.1**
+
+- Added an unlock achievement to Percussive Maintenance.
+- Unlock achievements for all items are now implemented correctly, which will no longer look like always-unlocked items in the logbook.
+- Cardboard Box now removes nav nodes. No nav nodes are created by placement (yet), as a now-intentional barricade mechanic.
+
 **1.5.0** *The Engi Update*
 
 - ADDED ITEMS: RC Controller, Unstable Klein Bottle, Cardboard Box, Percussive Maintenance!
@@ -111,8 +119,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Updated R2API dependency to 4.0.11.
 - Updated BepInEx dependency to 5.4.1902.
 - Updated TILER2 dependency to 5.0.2.
-
-**1.3.4**
-
-- Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.
-- Fixed another incompatibility with most recent R2API.

@@ -1,5 +1,11 @@
 # Tinker's Satchel Changelog
 
+**1.5.1**
+
+- Added an unlock achievement to Percussive Maintenance.
+- Unlock achievements for all items are now implemented correctly, which will no longer look like always-unlocked items in the logbook.
+- Cardboard Box now removes nav nodes. No nav nodes are created by placement (yet), as a now-intentional barricade mechanic.
+
 **1.5.0** *The Engi Update*
 
 - ADDED ITEMS: RC Controller, Unstable Klein Bottle, Cardboard Box, Percussive Maintenance!
