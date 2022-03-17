@@ -1,5 +1,13 @@
 # Tinker's Satchel Changelog
 
+**1.5.0** *The Engi Update*
+
+- ADDED ITEMS: RC Controller, Unstable Klein Bottle, Cardboard Box, Percussive Maintenance!
+- Sturdy Mug no longer works on Artificer's Nano-Spear (as its projectiles can self-collide and explode immediately).
+- Fixed some config options on Mostly-Tame Mimic and H3AD-53T not updating item descriptions if changed mid-game.
+- Increased NRE safety of H3AD-53T.
+- Some behind-the-scenes project cleanup.
+
 **1.4.0**
 
 - ADDED ITEMS: Armor Prism, H3AD-53T, Sturdy Mug!

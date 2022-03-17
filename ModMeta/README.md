@@ -27,15 +27,30 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Stacks linearly past 100% (becomes a chance to fire a 2nd extra projectile, then a 3rd, etc.).
 	- Unlock by missing 1000 TOTAL projectile attacks.
 
+- Percussive Maintenance: "Hit allies to heal them."
+	- Only 1 HP per stack. Best bring some attack speed!
+
 #### Tier-2 Item
 
 - Armor Crystal: "Gain armor by hoarding money."
+
+- Unstable Klein Bottle: "Chance to push nearby enemies on taking damage."
 
 #### Tier-3 Item
 
 - H3AD-53T: "Your Utility skill builds a stunning static charge."
 	- Grants or refreshes charges of a buff. Running into or phasing through an enemy spends a charge to deal damage and stun.
 	- Unlock by killing a boss with a maximum damage H3AD-5T v2 explosion.
+
+#### Lunar Item
+
+- RC Controller: "Nearby turrets and drones attack with you... but no longer attack automatically."
+	- Also adds a +100% (+25% per stack) attack speed buff to affected turrets/drones.
+
+#### Equipment
+
+- Cardboard Box: "Pack up and move."
+	- Use once to pick up a turret, shrine, purchasable, etc. Use again to put it back down.
 
 #### Lunar Equipment
 
@@ -55,21 +70,26 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Suppression: "Players take heavily increased damage while airborne."
 - Haste: "All combatants attack 10x faster and deal 1/20x damage."
 - Danger: "Players can be killed in one hit."
-	- Removes this now-redundant functionality from Artifact of Glass/other sources of Curse.
-	- Deactivate the artifact using the mod's config file to restore original OHP behavior.
+	- Has a config option (disabled by default) to force one-hit protection while this artifact is off, even while cursed (e.g. Artifact of Glass).
 
 ## Issues/TODO
 
 - Items have no DisplayRules.
-- H3AD-53T buff/proc needs VFX.
-- Armor Crystal needs a better model.
-- Jigglebones on Mimic lid (and a less half-assed model) may happen eventually.
+- Most items need some effects & model polish in general.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.5.0** *The Engi Update*
+
+- ADDED ITEMS: RC Controller, Unstable Klein Bottle, Cardboard Box, Percussive Maintenance!
+- Sturdy Mug no longer works on Artificer's Nano-Spear (as its projectiles can self-collide and explode immediately).
+- Fixed some config options on Mostly-Tame Mimic and H3AD-53T not updating item descriptions if changed mid-game.
+- Increased NRE safety of H3AD-53T.
+- Some behind-the-scenes project cleanup.
 
 **1.4.0**
 
@@ -96,8 +116,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.
 - Fixed another incompatibility with most recent R2API.
-
-**1.3.3**
-
-- Maintenance for RoR2 updates: PC Patch v1.1.1.4.
-	- No changes were required beyond updating libraries/references.
