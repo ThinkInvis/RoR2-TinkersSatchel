@@ -118,7 +118,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void BaseThrowBombState_Fire(On.EntityStates.Mage.Weapon.BaseThrowBombState.orig_Fire orig, EntityStates.Mage.Weapon.BaseThrowBombState self) {
-            var doIgnore = self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary;
+            var doIgnore = self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary || self is EntityStates.Mage.Weapon.ThrowIcebomb;
             if(doIgnore) ignoreMugs = true;
             orig(self);
             if(doIgnore) ignoreMugs = false;
