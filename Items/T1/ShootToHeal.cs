@@ -51,7 +51,6 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ILFound) {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<HurtBox, OverlapAttack, HurtBox>>((cpt, self) => {
-                    //!hurtBox.healthComponent || ((!(hurtBox.healthComponent.gameObject == this.attacker) || this.attackerFiltering != AttackerFiltering.NeverHitSelf) && (!(this.attacker == null) || !(hurtBox.healthComponent.gameObject.GetComponent<MaulingRock>() != null)) && !this.ignoredHealthComponentList.Contains(hurtBox.healthComponent) && FriendlyFireManager.ShouldDirectHitProceed(hurtBox.healthComponent, this.teamIndex));
                     if(cpt && cpt.healthComponent && cpt.healthComponent.gameObject != self.attacker
                     && cpt.teamIndex == TeamComponent.GetObjectTeam(self.attacker)) {
                         var count = GetCount(self.attacker.GetComponent<CharacterBody>());
@@ -77,7 +76,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private bool BulletAttack_ProcessHit(On.RoR2.BulletAttack.orig_ProcessHit orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo) {
             var retv = orig(self, ref hitInfo);
             var count = GetCount(self.owner?.GetComponent<CharacterBody>());
-            if(hitInfo.hitHurtBox?.healthComponent && count > 0 && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
+            if(hitInfo.hitHurtBox?.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 hitInfo.hitHurtBox.healthComponent.Heal(count, default);
             }
             return retv;
@@ -88,7 +87,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!collision.gameObject) return;
             var hb = collision.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner?.GetComponent<CharacterBody>());
-            if(hb && hb.healthComponent && count > 0 && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
+            if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 hb.healthComponent.Heal(count, default);
             }
         }
@@ -98,7 +97,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!collider.gameObject) return;
             var hb = collider.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner?.GetComponent<CharacterBody>());
-            if(hb && hb.healthComponent && count > 0 && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
+            if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 hb.healthComponent.Heal(count, default);
             }
         }
