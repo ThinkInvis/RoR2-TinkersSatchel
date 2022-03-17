@@ -56,6 +56,8 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_NAME", "...So I Fired Again");
             LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_DESCRIPTION", "Miss 1,000 TOTAL projectile attacks.");
 
+            itemDef.unlockableDef = unlockable;
+
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
         }
 
@@ -240,7 +242,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string PrerequisiteUnlockableIdentifier => "";
         public string AchievementNameToken => "TKSAT_MUG_ACHIEVEMENT_NAME";
         public string AchievementDescToken => "TKSAT_MUG_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => "TKSAT_MUG_SKILL_NAME";
+        public string UnlockableNameToken => Mug.instance.nameToken;
 
         public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/mugIcon.png");
 

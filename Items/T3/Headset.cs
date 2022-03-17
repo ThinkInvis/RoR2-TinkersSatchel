@@ -89,6 +89,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			unlockable = UnlockableAPI.AddUnlockable<TkSatHeadsetAchievement>();
 			LanguageAPI.Add("TKSAT_HEADSET_ACHIEVEMENT_NAME", "You Broke It");
 			LanguageAPI.Add("TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION", "Kill a boss with a maximum damage H3AD-5T v2 explosion.");
+
+			itemDef.unlockableDef = unlockable;
 		}
 
 		public override void Install() {
@@ -206,7 +208,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public string PrerequisiteUnlockableIdentifier => "";
 		public string AchievementNameToken => "TKSAT_HEADSET_ACHIEVEMENT_NAME";
 		public string AchievementDescToken => "TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION";
-		public string UnlockableNameToken => "TKSAT_HEADSET_SKILL_NAME";
+		public string UnlockableNameToken => Headset.instance.nameToken;
 
 		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/headsetIcon.png");
 
