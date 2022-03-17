@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
-using R2API;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -76,7 +75,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs += BaseAI_UpdateBodyInputs;
             On.RoR2.GenericSkill.RunRecharge += GenericSkill_RunRecharge;
 
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
         public override void Uninstall() {
@@ -87,7 +86,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs -= BaseAI_UpdateBodyInputs;
             On.RoR2.GenericSkill.RunRecharge -= GenericSkill_RunRecharge;
 
-            RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
+            GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
 
 
