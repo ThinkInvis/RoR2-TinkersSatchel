@@ -75,16 +75,21 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
+            var nSpriteD = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/packBoxArrowDown.png");
+            var nSpriteU = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/packBoxArrowUp.png");
+
             var recy = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerIndicator").InstantiateClone("temporary setup prefab", false);
-            var nSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/packBoxArrowSprite.png");
             foreach(var spr in recy.GetComponentsInChildren<SpriteRenderer>()) {
                 if(spr.sprite.name != "texRecyclerArrow") continue;
-                spr.sprite = nSprite;
+                spr.sprite = nSpriteD;
             }
             placeIndicatorPrefab = recy.InstantiateClone("TkSatPackBoxPlaceIndicator", false);
+            GameObject.Destroy(recy);
+
+            recy = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerIndicator").InstantiateClone("temporary setup prefab", false);
             foreach(var spr in recy.GetComponentsInChildren<SpriteRenderer>()) {
                 if(spr.sprite.name != "texRecyclerArrow") continue;
-                spr.flipX = true;
+                spr.sprite = nSpriteU;
             }
             packIndicatorPrefab = recy.InstantiateClone("TkSatPackBoxPackIndicator", false);
             GameObject.Destroy(recy);
@@ -92,7 +97,7 @@ namespace ThinkInvisible.TinkersSatchel {
             recy = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator").InstantiateClone("temporary setup prefab", false);
             foreach(var spr in recy.GetComponentsInChildren<SpriteRenderer>()) {
                 if(spr.sprite.name != "texRecyclerArrow") continue;
-                spr.sprite = nSprite;
+                spr.sprite = nSpriteD;
             }
             placeIndicatorBadPrefab = recy.InstantiateClone("TkSatPackBoxPlaceBadIndicator", false);
             GameObject.Destroy(recy);
@@ -120,14 +125,10 @@ namespace ThinkInvisible.TinkersSatchel {
         private void EquipmentSlot_UpdateTargets(On.RoR2.EquipmentSlot.orig_UpdateTargets orig, EquipmentSlot self, EquipmentIndex targetingEquipmentIndex, bool userShouldAnticipateTarget) {
             if(targetingEquipmentIndex != catalogIndex || self.subcooldownTimer > 0f || self.stock == 0) {
                 orig(self, targetingEquipmentIndex, userShouldAnticipateTarget);
+                if(targetingEquipmentIndex == catalogIndex)
+                    self.targetIndicator.active = false;
                 return;
             }
-
-            if(self.subcooldownTimer > 0f) {
-                self.targetIndicator.active = false;
-                return;
-            }
-
 
             var cpt = self.characterBody.GetComponent<PackBoxTracker>();
             if(!cpt) cpt = self.characterBody.gameObject.AddComponent<PackBoxTracker>();
