@@ -204,6 +204,8 @@ namespace ThinkInvisible.TinkersSatchel {
                         }
                     }
 
+                    DirectorCore.instance.RemoveAllOccupiedNodes(slot.currentTarget.rootObject);
+
                     cpt.packedObject = slot.currentTarget.rootObject;
                     cpt.queuedDeactivate = true;
                     return false;
