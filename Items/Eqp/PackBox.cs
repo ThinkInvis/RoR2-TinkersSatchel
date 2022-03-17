@@ -4,8 +4,6 @@ using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
-using MonoMod.RuntimeDetour;
-using R2API.Utils;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackBox : Equipment<PackBox> {
