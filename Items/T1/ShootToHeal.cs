@@ -8,6 +8,7 @@ using R2API;
 using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
+using Mono.Cecil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ShootToHeal : Item<ShootToHeal> {
@@ -46,8 +47,8 @@ namespace ThinkInvisible.TinkersSatchel {
         private void OverlapAttack_Fire(ILContext il) {
             var c = new ILCursor(il);
 
-            var ILFound = c.TryGotoNext(MoveType.After,
-                x => x.MatchCallvirt<Component>("GetComponent<class RoR2.HurtBox>"));
+            var ILFound = c.TryGotoNext(MoveType.Before,
+                x => x.MatchCall<OverlapAttack>(nameof(OverlapAttack.HurtBoxPassesFilter)));
             if(ILFound) {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<HurtBox, OverlapAttack, HurtBox>>((cpt, self) => {
