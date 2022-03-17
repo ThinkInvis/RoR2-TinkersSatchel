@@ -36,7 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
             "GoldChest(Clone)",
             "MissileDroneBroken(Clone)",
             "FlameDroneBroken(Clone)",
-            "MegaDroneBroken(Clone)",
+            "MegaDroneBroken(Clone)", //lunar pod todo
             "Chest1(Clone)",
             "Chest2(Clone)",
             "KeyLockbox(Clone)",
@@ -148,7 +148,12 @@ namespace ThinkInvisible.TinkersSatchel {
                         rootObject = cpt.groundTarget.gameObject
                     };
                     //todo: on-ground indicator like engi blueprints, will need to track separately?
-                }
+                } else self.currentTarget = new EquipmentSlot.UserTargetInfo {
+                        transformToIndicateAt = null,
+                        pickupController = null,
+                        hurtBox = null,
+                        rootObject = null
+                    };
             } else {
                 indPrefab = packIndicatorPrefab;
                 var res = FindNearestBoxable(self.gameObject, self.GetAimRay(), 10f, 20f, false);
@@ -164,6 +169,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 self.targetIndicator.visualizerPrefab = indPrefab;
                 self.targetIndicator.active = true;
                 self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
+            } else {
+                self.targetIndicator.active = false;
             }
         }
 
@@ -237,9 +244,9 @@ namespace ThinkInvisible.TinkersSatchel {
             didHitGround = false;
             var groundAim = new Ray(aim.GetPoint(6f) + Vector3.up * 3f, Vector3.down);
             float dist = 6f;
+            loc = Vector3.zero;
             if(Physics.SphereCast(groundAim, 0.5f, out RaycastHit hit, dist, LayerIndex.world.mask) && hit.normal.y > 0.5f) {
-                dist = hit.distance;
-                loc = groundAim.GetPoint(dist + 0.5f);
+                loc = hit.point;
                 didHitGround = true;
                 if(!Physics.CheckCapsule(
                     loc + Vector3.up * 1.32f,
@@ -249,7 +256,6 @@ namespace ThinkInvisible.TinkersSatchel {
                     return true;
                 }
             }
-            loc = Vector3.zero;
             return false;
         }
 
