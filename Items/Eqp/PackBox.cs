@@ -209,7 +209,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             } else {
                 if(TryPlaceBoxable(slot.GetAimRay(), out Vector3 placeLoc, out _)) {
-                    cpt.packedObject.transform.position = placeLoc;
+                    var body = cpt.packedObject.GetComponent<CharacterBody>();
+                    if(body && body.master)
+                        cpt.packedObject.transform.position =
+                            body.master.CalculateSafeGroundPosition(placeLoc, body)
+                            + (body.corePosition - body.footPosition);
+                    else cpt.packedObject.transform.position = placeLoc;
                     cpt.packedObject.SetActive(true);
                     var singleLoc = cpt.packedObject.GetComponentInChildren<ModelLocator>();
                     if(singleLoc)
@@ -243,9 +248,8 @@ namespace ThinkInvisible.TinkersSatchel {
             aim.direction = dir;
             didHitGround = false;
             var groundAim = new Ray(aim.GetPoint(6f) + Vector3.up * 3f, Vector3.down);
-            float dist = 6f;
             loc = Vector3.zero;
-            if(Physics.SphereCast(groundAim, 0.5f, out RaycastHit hit, dist, LayerIndex.world.mask) && hit.normal.y > 0.5f) {
+            if(Physics.SphereCast(groundAim, 0.5f, out RaycastHit hit, 8f, LayerIndex.world.mask) && hit.normal.y > 0.5f) {
                 loc = hit.point;
                 didHitGround = true;
                 if(!Physics.CheckCapsule(
