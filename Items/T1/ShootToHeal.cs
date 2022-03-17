@@ -52,8 +52,11 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ILFound) {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<HurtBox, OverlapAttack, HurtBox>>((cpt, self) => {
-                    if(cpt && cpt.healthComponent && cpt.healthComponent.gameObject != self.attacker
+                    if(cpt && cpt.healthComponent
+                    && !self.ignoredHealthComponentList.Contains(cpt.healthComponent)
+                    && cpt.healthComponent.gameObject != self.attacker
                     && cpt.teamIndex == TeamComponent.GetObjectTeam(self.attacker)) {
+                        self.ignoredHealthComponentList.Add(cpt.healthComponent);
                         var count = GetCount(self.attacker.GetComponent<CharacterBody>());
                         if(count > 0) {
                             cpt.healthComponent.Heal(count, default);
