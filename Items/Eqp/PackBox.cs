@@ -36,7 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
             "GoldChest(Clone)",
             "MissileDroneBroken(Clone)",
             "FlameDroneBroken(Clone)",
-            "MegaDroneBroken(Clone)", //lunar pod todo
+            "MegaDroneBroken(Clone)",
             "Chest1(Clone)",
             "Chest2(Clone)",
             "KeyLockbox(Clone)",
@@ -54,7 +54,10 @@ namespace ThinkInvisible.TinkersSatchel {
             "DuplicatorWild(Clone)",
             "Scrapper(Clone)",
             "MultiShopTerminal(Clone)",
+            "MultiShopLargeTerminal(Clone)",
+            "MultiShopEquipmentTerminal(Clone)",
             "FusionCellDestructibleBody(Clone)",
+            "LunarChest(Clone)",
             "LunarShopTerminal(Clone)" //todo: disallow or kick out of bazaar, achievement
         };
         readonly Sprite secondaryIconResource;
