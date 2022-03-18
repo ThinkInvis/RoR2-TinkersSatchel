@@ -1,5 +1,12 @@
 # Tinker's Satchel Changelog
 
+**1.5.2**
+
+- Fixed Unstable Klein Bottle being enabled preventing some of the base game's on-take-damage effects (Medkit item, red vignette effect).
+- Fixed Percussive Maintenance being enabled preventing luck stat, Heretic transformation, and gummy clones from working/updating.
+- Fixed Percussive Maintenance not removing its hooks on uninstall (possible performance/compatibility issue).
+- Updated TILER2 dependency to 6.0.2.
+
 **1.5.1**
 
 - Added an unlock achievement to Percussive Maintenance.
