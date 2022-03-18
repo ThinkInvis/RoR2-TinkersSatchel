@@ -96,6 +96,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker) {
+            orig(self, damageValue, damagePosition, damageIsSilent, attacker);
             if(NetworkServer.active && self.body && damageValue > 0f) {
                 var count = GetCount(self.body);
                 var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;

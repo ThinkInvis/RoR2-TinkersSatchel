@@ -143,6 +143,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+            orig(self);
             if(this.localUser.cachedMaster == self
                 && self.inventory.GetItemCount(RoR2Content.Items.ChainLightning) > 0
                 && self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse) > 0
