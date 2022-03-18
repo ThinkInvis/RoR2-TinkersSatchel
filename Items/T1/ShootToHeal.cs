@@ -53,6 +53,17 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
         }
 
+        public override void Uninstall() {
+            base.Uninstall();
+            On.RoR2.BulletAttack.ProcessHit -= BulletAttack_ProcessHit;
+            On.RoR2.Projectile.ProjectileController.OnCollisionEnter -= ProjectileController_OnCollisionEnter;
+            On.RoR2.Projectile.ProjectileController.OnTriggerEnter -= ProjectileController_OnTriggerEnter;
+            IL.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
+        }
+
+
+
+        ////// Hooks //////
         private void OverlapAttack_Fire(ILContext il) {
             var c = new ILCursor(il);
 
@@ -79,13 +90,6 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public override void Uninstall() {
-            base.Uninstall();
-        }
-
-
-
-        ////// Hooks //////
         private bool BulletAttack_ProcessHit(On.RoR2.BulletAttack.orig_ProcessHit orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo) {
             var retv = orig(self, ref hitInfo);
             var count = GetCount(self.owner?.GetComponent<CharacterBody>());
