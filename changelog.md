@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.5.4**
+
+- Attempted fix for Mostly-Tame Mimic tier weighting inordinately preferring the highest-weighted tier available.
+	- Reworked internals of this item. Each mimic's selected item is now tracked individually, instead of keeping a list of counts. This appears to have also reduced the need for the LagLimit config option.
+
 **1.5.3**
 
 - Fixed missing load request for R2API.UnlockableAPI.

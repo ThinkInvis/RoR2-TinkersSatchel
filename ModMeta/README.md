@@ -85,6 +85,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.5.4**
+
+- Attempted fix for Mostly-Tame Mimic tier weighting inordinately preferring the highest-weighted tier available.
+	- Reworked internals of this item. Each mimic's selected item is now tracked individually, instead of keeping a list of counts. This appears to have also reduced the need for the LagLimit config option.
+
 **1.5.3**
 
 - Fixed missing load request for R2API.UnlockableAPI.
@@ -109,11 +114,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed some config options on Mostly-Tame Mimic and H3AD-53T not updating item descriptions if changed mid-game.
 - Increased NRE safety of H3AD-53T.
 - Some behind-the-scenes project cleanup.
-
-**1.4.0**
-
-- ADDED ITEMS: Armor Prism, H3AD-53T, Sturdy Mug!
-- Mostly-Tame Mimic now has weighted item tier selection (configurable).
-- Fixed missing buff icon on Armor Crystal.
-- Removed startup index dump.
-- Updated TILER2 dependency to 6.0.1.
