@@ -1,5 +1,9 @@
 # Tinker's Satchel Changelog
 
+**1.5.3**
+
+- Fixed missing load request for R2API.UnlockableAPI.
+
 **1.5.2**
 
 - Fixed Unstable Klein Bottle being enabled preventing some of the base game's on-take-damage effects (Medkit item, red vignette effect).

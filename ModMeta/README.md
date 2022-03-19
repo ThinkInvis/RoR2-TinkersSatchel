@@ -85,6 +85,10 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.5.3**
+
+- Fixed missing load request for R2API.UnlockableAPI.
+
 **1.5.2**
 
 - Fixed Unstable Klein Bottle being enabled preventing some of the base game's on-take-damage effects (Medkit item, red vignette effect).
@@ -113,9 +117,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed missing buff icon on Armor Crystal.
 - Removed startup index dump.
 - Updated TILER2 dependency to 6.0.1.
-
-**1.3.6**
-
-- Mostly-Tame Mimic: added hidden/tierless items to blacklist.
-	- Now has its own blacklist in addition to the more general FakeInventory blacklist, to be exposed to public API in a future update.
-- Updated TILER2 dependency to 5.0.3.
