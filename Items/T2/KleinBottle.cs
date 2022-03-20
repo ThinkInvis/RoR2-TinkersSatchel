@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to push nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> enemies within {PULL_RADIUS:N0} m after taking damage.";
+        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> enemies within {PULL_RADIUS:N0} m after taking damage. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -38,6 +38,7 @@ namespace ThinkInvisible.TinkersSatchel {
         const float PULL_FORCE = 30f;
         const float PULL_RADIUS = 20f;
         const float PULL_VFX_DURATION = 0.2f;
+        const float PROC_ICD = 0.5f;
 
         private GameObject blackHolePrefab;
 
@@ -100,6 +101,14 @@ namespace ThinkInvisible.TinkersSatchel {
         private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker) {
             orig(self, damageValue, damagePosition, damageIsSilent, attacker);
             if(NetworkServer.active && self.body && damageValue > 0f) {
+                var cpt = self.GetComponent<KleinBottleTimeTracker>();
+                if(!cpt)
+                    cpt = self.gameObject.AddComponent<KleinBottleTimeTracker>();
+
+                if(Time.fixedTime - cpt.LastTimestamp < PROC_ICD)
+                    return;
+                else
+                    cpt.LastTimestamp = Time.fixedTime;
                 var count = GetCount(self.body);
                 var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
                 var proc = Util.CheckRoll(pChance, self.body.master);
@@ -140,5 +149,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
         }
+    }
+
+    public class KleinBottleTimeTracker : MonoBehaviour {
+        public float LastTimestamp = 0f;
     }
 }
