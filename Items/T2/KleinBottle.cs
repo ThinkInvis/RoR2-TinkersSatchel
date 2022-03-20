@@ -35,7 +35,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 20f;
+        const float PULL_FORCE = 30f;
         const float PULL_RADIUS = 20f;
         const float PULL_VFX_DURATION = 0.2f;
 
@@ -123,7 +123,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
-                            velVec.y += 0.5f * velVec.magnitude;
+                            velVec.y = Mathf.Max(velVec.y, 0f) + 0.75f * velVec.magnitude;
                             velVec = velVec.normalized;
                             if(tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
                                 var mcpt = tcpt.body.GetComponent<IPhysMotor>();
