@@ -150,7 +150,7 @@ namespace ThinkInvisible.TinkersSatchel {
                                 var mcpt = tcpt.body.GetComponent<IPhysMotor>();
                                 if(mcpt != null)
                                     mcpt.ApplyForceImpulse(new PhysForceInfo {
-                                        force = velVec * PULL_FORCE / mcpt.mass,
+                                        force = velVec * PULL_FORCE * mcpt.mass,
                                         ignoreGroundStick = true,
                                         disableAirControlUntilCollision = false
                                     });
