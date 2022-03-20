@@ -109,7 +109,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update; //SetDisplayData hook is bugged and uses System.ValueType instead of DisplayData, can't easily make manual hook because it's not static
-
+            On.RoR2.UI.AllyCardController.UpdateInfo += AllyCardController_UpdateInfo;
         }
 
         public override void Uninstall() {
@@ -117,11 +117,24 @@ namespace ThinkInvisible.TinkersSatchel {
 
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
             On.RoR2.UI.EquipmentIcon.Update -= EquipmentIcon_Update;
+            On.RoR2.UI.AllyCardController.UpdateInfo -= AllyCardController_UpdateInfo;
         }
 
 
 
         ////// Hooks //////
+
+        private void AllyCardController_UpdateInfo(On.RoR2.UI.AllyCardController.orig_UpdateInfo orig, RoR2.UI.AllyCardController self) {
+            orig(self);
+            if(self.sourceMaster) {
+                var bodyObj = self.sourceMaster.GetBodyObject();
+                var packFlag = bodyObj.GetComponent<PackBoxedFlag>();
+                if(packFlag && packFlag.isBoxed) {
+                    self.portraitIconImage.texture = secondaryIconResource.texture;
+                    self.portraitIconImage.enabled = true;
+                }
+            }
+        }
 
         private void EquipmentSlot_UpdateTargets(On.RoR2.EquipmentSlot.orig_UpdateTargets orig, EquipmentSlot self, EquipmentIndex targetingEquipmentIndex, bool userShouldAnticipateTarget) {
             if(targetingEquipmentIndex != catalogIndex || self.subcooldownTimer > 0f || self.stock == 0) {
@@ -208,6 +221,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
                     cpt.packedObject = slot.currentTarget.rootObject;
                     cpt.queuedDeactivate = true;
+                    var boxflag = cpt.packedObject.GetComponent<PackBoxedFlag>();
+                    if(!boxflag) boxflag = cpt.packedObject.AddComponent<PackBoxedFlag>();
+                    boxflag.isBoxed = true;
+
                     return false;
                 }
             } else {
@@ -234,6 +251,8 @@ namespace ThinkInvisible.TinkersSatchel {
                         origin = placeLoc,
                         rotation = cpt.packedObject.transform.rotation
                     }, true);
+                    var boxflag = cpt.packedObject.GetComponent<PackBoxedFlag>();
+                    if(boxflag) boxflag.isBoxed = false;
                     cpt.packedObject = null;
                     cpt.auxiliaryPackedObjects.Clear();
 
@@ -331,5 +350,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
         }
+    }
+
+    public class PackBoxedFlag : MonoBehaviour {
+        public bool isBoxed = false;
     }
 }
