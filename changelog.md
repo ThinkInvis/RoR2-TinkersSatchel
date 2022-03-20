@@ -1,5 +1,13 @@
 # Tinker's Satchel Changelog
 
+**1.6.0**
+
+- ADDED ARTIFACT: Artifact of Safekeeping!
+- Fixed Sturdy Mug partial proc chance being 1/100 the intended amount (stacking to 100% would still always proc).
+- Cardboard Box now replaces the icons of packed allies in the HUD's ally card list.
+- Patched for latest game version (no changes were necessary).
+- Updated R2API dependency to 4.1.1.
+
 **1.5.5**
 
 - Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks.

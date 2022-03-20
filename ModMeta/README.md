@@ -73,6 +73,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Haste: "All combatants attack 10x faster and deal 1/20x damage."
 - Danger: "Players can be killed in one hit."
 	- Has a config option (disabled by default) to force one-hit protection while this artifact is off, even while cursed (e.g. Artifact of Glass).
+- Safekeeping: "All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed."
 
 ## Issues/TODO
 
@@ -84,6 +85,14 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.6.0**
+
+- ADDED ARTIFACT: Artifact of Safekeeping!
+- Fixed Sturdy Mug partial proc chance being 1/100 the intended amount (stacking to 100% would still always proc).
+- Cardboard Box now replaces the icons of packed allies in the HUD's ally card list.
+- Patched for latest game version (no changes were necessary).
+- Updated R2API dependency to 4.1.1.
 
 **1.5.5**
 
@@ -115,9 +124,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed Percussive Maintenance being enabled preventing luck stat, Heretic transformation, and gummy clones from working/updating.
 - Fixed Percussive Maintenance not removing its hooks on uninstall (possible performance/compatibility issue).
 - Updated TILER2 dependency to 6.0.2.
-
-**1.5.1**
-
-- Added an unlock achievement to Percussive Maintenance.
-- Unlock achievements for all items are now implemented correctly, which will no longer look like always-unlocked items in the logbook.
-- Cardboard Box now removes nav nodes. No nav nodes are created by placement (yet), as a now-intentional barricade mechanic.
