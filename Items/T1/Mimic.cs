@@ -219,7 +219,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         internal void AddMimics(int count, bool suppressRebuild = false, params ItemIndex[] ignore) {
-            var iarrSel = GetSelection();
+            var iarrSel = GetSelection(ignore);
             if(iarrSel.Count < 1) return;
             for(int i = 0; i < count; i++) {
                 var toAdd = Mimic.instance.rng.NextElementUniform(iarrSel.Evaluate(Mimic.instance.rng.nextNormalizedFloat));
