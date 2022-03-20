@@ -85,6 +85,21 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.5.5**
+
+- Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks.
+- Made Unstable Klein Bottle more consistent.
+	- Added a short internal cooldown to prevent multishot attacks from resulting in greatly increased push force.
+	- Now always pushes with at least some upwards component.
+	- Push force against different enemy types is less varied.
+		- Beetles in particular will no longer remain rooted in place if pushed while attacking.
+- VFX pass on most item models and all icons.
+	- Added missing metallic/smoothness material info in many cases.
+	- Finalized lightning particles on Unstable Klein Bottle.
+	- Unstable Klein Bottle explosion VFX is now separated from the item's effect and no longer placed far below characters.
+	- Icon texturing and outlines are now more consistent with each other and with vanilla graphics.
+- New mod icon.
+
 **1.5.4**
 
 - Attempted fix for Mostly-Tame Mimic tier weighting inordinately preferring the highest-weighted tier available.
@@ -106,11 +121,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Added an unlock achievement to Percussive Maintenance.
 - Unlock achievements for all items are now implemented correctly, which will no longer look like always-unlocked items in the logbook.
 - Cardboard Box now removes nav nodes. No nav nodes are created by placement (yet), as a now-intentional barricade mechanic.
-
-**1.5.0** *The Engi Update*
-
-- ADDED ITEMS: RC Controller, Unstable Klein Bottle, Cardboard Box, Percussive Maintenance!
-- Sturdy Mug no longer works on Artificer's Nano-Spear (as its projectiles can self-collide and explode immediately).
-- Fixed some config options on Mostly-Tame Mimic and H3AD-53T not updating item descriptions if changed mid-game.
-- Increased NRE safety of H3AD-53T.
-- Some behind-the-scenes project cleanup.
