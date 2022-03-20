@@ -132,8 +132,20 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
-                            velVec.y = Mathf.Max(velVec.y, 0f) + 0.75f * velVec.magnitude;
-                            velVec = velVec.normalized;
+                            float theta;
+
+                            if(velVec.x == 0 && velVec.z == 0)
+                                theta = UnityEngine.Random.value * Mathf.PI * 2f;
+                            else
+                                theta = Mathf.Atan2(velVec.z, velVec.x);
+
+                            float mag = velVec.magnitude;
+                            if(mag == 0) mag = velVec.y;
+
+                            var pitch = Mathf.Asin(velVec.y / mag);
+                            pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
+                            velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
+
                             if(tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
                                 var mcpt = tcpt.body.GetComponent<IPhysMotor>();
                                 if(mcpt != null)
@@ -148,6 +160,9 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                 }
             }
+        }
+        float Remap(float x, float minFrom, float maxFrom, float minTo, float maxTo) {
+            return maxTo + (maxTo - minTo) * ((x - minFrom) / (maxFrom - minFrom));
         }
     }
 
