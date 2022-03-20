@@ -206,7 +206,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCount(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             if(procCount <= 0) return;
             self.bulletCount = (uint)procCount;
             self.maxSpread += spreadConeHalfAngleDegr;
@@ -223,7 +223,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCount(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             var origRot = fireProjectileInfo.rotation;
             for(var i = 0; i < procCount; i++) {
                 fireProjectileInfo.rotation = origRot * Quaternion.Euler(
