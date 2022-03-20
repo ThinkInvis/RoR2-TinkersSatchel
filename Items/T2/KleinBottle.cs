@@ -5,6 +5,9 @@ using TILER2;
 using static TILER2.MiscUtil;
 using R2API;
 using UnityEngine.Networking;
+using System.Collections.Generic;
+using System;
+using RoR2.Orbs;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {
@@ -32,9 +35,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 1500f;
-        const float PULL_RADIUS = 18f;
-        const float PULL_DURATION = 0.5f;
+        const float PULL_FORCE = 20f;
+        const float PULL_RADIUS = 20f;
+        const float PULL_VFX_DURATION = 0.2f;
 
         private GameObject blackHolePrefab;
 
@@ -53,15 +56,14 @@ namespace ThinkInvisible.TinkersSatchel {
             var tempPfb = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/GravSphere").InstantiateClone("temporary setup prefab", false);
             var proj = tempPfb.GetComponent<RoR2.Projectile.ProjectileSimple>();
             proj.desiredForwardSpeed = 0;
-            proj.lifetime = PULL_DURATION;
+            proj.lifetime = PULL_VFX_DURATION;
             var projCtrl = tempPfb.GetComponent<RoR2.Projectile.ProjectileController>();
             projCtrl.procCoefficient = 0;
             var dmg = proj.GetComponent<RoR2.Projectile.ProjectileDamage>();
             dmg.damage = 0f;
             dmg.enabled = false;
             var force = tempPfb.GetComponent<RadialForce>();
-            force.forceMagnitude = PULL_FORCE;
-            force.radius = PULL_RADIUS;
+            force.enabled = false;
             
             var sph = tempPfb.transform.Find("Sphere");
             sph.gameObject.SetActive(false);
@@ -74,7 +76,7 @@ namespace ThinkInvisible.TinkersSatchel {
             spsShape.radius = 4f;
 
             blackHolePrefab = tempPfb.InstantiateClone("KleinBottleProcPrefab", true);
-            Object.Destroy(tempPfb);
+            UnityEngine.Object.Destroy(tempPfb);
 
             ContentAddition.AddProjectile(blackHolePrefab);
         }
@@ -104,9 +106,37 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(proc) {
                     RoR2.Projectile.ProjectileManager.instance.FireProjectile(
                         blackHolePrefab,
-                        self.body.footPosition + (Vector3.down * 0.25f), Quaternion.identity,
+                        self.body.corePosition, Quaternion.identity,
                         self.body.gameObject,
                         0f, 0f, false);
+
+                    var teamMembers = new List<TeamComponent>();
+                    bool isFF = FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off;
+                    var scan = ((TeamIndex[])Enum.GetValues(typeof(TeamIndex)));
+                    var myTeam = TeamComponent.GetObjectTeam(self.body.gameObject);
+                    foreach(var ind in scan) {
+                        if(isFF || myTeam != ind)
+                            teamMembers.AddRange(TeamComponent.GetTeamMembers(ind));
+                    }
+                    teamMembers.Remove(self.body.teamComponent);
+                    float sqrad = PULL_RADIUS * PULL_RADIUS;
+                    foreach(TeamComponent tcpt in teamMembers) {
+                        var velVec = tcpt.transform.position - self.transform.position;
+                        if(velVec.sqrMagnitude <= sqrad) {
+                            velVec.y += 0.5f * velVec.magnitude;
+                            velVec = velVec.normalized;
+                            if(tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
+                                var mcpt = tcpt.body.GetComponent<IPhysMotor>();
+                                if(mcpt != null)
+                                    mcpt.ApplyForceImpulse(new PhysForceInfo {
+                                        force = velVec * PULL_FORCE,
+                                        massIsOne = true,
+                                        ignoreGroundStick = true,
+                                        disableAirControlUntilCollision = false
+                                    });
+                            }
+                        }
+                    }
                 }
             }
         }
