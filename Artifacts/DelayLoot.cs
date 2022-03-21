@@ -70,14 +70,14 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport report) {
-            if(IsActiveAndEnabled() && report.victimIsBoss && TeleporterInteraction.instance.bossGroup.combatSquad.memberCount <= 1) {
+            if(IsActiveAndEnabled() && report.victimIsBoss && TeleporterInteraction.instance && TeleporterInteraction.instance.bossGroup.combatSquad.memberCount <= 1) {
                 shouldDeferDrops = false;
                 lootShowerLoc = report.victim.transform.position;
             }
         }
 
         private void PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3(On.RoR2.PickupDropletController.orig_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 orig, GenericPickupController.CreatePickupInfo pickupInfo, Vector3 position, Vector3 velocity) {
-            if(!IsActiveAndEnabled() || !shouldDeferDrops) {
+            if(!IsActiveAndEnabled() || !shouldDeferDrops || !TeleporterInteraction.instance) {
                 orig(pickupInfo, position, velocity);
                 return;
             }
