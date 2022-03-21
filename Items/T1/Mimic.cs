@@ -249,6 +249,7 @@ namespace ThinkInvisible.TinkersSatchel {
         internal void Redistribute(ItemIndex ind) {
             var moved = _mimics.Count(x => x == ind);
             if(moved == 0) return;
+            fakeInv.RemoveItem(ind, fakeInv.GetItemCount(ind));
             _mimics.RemoveAll(x => x == ind);
             AddMimics(moved, false, ind);
         }
