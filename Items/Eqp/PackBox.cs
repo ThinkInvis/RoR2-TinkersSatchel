@@ -126,8 +126,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void AllyCardController_UpdateInfo(On.RoR2.UI.AllyCardController.orig_UpdateInfo orig, RoR2.UI.AllyCardController self) {
             orig(self);
-            if(self.sourceMaster) {
+            if(self != null && self.sourceMaster) {
                 var bodyObj = self.sourceMaster.GetBodyObject();
+                if(!bodyObj) return;
                 var packFlag = bodyObj.GetComponent<PackBoxedFlag>();
                 if(packFlag && packFlag.isBoxed) {
                     self.portraitIconImage.texture = secondaryIconResource.texture;
