@@ -97,31 +97,32 @@ namespace ThinkInvisible.TinkersSatchel {
 			base.Install();
 
 			On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
-            On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
+            On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
 		}
 
         public override void Uninstall() {
 			base.Uninstall();
 
 			On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
-			On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
+			On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
 		}
 
 
 
-        ////// Hooks //////
-        #region Hooks
-        private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self) {
-			if(self.characterBody && self.characterBody.skillLocator
-				&& self.characterBody.skillLocator.FindSkillSlot(self) == SkillSlot.Utility) {
-				var count = GetCount(self.characterBody);
+		////// Hooks //////
+		#region Hooks
+
+		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
+			orig(self, skill);
+			if(self && self.skillLocator
+				&& self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility) {
+				var count = GetCount(self);
 				if(count > 0) {
-					var cpt = self.characterBody.GetComponent<HeadsetComponent>();
-					if(!cpt) cpt = self.characterBody.gameObject.AddComponent<HeadsetComponent>();
+					var cpt = self.GetComponent<HeadsetComponent>();
+					if(!cpt) cpt = self.gameObject.AddComponent<HeadsetComponent>();
 					cpt.hitsRemaining = procCount + stackProcCount * (count - 1);
 				}
 			}
-			orig(self);
 		}
 
 		private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self) {
