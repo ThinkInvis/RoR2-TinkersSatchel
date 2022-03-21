@@ -62,8 +62,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		private const float HITBOX_RADIUS = 3f;
 		private const float HIT_INTERVAL = 0.5f;
 
-		readonly HashSet<GameObject> recentlyHit = new HashSet<GameObject>();
-
 
 
 
@@ -131,64 +129,58 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!NetworkServer.active || !self) {
 				return;
 			}
-			var cpt = self.GetComponent<HeadsetComponent>();
+			var cpt = self.gameObject.GetComponent<HeadsetComponent>();
 			if(!cpt) cpt = self.gameObject.AddComponent<HeadsetComponent>();
-			var atkTeam = TeamComponent.GetObjectTeam(self.gameObject);
 			var count = GetCount(self);
 			if(count <= 0) {
 				cpt.hitsRemaining = 0;
 			} else if(cpt.hitsRemaining > 0) {
+				var atkTeam = TeamComponent.GetObjectTeam(self.gameObject);
 				var p1 = cpt.previousPos;
 				var p2 = self.transform.position;
 
-				Collider[] res = Physics.OverlapCapsule(p1, p2, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal);
+				Collider[] res;
+				if(p1 == p2)
+					res = Physics.OverlapSphere(p1, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
+				else
+					res = Physics.OverlapCapsule(p1, p2, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
+
+				var damageInfo = new DamageInfo {
+					attacker = self.gameObject,
+					inflictor = self.gameObject,
+					crit = false,
+					damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
+					damageColorIndex = DamageColorIndex.Item,
+					damageType = DamageType.Generic,
+					force = Vector3.zero,
+					procCoefficient = 1f
+				};
 
 				foreach(var hit in res) {
 					if(!hit) continue;
 					var hurtbox = hit.GetComponent<HurtBox>();
-					if(!hurtbox || !hurtbox.healthComponent
-						|| recentlyHit.Contains(hurtbox.healthComponent.gameObject)
+					if(!hurtbox
+						|| !hurtbox.healthComponent
 						|| hurtbox.healthComponent == self.healthComponent
 						|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
-					recentlyHit.Add(hurtbox.healthComponent.gameObject);
+					var icd = hurtbox.healthComponent.gameObject.GetComponent<HeadsetICDComponent>();
+					if(!icd) icd = hurtbox.healthComponent.gameObject.AddComponent<HeadsetICDComponent>();
+					if(Time.fixedTime - icd.lastHit < HIT_INTERVAL) continue;
+					icd.lastHit = Time.fixedTime;
+
+					damageInfo.position = hit.transform.position;
+					hurtbox.healthComponent.TakeDamage(damageInfo);
+					var ssoh = hurtbox.healthComponent.GetComponent<SetStateOnHurt>();
+					if(ssoh && ssoh.canBeStunned) {
+						ssoh.SetStun(stunDuration);
+					}
+
 					cpt.hitsRemaining--;
 					if(cpt.hitsRemaining <= 0)
 						break;
 				}
 
 				cpt.previousPos = p2;
-			}
-
-			if(recentlyHit.Count > 0) {
-				cpt.procCooldown -= Time.fixedDeltaTime;
-				if(cpt.procCooldown <= 0f) {
-					cpt.procCooldown = HIT_INTERVAL;
-
-                    var damageInfo = new DamageInfo {
-                        attacker = self.gameObject,
-                        inflictor = self.gameObject,
-                        crit = false,
-                        damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
-                        damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.Generic,
-                        force = Vector3.zero,
-                        procCoefficient = 0f
-                    };
-
-                    foreach(var hit in recentlyHit) {
-						if(!hit) continue;
-						var hc = hit.GetComponent<HealthComponent>();
-						if(!hc
-							|| !FriendlyFireManager.ShouldSplashHitProceed(hc, atkTeam)) continue;
-						damageInfo.position = hit.transform.position;
-						hc.TakeDamage(damageInfo);
-						var ssoh = hc.GetComponent<SetStateOnHurt>();
-						if(ssoh && ssoh.canBeStunned) {
-							ssoh.SetStun(stunDuration);
-						}
-					}
-					recentlyHit.Clear();
-				}
 			}
 
 			int currBuffStacks = self.GetBuffCount(headsetBuff);
@@ -201,8 +193,11 @@ namespace ThinkInvisible.TinkersSatchel {
     public class HeadsetComponent : MonoBehaviour {
         public Vector3 previousPos;
         public int hitsRemaining;
-		public float procCooldown = 0f;
 	}
+
+	public class HeadsetICDComponent : MonoBehaviour {
+		public float lastHit = 0f;
+    }
 
 	public class TkSatHeadsetAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
 		public string AchievementIdentifier => "TKSAT_HEADSET_ACHIEVEMENT_ID";
