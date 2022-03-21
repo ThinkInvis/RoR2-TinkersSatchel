@@ -4,6 +4,8 @@ using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
+using R2API.Networking.Interfaces;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackBox : Equipment<PackBox> {
@@ -102,6 +104,9 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             placeIndicatorBadPrefab = recy.InstantiateClone("TkSatPackBoxPlaceBadIndicator", false);
             GameObject.Destroy(recy);
+
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPack>();
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPlace>();
         }
 
         public override void Install() {
@@ -129,7 +134,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self != null && self.sourceMaster) {
                 var bodyObj = self.sourceMaster.GetBodyObject();
                 if(!bodyObj) return;
-                var packFlag = bodyObj.GetComponent<PackBoxedFlag>();
+                var packFlag = bodyObj.GetComponent<PackBoxHandler>();
                 if(packFlag && packFlag.isBoxed) {
                     self.portraitIconImage.texture = secondaryIconResource.texture;
                     self.portraitIconImage.enabled = true;
@@ -152,7 +157,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(cpt.packedObject) {
                 indPrefab = placeIndicatorPrefab;
-                bool didPlace = TryPlaceBoxable(self.GetAimRay(), out Vector3 loc, out bool didHitGround);
+                bool didPlace = TryGetBoxablePlacePos(self.GetAimRay(), out Vector3 loc, out bool didHitGround);
                 if(didPlace || didHitGround) {
                     if(!didPlace) indPrefab = placeIndicatorBadPrefab;
                     cpt.groundTarget.transform.position = loc;
@@ -204,67 +209,34 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!cpt) cpt = slot.characterBody.gameObject.AddComponent<PackBoxTracker>();
 
             if(cpt.packedObject == null) {
-                if(validObjectNames.Contains(slot.currentTarget.rootObject.name)) {
-                    EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/TeleportOutBoom"), new EffectData {
-                        origin = slot.currentTarget.rootObject.transform.position,
-                        rotation = slot.currentTarget.rootObject.transform.rotation
-                    }, true);
-
+                if(validObjectNames.Contains(slot.currentTarget.rootObject?.name)) {
                     var shopcpt = slot.currentTarget.rootObject.GetComponent<ShopTerminalBehavior>();
-                    if(shopcpt && shopcpt.serverMultiShopController) {
+                    if(shopcpt && shopcpt.serverMultiShopController)
                         slot.currentTarget.rootObject = shopcpt.serverMultiShopController.transform.root.gameObject;
-                        foreach(var terminal in shopcpt.serverMultiShopController._terminalGameObjects) {
-                            cpt.auxiliaryPackedObjects.Add(terminal, terminal.transform.position - slot.currentTarget.rootObject.transform.position);
-                        }
-                    }
 
-                    DirectorCore.instance.RemoveAllOccupiedNodes(slot.currentTarget.rootObject);
+                    var pbh = slot.currentTarget.rootObject.GetComponent<PackBoxHandler>();
+                    if(!pbh)
+                        pbh = slot.currentTarget.rootObject.AddComponent<PackBoxHandler>();
 
-                    cpt.packedObject = slot.currentTarget.rootObject;
-                    cpt.queuedDeactivate = true;
-                    var boxflag = cpt.packedObject.GetComponent<PackBoxedFlag>();
-                    if(!boxflag) boxflag = cpt.packedObject.AddComponent<PackBoxedFlag>();
-                    boxflag.isBoxed = true;
+                    pbh.TryPack(cpt, null);
 
                     return false;
                 }
             } else {
-                if(TryPlaceBoxable(slot.GetAimRay(), out Vector3 placeLoc, out _)) {
-                    var body = cpt.packedObject.GetComponent<CharacterBody>();
-                    if(body && body.master)
-                        cpt.packedObject.transform.position =
-                            body.master.CalculateSafeGroundPosition(placeLoc, body)
-                            + (body.corePosition - body.footPosition);
-                    else cpt.packedObject.transform.position = placeLoc;
-                    cpt.packedObject.SetActive(true);
-                    var singleLoc = cpt.packedObject.GetComponentInChildren<ModelLocator>();
-                    if(singleLoc)
-                        singleLoc.modelTransform.gameObject.SetActive(true);
-                    foreach(var aux in cpt.auxiliaryPackedObjects) {
-                        aux.Key.transform.position = placeLoc + aux.Value;
-                        aux.Key.SetActive(true);
-                        var locs = aux.Key.gameObject.GetComponentsInChildren<ModelLocator>();
-                        foreach(var loc in locs) {
-                            loc.modelTransform.gameObject.SetActive(true);
-                        }
-                    }
-                    EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/TeleportOutBoom"), new EffectData {
-                        origin = placeLoc,
-                        rotation = cpt.packedObject.transform.rotation
-                    }, true);
-                    var boxflag = cpt.packedObject.GetComponent<PackBoxedFlag>();
-                    if(boxflag) boxflag.isBoxed = false;
-                    cpt.packedObject = null;
-                    cpt.auxiliaryPackedObjects.Clear();
-
-                    return true;
+                var pbh = cpt.packedObject.GetComponent<PackBoxHandler>();
+                if(!pbh) {
+                    TinkersSatchelPlugin._logger.LogError("PackBoxTracker contains GameObject with no PackBoxHandler");
+                    return false;
+                }
+                if(TryGetBoxablePlacePos(slot.GetAimRay(), out Vector3 placeLoc, out _)) {
+                    return pbh.TryPlace(cpt, placeLoc);
                 } else return false;
             }
 
             return false;
         }
 
-        bool TryPlaceBoxable(Ray aim, out Vector3 loc, out bool didHitGround) {
+        bool TryGetBoxablePlacePos(Ray aim, out Vector3 loc, out bool didHitGround) {
             var dir = aim.direction;
             dir.y = 0;
             dir.Normalize();
@@ -322,25 +294,148 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             return scan;
         }
+
+        public struct MsgPackboxPack : INetMessage {
+            GameObject _target;
+            GameObject[] _aux;
+            GameObject _owner;
+
+            public void Deserialize(NetworkReader reader) {
+                _target = reader.ReadGameObject();
+                _owner = reader.ReadGameObject();
+                _aux = new GameObject[reader.ReadInt32()];
+                for(var i = 0; i < _aux.Length; i++)
+                    _aux[i] = reader.ReadGameObject();
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target);
+                writer.Write(_owner);
+                writer.Write(_aux.Length);
+                for(var i = 0; i < _aux.Length; i++)
+                    writer.Write(_aux[i]);
+            }
+
+            public void OnReceived() {
+                if(!NetworkClient.active) {
+                    TinkersSatchelPlugin._logger.LogError($"Client-targeted MsgPackboxPack received by server-only game instance");
+                    return;
+                }
+                if(!_target) {
+                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPack for null GameObject");
+                    return;
+                }
+                if(!_owner) {
+                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPack for null GameObject");
+                    return;
+                }
+
+                var pbh = _target.GetComponent<PackBoxHandler>();
+                if(!pbh) pbh = _target.AddComponent<PackBoxHandler>();
+
+                var pbt = _owner.GetComponent<PackBoxTracker>();
+                if(!pbt) pbt = _owner.AddComponent<PackBoxTracker>();
+
+                pbh.TryPack(pbt, _aux);
+            }
+
+            public MsgPackboxPack(GameObject target, PackBoxTracker owner, GameObject[] aux) {
+                _target = target;
+                _owner = owner.gameObject;
+                _aux = aux;
+            }
+        }
+
+        public struct MsgPackboxPlace : INetMessage {
+            GameObject _target;
+            GameObject _owner;
+            Vector3 _pos;
+
+            public void Deserialize(NetworkReader reader) {
+                _target = reader.ReadGameObject();
+                _owner = reader.ReadGameObject();
+                _pos = reader.ReadVector3();
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target);
+                writer.Write(_owner);
+                writer.Write(_pos);
+            }
+
+            public void OnReceived() {
+                if(!NetworkClient.active) {
+                    TinkersSatchelPlugin._logger.LogError($"Client-targeted MsgPackboxPlace received by server-only game instance");
+                    return;
+                }
+                if(!_target) {
+                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxUnpack for null GameObject");
+                    return;
+                }
+                if(!_owner) {
+                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPack for null GameObject");
+                    return;
+                }
+
+                var pbh = _target.GetComponent<PackBoxHandler>();
+                var pbt = _owner.GetComponent<PackBoxTracker>();
+
+                if(!pbh || !pbt) {
+                    TinkersSatchelPlugin._logger.LogError($"MsgPackboxPack has an invalid GameObject (names: {_target.name} {_owner.name})");
+                    return;
+                }
+
+                pbh.TryPlace(pbt, _pos);
+            }
+
+            public MsgPackboxPlace(GameObject target, PackBoxTracker owner, Vector3 pos) {
+                _target = target;
+                _owner = owner.gameObject;
+                _pos = pos;
+            }
+        }
     }
 
     public class PackBoxTracker : MonoBehaviour {
         public GameObject packedObject;
-        public Dictionary<GameObject, Vector3> auxiliaryPackedObjects = new Dictionary<GameObject, Vector3>();
-        public bool queuedDeactivate = false;
         public Transform groundTarget;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         void Awake() {
             groundTarget = new GameObject().transform;
         }
+    }
+
+    public class PackBoxHandler : MonoBehaviour {
+        public bool isBoxed = false;
+        public bool queuedDeactivate = false;
+        public Dictionary<GameObject, Vector3> auxiliaryPackedObjects = new Dictionary<GameObject, Vector3>();
+
+        public void CollectAuxiliary(GameObject[] auxOverride) {
+            auxiliaryPackedObjects.Clear();
+
+            if(auxOverride != null && auxOverride.Length > 0) {
+                foreach(var obj in auxOverride) {
+                    if(!obj) continue;
+                    auxiliaryPackedObjects.Add(obj, obj.transform.position - transform.position);
+                }
+            } else {
+                var shopcpt = gameObject.GetComponent<MultiShopController>();
+                if(shopcpt && shopcpt._terminalGameObjects != null) {
+                    foreach(var terminal in shopcpt._terminalGameObjects) {
+                        if(!terminal) continue;
+                        auxiliaryPackedObjects.Add(terminal, terminal.transform.position - transform.position);
+                    }
+                }
+            }
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         void LateUpdate() {
             if(queuedDeactivate) {
                 queuedDeactivate = false;
-                packedObject.SetActive(false);
-                var loc = packedObject.GetComponentInChildren<ModelLocator>();
+                isBoxed = true;
+                var loc = gameObject.GetComponentInChildren<ModelLocator>();
                 if(loc)
                     loc.modelTransform.gameObject.SetActive(false);
                 foreach(var obj in auxiliaryPackedObjects) {
@@ -349,11 +444,83 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(loc)
                         loc.modelTransform.gameObject.SetActive(false);
                 }
+                gameObject.SetActive(false);
             }
         }
-    }
 
-    public class PackBoxedFlag : MonoBehaviour {
-        public bool isBoxed = false;
+        public bool TryPlace(PackBoxTracker from, Vector3 pos) {
+            if(!from || from.packedObject != gameObject) {
+                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPlace called on null PackBoxTracker, or this PackBoxHandler was not contained in it");
+                return false;
+            }
+
+            PlaceGlobal(from, pos);
+
+            if(NetworkServer.active && !NetworkClient.active)
+                new PackBox.MsgPackboxPlace(gameObject, from, pos).Send(R2API.Networking.NetworkDestination.Clients);
+            if(NetworkClient.active)
+                PlaceClient(pos);
+
+            return true;
+        }
+
+        public void PlaceClient(Vector3 pos) {
+            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/TeleportOutBoom"), new EffectData {
+                origin = pos,
+                rotation = transform.rotation
+            }, true);
+        }
+
+        public void PlaceGlobal(PackBoxTracker from, Vector3 pos) {
+            var body = GetComponent<CharacterBody>();
+            if(body && body.master)
+                transform.position =
+                    body.master.CalculateSafeGroundPosition(pos, body)
+                    + (body.corePosition - body.footPosition);
+            else transform.position = pos;
+            gameObject.SetActive(true);
+            var singleLoc = gameObject.GetComponentInChildren<ModelLocator>();
+            if(singleLoc)
+                singleLoc.modelTransform.gameObject.SetActive(true);
+            foreach(var aux in auxiliaryPackedObjects) {
+                aux.Key.transform.position = pos + aux.Value;
+                aux.Key.SetActive(true);
+                var locs = aux.Key.gameObject.GetComponentsInChildren<ModelLocator>();
+                foreach(var loc in locs) {
+                    loc.modelTransform.gameObject.SetActive(true);
+                }
+            }
+            from.packedObject = null;
+            isBoxed = false;
+        }
+        
+        public bool TryPack(PackBoxTracker into, GameObject[] auxOverride) {
+            if(!into) {
+                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPack called on null PackBoxTracker");
+                return false;
+            }
+
+            PackGlobal(into, auxOverride);
+            if(NetworkServer.active && !NetworkClient.active)
+                new PackBox.MsgPackboxPack(gameObject, into, auxiliaryPackedObjects.Select(x => x.Key).ToArray()).Send(R2API.Networking.NetworkDestination.Clients);
+            if(NetworkClient.active)
+                PackClient();
+
+            return true;
+        }
+
+        public void PackClient() {
+            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/TeleportOutBoom"), new EffectData {
+                origin = transform.position,
+                rotation = transform.rotation
+            }, true);
+        }
+
+        public void PackGlobal(PackBoxTracker into, GameObject[] auxOverride) {
+            DirectorCore.instance.RemoveAllOccupiedNodes(gameObject);
+            into.packedObject = gameObject;
+            queuedDeactivate = true;
+            CollectAuxiliary(auxOverride);
+        }
     }
 }
