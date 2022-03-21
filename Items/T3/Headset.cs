@@ -158,7 +158,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				cpt.previousPos = p2;
 			}
 
-			if(recentlyHit.Count > 1) {
+			if(recentlyHit.Count > 0) {
 				cpt.procCooldown -= Time.fixedDeltaTime;
 				if(cpt.procCooldown <= 0) {
 					cpt.procCooldown = HIT_INTERVAL;
