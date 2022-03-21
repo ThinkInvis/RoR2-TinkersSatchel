@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.6.3**
+
+- Fixed Artifact of Safekeeping trying and failing to work in teleporterless stages (incl. Bazaar, final boss fights).
+- Fixed an edge-case NRE in Percussive Maintenance.
+
 **1.6.2**
 
 - Cardboard Box is now synced properly in multiplayer.

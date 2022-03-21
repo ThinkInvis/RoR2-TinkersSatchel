@@ -86,6 +86,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.6.3**
+
+- Fixed Artifact of Safekeeping trying and failing to work in teleporterless stages (incl. Bazaar, final boss fights).
+- Fixed an edge-case NRE in Percussive Maintenance.
+
 **1.6.2**
 
 - Cardboard Box is now synced properly in multiplayer.
@@ -126,8 +131,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Unstable Klein Bottle explosion VFX is now separated from the item's effect and no longer placed far below characters.
 	- Icon texturing and outlines are now more consistent with each other and with vanilla graphics.
 - New mod icon.
-
-**1.5.4**
-
-- Attempted fix for Mostly-Tame Mimic tier weighting inordinately preferring the highest-weighted tier available.
-	- Reworked internals of this item. Each mimic's selected item is now tracked individually, instead of keeping a list of counts. This appears to have also reduced the need for the LagLimit config option.
