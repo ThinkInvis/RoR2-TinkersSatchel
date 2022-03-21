@@ -81,7 +81,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			headsetBuff.buffColor = new Color(0.5f, 0.575f, 0.95f);
 			headsetBuff.canStack = true;
 			headsetBuff.isDebuff = false;
-			headsetBuff.name = "TKSATVoidGoldenGear";
+			headsetBuff.name = "TKSATHeadset";
 			headsetBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/ShockNearby/texBuffTeslaIcon.tif")
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(headsetBuff);
