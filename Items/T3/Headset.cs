@@ -161,7 +161,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			if(recentlyHit.Count > 0) {
 				cpt.procCooldown -= Time.fixedDeltaTime;
-				if(cpt.procCooldown <= 0) {
+				if(cpt.procCooldown <= 0f) {
 					cpt.procCooldown = HIT_INTERVAL;
 
                     var damageInfo = new DamageInfo {
