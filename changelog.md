@@ -1,5 +1,18 @@
 # Tinker's Satchel Changelog
 
+**1.6.2**
+
+- Cardboard Box is now synced properly in multiplayer.
+- Many, *many* H3AD-53T fixes.
+	- No longer has a duplicate internal buff name of Armor Prism's.
+	- Now has a per-target internal cooldown instead of a fixed proc frequency.
+		- No longer causes NREs if one of its pending targets gets killed before a proc happens, because targets will no longer pend.
+	- Actually procs on enemies now.
+	- Fixed proc rate being way too fast (once/frame instead of intended ICD of 0.5s).
+	- No longer deals 0 damage sometimes.
+- Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks. Again. For real this time I promise.
+- Fixed Armor Prism pickup model being huge and unrotated.
+
 **1.6.1**
 
 - Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).

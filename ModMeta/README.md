@@ -86,6 +86,19 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.6.2**
+
+- Cardboard Box is now synced properly in multiplayer.
+- Many, *many* H3AD-53T fixes.
+	- No longer has a duplicate internal buff name of Armor Prism's.
+	- Now has a per-target internal cooldown instead of a fixed proc frequency.
+		- No longer causes NREs if one of its pending targets gets killed before a proc happens, because targets will no longer pend.
+	- Actually procs on enemies now.
+	- Fixed proc rate being way too fast (once/frame instead of intended ICD of 0.5s).
+	- No longer deals 0 damage sometimes.
+- Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks. Again. For real this time I promise.
+- Fixed Armor Prism pickup model being huge and unrotated.
+
 **1.6.1**
 
 - Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).
@@ -118,7 +131,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Attempted fix for Mostly-Tame Mimic tier weighting inordinately preferring the highest-weighted tier available.
 	- Reworked internals of this item. Each mimic's selected item is now tracked individually, instead of keeping a list of counts. This appears to have also reduced the need for the LagLimit config option.
-
-**1.5.3**
-
-- Fixed missing load request for R2API.UnlockableAPI.
