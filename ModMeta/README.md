@@ -86,6 +86,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.6.1**
+
+- Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).
+- Updated R2API dependency to 4.2.1 (switched to NuGet package).
+
 **1.6.0**
 
 - ADDED ARTIFACT: Artifact of Safekeeping!
@@ -117,10 +122,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.5.3**
 
 - Fixed missing load request for R2API.UnlockableAPI.
-
-**1.5.2**
-
-- Fixed Unstable Klein Bottle being enabled preventing some of the base game's on-take-damage effects (Medkit item, red vignette effect).
-- Fixed Percussive Maintenance being enabled preventing luck stat, Heretic transformation, and gummy clones from working/updating.
-- Fixed Percussive Maintenance not removing its hooks on uninstall (possible performance/compatibility issue).
-- Updated TILER2 dependency to 6.0.2.

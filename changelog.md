@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.6.1**
+
+- Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).
+- Updated R2API dependency to 4.2.1 (switched to NuGet package).
+
 **1.6.0**
 
 - ADDED ARTIFACT: Artifact of Safekeeping!
