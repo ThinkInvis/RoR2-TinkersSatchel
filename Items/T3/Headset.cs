@@ -175,6 +175,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     };
 
                     foreach(var hit in recentlyHit) {
+						if(!hit) continue;
 						var hurtbox = hit.GetComponent<HurtBox>();
 						if(!hurtbox || !hurtbox.healthComponent
 							|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
