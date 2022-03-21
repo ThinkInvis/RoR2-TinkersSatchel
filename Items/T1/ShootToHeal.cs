@@ -101,9 +101,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileController_OnCollisionEnter(On.RoR2.Projectile.ProjectileController.orig_OnCollisionEnter orig, RoR2.Projectile.ProjectileController self, Collision collision) {
             orig(self, collision);
-            if(!collision.gameObject) return;
+            if(collision == null || !collision.gameObject) return;
             var hb = collision.gameObject.GetComponent<HurtBox>();
-            var count = GetCount(self.owner?.GetComponent<CharacterBody>());
+            var count = GetCount(self?.owner?.GetComponent<CharacterBody>());
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 hb.healthComponent.Heal(count, default);
             }
@@ -111,7 +111,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileController_OnTriggerEnter(On.RoR2.Projectile.ProjectileController.orig_OnTriggerEnter orig, RoR2.Projectile.ProjectileController self, Collider collider) {
             orig(self, collider);
-            if(!collider.gameObject) return;
+            if(collider == null || !collider.gameObject) return;
             var hb = collider.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner?.GetComponent<CharacterBody>());
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
