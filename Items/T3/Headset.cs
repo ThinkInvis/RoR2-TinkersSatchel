@@ -114,6 +114,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
 			orig(self, skill);
+			if(!NetworkServer.active) return;
 			if(self && self.skillLocator
 				&& self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility) {
 				var count = GetCount(self);
