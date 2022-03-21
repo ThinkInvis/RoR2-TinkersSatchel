@@ -176,12 +176,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
                     foreach(var hit in recentlyHit) {
 						if(!hit) continue;
-						var hurtbox = hit.GetComponent<HurtBox>();
-						if(!hurtbox || !hurtbox.healthComponent
-							|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
+						var hc = hit.GetComponent<HealthComponent>();
+						if(!hc
+							|| !FriendlyFireManager.ShouldSplashHitProceed(hc, atkTeam)) continue;
 						damageInfo.position = hit.transform.position;
-						hurtbox.healthComponent.TakeDamage(damageInfo);
-						var ssoh = hurtbox.healthComponent.GetComponent<SetStateOnHurt>();
+						hc.TakeDamage(damageInfo);
+						var ssoh = hc.GetComponent<SetStateOnHurt>();
 						if(ssoh && ssoh.canBeStunned) {
 							ssoh.SetStun(stunDuration);
 						}
