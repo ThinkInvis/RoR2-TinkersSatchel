@@ -142,13 +142,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 				Collider[] res = Physics.OverlapCapsule(p1, p2, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal);
 
-				if(self.healthComponent) recentlyHit.Add(self.healthComponent.gameObject);
-
 				foreach(var hit in res) {
 					if(!hit) continue;
 					var hurtbox = hit.GetComponent<HurtBox>();
 					if(!hurtbox || !hurtbox.healthComponent
 						|| recentlyHit.Contains(hurtbox.healthComponent.gameObject)
+						|| hurtbox.healthComponent == self.healthComponent
 						|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
 					recentlyHit.Add(hurtbox.healthComponent.gameObject);
 					cpt.hitsRemaining--;
