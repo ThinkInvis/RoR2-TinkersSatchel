@@ -263,7 +263,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var results = Physics.OverlapSphere(aim.origin, maxDistance + camAdjust, Physics.AllLayers, QueryTriggerInteraction.Collide);
             var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI/180f);
             return results
-                .Select(x => GetRootWithLocators(x.gameObject))
+                .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
                 .Where(x => validObjectNames.Contains(x.name))
                 .Select(x => (target: x, vdot: Vector3.Dot(aim.direction, (x.transform.position - aim.origin).normalized)))
                 .Where(x => x.vdot > minDot
@@ -273,26 +273,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 .OrderBy(x => x.vdot * Vector3.Distance(x.target.transform.position, aim.origin))
                 .Select(x => x.target.gameObject)
                 .FirstOrDefault();
-        }
-
-        private GameObject GetRootWithLocators(GameObject target, int maxSearch = 5) {
-            if(!target) return null;
-            GameObject scan = target;
-            for(int i = 0; i < maxSearch; i++) {
-                var cpt = scan.GetComponent<EntityLocator>();
-
-                if(cpt) {
-                    scan = cpt.entity;
-                    continue;
-                }
-
-                var next = scan.transform.root;
-                if(next && next.gameObject != scan)
-                    scan = next.gameObject;
-                else
-                    return scan;
-            }
-            return scan;
         }
 
         public struct MsgPackboxPack : INetMessage {
