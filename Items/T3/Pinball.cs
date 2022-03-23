@@ -44,12 +44,12 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Additional multiplier to original attack damage per bounce.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
-		public float bounceDamage { get; private set; } = 0.25f;
+		public float bounceDamage { get; private set; } = 0.15f;
 
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Percent chance to proc.",
 			AutoConfigFlags.None, 0f, 100f)]
-		public float homeChance { get; private set; } = 50f;
+		public float homeChance { get; private set; } = 35f;
 
 
 
