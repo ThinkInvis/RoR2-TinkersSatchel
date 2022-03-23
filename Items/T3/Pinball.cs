@@ -73,7 +73,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				.WaitForCompletion();
 		}
 
-		//todo: implement for BulletAttack too
+		//todo: fix commando piercing shot, maybe blacklist rex ult
 
 		public override void Install() {
 			base.Install();
@@ -102,74 +102,60 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			var count = GetCount(self.owner?.GetComponent<CharacterBody>());
 
-			var bounceEnd = endPosition;
-
 			if(count > 0) {
-				if(!Util.CheckRoll(homeChance)) return retv;
+				var maxBounces = baseBounces + (count - 1) * stackBounces;
 
-				int bounceCount = 0;
-				if(self.muzzleName.StartsWith("PinballBounceCount"))
-					bounceCount = int.Parse(self.muzzleName.Replace("PinballBounceCount", ""));
+				var bounceEnd = endPosition
+					- self.aimVector * 0.25f; //back ray off slightly for world clearance
 
-				if(bounceCount > baseBounces + (count - 1) * stackBounces)
-					return retv;
+				GameObject lastBounceTarget = null;
 
-				bounceCount++;
+				var origDamage = self.damage;
 
-				var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner))
-					.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
-					.Except(hits.Select(x => x.entityObject))
-					.Except(ignoreList)
-					.Where(obj => {
-						var hc = obj.GetComponent<HealthComponent>();
-						if(!hc || !hc.alive) return false;
-						var dvec = (obj.transform.position - bounceEnd);
-						var ddist = dvec.magnitude;
-						if(ddist > self.maxDistance) return false;
-						var ray = new Ray(bounceEnd, dvec.normalized);
-						if(Physics.Raycast(ray, ddist, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
-							return false;
-						return true;
-					});
-				var aimVec = UnityEngine.Random.onUnitSphere;
-				if(enemies.Count() > 0) {
-					var nextTarget = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
-					aimVec = (nextTarget.transform.position - bounceEnd).normalized;
+				for(var i = 1; i <= maxBounces; i++) {
+					if(!Util.CheckRoll(homeChance)) return retv;
+					var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner))
+						.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+						.Select(obj => {
+							if(obj == lastBounceTarget) return (null, default);
+							var hc = obj.GetComponent<HealthComponent>();
+							if(!hc || !hc.alive) return (null, default);
+							var dvec = (obj.transform.position - bounceEnd);
+							var ddist = dvec.magnitude;
+							if(ddist > self.maxDistance) return (null, default);
+							var ray = new Ray(bounceEnd, dvec.normalized);
+							var worldcastDidHit = Physics.Raycast(ray, ddist, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
+							if(worldcastDidHit)
+								return (null, default);
+							var rayDidHit = Physics.Raycast(ray, out var rayHitInfo, ddist, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
+							if(!rayDidHit)
+								return (null, default);
+							return (obj, rayHitInfo);
+						}).Where(kvp => kvp.obj != null);
+
+					if(enemies.Count() > 0) {
+						var nextTarget = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
+						var aimVec = (nextTarget.obj.transform.position - bounceEnd).normalized;
+						var nhi = default(BulletAttack.BulletHit);
+						self.damage = origDamage * (1f + (float)i * bounceDamage);
+						self.InitBulletHitFromRaycastHit(ref nhi, bounceEnd, aimVec, ref nextTarget.rayHitInfo);
+						self.ProcessHit(ref nhi);
+
+						if(self.tracerEffectPrefab) {
+							EffectData effectData = new EffectData {
+								origin = nextTarget.obj.transform.position,
+								start = bounceEnd
+							};
+							//effectData.SetChildLocatorTransformReference(this.weapon, muzzleIndex);
+							EffectManager.SpawnEffect(self.tracerEffectPrefab, effectData, true);
+						}
+
+						bounceEnd = nextTarget.obj.transform.position;
+						lastBounceTarget = nextTarget.obj;
+					} else break;
 				}
 
-				new BulletAttack {
-						aimVector = aimVec,
-						bulletCount = 1,
-						damage = self.damage * (1f + bounceCount * bounceDamage),
-						damageColorIndex = self.damageColorIndex,
-						damageType = self.damageType,
-						falloffModel = self.falloffModel,
-						modifyOutgoingDamageCallback = self.modifyOutgoingDamageCallback,
-						filterCallback = self.filterCallback,
-						force = self.force,
-						hitCallback = self.hitCallback,
-						hitEffectPrefab = self.hitEffectPrefab,
-						hitMask = self.hitMask,
-						isCrit = self.isCrit,
-						maxDistance = self.maxDistance,
-						maxSpread = 0f,
-						minSpread = 0f,
-						muzzleName = "PinballBounceCount" + bounceCount,
-						origin = bounceEnd,
-						owner = self.owner,
-						procChainMask = self.procChainMask,
-						procCoefficient = self.procCoefficient,
-						queryTriggerInteraction = self.queryTriggerInteraction,
-						radius = self.radius,
-						smartCollision = self.smartCollision,
-						sniper = self.sniper,
-						spreadPitchScale = 0f,
-						spreadYawScale = 0f,
-						stopperMask = self.stopperMask,
-						tracerEffectPrefab = null,
-						weapon = null
-					}.Fire();
-
+				self.damage = origDamage;
 			}
 
 			return retv;
