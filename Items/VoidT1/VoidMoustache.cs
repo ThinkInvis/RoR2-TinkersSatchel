@@ -45,6 +45,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public BuffDef voidMoustacheActiveBuff { get; private set; }
         public BuffDef voidMoustacheChargingBuff { get; private set; }
         public BuffDef voidMoustacheReadyBuff { get; private set; }
+        public Sprite buffIconResource;
 
 
 
@@ -52,6 +53,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public VoidMoustache() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/VoidMoustache.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/voidMoustacheIcon.png");
+            buffIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/voidMoustacheBuff.png");
         }
 
         public override void SetupAttributes() {
@@ -62,7 +64,7 @@ namespace ThinkInvisible.TinkersSatchel {
             voidMoustacheActiveBuff.canStack = false;
             voidMoustacheActiveBuff.isDebuff = false;
             voidMoustacheActiveBuff.name = "TKSATVoidMoustacheActive";
-            voidMoustacheActiveBuff.iconSprite = iconResource;
+            voidMoustacheActiveBuff.iconSprite = buffIconResource;
             ContentAddition.AddBuffDef(voidMoustacheActiveBuff);
 
             voidMoustacheReadyBuff = ScriptableObject.CreateInstance<BuffDef>();
@@ -70,7 +72,7 @@ namespace ThinkInvisible.TinkersSatchel {
             voidMoustacheReadyBuff.canStack = false;
             voidMoustacheReadyBuff.isDebuff = false;
             voidMoustacheReadyBuff.name = "TKSATVoidMoustacheReady";
-            voidMoustacheReadyBuff.iconSprite = iconResource;
+            voidMoustacheReadyBuff.iconSprite = buffIconResource;
             ContentAddition.AddBuffDef(voidMoustacheReadyBuff);
 
             voidMoustacheChargingBuff = ScriptableObject.CreateInstance<BuffDef>();
@@ -78,7 +80,7 @@ namespace ThinkInvisible.TinkersSatchel {
             voidMoustacheChargingBuff.canStack = false;
             voidMoustacheChargingBuff.isDebuff = false;
             voidMoustacheChargingBuff.name = "TKSATVoidMoustacheCharging";
-            voidMoustacheChargingBuff.iconSprite = iconResource;
+            voidMoustacheChargingBuff.iconSprite = buffIconResource;
             ContentAddition.AddBuffDef(voidMoustacheChargingBuff);
 
             itemDef.requiredExpansion = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(x => x.nameToken == "DLC1_NAME");
