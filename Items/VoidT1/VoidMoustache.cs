@@ -143,7 +143,7 @@ namespace ThinkInvisible.TinkersSatchel {
         void FixedUpdate() {
             if(!NetworkServer.active) return;
 
-            if(body.outOfCombat) {
+            if(body.outOfCombat && body.outOfDanger) {
                 if(isActive) {
                     charge = 0f;
                     isActive = false;
