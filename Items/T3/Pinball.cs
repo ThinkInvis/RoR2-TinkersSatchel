@@ -172,7 +172,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self) {
 			orig(self);
 			var count = GetCount(self.owner?.GetComponent<CharacterBody>());
-			if(count <= 0 || !Util.CheckRoll(homeChance)) return;
+			var rb = self.GetComponent<Rigidbody>();
+			if(count <= 0 || !rb || !Util.CheckRoll(homeChance)) return;
 			var ppc = self.gameObject.AddComponent<PinballProjectileController>();
 			ppc.maxBounces = baseBounces + stackBounces * (count - 1);
 		}
