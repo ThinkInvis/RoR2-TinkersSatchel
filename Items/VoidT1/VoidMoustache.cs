@@ -12,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Villainous Moustache";
+        public override string displayName => "Villainous Visage";
         public override ItemTier itemTier => ItemTier.VoidTier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
