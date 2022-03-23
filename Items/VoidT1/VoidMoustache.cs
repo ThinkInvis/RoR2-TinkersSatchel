@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Deal more damage after plotting an evil plan.";
+        protected override string GetPickupString(string langid = null) => "Deal more damage when given time to plot.";
         protected override string GetDescString(string langid = null) => $"While out of combat, build <style=cIsDamage>{Pct(damageFracRate)} damage per second <style=cStack>(+{Pct(damageFracRate)} per stack)</style></style>, up to <style=cIsDamage>{Pct(damageFracMax)} <style=cStack>(+{Pct(damageFracMax)} per stack)</style></style>, towards a buff that will last <style=cIsDamage>{buffDuration:N0} seconds</style> in combat. <style=cIsVoid>Corrupts all Macho Moustaches</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
