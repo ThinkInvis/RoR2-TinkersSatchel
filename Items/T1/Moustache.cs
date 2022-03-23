@@ -50,7 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             moustacheBuff = ScriptableObject.CreateInstance<BuffDef>();
             moustacheBuff.buffColor = new Color(0.85f, 0.2f, 0.2f);
-            moustacheBuff.canStack = false;
+            moustacheBuff.canStack = true;
             moustacheBuff.isDebuff = false;
             moustacheBuff.name = "TKSATMoustache";
             moustacheBuff.iconSprite = iconResource;
