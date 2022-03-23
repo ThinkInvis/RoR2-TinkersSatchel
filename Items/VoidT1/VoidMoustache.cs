@@ -6,6 +6,7 @@ using R2API;
 using static TILER2.MiscUtil;
 using System;
 using UnityEngine.Networking;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class VoidMoustache : Item<VoidMoustache> {
@@ -79,6 +80,18 @@ namespace ThinkInvisible.TinkersSatchel {
             voidMoustacheChargingBuff.name = "TKSATVoidMoustacheCharging";
             voidMoustacheChargingBuff.iconSprite = iconResource;
             ContentAddition.AddBuffDef(voidMoustacheChargingBuff);
+
+            itemDef.requiredExpansion = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(x => x.nameToken == "DLC1_NAME");
+
+            On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
+                var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
+                isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;
+                isp.relationships = new[] {new ItemDef.Pair {
+                    itemDef1 = Moustache.instance.itemDef,
+                    itemDef2 = itemDef
+                }};
+                orig(providers.Concat(new[] { isp }).ToArray());
+            };
         }
 
         public override void Install() {
