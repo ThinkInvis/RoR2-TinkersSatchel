@@ -80,6 +80,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void FixedUpdate() {
             if(!body.healthComponent.alive) return;
+            if(icd > 0f) {
+                icd -= Time.fixedDeltaTime;
+            }
             var count = DeadManSwitch.instance.GetCount(body);
             if(count <= 0) return;
             var eqp = EquipmentCatalog.GetEquipmentDef(body.equipmentSlot.equipmentIndex);
