@@ -147,22 +147,25 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(isActive) {
                     charge = 0f;
                     isActive = false;
-                    body.RemoveBuff(VoidMoustache.instance.voidMoustacheActiveBuff);
+                    body.SetBuffCount(VoidMoustache.instance.voidMoustacheActiveBuff.buffIndex, 0);
                 }
                 var count = VoidMoustache.instance.GetCount(body);
-                var chargeDelta = Time.fixedDeltaTime * VoidMoustache.instance.damageFracRate * count;
-                var chargeMax = VoidMoustache.instance.damageFracMax * count;
+                if(count <= 0) {
+                    body.SetBuffCount(VoidMoustache.instance.voidMoustacheChargingBuff.buffIndex, 0);
+                    body.SetBuffCount(VoidMoustache.instance.voidMoustacheReadyBuff.buffIndex, 0);
+                    charge = 0f;
+                    return;
+                }
+                var chargeDelta = Time.fixedDeltaTime * VoidMoustache.instance.damageFracRate * (float)count;
+                var chargeMax = VoidMoustache.instance.damageFracMax * (float)count;
                 charge = Mathf.Min(charge + chargeDelta, chargeMax);
-                if(charge == chargeMax && !body.HasBuff(VoidMoustache.instance.voidMoustacheReadyBuff)) {
-                    body.RemoveBuff(VoidMoustache.instance.voidMoustacheChargingBuff);
-                    body.AddBuff(VoidMoustache.instance.voidMoustacheReadyBuff);
-                } else if(charge != chargeMax && !body.HasBuff(VoidMoustache.instance.voidMoustacheChargingBuff))
-                    body.AddBuff(VoidMoustache.instance.voidMoustacheChargingBuff);
+                body.SetBuffCount(VoidMoustache.instance.voidMoustacheChargingBuff.buffIndex, (charge >= chargeMax) ? 0 : 1);
+                body.SetBuffCount(VoidMoustache.instance.voidMoustacheReadyBuff.buffIndex, (charge >= chargeMax) ? 1 : 0);
             } else {
+                body.SetBuffCount(VoidMoustache.instance.voidMoustacheChargingBuff.buffIndex, 0);
+                body.SetBuffCount(VoidMoustache.instance.voidMoustacheReadyBuff.buffIndex, 0);
                 if(!isActive && charge > 0f) {
                     isActive = true;
-                    body.RemoveBuff(VoidMoustache.instance.voidMoustacheChargingBuff);
-                    body.RemoveBuff(VoidMoustache.instance.voidMoustacheReadyBuff);
                     body.AddTimedBuff(VoidMoustache.instance.voidMoustacheActiveBuff, VoidMoustache.instance.buffDuration);
                 }
                 if(!body.HasBuff(VoidMoustache.instance.voidMoustacheActiveBuff)) {
