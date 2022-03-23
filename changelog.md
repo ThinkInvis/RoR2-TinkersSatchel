@@ -1,5 +1,11 @@
 # Tinker's Satchel Changelog
 
+**1.7.0** *The Evil Lich Update*
+
+- ADDED ITEMS: Macho Moustache, Villainous Visage, Pulse Monitor, Pinball Wizard!
+- Yeah yeah it's not really a themed update, I know the name is a stretch :(
+- Updated TILER2 dependency to 6.1.0.
+
 **1.6.3**
 
 - Fixed Artifact of Safekeeping trying and failing to work in teleporterless stages (incl. Bazaar, final boss fights).
