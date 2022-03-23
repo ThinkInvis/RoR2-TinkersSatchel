@@ -23,7 +23,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		protected override string GetPickupString(string langid = null) =>
 			"Projectiles may bounce, gaining damage and homing.";
 		protected override string GetDescString(string langid = null) =>
-			$"All your projectile attacks have a {Pct(homeChance)} chance to bounce <style=cStack>(not affected by luck)</style>, exploding one extra time, homing towards a random enemy, and gaining +{Pct(bounceDamage)} of their original damage. Can happen up to {baseBounces} times (+{stackBounces} per stack).";
+			$"All your projectile attacks have a {Pct(homeChance, 0, 1f)} chance to bounce <style=cStack>(not affected by luck)</style>, <style=cIsDamage>exploding</style> one extra time, <style=cIsUtility>homing</style> towards a random enemy, and gaining <style=cIsDamage>+{Pct(bounceDamage)} of their original damage</style>. Can happen up to <style=cIsDamage>{baseBounces} times <style=cStack>(+{stackBounces} per stack)</style></style> per projectile.";
 		protected override string GetLoreString(string langid = null) =>
 			"Ding! Ding! Ding! Ding!";
 
