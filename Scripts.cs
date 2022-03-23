@@ -31,6 +31,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float wobbleStability = 2f;
 		public Vector3 rotateAxis;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
 		void Update() {
 			this.gameObject.transform.Rotate(rotateAxis, rotateSpeed);
 			Vector3 rb = Vector3.one * Random.Range(wobbleBaseMin, wobbleBaseMax);

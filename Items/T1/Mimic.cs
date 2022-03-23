@@ -33,7 +33,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Chance for each individual Mimic to re-mimic per proc.", AutoConfigFlags.None, 0f, 1f)]
         public float decayChance { get; private set; } = 0.15f;
 
-        [AutoConfig("No more than this many Mimics (per player) will change at the same time. Recommended to keep at a low number (below 100) for performance reasons.", AutoConfigFlags.None, 0, int.MaxValue)]
+        [AutoConfig("No more than this many Mimics (per player) will change at the same time. Used to be for performance reasons which appear to no longer be in play; now kept for posterity.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int lagLimit { get; private set; } = 50;
 
         [AutoConfig("Relative weight for a Mimic to prefer Tier 1 items.", AutoConfigFlags.None, 0f, 1f)]
@@ -127,21 +127,27 @@ namespace ThinkInvisible.TinkersSatchel {
         private float stopwatch = 0f;
         private readonly Dictionary<ItemIndex, int> _mimickedCounts;
         public readonly ReadOnlyDictionary<ItemIndex, int> mimickedCounts;
+
+        private readonly List<ItemIndex> _mimics;
         
         private Inventory inventory;
         internal FakeInventory fakeInv;
 
-        private int _totalMimics = 0;
-        public int totalMimics {get => _totalMimics; internal set {
-                if(value > _totalMimics)
-                    AddMimics(value - _totalMimics);
-                else if(value < _totalMimics)
-                    RemoveMimics(_totalMimics - value);
+        public int totalMimics {get => _mimics.Count; internal set {
+                if(value < 0) {
+                    TinkersSatchelPlugin._logger.LogError($"MimicInventory.totalMimics_set: cannot set total mimics to a negative value ({value}); no changes were made to mimic count.");
+                    return;
+                }
+                if(value > _mimics.Count)
+                    AddMimics(value - _mimics.Count);
+                else if(value < _mimics.Count)
+                    RemoveMimics(_mimics.Count - value);
             }}
 
         public MimicInventory() {
             _mimickedCounts = new Dictionary<ItemIndex, int>();
             mimickedCounts = new ReadOnlyDictionary<ItemIndex, int>(_mimickedCounts);
+            _mimics = new List<ItemIndex>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
@@ -163,46 +169,35 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void Shuffle() {
-            var newTotalMimics = Mimic.instance.GetCount(inventory);
             var iarrSel = GetSelection();
             if(iarrSel.Count <= 1) return;
             //int countToShuffle = Mathf.Min(count, Mathf.FloorToInt(Mimic.instance.mimicRng.nextNormalizedFloat * count * Mimic.instance.decayChance * 2f));)
-            int totalChanged = 0;
-            for(int i = 0; i < _totalMimics; i++) {
+            int totalToChange = 0;
+            for(int i = 0; i < totalMimics; i++) {
                 if(Mimic.instance.rng.nextNormalizedFloat > Mimic.instance.decayChance) continue;
-                totalChanged++;
-                
-                var toRemove = Mimic.instance.rng.NextElementUniform(_mimickedCounts.Keys.ToArray());
-                var addOpts = iarrSel.Evaluate(Mimic.instance.rng.nextNormalizedFloat)
-                    .Where(x => x != toRemove)
-                    .ToArray();
-                if(addOpts.Length == 0) continue;
-                var toAdd = Mimic.instance.rng.NextElementUniform(addOpts);
-
-                if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
-                else _mimickedCounts[toAdd] ++;
-                _mimickedCounts[toRemove] --;
-                if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
-                fakeInv.GiveItem(toAdd);
-                fakeInv.RemoveItem(toRemove);
-
-                if(totalChanged > Mimic.instance.lagLimit) break;
+                totalToChange++;
+                if(totalToChange >= Mimic.instance.lagLimit) break;
             }
+
+            RemoveMimics(totalToChange, true);
+            AddMimics(totalToChange, true);
+            RebuildDict();
         }
 
-        private WeightedSelection<ItemIndex[]> GetSelection() {
+        private WeightedSelection<ItemIndex[]> GetSelection(params ItemIndex[] ignore) {
             var stacks = inventory.itemStacks.Select((val, ind) =>
                 new KeyValuePair<ItemDef, int>(ItemCatalog.GetItemDef((ItemIndex)ind), fakeInv.GetRealItemCount((ItemIndex)ind)))
                 .Where((x) => {
                     return x.Value > 0
                         && !x.Key.hidden
                         && x.Key.tier != ItemTier.NoTier
+                        && !ignore.Contains(x.Key.itemIndex)
                         && !FakeInventory.blacklist.Contains(x.Key)
                         && !Mimic.instance.mimicBlacklist.Contains(x.Key);
                 }).Select(x => x.Key).GroupBy(x => x.tier)
                 .ToDictionary(x => x.Key, x => x.Select(y => y.itemIndex).ToArray());
-            var retv = new WeightedSelection<ItemIndex[]>();
 
+            var retv = new WeightedSelection<ItemIndex[]>();
             foreach(var kvp in stacks) {
                 if(kvp.Value.Length == 0) continue;
 
@@ -220,50 +215,49 @@ namespace ThinkInvisible.TinkersSatchel {
 
                 retv.AddChoice(kvp.Value, weight);
             }
-
             return retv;
         }
 
-        internal void AddMimics(int count) {
-            var iarrSel = GetSelection();
+        internal void AddMimics(int count, bool suppressRebuild = false, params ItemIndex[] ignore) {
+            var iarrSel = GetSelection(ignore);
             if(iarrSel.Count < 1) return;
             for(int i = 0; i < count; i++) {
                 var toAdd = Mimic.instance.rng.NextElementUniform(iarrSel.Evaluate(Mimic.instance.rng.nextNormalizedFloat));
-                if(!_mimickedCounts.ContainsKey(toAdd)) _mimickedCounts.Add(toAdd, 1);
-                else _mimickedCounts[toAdd] ++;
-                _totalMimics++;
+                _mimics.Add(toAdd);
 
                 fakeInv.GiveItem(toAdd);
             }
+
+            if(!suppressRebuild)
+                RebuildDict();
         }
 
-        internal void RemoveMimics(int count) {
-            var totalRemovals = Mathf.Min(count, _totalMimics);
+        internal void RemoveMimics(int count, bool suppressRebuild = false) {
+            var iarrSel = GetSelection();
+            var totalRemovals = Mathf.Min(count, totalMimics);
             for(int i = 0; i < totalRemovals; i++) {
-                var toRemove = Mimic.instance.rng.NextElementUniform(_mimickedCounts.Keys.ToArray());
-                _mimickedCounts[toRemove] --;
-                _totalMimics--;
-                if(_mimickedCounts[toRemove] < 1) _mimickedCounts.Remove(toRemove);
+                var toRemove = Mimic.instance.rng.NextElementUniform(_mimics);
+                _mimics.Remove(toRemove);
 
                 fakeInv.RemoveItem(toRemove);
             }
-        }
-        
-        internal void Redistribute(ItemIndex ind) {
-            if(!_mimickedCounts.ContainsKey(ind)) return;
-            else if(_mimickedCounts.Count == 1) {
-                RemoveMimics(_totalMimics);
-                return;
-            }
-            var mimicsToMove = _mimickedCounts[ind];
-            for(int i = 0; i < mimicsToMove; i++) {
-                _mimickedCounts[ind] --;
-                _totalMimics--;
-                if(_mimickedCounts[ind] < 1) _mimickedCounts.Remove(ind);
 
-                fakeInv.RemoveItem(ind);
-            }
-            AddMimics(mimicsToMove);
+            if(!suppressRebuild)
+                RebuildDict();
+        }
+
+        internal void Redistribute(ItemIndex ind) {
+            var moved = _mimics.Count(x => x == ind);
+            if(moved == 0) return;
+            fakeInv.RemoveItem(ind, fakeInv.GetItemCount(ind));
+            _mimics.RemoveAll(x => x == ind);
+            AddMimics(moved, false, ind);
+        }
+
+        private void RebuildDict() {
+            _mimickedCounts.Clear();
+            foreach(var kvp in _mimics.GroupBy(x => x))
+                _mimickedCounts.Add(kvp.Key, kvp.Count());
         }
     }
 }

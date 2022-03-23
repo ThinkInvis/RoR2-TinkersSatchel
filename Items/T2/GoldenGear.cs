@@ -96,7 +96,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
-            var cpt = sender.GetComponent<GoldenGearComponent>();
+            var cpt = sender?.GetComponent<GoldenGearComponent>();
             if(cpt) args.armorAdd += cpt.calculatedArmorBonus;
         }
 

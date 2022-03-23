@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
-using R2API;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -49,7 +48,10 @@ namespace ThinkInvisible.TinkersSatchel {
             "MegaDroneBody(Clone)",
             "MissileDroneBody(Clone)",
             "Turret1Body(Clone)",
-            "EngiTurretBody(Clone)"
+            "EngiTurretBody(Clone)",
+            "SquidTurretBody(Clone)",
+            "RoboBallGreenBuddyBody(Clone)",
+            "RoboBallRedBuddyBody(Clone)"
         };
 
 
@@ -73,7 +75,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs += BaseAI_UpdateBodyInputs;
             On.RoR2.GenericSkill.RunRecharge += GenericSkill_RunRecharge;
 
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
         public override void Uninstall() {
@@ -84,7 +86,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs -= BaseAI_UpdateBodyInputs;
             On.RoR2.GenericSkill.RunRecharge -= GenericSkill_RunRecharge;
 
-            RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
+            GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
 
 
@@ -109,7 +111,11 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
             if(cpt && cpt.isWrangled && self.leader?.characterBody) {
-                self.bodyInputBank.skill1.PushState(self.leader.characterBody.inputBank.skill1.down);
+                var fireEverything = self.leader.characterBody.inputBank.skill1.down;
+                self.bodyInputBank.skill1.PushState(fireEverything);
+                self.bodyInputBank.skill2.PushState(fireEverything);
+                self.bodyInputBank.skill3.PushState(fireEverything);
+                self.bodyInputBank.skill4.PushState(fireEverything);
             }
         }
 
@@ -200,7 +206,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 body.MarkAllStatsDirty();
             cachedWranglerCount = count;
             isWrangled = count > 0;
-            lasWidth = isWrangled ? 0.1f : 0f;
+            lasWidth = isWrangled ? 0.05f : 0f;
         }
     }
 

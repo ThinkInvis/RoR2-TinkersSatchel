@@ -27,15 +27,32 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Stacks linearly past 100% (becomes a chance to fire a 2nd extra projectile, then a 3rd, etc.).
 	- Unlock by missing 1000 TOTAL projectile attacks.
 
+- Percussive Maintenance: "Hit allies to heal them."
+	- Only 1 HP per stack. Best bring some attack speed!
+	- Unlock by having 3 different musical instruments at once.
+            <details><summary>Spoiler: Specifically...</summary>Ukulele, War Horn, and Gorag's Opus.</details>
+
 #### Tier-2 Item
 
 - Armor Crystal: "Gain armor by hoarding money."
+
+- Unstable Klein Bottle: "Chance to push nearby enemies on taking damage."
 
 #### Tier-3 Item
 
 - H3AD-53T: "Your Utility skill builds a stunning static charge."
 	- Grants or refreshes charges of a buff. Running into or phasing through an enemy spends a charge to deal damage and stun.
 	- Unlock by killing a boss with a maximum damage H3AD-5T v2 explosion.
+
+#### Lunar Item
+
+- RC Controller: "Nearby turrets and drones attack with you... but no longer attack automatically."
+	- Also adds a +100% (+25% per stack) attack speed buff to affected turrets/drones.
+
+#### Equipment
+
+- Cardboard Box: "Pack up and move."
+	- Use once to pick up a turret, shrine, purchasable, etc. Use again to put it back down.
 
 #### Lunar Equipment
 
@@ -55,15 +72,13 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Suppression: "Players take heavily increased damage while airborne."
 - Haste: "All combatants attack 10x faster and deal 1/20x damage."
 - Danger: "Players can be killed in one hit."
-	- Removes this now-redundant functionality from Artifact of Glass/other sources of Curse.
-	- Deactivate the artifact using the mod's config file to restore original OHP behavior.
+	- Has a config option (disabled by default) to force one-hit protection while this artifact is off, even while cursed (e.g. Artifact of Glass).
+- Safekeeping: "All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed."
 
 ## Issues/TODO
 
 - Items have no DisplayRules.
-- H3AD-53T buff/proc needs VFX.
-- Armor Crystal needs a better model.
-- Jigglebones on Mimic lid (and a less half-assed model) may happen eventually.
+- Most items need some effects & model polish in general.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
@@ -71,33 +86,48 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
-**1.4.0**
+**1.6.3**
 
-- ADDED ITEMS: Armor Prism, H3AD-53T, Sturdy Mug!
-- Mostly-Tame Mimic now has weighted item tier selection (configurable).
-- Fixed missing buff icon on Armor Crystal.
-- Removed startup index dump.
-- Updated TILER2 dependency to 6.0.1.
+- Fixed Artifact of Safekeeping trying and failing to work in teleporterless stages (incl. Bazaar, final boss fights).
+- Fixed an edge-case NRE in Percussive Maintenance.
 
-**1.3.6**
+**1.6.2**
 
-- Mostly-Tame Mimic: added hidden/tierless items to blacklist.
-	- Now has its own blacklist in addition to the more general FakeInventory blacklist, to be exposed to public API in a future update.
-- Updated TILER2 dependency to 5.0.3.
+- Cardboard Box is now synced properly in multiplayer.
+- Many, *many* H3AD-53T fixes.
+	- No longer has a duplicate internal buff name of Armor Prism's.
+	- Now has a per-target internal cooldown instead of a fixed proc frequency.
+		- No longer causes NREs if one of its pending targets gets killed before a proc happens, because targets will no longer pend.
+	- Actually procs on enemies now.
+	- Fixed proc rate being way too fast (once/frame instead of intended ICD of 0.5s).
+	- No longer deals 0 damage sometimes.
+- Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks. Again. For real this time I promise.
+- Fixed Armor Prism pickup model being huge and unrotated.
 
-**1.3.5**
+**1.6.1**
 
-- Compatibility update for Risk of Rain 2 Expansion 1 (SotV).
-- Updated R2API dependency to 4.0.11.
-- Updated BepInEx dependency to 5.4.1902.
-- Updated TILER2 dependency to 5.0.2.
+- Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).
+- Updated R2API dependency to 4.2.1 (switched to NuGet package).
 
-**1.3.4**
+**1.6.0**
 
-- Switched from now-removed TILER2.StatHooks to R2API.RecalculateStatsAPI.
-- Fixed another incompatibility with most recent R2API.
+- ADDED ARTIFACT: Artifact of Safekeeping!
+- Fixed Sturdy Mug partial proc chance being 1/100 the intended amount (stacking to 100% would still always proc).
+- Cardboard Box now replaces the icons of packed allies in the HUD's ally card list.
+- Patched for latest game version (no changes were necessary).
+- Updated R2API dependency to 4.1.1.
 
-**1.3.3**
+**1.5.5**
 
-- Maintenance for RoR2 updates: PC Patch v1.1.1.4.
-	- No changes were required beyond updating libraries/references.
+- Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks.
+- Made Unstable Klein Bottle more consistent.
+	- Added a short internal cooldown to prevent multishot attacks from resulting in greatly increased push force.
+	- Now always pushes with at least some upwards component.
+	- Push force against different enemy types is less varied.
+		- Beetles in particular will no longer remain rooted in place if pushed while attacking.
+- VFX pass on most item models and all icons.
+	- Added missing metallic/smoothness material info in many cases.
+	- Finalized lightning particles on Unstable Klein Bottle.
+	- Unstable Klein Bottle explosion VFX is now separated from the item's effect and no longer placed far below characters.
+	- Icon texturing and outlines are now more consistent with each other and with vanilla graphics.
+- New mod icon.

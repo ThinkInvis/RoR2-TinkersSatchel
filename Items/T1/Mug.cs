@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
-using static R2API.RecalculateStatsAPI;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -56,6 +55,8 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable = UnlockableAPI.AddUnlockable<TkSatMugAchievement>();
             LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_NAME", "...So I Fired Again");
             LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_DESCRIPTION", "Miss 1,000 TOTAL projectile attacks.");
+
+            itemDef.unlockableDef = unlockable;
 
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
         }
@@ -118,7 +119,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void BaseThrowBombState_Fire(On.EntityStates.Mage.Weapon.BaseThrowBombState.orig_Fire orig, EntityStates.Mage.Weapon.BaseThrowBombState self) {
-            var doIgnore = self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary;
+            var doIgnore = self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary || self is EntityStates.Mage.Weapon.ThrowIcebomb;
             if(doIgnore) ignoreMugs = true;
             orig(self);
             if(doIgnore) ignoreMugs = false;
@@ -205,7 +206,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCount(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             if(procCount <= 0) return;
             self.bulletCount = (uint)procCount;
             self.maxSpread += spreadConeHalfAngleDegr;
@@ -222,7 +223,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCount(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             var origRot = fireProjectileInfo.rotation;
             for(var i = 0; i < procCount; i++) {
                 fireProjectileInfo.rotation = origRot * Quaternion.Euler(
@@ -241,7 +242,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string PrerequisiteUnlockableIdentifier => "";
         public string AchievementNameToken => "TKSAT_MUG_ACHIEVEMENT_NAME";
         public string AchievementDescToken => "TKSAT_MUG_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => "TKSAT_MUG_SKILL_NAME";
+        public string UnlockableNameToken => Mug.instance.nameToken;
 
         public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/mugIcon.png");
 

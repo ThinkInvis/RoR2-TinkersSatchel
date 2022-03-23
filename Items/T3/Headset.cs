@@ -62,8 +62,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		private const float HITBOX_RADIUS = 3f;
 		private const float HIT_INTERVAL = 0.5f;
 
-		readonly HashSet<GameObject> recentlyHit = new HashSet<GameObject>();
-
 
 
 
@@ -81,7 +79,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			headsetBuff.buffColor = new Color(0.5f, 0.575f, 0.95f);
 			headsetBuff.canStack = true;
 			headsetBuff.isDebuff = false;
-			headsetBuff.name = "TKSATVoidGoldenGear";
+			headsetBuff.name = "TKSATHeadset";
 			headsetBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/ShockNearby/texBuffTeslaIcon.tif")
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(headsetBuff);
@@ -89,101 +87,100 @@ namespace ThinkInvisible.TinkersSatchel {
 			unlockable = UnlockableAPI.AddUnlockable<TkSatHeadsetAchievement>();
 			LanguageAPI.Add("TKSAT_HEADSET_ACHIEVEMENT_NAME", "You Broke It");
 			LanguageAPI.Add("TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION", "Kill a boss with a maximum damage H3AD-5T v2 explosion.");
+
+			itemDef.unlockableDef = unlockable;
 		}
 
 		public override void Install() {
 			base.Install();
 
 			On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
-            On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
+            On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
 		}
 
         public override void Uninstall() {
 			base.Uninstall();
 
 			On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
-			On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
+			On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
 		}
 
 
 
-        ////// Hooks //////
-        #region Hooks
-        private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self) {
-			if(self.characterBody && self.characterBody.skillLocator
-				&& self.characterBody.skillLocator.FindSkillSlot(self) == SkillSlot.Utility) {
-				var count = GetCount(self.characterBody);
+		////// Hooks //////
+		#region Hooks
+
+		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
+			orig(self, skill);
+			if(!NetworkServer.active) return;
+			if(self && self.skillLocator
+				&& self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility) {
+				var count = GetCount(self);
 				if(count > 0) {
-					var cpt = self.characterBody.GetComponent<HeadsetComponent>();
-					if(!cpt) cpt = self.characterBody.gameObject.AddComponent<HeadsetComponent>();
+					var cpt = self.GetComponent<HeadsetComponent>();
+					if(!cpt) cpt = self.gameObject.AddComponent<HeadsetComponent>();
 					cpt.hitsRemaining = procCount + stackProcCount * (count - 1);
 				}
 			}
-			orig(self);
 		}
 
 		private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self) {
 			orig(self);
-			if(!NetworkServer.active) {
+			if(!NetworkServer.active || !self) {
 				return;
 			}
-			var cpt = self.GetComponent<HeadsetComponent>();
+			var cpt = self.gameObject.GetComponent<HeadsetComponent>();
 			if(!cpt) cpt = self.gameObject.AddComponent<HeadsetComponent>();
-			var atkTeam = TeamComponent.GetObjectTeam(self.gameObject);
 			var count = GetCount(self);
 			if(count <= 0) {
 				cpt.hitsRemaining = 0;
 			} else if(cpt.hitsRemaining > 0) {
+				var atkTeam = TeamComponent.GetObjectTeam(self.gameObject);
 				var p1 = cpt.previousPos;
 				var p2 = self.transform.position;
 
-				Collider[] res = Physics.OverlapCapsule(p1, p2, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal);
+				Collider[] res;
+				if(p1 == p2)
+					res = Physics.OverlapSphere(p1, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
+				else
+					res = Physics.OverlapCapsule(p1, p2, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
 
-				if(self.healthComponent) recentlyHit.Add(self.healthComponent.gameObject);
+				var damageInfo = new DamageInfo {
+					attacker = self.gameObject,
+					inflictor = self.gameObject,
+					crit = false,
+					damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
+					damageColorIndex = DamageColorIndex.Item,
+					damageType = DamageType.Generic,
+					force = Vector3.zero,
+					procCoefficient = 1f
+				};
 
 				foreach(var hit in res) {
+					if(!hit) continue;
 					var hurtbox = hit.GetComponent<HurtBox>();
-					if(!hurtbox || !hurtbox.healthComponent
-						|| recentlyHit.Contains(hurtbox.healthComponent.gameObject)
+					if(!hurtbox
+						|| !hurtbox.healthComponent
+						|| hurtbox.healthComponent == self.healthComponent
 						|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
-					recentlyHit.Add(hurtbox.healthComponent.gameObject);
+					var icd = hurtbox.healthComponent.gameObject.GetComponent<HeadsetICDComponent>();
+					if(!icd) icd = hurtbox.healthComponent.gameObject.AddComponent<HeadsetICDComponent>();
+					if(Time.fixedTime - icd.lastHit < HIT_INTERVAL) continue;
+					icd.lastHit = Time.fixedTime;
+
+					damageInfo.position = hit.transform.position;
+					hurtbox.healthComponent.TakeDamage(damageInfo);
+					var ssoh = hurtbox.healthComponent.GetComponent<SetStateOnHurt>();
+					if(ssoh && ssoh.canBeStunned) {
+						ssoh.SetStun(stunDuration);
+					}
+
 					cpt.hitsRemaining--;
 					if(cpt.hitsRemaining <= 0)
 						break;
 				}
 
 				cpt.previousPos = p2;
-			}
-
-			if(recentlyHit.Count > 1) {
-				cpt.procCooldown--;
-				if(cpt.procCooldown <= 0) {
-					cpt.procCooldown = HIT_INTERVAL;
-
-                    var damageInfo = new DamageInfo {
-                        attacker = self.gameObject,
-                        inflictor = self.gameObject,
-                        crit = false,
-                        damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
-                        damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.Generic,
-                        force = Vector3.zero,
-                        procCoefficient = 0f
-                    };
-
-                    foreach(var hit in recentlyHit) {
-						var hurtbox = hit.GetComponent<HurtBox>();
-						if(!hurtbox || !hurtbox.healthComponent
-							|| !FriendlyFireManager.ShouldSplashHitProceed(hurtbox.healthComponent, atkTeam)) continue;
-						damageInfo.position = hit.transform.position;
-						hurtbox.healthComponent.TakeDamage(damageInfo);
-						var ssoh = hurtbox.healthComponent.GetComponent<SetStateOnHurt>();
-						if(ssoh && ssoh.canBeStunned) {
-							ssoh.SetStun(stunDuration);
-						}
-					}
-					recentlyHit.Clear();
-				}
 			}
 
 			int currBuffStacks = self.GetBuffCount(headsetBuff);
@@ -196,8 +193,11 @@ namespace ThinkInvisible.TinkersSatchel {
     public class HeadsetComponent : MonoBehaviour {
         public Vector3 previousPos;
         public int hitsRemaining;
-		public float procCooldown = 0f;
 	}
+
+	public class HeadsetICDComponent : MonoBehaviour {
+		public float lastHit = 0f;
+    }
 
 	public class TkSatHeadsetAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
 		public string AchievementIdentifier => "TKSAT_HEADSET_ACHIEVEMENT_ID";
@@ -205,7 +205,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public string PrerequisiteUnlockableIdentifier => "";
 		public string AchievementNameToken => "TKSAT_HEADSET_ACHIEVEMENT_NAME";
 		public string AchievementDescToken => "TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION";
-		public string UnlockableNameToken => "TKSAT_HEADSET_SKILL_NAME";
+		public string UnlockableNameToken => Headset.instance.nameToken;
 
 		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/headsetIcon.png");
 
