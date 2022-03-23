@@ -58,7 +58,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 #### Lunar Item
 
-- RC Controller: "Nearby turrets and drones attack with you... but no longer attack automatically."
+- RC Controller: "Nearby turrets and drones attack with you... BUT no longer attack automatically."
 	- Also adds a +100% (+25% per stack) attack speed buff to affected turrets/drones.
 
 #### Equipment
