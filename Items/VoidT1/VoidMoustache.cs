@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Deal more damage when given time to plot.";
-        protected override string GetDescString(string langid = null) => $"While out of combat, build <style=cIsDamage>{Pct(damageFracRate)} damage per second <style=cStack>(+{Pct(damageFracRate)} per stack)</style></style>, up to <style=cIsDamage>{Pct(damageFracMax)} <style=cStack>(+{Pct(damageFracMax)} per stack)</style></style>, towards a buff that will last <style=cIsDamage>{buffDuration:N0} seconds</style> in combat. <style=cIsVoid>Corrupts all Macho Moustaches</style>.";
+        protected override string GetDescString(string langid = null) => $"While out of combat, build up a <style=cIsDamage>damage buff</style> that will last <style=cIsDamage>{buffDuration:N0} seconds</style> once in combat. Builds <style=cIsDamage>{Pct(damageFracRate)} damage per second <style=cStack>(+{Pct(damageFracRate)} per stack)</style></style>, up to <style=cIsDamage>{Pct(damageFracMax)} <style=cStack>(+{Pct(damageFracMax)} per stack)</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -28,11 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fractional damage bonus per second per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFracRate { get; private set; } = 0.02f;
+        public float damageFracRate { get; private set; } = 0.03f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum fractional damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFracMax { get; private set; } = 0.2f;
+        public float damageFracMax { get; private set; } = 0.15f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration of the damage buff once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
