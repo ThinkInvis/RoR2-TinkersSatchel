@@ -32,17 +32,29 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Unlock by having 3 different musical instruments at once.
             <details><summary>Spoiler: Specifically...</summary>Ukulele, War Horn, and Gorag's Opus.</details>
 
+- Macho Moustache: "Deal more damage when surrounded."
+	- Focus Crystal but more risk for more reward.
+
 #### Tier-2 Item
 
 - Armor Crystal: "Gain armor by hoarding money."
 
 - Unstable Klein Bottle: "Chance to push nearby enemies on taking damage."
 
+- Pulse Monitor: "Activate your equipment for free at low health."
+	- Auto-triggers equipment, does not allow using equipment *manually* for free.
+	- Uses equipment's unmodified cooldown and applies its own ICD.
+	- Has a config option to allow other ICD sources e.g. Fuel Cell to also apply.
+
 #### Tier-3 Item
 
 - H3AD-53T: "Your Utility skill builds a stunning static charge."
 	- Grants or refreshes charges of a buff. Running into or phasing through an enemy spends a charge to deal damage and stun.
 	- Unlock by killing a boss with a maximum damage H3AD-5T v2 explosion.
+
+- Pinball Wizard: "Projectiles may bounce, gaining damage and homing."
+	- Chance to proc is high, but unaffected by luck. Stacking increases maximum bounce count.
+	- Overrides gravity, impact fuse time, etc. on affected projectiles to unerringly track towards a target.
 
 #### Lunar Item
 
@@ -56,14 +68,17 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 #### Lunar Equipment
 
-- Silver Compass: "Shows you a path... but it will be fraught with danger."
+- Silver Compass: "Shows you a path... BUT it will be fraught with danger."
 	- Pings the Teleporter and adds TWO stacks of Challenge of the Mountain, only ONE of which will count towards extra rewards.
 
-#### Tier-2 Void Item
+#### Void Item
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(requires Survivors of the Void DLC)
 
-- Armor Prism: "Gain massive armor by focusing your item build. Corrupts all Armor Crystals."
+- Villainous Visage (T1): "Deal more damage when given time to plot. Corrupts all Macho Moustaches."
+	- Ramps up a damage bonus while out of combat/danger, which only lasts a short time in combat/danger.
+
+- Armor Prism (T2): "Gain massive armor by focusing your item build. Corrupts all Armor Crystals."
 	- More item types = less armor.
 
 #### Artifact
@@ -79,6 +94,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 - Items have no DisplayRules.
 - Most items need some effects & model polish in general.
+- Pinball Wizard's internal mechanics are held together with duct tape and a prayer. No known issues but they're definitely there somewhere.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
