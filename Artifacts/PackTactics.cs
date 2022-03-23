@@ -119,6 +119,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
+            if(!sender) return;
             var totalBuffs = Mathf.Max(sender.GetBuffCount(tacticsBuff) - 1, 0);
             args.moveSpeedMultAdd += totalBuffs * speedMod;
             args.baseDamageAdd += totalBuffs * damageMod;

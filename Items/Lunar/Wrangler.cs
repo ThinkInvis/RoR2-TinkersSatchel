@@ -94,6 +94,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
         #region Hooks
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
+            if(!sender) return;
             var cpt = sender.GetComponent<WranglerReceiverComponent>();
             if(cpt && cpt.cachedWranglerCount > 0)
                 args.attackSpeedMultAdd += baseExtraSpeed + stackExtraSpeed * (cpt.cachedWranglerCount - 1);
