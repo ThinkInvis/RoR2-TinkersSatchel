@@ -407,6 +407,10 @@ namespace ThinkInvisible.TinkersSatchel {
                         auxiliaryPackedObjects.Add(terminal, terminal.transform.position - transform.position);
                     }
                 }
+                var healcpt = gameObject.GetComponent<ShrineHealingBehavior>();
+                if(healcpt && healcpt.wardInstance != null) {
+                    auxiliaryPackedObjects.Add(healcpt.wardInstance, healcpt.wardInstance.transform.position - transform.position);
+                }
             }
         }
 
