@@ -1,5 +1,15 @@
 # Tinker's Satchel Changelog
 
+**1.7.1**
+
+- Fixed Cardboard Box not moving the healing zone of heal shrines.
+- Reduced default Cardboard Box cooldown from 180 seconds to 60 seconds.
+- Added missing "corrupts all..." pickup text to Villainous Visage.
+- Properly capitalized "BUT" in the Silver Compass description.
+- Added extra null safety to all R2API.RecalculateStatsAPI.GetStatCoefficients subscribers (may fix an edge-case hang).
+- Added missing Thunderstore description text for 1.7.0 content.
+- Updated TILER2 dependency to 6.1.2.
+
 **1.7.0** *The Evil Lich Update*
 
 - ADDED ITEMS: Macho Moustache, Villainous Visage, Pulse Monitor, Pinball Wizard!

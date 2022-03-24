@@ -102,6 +102,16 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.7.1**
+
+- Fixed Cardboard Box not moving the healing zone of heal shrines.
+- Reduced default Cardboard Box cooldown from 180 seconds to 60 seconds.
+- Added missing "corrupts all..." pickup text to Villainous Visage.
+- Properly capitalized "BUT" in the Silver Compass description.
+- Added extra null safety to all R2API.RecalculateStatsAPI.GetStatCoefficients subscribers (may fix an edge-case hang).
+- Added missing Thunderstore description text for 1.7.0 content.
+- Updated TILER2 dependency to 6.1.2.
+
 **1.7.0** *The Evil Lich Update*
 
 - ADDED ITEMS: Macho Moustache, Villainous Visage, Pulse Monitor, Pinball Wizard!
@@ -130,11 +140,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).
 - Updated R2API dependency to 4.2.1 (switched to NuGet package).
-
-**1.6.0**
-
-- ADDED ARTIFACT: Artifact of Safekeeping!
-- Fixed Sturdy Mug partial proc chance being 1/100 the intended amount (stacking to 100% would still always proc).
-- Cardboard Box now replaces the icons of packed allies in the HUD's ally card list.
-- Patched for latest game version (no changes were necessary).
-- Updated R2API dependency to 4.1.1.
