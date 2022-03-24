@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Cardboard Box";
         public override bool isLunar => false;
-        public override float cooldown {get; protected set;} = 180f;
+        public override float cooldown {get; protected set;} = 60f;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Pack up and move.";
