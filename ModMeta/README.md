@@ -102,6 +102,13 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.7.2**
+
+- Fixed Armor Prism yoinking some of Armor Crystal's code in addition to its itemcount.
+	- (after both were enabled and obtained in the same run, latter would give no armor and former would give double).
+- Pulse Monitor no longer spams NREs after placing an Engi turret, and is now AI-blacklisted.
+- Added extra null safety to Percussive Maintenance melee attack handling.
+
 **1.7.1**
 
 - Fixed Cardboard Box not moving the healing zone of heal shrines.
@@ -135,8 +142,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- No longer deals 0 damage sometimes.
 - Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks. Again. For real this time I promise.
 - Fixed Armor Prism pickup model being huge and unrotated.
-
-**1.6.1**
-
-- Cardboard Box no longer causes NRE spam if it encounters a bodyless CharacterMaster (e.g. turrets/drones after loading into Bazaar).
-- Updated R2API dependency to 4.2.1 (switched to NuGet package).

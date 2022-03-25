@@ -1,5 +1,12 @@
 # Tinker's Satchel Changelog
 
+**1.7.2**
+
+- Fixed Armor Prism yoinking some of Armor Crystal's code in addition to its itemcount.
+	- (after both were enabled and obtained in the same run, latter would give no armor and former would give double).
+- Pulse Monitor no longer spams NREs after placing an Engi turret, and is now AI-blacklisted.
+- Added extra null safety to Percussive Maintenance melee attack handling.
+
 **1.7.1**
 
 - Fixed Cardboard Box not moving the healing zone of heal shrines.
