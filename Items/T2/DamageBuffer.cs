@@ -107,8 +107,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 x => x.MatchBleUn(out _),
                 x => x.MatchLdarg(out _),
                 x => x.MatchBrfalse(out _),
+                x => x.MatchLdarg(out _),
                 x => x.MatchLdflda<HealthComponent>(nameof(HealthComponent.itemCounts)),
-                x => x.MatchLdfld<HealthComponent.ItemCounts>("barrierOnOverHeal")
+                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.barrierOnOverHeal))
                 )) {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc, locIndex);
