@@ -88,7 +88,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(armorBuff);
 
             var origPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/HealPack");
-            var prefabs = new[] {
+            prefabs = new[] {
                 origPrefab.InstantiateClone("TkSatTempSetupPrefab1", false),
                 origPrefab.InstantiateClone("TkSatTempSetupPrefab2", false),
                 origPrefab.InstantiateClone("TkSatTempSetupPrefab3", false),
