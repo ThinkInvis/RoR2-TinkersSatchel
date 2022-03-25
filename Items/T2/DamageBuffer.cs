@@ -76,9 +76,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 x => x.MatchLdcR4(0),
                 x => x.MatchBleUn(out _),
                 x => x.MatchLdarg(0),
-                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.barrier)),
-                x => x.MatchLdcR4(0)
-                )) {
+                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.barrier))
+                )
+                && c.TryGotoPrev(MoveType.After,
+                x => x.MatchStloc((byte)locIndex))
+                ) {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc_S, (byte)locIndex);
                 c.EmitDelegate<Func<HealthComponent, float, float>>((hc, origFinalDamage) => {
@@ -102,7 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ILCursor c = new ILCursor(il);
 
             int locIndex = 0;
-            if(c.TryGotoNext(
+            if(c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdloc(out locIndex),
                 x => x.MatchLdcR4(0),
                 x => x.MatchBleUn(out _),
