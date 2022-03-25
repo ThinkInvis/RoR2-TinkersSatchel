@@ -61,6 +61,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Uninstall() {
             base.Uninstall();
+            IL.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.Heal -= HealthComponent_Heal;
         }
 
 
