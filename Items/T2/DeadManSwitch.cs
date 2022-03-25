@@ -14,6 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override string displayName => "Pulse Monitor";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.EquipmentRelated, ItemTag.Utility, ItemTag.LowHealth });
+        public override bool itemIsAIBlacklisted => true;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Activate your equipment for free at low health.";
@@ -63,7 +64,9 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(GetCount(body) > 0 && !body.GetComponent<DeadManSwitchTracker>())
+            if(GetCount(body) > 0
+                && body.healthComponent && body.equipmentSlot
+                && !body.GetComponent<DeadManSwitchTracker>())
                 body.gameObject.AddComponent<DeadManSwitchTracker>();
         }
 
