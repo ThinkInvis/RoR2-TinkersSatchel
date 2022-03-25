@@ -86,6 +86,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(count <= 0) return origFinalDamage;
                     var cpt = hc.GetComponent<DelayedDamageBufferComponent>();
                     if(!cpt) cpt = hc.gameObject.AddComponent<DelayedDamageBufferComponent>();
+                    if(cpt.isApplying) return origFinalDamage;
                     var frac = Mathf.Clamp01(1f-1f/(1f + bufferFrac * (float)count));
                     var reduc = origFinalDamage * frac;
                     cpt.ApplyDamage(reduc);
@@ -130,6 +131,7 @@ namespace ThinkInvisible.TinkersSatchel {
         HealthComponent hc;
         public List<(float curr, float max)> bufferDamage = new List<(float, float)>();
         float stopwatch = 0f;
+        public bool isApplying { get; private set; } = false;
 
         void Awake() {
             hc = GetComponent<HealthComponent>();
@@ -139,15 +141,16 @@ namespace ThinkInvisible.TinkersSatchel {
             if(bufferDamage.Count > 0) {
                 stopwatch -= Time.fixedDeltaTime;
                 if(stopwatch <= 0f) {
+                    stopwatch = DamageBuffer.instance.bufferRate;
                     float accum = 0f;
                     var frac = DamageBuffer.instance.bufferRate / DamageBuffer.instance.bufferDuration;
-                    stopwatch = DamageBuffer.instance.bufferRate;
                     for(var i = 0; i < bufferDamage.Count; i++) {
                         var rem = Mathf.Min(bufferDamage[i].max * frac, bufferDamage[i].curr);
                         accum += rem;
                         bufferDamage[i] = (bufferDamage[i].curr - rem, bufferDamage[i].max);
                     }
                     bufferDamage.RemoveAll(x => x.curr <= 0f);
+                    isApplying = true;
                     hc.TakeDamage(new DamageInfo {
                         attacker = null,
                         crit = false,
@@ -159,6 +162,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         damageColorIndex = DamageColorIndex.Item,
                         damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.DoT
                     });
+                    isApplying = false;
                 }
             }
         }
@@ -169,13 +173,13 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         public void ApplyOverheal(float amount) {
-            if(bufferDamage.Count == 0) return;
+            if(bufferDamage.Count == 0 || amount <= 0f) return;
             var total = bufferDamage.Sum(x => x.curr);
-            var adjust = amount / total;
+            var frac = amount / total;
             for(var i = 0; i < bufferDamage.Count; i++) {
-                var nv = bufferDamage[i].curr * adjust;
-                var reduction = bufferDamage[i].curr - nv;
-                bufferDamage[i] = (nv, Mathf.Max(bufferDamage[i].max - reduction, nv));
+                var reduc = bufferDamage[i].curr * frac;
+                var remaining = bufferDamage[i].curr - reduc;
+                bufferDamage[i] = (remaining, Mathf.Max(bufferDamage[i].max - reduc, remaining));
             }
             bufferDamage.RemoveAll(x => x.curr <= 0f);
         }
