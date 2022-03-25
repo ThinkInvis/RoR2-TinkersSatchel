@@ -160,10 +160,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 && self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary) {
                 var count = GetCount(self);
                 for(var i = 0; i < count; i++) {
-                    var orb = Object.Instantiate(rng.NextElementUniform(prefabs), self.transform.position, UnityEngine.Random.rotation);
+                    var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 20f);
+                    var orb = Object.Instantiate(rng.NextElementUniform(prefabs), self.corePosition, UnityEngine.Random.rotation);
                     if(self.teamComponent)
                         orb.GetComponent<TeamFilter>().teamIndex = self.teamComponent.teamIndex;
-                    orb.GetComponent<Rigidbody>().velocity = Util.ApplySpread(Vector3.up, 30f, 30f, 1f, 1f) * 20f;
+                    orb.GetComponent<Rigidbody>().velocity = vvec;
                     NetworkServer.Spawn(orb);
                 }
             }
