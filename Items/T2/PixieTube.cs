@@ -50,7 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
 
             var colors = new[] { Color.blue, Color.yellow, Color.red, Color.green };
-            var sharedBuffIcon = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texBarrelIcon.tif")
+            var sharedBuffIcon = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texBarrelIcon.png")
                 .WaitForCompletion();
             var rampTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/ColorRamps/texRampDefault.png")
                 .WaitForCompletion();
@@ -64,7 +64,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(moveBuff);
 
             attackBuff = ScriptableObject.CreateInstance<BuffDef>();
-            attackBuff.buffColor = colors[0];
+            attackBuff.buffColor = colors[1];
             attackBuff.canStack = true;
             attackBuff.isDebuff = false;
             attackBuff.name = modInfo.shortIdentifier + "PixieAttackSpeed";
@@ -72,7 +72,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(attackBuff);
 
             damageBuff = ScriptableObject.CreateInstance<BuffDef>();
-            damageBuff.buffColor = colors[0];
+            damageBuff.buffColor = colors[2];
             damageBuff.canStack = true;
             damageBuff.isDebuff = false;
             damageBuff.name = modInfo.shortIdentifier + "PixieDamage";
@@ -80,7 +80,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(damageBuff);
 
             armorBuff = ScriptableObject.CreateInstance<BuffDef>();
-            armorBuff.buffColor = colors[0];
+            armorBuff.buffColor = colors[3];
             armorBuff.canStack = true;
             armorBuff.isDebuff = false;
             armorBuff.name = modInfo.shortIdentifier + "PixieArmor";
