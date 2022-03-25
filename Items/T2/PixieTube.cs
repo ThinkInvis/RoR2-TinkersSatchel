@@ -97,10 +97,14 @@ namespace ThinkInvisible.TinkersSatchel {
             var finalNames = new[] { "TkSatPixieMovePack", "TkSatPixieAttackPack", "TkSatPixieDamagePack", "TkSatPixieArmorPack" };
             for(var i = 0; i < prefabs.Length; i++) {
                 var prefab = prefabs[i];
+                
+                var vros = prefab.GetComponent<VelocityRandomOnStart>();
+                vros.enabled = false;
 
                 var trail = prefab.transform.Find("HealthOrbEffect/TrailParent/Trail").gameObject;
                 var tren = trail.GetComponent<TrailRenderer>();
                 tren.material.SetTexture("_RemapTex", rampTex);
+                tren.material.SetColor("_TintColor", colors[i]);
 
                 var core = prefab.transform.Find("HealthOrbEffect/VFX/Core").gameObject;
                 var cren = core.GetComponent<ParticleSystem>();
@@ -116,6 +120,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 pickup.GetComponent<HealthPickup>().enabled = false;
                 var bpkp = pickup.AddComponent<BuffPickup>();
                 bpkp.buffDef = bufftypes[i];
+                bpkp.teamFilter = prefab.GetComponent<TeamFilter>();
+                bpkp.pickupEffect = pickup.GetComponent<HealthPickup>().pickupEffect;
                 bpkp.buffDuration = 10f;
                 bpkp.baseObject = prefabs[i];
 
@@ -157,6 +163,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     var orb = Object.Instantiate(rng.NextElementUniform(prefabs), self.transform.position, UnityEngine.Random.rotation);
                     if(self.teamComponent)
                         orb.GetComponent<TeamFilter>().teamIndex = self.teamComponent.teamIndex;
+                    orb.GetComponent<Rigidbody>().velocity = Util.ApplySpread(Vector3.up, 30f, 30f, 1f, 1f) * 20f;
                     NetworkServer.Spawn(orb);
                 }
             }
