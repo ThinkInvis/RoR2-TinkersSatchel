@@ -52,11 +52,12 @@ namespace ThinkInvisible.TinkersSatchel {
         BuffDef damageBuff;
         BuffDef armorBuff;
         RoR2.Skills.SkillDef[] blacklistedSkills;
+        const float PICKUP_ARMING_DELAY = 2f;
 
 
 
         ////// TILER2 Module Setup //////
-        
+
         public PixieTube() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/PixieTube.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/pixieTubeIcon.png");
@@ -128,6 +129,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 var vros = prefab.GetComponent<VelocityRandomOnStart>();
                 vros.enabled = false;
 
+                var dstroy = prefab.GetComponent<DestroyOnTimer>();
+                dstroy.duration += PICKUP_ARMING_DELAY;
+
+                var blinker = prefab.GetComponent<BeginRapidlyActivatingAndDeactivating>();
+                blinker.delayBeforeBeginningBlinking = dstroy.duration - 1f;
+
                 var trail = prefab.transform.Find("HealthOrbEffect/TrailParent/Trail").gameObject;
                 var tren = trail.GetComponent<TrailRenderer>();
                 tren.material.SetTexture("_RemapTex", rampTex);
@@ -158,12 +165,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 grav.SetActive(false);
                 delay.targets.Add(pickup);
                 delay.targets.Add(grav);
-                delay.delay = 2f;
+                delay.delay = PICKUP_ARMING_DELAY;
 
                 var gravramp = grav.AddComponent<GravitationRamp>();
                 gravramp.rangeStart = 6f;
                 gravramp.rangeEnd = 36f;
-                gravramp.duration = 10f;
+                gravramp.duration = dstroy.duration - PICKUP_ARMING_DELAY;
 
                 prefabs[i] = prefabs[i].InstantiateClone(finalNames[i], true);
             }
