@@ -158,7 +158,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 grav.SetActive(false);
                 delay.targets.Add(pickup);
                 delay.targets.Add(grav);
-                delay.delay = 2.5f;
+                delay.delay = 2f;
 
                 prefabs[i] = prefabs[i].InstantiateClone(finalNames[i], true);
             }
@@ -184,7 +184,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Private Methods //////
 
         void SpawnWisp(Vector3 pos, TeamIndex team) {
-            var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 20f);
+            var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 15f);
             var orb = Object.Instantiate(rng.NextElementUniform(prefabs), pos, UnityEngine.Random.rotation);
             orb.GetComponent<TeamFilter>().teamIndex = team;
             orb.GetComponent<Rigidbody>().velocity = vvec;
