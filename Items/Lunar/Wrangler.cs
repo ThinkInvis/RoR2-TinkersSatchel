@@ -7,6 +7,7 @@ using static R2API.RecalculateStatsAPI;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
+    //todo: aim assist with tracking (may need to build velocity table for turret projectiles?), make drones follow aim
     public class Wrangler : Item<Wrangler> {
 
         ////// Item Data //////
