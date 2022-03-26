@@ -26,6 +26,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Config //////
+
+        [AutoConfig("Duration of the phasing effect, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float phaseDuration { get; private set; } = 2f;
+
+        [AutoConfig("Maximum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float rewindDuration { get; private set; } = 10f;
+
+        [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.PreventNetMismatch, 0.05f, float.MaxValue)]
+        public float frameInterval { get; private set; } = 1f;
+
+
+
         ////// Other Fields/Properties //////
 
         SerializableEntityStateType rewindStateType;
@@ -85,7 +98,7 @@ namespace ThinkInvisible.TinkersSatchel {
         int currFrame;
         public override void OnEnter() {
             speedCoefficient = 0f;
-            duration = 2f;
+            duration = Rewind.instance.phaseDuration;
             this.beginSoundString = "Play_huntress_shift_start";
             this.endSoundString = "Play_huntress_shift_end";
             base.OnEnter();
@@ -226,9 +239,6 @@ namespace ThinkInvisible.TinkersSatchel {
         CharacterBody body;
         public bool isRewinding = false;
 
-        const float TICK_RATE = 1f;
-        const float MAX_DURATION = 10f;
-
         void Awake() {
             body = GetComponent<CharacterBody>();
         }
@@ -241,9 +251,9 @@ namespace ThinkInvisible.TinkersSatchel {
             if(isRewinding) return;
             stopwatch -= Time.fixedDeltaTime;
             if(stopwatch <= 0f) {
-                stopwatch = TICK_RATE;
+                stopwatch = Rewind.instance.frameInterval;
                 frames.Add(new RewindFrame(body));
-                if(frames.Count > MAX_DURATION / TICK_RATE) {
+                if(frames.Count > Rewind.instance.rewindDuration / Rewind.instance.frameInterval) {
                     frames.RemoveAt(0);
                 }
             }
