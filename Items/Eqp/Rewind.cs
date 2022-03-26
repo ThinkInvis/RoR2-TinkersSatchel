@@ -98,7 +98,19 @@ namespace ThinkInvisible.TinkersSatchel {
                 characterModel.invisibilityCount--;
             }
             cpt.isRewinding = true;
+
+            modelTransform = base.GetModelTransform();
+            if(modelTransform) {
+                var ovl = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                ovl.duration = duration;
+                ovl.animateShaderAlpha = true;
+                ovl.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+                ovl.destroyComponentOnEnd = true;
+                ovl.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashExpanded");
+                ovl.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+            }
         }
+
         public override void FixedUpdate() {
             base.FixedUpdate();
 
