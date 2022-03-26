@@ -68,16 +68,13 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             if(!slot || !slot.characterBody)
                 return false;
-            Debug.Log("slot ok");
             var cpt = slot.characterBody.GetComponent<RewindComponent>();
             if(!cpt || cpt.frames.Count == 0)
                 return false;
-            Debug.Log("cpt ok");
             var esm = EntityStateMachine.FindByCustomName(slot.characterBody.gameObject, "Body");
             if(esm == null) {
                 return false;
             }
-            Debug.Log("esm ok");
             esm.SetState(EntityStateCatalog.InstantiateState(rewindStateType));
             return true;
         }
