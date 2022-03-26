@@ -89,7 +89,6 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void OnEnter() {
             speedCoefficient = 0f;
             duration = 2f;
-            blinkPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/HuntressBlinkEffect");
             this.beginSoundString = "Play_huntress_shift_start";
             this.endSoundString = "Play_huntress_shift_end";
             base.OnEnter();
