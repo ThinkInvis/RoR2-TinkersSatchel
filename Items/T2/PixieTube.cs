@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Drop random buffs on using non-primary skills.";
-        protected override string GetDescString(string langid = null) => $"You drop 1 (+1 per stack) random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use a non-primary skill</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for 10 seconds: <color=#ffaa77>+3% damage</color>, <color=#9999ff>5% movement speed</color>, <color=#eeff55>5% attack speed</color>, or <color=#997755>10 armor</color>.";
+        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use a non-primary skill</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for 10 seconds: <color=#ffaa77>+3% damage</color>, <color=#9999ff>5% movement speed</color>, <color=#eeff55>5% attack speed</color>, or <color=#997755>10 armor</color>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
