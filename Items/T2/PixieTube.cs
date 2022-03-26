@@ -7,6 +7,7 @@ using static TILER2.MiscUtil;
 using UnityEngine.AddressableAssets;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PixieTube : Item<PixieTube> {
@@ -36,6 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
         BuffDef attackBuff;
         BuffDef damageBuff;
         BuffDef armorBuff;
+        RoR2.Skills.SkillDef[] blacklistedSkills;
 
 
 
@@ -50,6 +52,16 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
 
             var colors = new[] { Color.blue, Color.yellow, Color.red, Color.green };
+            blacklistedSkills = new[] {
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/EngiBody/EngiCancelTargetingDummy"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/EngiBody/EngiBodyPlaceTurret"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/EngiBody/EngiBodyPlaceWalkerTurret"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/EngiBody/EngiHarpoons"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/ToolbotBody/ToolbotBodySwap"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CaptainCancelDummy"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/PrepSupplyDrop")
+            };
+
             var sharedBuffIcon = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texBarrelIcon.png")
                 .WaitForCompletion();
             var rampTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/ColorRamps/texRampDefault.png")
@@ -141,12 +153,27 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
+            On.EntityStates.Engi.EngiMissilePainter.Fire.FireMissile += Fire_FireMissile;
+            On.EntityStates.Engi.EngiWeapon.PlaceTurret.FixedUpdate += PlaceTurret_FixedUpdate;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
+            On.EntityStates.Engi.EngiMissilePainter.Fire.FireMissile -= Fire_FireMissile;
+        }
+
+
+
+        ////// Private Methods //////
+
+        void SpawnWisp(Vector3 pos, TeamIndex team) {
+            var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 20f);
+            var orb = Object.Instantiate(rng.NextElementUniform(prefabs), pos, UnityEngine.Random.rotation);
+            orb.GetComponent<TeamFilter>().teamIndex = team;
+            orb.GetComponent<Rigidbody>().velocity = vvec;
+            NetworkServer.Spawn(orb);
         }
 
 
@@ -157,15 +184,11 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, skill);
             if(!NetworkServer.active) return;
             if(self && self.skillLocator
-                && self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary) {
+                && self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary
+                && !blacklistedSkills.Contains(skill.skillDef)) {
                 var count = GetCount(self);
                 for(var i = 0; i < count; i++) {
-                    var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 20f);
-                    var orb = Object.Instantiate(rng.NextElementUniform(prefabs), self.corePosition, UnityEngine.Random.rotation);
-                    if(self.teamComponent)
-                        orb.GetComponent<TeamFilter>().teamIndex = self.teamComponent.teamIndex;
-                    orb.GetComponent<Rigidbody>().velocity = vvec;
-                    NetworkServer.Spawn(orb);
+                    SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
                 }
             }
         }
@@ -176,6 +199,24 @@ namespace ThinkInvisible.TinkersSatchel {
             args.attackSpeedMultAdd += sender.GetBuffCount(attackBuff) * 0.05f;
             args.damageMultAdd += sender.GetBuffCount(damageBuff) * 0.03f;
             args.moveSpeedMultAdd += sender.GetBuffCount(moveBuff) * 0.05f;
+        }
+
+        private void Fire_FireMissile(On.EntityStates.Engi.EngiMissilePainter.Fire.orig_FireMissile orig, EntityStates.Engi.EngiMissilePainter.Fire self, HurtBox target, Vector3 position) {
+            orig(self, target, position);
+            var count = GetCount(self.characterBody);
+            for(var i = 0; i < count; i++) {
+                SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
+            }
+        }
+
+        private void PlaceTurret_FixedUpdate(On.EntityStates.Engi.EngiWeapon.PlaceTurret.orig_FixedUpdate orig, EntityStates.Engi.EngiWeapon.PlaceTurret self) {
+            orig(self);
+            if((self.inputBank.skill1.down || self.inputBank.skill4.justPressed) && self.currentPlacementInfo.ok) {
+                var count = GetCount(self.characterBody);
+                for(var i = 0; i < count; i++) {
+                    SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
+                }
+            }
         }
     }
 
