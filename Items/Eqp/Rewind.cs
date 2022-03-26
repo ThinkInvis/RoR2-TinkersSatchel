@@ -35,7 +35,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public float rewindDuration { get; private set; } = 10f;
 
         [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.PreventNetMismatch, 0.05f, float.MaxValue)]
-        public float frameInterval { get; private set; } = 1f;
+        public float frameInterval { get; private set; } = 0.5f;
 
 
 
@@ -121,10 +121,15 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
+        //Sigmoid-like curve as a function of x with fixed points at (0, 0), (0.5, 0.5), and (1, 1). Has flatter ends and steeper midpoint as b increases.
+        float SteepSigmoid01(float x, float b) {
+            return 0.5f - (float)System.Math.Tanh(2*b*(x-0.5f))/(2f*(float)System.Math.Tanh(-b));
+        }
+
         public override void FixedUpdate() {
             base.FixedUpdate();
 
-            int interpolatedFrame = Mathf.Clamp(Mathf.FloorToInt((1f - stopwatch / duration) * cpt.frames.Count), 0, cpt.frames.Count - 1);
+            int interpolatedFrame = Mathf.Clamp(Mathf.FloorToInt(SteepSigmoid01(1f - stopwatch / duration, 1.5f) * cpt.frames.Count), 0, cpt.frames.Count - 1);
             if(interpolatedFrame != currFrame) {
                 currFrame = interpolatedFrame;
                 cpt.frames[interpolatedFrame].ApplyTo(outer.commonComponents.characterBody);
