@@ -160,6 +160,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 delay.targets.Add(grav);
                 delay.delay = 2f;
 
+                var gravramp = grav.AddComponent<GravitationRamp>();
+                gravramp.rangeStart = 6f;
+                gravramp.rangeEnd = 36f;
+                gravramp.duration = 10f;
+
                 prefabs[i] = prefabs[i].InstantiateClone(finalNames[i], true);
             }
         }
@@ -258,6 +263,30 @@ namespace ThinkInvisible.TinkersSatchel {
                 target.SetActive(false);
             }
             stopwatch = 0f;
+        }
+    }
+
+    [RequireComponent(typeof(GravitatePickup), typeof(SphereCollider))]
+    public class GravitationRamp : MonoBehaviour {
+        public float rangeStart;
+        public float rangeEnd;
+        public float duration;
+
+        public float stopwatch;
+
+        GravitatePickup grav;
+        SphereCollider coll;
+
+        void Awake() {
+            grav = GetComponent<GravitatePickup>();
+            coll = GetComponent<SphereCollider>();
+        }
+
+        void FixedUpdate() {
+            if(stopwatch < duration)
+                stopwatch += Time.fixedDeltaTime;
+
+            coll.radius = Mathf.Lerp(rangeStart, rangeEnd, stopwatch / duration);
         }
     }
 }
