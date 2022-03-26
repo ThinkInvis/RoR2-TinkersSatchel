@@ -163,8 +163,10 @@ namespace ThinkInvisible.TinkersSatchel {
                 var delay = prefab.AddComponent<ActivateAfterDelay>();
                 pickup.SetActive(false);
                 grav.SetActive(false);
+                core.SetActive(false);
                 delay.targets.Add(pickup);
                 delay.targets.Add(grav);
+                delay.targets.Add(core);
                 delay.delay = PICKUP_ARMING_DELAY;
 
                 var gravramp = grav.AddComponent<GravitationRamp>();
