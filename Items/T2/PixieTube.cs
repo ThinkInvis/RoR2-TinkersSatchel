@@ -20,13 +20,27 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Drop random buffs on using non-primary skills.";
-        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use a non-primary skill</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for 10 seconds: <color=#ffaa77>+3% damage</color>, <color=#9999ff>5% movement speed</color>, <color=#eeff55>5% attack speed</color>, or <color=#997755>10 armor</color>.";
+        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use a non-primary skill</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {buffDuration:N0} seconds: <color=#ffaa77>+{Pct(buffDamageAmt)} damage</color>, <color=#9999ff>+{Pct(buffMoveAmt)} movement speed</color>, <color=#eeff55>+{Pct(buffAttackAmt)} attack speed</color>, or <color=#997755>{buffArmorAmt:N0} armor</color>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
 
         ////// Config ///////
 
+        [AutoConfig("Duration of all Pixie Tube buffs.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        public float buffDuration { get; private set; } = 10f;
+
+        [AutoConfig("Fractional move speed bonus from the Water buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMoveAmt { get; private set; } = 0.05f;
+
+        [AutoConfig("Fractional attack speed bonus from the Air buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffAttackAmt { get; private set; } = 0.05f;
+
+        [AutoConfig("Fractional damage bonus from the Fire buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffDamageAmt { get; private set; } = 0.03f;
+
+        [AutoConfig("Flat armor bonus from the Earth buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffArmorAmt { get; private set; } = 10f;
 
 
 
@@ -135,7 +149,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 bpkp.buffDef = bufftypes[i];
                 bpkp.teamFilter = prefab.GetComponent<TeamFilter>();
                 bpkp.pickupEffect = pickup.GetComponent<HealthPickup>().pickupEffect;
-                bpkp.buffDuration = 10f;
+                bpkp.buffDuration = buffDuration;
                 bpkp.baseObject = prefabs[i];
 
                 var grav = prefab.transform.Find("GravitationController").gameObject;
@@ -196,10 +210,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
             if(!sender) return;
-            args.armorAdd += sender.GetBuffCount(armorBuff) * 10f;
-            args.attackSpeedMultAdd += sender.GetBuffCount(attackBuff) * 0.05f;
-            args.damageMultAdd += sender.GetBuffCount(damageBuff) * 0.03f;
-            args.moveSpeedMultAdd += sender.GetBuffCount(moveBuff) * 0.05f;
+            args.armorAdd += sender.GetBuffCount(armorBuff) * buffArmorAmt;
+            args.attackSpeedMultAdd += sender.GetBuffCount(attackBuff) * buffAttackAmt;
+            args.damageMultAdd += sender.GetBuffCount(damageBuff) * buffDamageAmt;
+            args.moveSpeedMultAdd += sender.GetBuffCount(moveBuff) * buffMoveAmt;
         }
 
         private void Fire_FireMissile(On.EntityStates.Engi.EngiMissilePainter.Fire.orig_FireMissile orig, EntityStates.Engi.EngiMissilePainter.Fire self, HurtBox target, Vector3 position) {
