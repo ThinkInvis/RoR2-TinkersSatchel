@@ -1,5 +1,11 @@
 # Tinker's Satchel Changelog
 
+**1.8.0** *The Artifice Update, Part 1*
+
+- ADDED ITEMS: Negative Feedback Loop, Pixie Tube, Go-Faster Stripes, Causal Camera!
+- Added extra null safety to some Percussive Maintenance hooks (may fix console spam).
+- Fixed the AI blacklist setting on Pulse Monitor not having a config option.
+
 **1.7.2**
 
 - Fixed Armor Prism yoinking some of Armor Crystal's code in addition to its itemcount.

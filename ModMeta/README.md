@@ -46,6 +46,13 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Uses equipment's unmodified cooldown and applies its own ICD.
 	- Has a config option to allow other ICD sources e.g. Fuel Cell to also apply.
 
+- Negative Feedback Loop: "Some incoming damage is dealt over time."
+
+- Pixie Tube: "Drop random buffs on using non-primary skills."
+	- Buffs attack speed, move speed, damage, or armor.
+	- Can be picked up by allies.
+		- Has a short pickup delay so you don't eat them all instantly.
+
 #### Tier-3 Item
 
 - H3AD-53T: "Your Utility skill builds a stunning static charge."
@@ -55,6 +62,15 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Pinball Wizard: "Projectiles may bounce, gaining damage and homing."
 	- Chance to proc is high, but unaffected by luck. Stacking increases maximum bounce count.
 	- Overrides gravity, impact fuse time, etc. on affected projectiles to unerringly track towards a target.
+
+- Go-Faster Stripes: "Your Utility skill gains more mobility."
+	- Most classes: ~+50% move/launch/jump/etc. speed during Utility skill.
+	- Huntress: also has reduced blink duration.
+	- MUL-T: reactivate Utility skill while active to extend its duration by 1 second. Boosted speed is applied during this duration.
+	- Engi: shield applies a stacking speed buff to anyone inside; missiles can be self-targeted (fire with no targets) to explosive jump.
+	- Bandit: Explosive-jump with the blast from your smokebomb.
+	- Artificer: teleports to wall location (placeholder, intended effect is launch ramp or icy ground).
+	- Captain, DLC characters: WIP! No item effect yet.
 
 #### Lunar Item
 
@@ -94,6 +110,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 - Items have no DisplayRules.
 - Most items need some effects & model polish in general.
+- Some class-specific item behaviors on Go-Faster Stripes are missing or placeholders.
 - Pinball Wizard's internal mechanics are held together with duct tape and a prayer. No known issues but they're definitely there somewhere.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
@@ -101,6 +118,12 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.8.0** *The Artifice Update, Part 1*
+
+- ADDED ITEMS: Negative Feedback Loop, Pixie Tube, Go-Faster Stripes, Causal Camera!
+- Added extra null safety to some Percussive Maintenance hooks (may fix console spam).
+- Fixed the AI blacklist setting on Pulse Monitor not having a config option.
 
 **1.7.2**
 
@@ -129,16 +152,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Fixed Artifact of Safekeeping trying and failing to work in teleporterless stages (incl. Bazaar, final boss fights).
 - Fixed an edge-case NRE in Percussive Maintenance.
-
-**1.6.2**
-
-- Cardboard Box is now synced properly in multiplayer.
-- Many, *many* H3AD-53T fixes.
-	- No longer has a duplicate internal buff name of Armor Prism's.
-	- Now has a per-target internal cooldown instead of a fixed proc frequency.
-		- No longer causes NREs if one of its pending targets gets killed before a proc happens, because targets will no longer pend.
-	- Actually procs on enemies now.
-	- Fixed proc rate being way too fast (once/frame instead of intended ICD of 0.5s).
-	- No longer deals 0 damage sometimes.
-- Fixed Mostly-Tame Mimic keeping items selected after losing all real stacks. Again. For real this time I promise.
-- Fixed Armor Prism pickup model being huge and unrotated.
