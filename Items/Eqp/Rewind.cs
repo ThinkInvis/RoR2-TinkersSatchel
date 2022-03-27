@@ -194,17 +194,36 @@ namespace ThinkInvisible.TinkersSatchel {
             internal RewindFrame() { }
 
             public RewindFrame(CharacterBody body) {
-                position = body.characterMotor.previousPosition;
-                moveVec = body.characterDirection.moveVector;
-                targVec = body.characterDirection.targetVector;
-                velocity = body.characterMotor.velocity;
+                if(body.characterDirection) {
+                    moveVec = body.characterDirection.moveVector;
+                    targVec = body.characterDirection.targetVector;
+                } else {
+                    moveVec = Vector3.zero;
+                    targVec = Vector3.zero;
+                }
+                if(body.characterMotor) {
+                    position = body.characterMotor.previousPosition;
+                    velocity = body.characterMotor.velocity;
+                } else {
+                    position = Vector3.zero;
+                    velocity = Vector3.zero;
+                }
 
-                skillStates = body.skillLocator.allSkills.Select(x => (body.skillLocator.GetSkillSlotIndex(x), x.rechargeStopwatch, x.stock)).ToArray();
+                if(body.skillLocator)
+                    skillStates = body.skillLocator.allSkills.Select(x => (body.skillLocator.GetSkillSlotIndex(x), x.rechargeStopwatch, x.stock)).ToArray();
+                else
+                    skillStates = new (int, float, int)[0];
 
                 if(NetworkServer.active) {
-                    health = body.healthComponent.health;
-                    shield = body.healthComponent.shield;
-                    barrier = body.healthComponent.barrier;
+                    if(body.healthComponent) {
+                        health = body.healthComponent.health;
+                        shield = body.healthComponent.shield;
+                        barrier = body.healthComponent.barrier;
+                    } else {
+                        health = 0;
+                        shield = 0;
+                        barrier = 0;
+                    }
                     buffs = (int[])body.buffs.Clone();
                     timedBuffs = new List<CharacterBody.TimedBuff>();
                     foreach(var tb in body.timedBuffs) {
@@ -230,10 +249,14 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             public void ApplyTo(CharacterBody body) {
-                body.characterMotor.rootMotion = (position - body.characterMotor.previousPosition);
-                body.characterDirection.moveVector = moveVec;
-                body.characterDirection.targetVector = targVec;
-                body.characterMotor.velocity = velocity;
+                if(body.characterMotor) {
+                    body.characterMotor.rootMotion = (position - body.characterMotor.previousPosition);
+                    body.characterMotor.velocity = velocity;
+                }
+                if(body.characterDirection) {
+                    body.characterDirection.moveVector = moveVec;
+                    body.characterDirection.targetVector = targVec;
+                }
 
                 if(Util.HasEffectiveAuthority(body.networkIdentity)) {
                     foreach(var skill in body.skillLocator.allSkills) {
@@ -250,9 +273,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
 
                 if(NetworkServer.active) {
-                    body.healthComponent.Networkhealth = health;
-                    body.healthComponent.Networkshield = shield;
-                    body.healthComponent.Networkbarrier = barrier;
+                    if(body.healthComponent) {
+                        body.healthComponent.Networkhealth = health;
+                        body.healthComponent.Networkshield = shield;
+                        body.healthComponent.Networkbarrier = barrier;
+                    }
 
                     for(var i = 0; i < buffs.Length; i++) {
                         body.ClearTimedBuffs((BuffIndex)i);
@@ -289,7 +314,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void FixedUpdate() {
-            if(isRewinding) return;
+            if(!body || isRewinding) return;
             stopwatch -= Time.fixedDeltaTime;
             if(stopwatch <= 0f) {
                 stopwatch = Rewind.instance.frameInterval;
