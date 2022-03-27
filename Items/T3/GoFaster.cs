@@ -514,11 +514,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			line = gameObject.AddComponent<LineRenderer>();
 			line.material = UnityEngine.Object.Instantiate(LegacyResourcesAPI.Load<Material>("materials/matBlueprintsOk"));
 			//GameObject.Destroy(lineRenMtlSnagFrom);
-			line.material.SetColor("_TintColor", new Color(8f, 0.2f, 0.3f, 9f));
-			line.positionCount = 64;
+			line.material.SetColor("_TintColor", new Color(16f, 0.02f, 0.02f, 9f));
+			line.positionCount = 100;
 			List<Keyframe> kfmArr = new List<Keyframe>();
 			for(int i = 0; i < line.positionCount; i++) {
-				kfmArr.Add(new Keyframe(i / 64f, (1f - MiscUtil.Wrap(i / 8f, 0f, 1f)) * 0.875f));
+				kfmArr.Add(new Keyframe(i / 100f, (1f - MiscUtil.Wrap(i / 5f, 0f, 1f)) * 0.875f));
 			}
 			line.widthCurve = new AnimationCurve {
 				keys = kfmArr.ToArray()
@@ -540,8 +540,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			line.SetPositions(CalculatePoints(
 				body.transform.position,
 				CalculateLaunch(transform.position, radius, force, body.transform.position, minPitch, maxPitch),
-				64,
-				5f));
+				100,
+				8f));
 		}
 
 		public static Vector3 CalculateLaunch(Vector3 blastOrigin, float blastRadius, float force, Vector3 bodyOrigin, float minPitch, float maxPitch) {
