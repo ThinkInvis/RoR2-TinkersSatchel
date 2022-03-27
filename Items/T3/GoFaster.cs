@@ -317,7 +317,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					owner = self.characterBody.gameObject,
 					damage = 0,
 					crit = false,
-					force = mainSpeed * massAdjust,
+					force = 0,
 					damageColorIndex = DamageColorIndex.Item
 				});
 
