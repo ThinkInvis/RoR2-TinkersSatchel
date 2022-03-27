@@ -1,5 +1,9 @@
 # Tinker's Satchel Changelog
 
+**1.9.1**
+
+- Fixed Causal Camera spamming console errors while equipped on bodies with fewer components than usual (e.g. Engi turrets).
+
 **1.9.0** *The Artifice Update, Part 2*
 
 - ADDED ITEMS: Triskelion Brooch, Bismuth Tonic!

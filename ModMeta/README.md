@@ -135,6 +135,10 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.9.1**
+
+- Fixed Causal Camera spamming console errors while equipped on bodies with fewer components than usual (e.g. Engi turrets).
+
 **1.9.0** *The Artifice Update, Part 2*
 
 - ADDED ITEMS: Triskelion Brooch, Bismuth Tonic!
@@ -180,9 +184,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Added extra null safety to all R2API.RecalculateStatsAPI.GetStatCoefficients subscribers (may fix an edge-case hang).
 - Added missing Thunderstore description text for 1.7.0 content.
 - Updated TILER2 dependency to 6.1.2.
-
-**1.7.0** *The Evil Lich Update*
-
-- ADDED ITEMS: Macho Moustache, Villainous Visage, Pulse Monitor, Pinball Wizard!
-- Yeah yeah it's not really a themed update, I know the name is a stretch :(
-- Updated TILER2 dependency to 6.1.0.
