@@ -105,6 +105,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		BuffDef engiSpeedBoostBuff;
 		GameObject captainStrikeJumperAltProjectile;
+		UnlockableDef unlockable;
 
 
 
@@ -143,6 +144,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			captainStrikeJumperAltProjectile = tmpPrefab.InstantiateClone("TkSatCaptainStrikeJumperAltProjectile", true);
 
 			GameObject.Destroy(tmpPrefab);
+
+			unlockable = UnlockableAPI.AddUnlockable<TkSatGoFasterAchievement>();
+			LanguageAPI.Add("TKSAT_GOFASTER_ACHIEVEMENT_NAME", "Faster Than Recommended");
+			LanguageAPI.Add("TKSAT_GOFASTER_ACHIEVEMENT_DESCRIPTION", "Trimp.");
+
+			itemDef.unlockableDef = unlockable;
 		}
 
 		public override void Install() {
@@ -481,6 +488,41 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 		}
 		#endregion
+	}
+
+	public class TkSatGoFasterAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+		public string AchievementIdentifier => "TKSAT_GOFASTER_ACHIEVEMENT_ID";
+		public string UnlockableIdentifier => "TKSAT_GOFASTER_UNLOCKABLE_ID";
+		public string PrerequisiteUnlockableIdentifier => "";
+		public string AchievementNameToken => "TKSAT_GOFASTER_ACHIEVEMENT_NAME";
+		public string AchievementDescToken => "TKSAT_GOFASTER_ACHIEVEMENT_DESCRIPTION";
+		public string UnlockableNameToken => GoFaster.instance.nameToken;
+
+		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/goFasterIcon.png");
+
+		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+		public override void OnInstall() {
+			base.OnInstall();
+            On.RoR2.CharacterMotor.OnLanded += CharacterMotor_OnLanded;
+		}
+
+        public override void OnUninstall() {
+			base.OnUninstall();
+			On.RoR2.CharacterMotor.OnLanded -= CharacterMotor_OnLanded;
+		}
+
+		private void CharacterMotor_OnLanded(On.RoR2.CharacterMotor.orig_OnLanded orig, CharacterMotor self) {
+			orig(self);
+			if(self.lastVelocity.magnitude > 30f && self.velocity.magnitude > 30f
+				&& self.lastVelocity.y < 5f
+				&& (self.velocity.y / self.velocity.magnitude) > 0.25f)
+				Grant();
+		}
 	}
 
 	public class ToolbotDashBoostTracker : MonoBehaviour {
