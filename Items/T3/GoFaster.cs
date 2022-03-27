@@ -2,13 +2,11 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using RoR2.Projectile;
-using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class GoFaster : Item<GoFaster> {
@@ -90,6 +88,15 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Multiplier to BuffFrac for Acrid Frenzied Leap: multiplies jump velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float crocoLeap2Frac { get; private set; } = 0.5f;
 
+		[AutoConfig("Multiplier to BuffFrac for Captain Airstrike: controls launch force of projectile (NOT adjusted for mass!).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float captainAirstrikeFrac { get; private set; } = 6000f;
+
+		[AutoConfig("Multiplier to BuffFrac for Captain Nuke: controls launch velocity of projectile at 1 stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float captainAirstrikeAltFracBase { get; private set; } = 80f;
+
+		[AutoConfig("Multiplier to BuffFrac for Captain Nuke: controls launch velocity of projectile per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float captainAirstrikeAltFracStack { get; private set; } = 20f;
+
 		//todo: IDR as overlay on character model?
 
 
@@ -97,6 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Other Fields/Properties //////
 
 		BuffDef engiSpeedBoostBuff;
+		GameObject captainStrikeJumperAltProjectile;
 
 
 
@@ -118,6 +126,23 @@ namespace ThinkInvisible.TinkersSatchel {
 			engiSpeedBoostBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texMovespeedBuffIcon.tif")
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(engiSpeedBoostBuff);
+
+			var tmpPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Captain/CaptainAirstrikeAltProjectile.prefab")
+				.WaitForCompletion()
+				.InstantiateClone("TkSatTempSetupPrefab", false);
+
+			/*var ghost = tmpPrefab.GetComponent<ProjectileController>().ghostPrefab.InstantiateClone("TkSatTempSetupPrefab2", false);
+
+			ghost.AddComponent<SwooceTrajectoryPredictor>();
+
+			tmpPrefab.GetComponent<ProjectileController>().ghostPrefab = ghost.InstantiateClone("TkSatCaptainStrikeJumperAltGhost", false);
+			GameObject.Destroy(ghost);*/
+
+			tmpPrefab.AddComponent<SwooceTrajectoryPredictor>();
+
+			captainStrikeJumperAltProjectile = tmpPrefab.InstantiateClone("TkSatCaptainStrikeJumperAltProjectile", true);
+
+			GameObject.Destroy(tmpPrefab);
 		}
 
 		public override void Install() {
@@ -138,6 +163,8 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Treebot.Weapon.FireSonicBoom.OnEnter += FireSonicBoom_OnEnter;
             On.EntityStates.Loader.BaseSwingChargedFist.OnEnter += BaseSwingChargedFist_OnEnter;
             On.EntityStates.Croco.BaseLeap.OnEnter += BaseLeap_OnEnter;
+            On.RoR2.Projectile.ProjectileExplosion.DetonateServer += ProjectileExplosion_DetonateServer;
+            On.EntityStates.Captain.Weapon.CallAirstrikeAlt.ModifyProjectile += CallAirstrikeAlt_ModifyProjectile;
 		}
 
         public override void Uninstall() {
@@ -162,9 +189,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// Hooks //////
-
-		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
+        ////// Hooks //////
+        #region Hooks
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
 			args.moveSpeedMultAdd += sender.GetBuffCount(engiSpeedBoostBuff) * engiSharedBuffFrac * buffFrac;
 		}
@@ -366,6 +393,92 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self);
 			self.characterBody.moveSpeed = origSpeed;
 		}
+
+
+		private void CallAirstrikeAlt_ModifyProjectile(On.EntityStates.Captain.Weapon.CallAirstrikeAlt.orig_ModifyProjectile orig, EntityStates.Captain.Weapon.CallAirstrikeAlt self, ref FireProjectileInfo fireProjectileInfo) {
+			orig(self, ref fireProjectileInfo);
+			var count = GetCount(self.characterBody);
+			if(count > 0) {
+				fireProjectileInfo.projectilePrefab = captainStrikeJumperAltProjectile;
+				fireProjectileInfo.force = buffFrac * (captainAirstrikeAltFracBase + (count - 1) * captainAirstrikeAltFracStack);
+			}
+		}
+
+		private void ProjectileExplosion_DetonateServer(On.RoR2.Projectile.ProjectileExplosion.orig_DetonateServer orig, ProjectileExplosion self) {
+			bool isNuke = self.gameObject.name == "TkSatCaptainStrikeJumperAltProjectile(Clone)";
+			if(isNuke && self.projectileController.owner) {
+				self.bonusBlastForce = Vector3.zero;
+				self.projectileDamage.force = 0f;
+			}
+			orig(self);
+			if(!self.projectileController.owner) return;
+			var count = GetCount(self.projectileController.owner.gameObject.GetComponent<CharacterBody>());
+			if(count <= 0) return;
+			if(isNuke) {
+				var result = new BlastAttack {
+					position = self.transform.position,
+					baseDamage = 0,
+					baseForce = 0,
+					radius = self.blastRadius,
+					attacker = self.projectileController.owner.gameObject,
+					inflictor = self.gameObject,
+					teamIndex = self.projectileController.teamFilter.teamIndex,
+					crit = false,
+					procChainMask = default,
+					procCoefficient = 0f,
+					bonusForce = Vector3.zero,
+					falloffModel = BlastAttack.FalloffModel.None,
+					damageColorIndex = DamageColorIndex.Item,
+					damageType = DamageType.BypassBlock | DamageType.NonLethal | DamageType.Silent,
+					attackerFiltering = AttackerFiltering.AlwaysHit,
+					canRejectForce = true
+				}.Fire();
+				foreach(var hit in result.hitPoints) {
+					if(!hit.hurtBox || !hit.hurtBox.healthComponent.gameObject) continue;
+					var go = hit.hurtBox.healthComponent.gameObject;
+
+					var calc = SwooceTrajectoryPredictor.CalculateLaunch(self.transform.position, self.blastRadius, buffFrac * (captainAirstrikeAltFracBase + (count - 1) * captainAirstrikeAltFracStack), go.transform.position, 15f, 90f);
+
+					var motor = go.GetComponent<CharacterMotor>();
+					if(motor)
+						motor.ApplyForce(calc * motor.mass, true, true);
+					var rigid = go.GetComponent<Rigidbody>();
+					if(rigid)
+						rigid.AddForce(calc, ForceMode.VelocityChange);
+
+					var fdp = go.GetComponent<TemporaryFallDamageProtection>();
+					if(!fdp) fdp = go.AddComponent<TemporaryFallDamageProtection>();
+					fdp.Apply();
+				}
+			} else if(self.gameObject.name == "CaptainAirstrikeProjectile1(Clone)") {
+				var result = new BlastAttack {
+					position = self.transform.position,
+					baseDamage = 0f,
+					baseForce = count * buffFrac * captainAirstrikeFrac,
+					radius = self.blastRadius,
+					attacker = self.projectileController.owner.gameObject,
+					inflictor = self.gameObject,
+					teamIndex = self.projectileController.teamFilter.teamIndex,
+					crit = false,
+					procChainMask = default,
+					procCoefficient = 0f,
+					bonusForce = Vector3.zero,
+					falloffModel = BlastAttack.FalloffModel.SweetSpot,
+					damageColorIndex = DamageColorIndex.Item,
+					damageType = DamageType.BypassBlock,
+					attackerFiltering = AttackerFiltering.AlwaysHit,
+					canRejectForce = false
+				}.Fire();
+				foreach(var hit in result.hitPoints) {
+					if(!hit.hurtBox || !hit.hurtBox.healthComponent.gameObject) continue;
+					var go = hit.hurtBox.healthComponent.gameObject;
+					var fdp = go.GetComponent<TemporaryFallDamageProtection>();
+					if(!fdp) fdp = go.AddComponent<TemporaryFallDamageProtection>();
+					fdp.Apply();
+				}
+			}
+		}
+		#endregion
 	}
 
 	public class ToolbotDashBoostTracker : MonoBehaviour {
@@ -386,4 +499,103 @@ namespace ThinkInvisible.TinkersSatchel {
 			return true;
         }
     }
+
+	[RequireComponent(typeof(ProjectileDamage), typeof(ProjectileImpactExplosion))]
+	public class SwooceTrajectoryPredictor : MonoBehaviour {
+		float force;
+		float radius;
+		public float minPitch = 15f;
+		public float maxPitch = 90f;
+
+		LineRenderer line;
+		void Awake() {
+			line = gameObject.AddComponent<LineRenderer>();
+			line.material = UnityEngine.Object.Instantiate(LegacyResourcesAPI.Load<Material>("materials/matBlueprintsOk"));
+			//GameObject.Destroy(lineRenMtlSnagFrom);
+			line.material.SetColor("_TintColor", new Color(8f, 0.2f, 0.3f, 9f));
+			line.positionCount = 64;
+			List<Keyframe> kfmArr = new List<Keyframe>();
+			for(int i = 0; i < line.positionCount; i++) {
+				kfmArr.Add(new Keyframe(i / 64f, (1f - MiscUtil.Wrap(i / 8f, 0f, 1f)) * 0.875f));
+			}
+			line.widthCurve = new AnimationCurve {
+				keys = kfmArr.ToArray()
+			};
+		}
+
+		void Start() {
+			force = GetComponent<ProjectileDamage>().force;
+			radius = GetComponent<ProjectileImpactExplosion>().blastRadius;
+        }
+
+		void Update() {
+			var body = LocalUserManager.GetFirstLocalUser()?.cachedBodyObject;
+			if(!body || (body.transform.position - transform.position).magnitude > radius) {
+				line.enabled = false;
+				return;
+			}
+			line.enabled = true;
+			line.SetPositions(CalculatePoints(
+				body.transform.position,
+				CalculateLaunch(transform.position, radius, force, body.transform.position, minPitch, maxPitch),
+				64,
+				5f));
+		}
+
+		public static Vector3 CalculateLaunch(Vector3 blastOrigin, float blastRadius, float force, Vector3 bodyOrigin, float minPitch, float maxPitch) {
+			var blastOriginFlat = new Vector3(blastOrigin.x, 0f, blastOrigin.z);
+			var bodyOriginFlat = new Vector3(bodyOrigin.x, 0f, bodyOrigin.z);
+			var blastTrajectoryFlat = (bodyOriginFlat - blastOriginFlat);
+			var launchPitch = Mathf.Lerp(maxPitch, minPitch, blastTrajectoryFlat.magnitude / blastRadius);
+			return Vector3.RotateTowards(blastTrajectoryFlat.normalized, Vector3.up, launchPitch * Mathf.PI / 180f, 100f) * force;
+        }
+
+		public static Vector3[] CalculatePoints(Vector3 origin, Vector3 velocity, int displayPointsToGenerate, float duration) {
+			//calculate points for display
+			var generatedPoints = new Vector3[displayPointsToGenerate];
+			var timePerPoint = duration / (displayPointsToGenerate - 1f);
+			for(int i = 0; i < displayPointsToGenerate; i++) {
+				generatedPoints[i] = Trajectory.CalculatePositionAtTime(origin, velocity, timePerPoint * i);
+			}
+
+			return generatedPoints;
+		}
+	}
+
+	[RequireComponent(typeof(CharacterBody))]
+	public class TemporaryFallDamageProtection : NetworkBehaviour {
+		private CharacterBody attachedBody;
+		bool hasProtection = false;
+		bool disableNextFrame = false;
+		bool disableN2f = false;
+		private void FixedUpdate() {
+			if(disableN2f) {
+				disableN2f = false;
+				disableNextFrame = true;
+			} else if(disableNextFrame) {
+				disableNextFrame = false;
+				hasProtection = false;
+				attachedBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
+			} else if(hasProtection) {
+				if(attachedBody.characterMotor.Motor.GroundingStatus.IsStableOnGround && !attachedBody.characterMotor.Motor.LastGroundingStatus.IsStableOnGround) {
+					disableN2f = true;
+				}
+			}
+		}
+		private void Awake() {
+			attachedBody = GetComponent<CharacterBody>();
+			attachedBody.characterMotor.onMovementHit += CharacterMotor_onMovementHit;
+		}
+
+		public void Apply() {
+			hasProtection = true;
+			attachedBody.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+		}
+
+		private void CharacterMotor_onMovementHit(ref CharacterMotor.MovementHitInfo movementHitInfo) {
+			if(hasProtection && !disableN2f && !disableNextFrame) {
+				disableN2f = true;
+			}
+		}
+	}
 }
