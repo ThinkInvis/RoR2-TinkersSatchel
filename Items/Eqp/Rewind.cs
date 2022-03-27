@@ -55,26 +55,28 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
             rewindStateType = ContentAddition.AddEntityState<RewindState>(out _);
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgRewind>();
         }
 
         public override void Install() {
             base.Install();
-            On.RoR2.CharacterBody.OnEquipmentGained += CharacterBody_OnEquipmentGained;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         public override void Uninstall() {
             base.Uninstall();
-            On.RoR2.CharacterBody.OnEquipmentGained -= CharacterBody_OnEquipmentGained;
+            CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
         }
 
 
 
         ////// Hooks //////
 
-        private void CharacterBody_OnEquipmentGained(On.RoR2.CharacterBody.orig_OnEquipmentGained orig, CharacterBody self, EquipmentDef equipmentDef) {
-            orig(self, equipmentDef);
-            if(equipmentDef == this.equipmentDef && !self.GetComponent<RewindComponent>()) {
-                self.gameObject.AddComponent<RewindComponent>();
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
+            if(!body || !body.inventory) return;
+            if(EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) == this.equipmentDef && !body.gameObject.GetComponent<RewindComponent>()) {
+                body.gameObject.AddComponent<RewindComponent>();
             }
         }
 
@@ -85,11 +87,37 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!cpt || cpt.frames.Count == 0)
                 return false;
             var esm = EntityStateMachine.FindByCustomName(slot.characterBody.gameObject, "Body");
-            if(esm == null) {
+            if(esm == null || esm.state is RewindState) {
                 return false;
             }
-            esm.SetState(EntityStateCatalog.InstantiateState(rewindStateType));
+            new MsgRewind(slot.characterBody).Send(R2API.Networking.NetworkDestination.Clients);
             return true;
+        }
+
+        public struct MsgRewind : INetMessage {
+            CharacterBody _target;
+
+            public MsgRewind(CharacterBody target) {
+                _target = target;
+            }
+
+            public void Deserialize(NetworkReader reader) {
+                _target = reader.ReadGameObject()?.GetComponent<CharacterBody>();
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target.gameObject);
+            }
+
+            public void OnReceived() {
+                if(!_target) return;
+                var cpt = _target.GetComponent<RewindComponent>();
+                if(!cpt || cpt.frames.Count == 0)
+                    return;
+                var esm = EntityStateMachine.FindByCustomName(_target.gameObject, "Body");
+                if(esm == null || esm.state is RewindState) return;
+                esm.SetState(EntityStateCatalog.InstantiateState(Rewind.instance.rewindStateType));
+            }
         }
     }
 
@@ -104,6 +132,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.OnEnter();
             cpt = outer.commonComponents.characterBody.GetComponent<RewindComponent>();
             currFrame = cpt.frames.Count;
+            Debug.Log($"Entering RewindState with {cpt.frames.Count} frames");
             if(characterModel) {
                 characterModel.invisibilityCount--;
             }
@@ -162,34 +191,40 @@ namespace ThinkInvisible.TinkersSatchel {
             public List<CharacterBody.TimedBuff> timedBuffs;
             public List<DotController.DotStack> dotStacks;
 
+            internal RewindFrame() { }
+
             public RewindFrame(CharacterBody body) {
                 position = body.characterMotor.previousPosition;
                 moveVec = body.characterDirection.moveVector;
                 targVec = body.characterDirection.targetVector;
                 velocity = body.characterMotor.velocity;
-                health = body.healthComponent.health;
-                shield = body.healthComponent.shield;
-                barrier = body.healthComponent.barrier;
+
                 skillStates = body.skillLocator.allSkills.Select(x => (body.skillLocator.GetSkillSlotIndex(x), x.rechargeStopwatch, x.stock)).ToArray();
-                buffs = (int[])body.buffs.Clone();
-                timedBuffs = new List<CharacterBody.TimedBuff>();
-                foreach(var tb in body.timedBuffs) {
-                    timedBuffs.Add(new CharacterBody.TimedBuff {
-                        buffIndex = tb.buffIndex,
-                        timer = tb.timer
-                    });
-                }
-                if(DotController.dotControllerLocator.TryGetValue(body.gameObject.GetInstanceID(), out var dotController)) {
-                    foreach(var dot in dotController.dotStackList) {
-                        dotStacks.Add(new DotController.DotStack {
-                            attackerObject = dot.attackerObject,
-                            attackerTeam = dot.attackerTeam,
-                            damage = dot.damage,
-                            damageType = dot.damageType,
-                            dotDef = dot.dotDef,
-                            dotIndex = dot.dotIndex,
-                            timer = dot.timer
+
+                if(NetworkServer.active) {
+                    health = body.healthComponent.health;
+                    shield = body.healthComponent.shield;
+                    barrier = body.healthComponent.barrier;
+                    buffs = (int[])body.buffs.Clone();
+                    timedBuffs = new List<CharacterBody.TimedBuff>();
+                    foreach(var tb in body.timedBuffs) {
+                        timedBuffs.Add(new CharacterBody.TimedBuff {
+                            buffIndex = tb.buffIndex,
+                            timer = tb.timer
                         });
+                    }
+                    if(DotController.dotControllerLocator.TryGetValue(body.gameObject.GetInstanceID(), out var dotController)) {
+                        foreach(var dot in dotController.dotStackList) {
+                            dotStacks.Add(new DotController.DotStack {
+                                attackerObject = dot.attackerObject,
+                                attackerTeam = dot.attackerTeam,
+                                damage = dot.damage,
+                                damageType = dot.damageType,
+                                dotDef = dot.dotDef,
+                                dotIndex = dot.dotIndex,
+                                timer = dot.timer
+                            });
+                        }
                     }
                 }
             }
@@ -199,40 +234,41 @@ namespace ThinkInvisible.TinkersSatchel {
                 body.characterDirection.moveVector = moveVec;
                 body.characterDirection.targetVector = targVec;
                 body.characterMotor.velocity = velocity;
-                body.healthComponent.Networkhealth = health;
-                body.healthComponent.Networkshield = shield;
-                body.healthComponent.Networkbarrier = barrier;
-                foreach(var skill in body.skillLocator.allSkills) {
-                    var thisSlot = body.skillLocator.GetSkillSlotIndex(skill);
-                    var stored = skillStates.Where(x => x.slot == thisSlot);
-                    if(stored.Count() != 1) {
-                        TinkersSatchelPlugin._logger.LogError($"RewindState.ApplyTo: skillslot {thisSlot} went missing or had duplicates!");
-                        continue;
+
+                if(Util.HasEffectiveAuthority(body.networkIdentity)) {
+                    foreach(var skill in body.skillLocator.allSkills) {
+                        var thisSlot = body.skillLocator.GetSkillSlotIndex(skill);
+                        var stored = skillStates.Where(x => x.slot == thisSlot);
+                        if(stored.Count() != 1) {
+                            TinkersSatchelPlugin._logger.LogError($"RewindState.ApplyTo: skillslot {thisSlot} went missing or had duplicates!");
+                            continue;
+                        }
+                        var ovr = stored.First();
+                        skill.rechargeStopwatch = ovr.cd;
+                        skill.stock = ovr.stock;
                     }
-                    var ovr = stored.First();
-                    skill.rechargeStopwatch = ovr.cd;
-                    skill.stock = ovr.stock;
                 }
-                body.buffs = (int[])buffs.Clone();
-                body.timedBuffs.Clear();
-                foreach(var tb in timedBuffs) {
-                    body.timedBuffs.Add(new CharacterBody.TimedBuff {
-                        buffIndex = tb.buffIndex,
-                        timer = tb.timer
-                    });
-                }
-                if(DotController.dotControllerLocator.TryGetValue(body.gameObject.GetInstanceID(), out var dotController)) {
-                    dotController.dotStackList.Clear();
-                    foreach(var dot in dotStacks) {
-                        dotController.dotStackList.Add(new DotController.DotStack {
-                            attackerObject = dot.attackerObject,
-                            attackerTeam = dot.attackerTeam,
-                            damage = dot.damage,
-                            damageType = dot.damageType,
-                            dotDef = dot.dotDef,
-                            dotIndex = dot.dotIndex,
-                            timer = dot.timer
-                        });
+
+                if(NetworkServer.active) {
+                    body.healthComponent.Networkhealth = health;
+                    body.healthComponent.Networkshield = shield;
+                    body.healthComponent.Networkbarrier = barrier;
+
+                    for(var i = 0; i < buffs.Length; i++) {
+                        body.ClearTimedBuffs((BuffIndex)i);
+                    }
+                    foreach(var tb in timedBuffs) {
+                        body.AddTimedBuff(tb.buffIndex, tb.timer);
+                    }
+                    for(var i = 0; i < buffs.Length; i++) { //undoes erroneous buff index changes from AddTimedBuff
+                        body.SetBuffCount((BuffIndex)i, buffs[i]);
+                    }
+
+                    if(DotController.dotControllerLocator.TryGetValue(body.gameObject.GetInstanceID(), out var dotController)) {
+                        DotController.RemoveAllDots(body.gameObject);
+                        foreach(var dot in dotStacks) {
+                            DotController.InflictDot(body.gameObject, dot.attackerObject, dot.dotIndex, dot.timer);
+                        }
                     }
                 }
             }
