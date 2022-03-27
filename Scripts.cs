@@ -68,7 +68,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					}
 				}
 
-				stopwatch = (flickerCount > 1 ? flickerInterval : Random.Range(switchIntervalMin, switchIntervalMax));
+				stopwatch = (flickerCount > 1 ? Random.Range(0.02f, 0.1f) : Random.Range(switchIntervalMin, switchIntervalMax));
 				flickerCount--;
 				targets[currIndex].SetActive(!targets[currIndex].activeSelf);
 			}
