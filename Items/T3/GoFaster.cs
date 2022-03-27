@@ -185,6 +185,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			On.EntityStates.Treebot.Weapon.FireSonicBoom.OnEnter -= FireSonicBoom_OnEnter;
 			On.EntityStates.Loader.BaseSwingChargedFist.OnEnter -= BaseSwingChargedFist_OnEnter;
 			On.EntityStates.Croco.BaseLeap.OnEnter -= BaseLeap_OnEnter;
+			On.RoR2.Projectile.ProjectileExplosion.DetonateServer -= ProjectileExplosion_DetonateServer;
+			On.EntityStates.Captain.Weapon.CallAirstrikeAlt.ModifyProjectile -= CallAirstrikeAlt_ModifyProjectile;
 		}
 
 
