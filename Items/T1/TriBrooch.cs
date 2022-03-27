@@ -54,6 +54,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            var unlockable = UnlockableAPI.AddUnlockable<TkSatTriBroochAchievement>();
+            LanguageAPI.Add("TKSAT_TRIBROOCH_ACHIEVEMENT_NAME", "Rasputin");
+            LanguageAPI.Add("TKSAT_TRIBROOCH_ACHIEVEMENT_DESCRIPTION", "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -195,6 +201,81 @@ namespace ThinkInvisible.TinkersSatchel {
                 procChainMask = default,
                 procCoefficient = 0f
             });
+        }
+    }
+
+    public class TkSatTriBroochAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_TRIBROOCH_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_TRIBROOCH_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_TRIBROOCH_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_TRIBROOCH_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => TriBrooch.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/triBroochIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.SetStateOnHurt.SetStunInternal += SetStateOnHurt_SetStunInternal;
+            On.RoR2.SetStateOnHurt.SetFrozenInternal += SetStateOnHurt_SetFrozenInternal;
+            On.RoR2.CharacterBody.OnClientBuffsChanged += CharacterBody_OnClientBuffsChanged;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.SetStateOnHurt.SetStunInternal -= SetStateOnHurt_SetStunInternal;
+            On.RoR2.SetStateOnHurt.SetFrozenInternal -= SetStateOnHurt_SetFrozenInternal;
+            On.RoR2.CharacterBody.OnClientBuffsChanged -= CharacterBody_OnClientBuffsChanged;
+        }
+
+        private void SetStateOnHurt_SetStunInternal(On.RoR2.SetStateOnHurt.orig_SetStunInternal orig, SetStateOnHurt self, float duration) {
+            orig(self, duration);
+            var cpt = self.gameObject.GetComponent<TriBroochAchievementTracker>();
+            if(!cpt) cpt = self.gameObject.AddComponent<TriBroochAchievementTracker>();
+            cpt.stunStopwatch = 3f;
+        }
+
+        private void SetStateOnHurt_SetFrozenInternal(On.RoR2.SetStateOnHurt.orig_SetFrozenInternal orig, SetStateOnHurt self, float duration) {
+            orig(self, duration);
+            var cpt = self.gameObject.GetComponent<TriBroochAchievementTracker>();
+            if(!cpt) cpt = self.gameObject.AddComponent<TriBroochAchievementTracker>();
+            if(cpt.stunStopwatch <= 0f) {
+                cpt.freezeStopwatch = 0f;
+            } else {
+                cpt.freezeStopwatch = 3f;
+            }
+        }
+
+        private void CharacterBody_OnClientBuffsChanged(On.RoR2.CharacterBody.orig_OnClientBuffsChanged orig, CharacterBody self) {
+            orig(self);
+            if(self.HasBuff(RoR2Content.Buffs.OnFire)) {
+                var cpt = self.gameObject.GetComponent<TriBroochAchievementTracker>();
+                if(cpt) {
+                    if(cpt.stunStopwatch > 0f && cpt.freezeStopwatch > 0f) {
+                        Grant();
+                    } else {
+                        cpt.stunStopwatch = 0f;
+                        cpt.freezeStopwatch = 0f;
+                    }
+                }
+            }
+        }
+    }
+
+    public class TriBroochAchievementTracker : MonoBehaviour {
+        public float stunStopwatch = 0f;
+        public float freezeStopwatch = 0f;
+        void FixedUpdate() {
+            if(stunStopwatch > 0f)
+                stunStopwatch -= Time.fixedDeltaTime;
+            if(freezeStopwatch > 0f)
+                freezeStopwatch -= Time.fixedDeltaTime;
         }
     }
 }
