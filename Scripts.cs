@@ -43,4 +43,35 @@ namespace ThinkInvisible.TinkersSatchel {
 			this.gameObject.transform.localScale = (rb + rx) * (1f / wobbleStability) + Vector3.one;
 		}
 	}
+
+	public class PixieFuseFlicker : MonoBehaviour {
+		[SerializeField]
+		public GameObject[] targets;
+		public float switchIntervalMin;
+		public float switchIntervalMax;
+		public float flickerInterval;
+		public int flickersMin;
+		public int flickersMax;
+
+		private float stopwatch = 0f;
+		private int flickerCount = 0;
+		private int currIndex = 0;
+
+		void Update() {
+			stopwatch -= Time.deltaTime;
+			if(stopwatch < 0f) {
+				if(flickerCount <= 0) {
+					currIndex = Random.Range(0, targets.Length);
+					flickerCount = Random.Range(flickersMin, flickersMax + 1) * 2;
+					for(var i = 0; i < targets.Length; i++) {
+						targets[i].SetActive(currIndex == i);
+					}
+				}
+
+				stopwatch = (flickerCount > 1 ? flickerInterval : Random.Range(switchIntervalMin, switchIntervalMax));
+				flickerCount--;
+				targets[currIndex].SetActive(!targets[currIndex].activeSelf);
+			}
+		}
+	}
 }
