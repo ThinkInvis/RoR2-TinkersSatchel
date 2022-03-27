@@ -35,6 +35,11 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 - Macho Moustache: "Deal more damage when surrounded."
 	- Focus Crystal but more risk for more reward.
 
+- Triskelion Brooch: "Chance to combine ignite, freeze, and stun."
+	- Inflicting one of these effects has a small chance to also inflict one of the others for a small amount of extra damage.
+	- Frozen enemies are stunproof, so only extra damage will occur if a freeze also procs a stun.
+	- Unlock by stunning, then freezing, then igniting the same enemy within 3 seconds (any player may contribute).
+
 #### Tier-2 Item
 
 - Armor Crystal: "Gain armor by hoarding money."
@@ -45,6 +50,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Auto-triggers equipment, does not allow using equipment *manually* for free.
 	- Uses equipment's unmodified cooldown and applies its own ICD.
 	- Has a config option to allow other ICD sources e.g. Fuel Cell to also apply.
+	- Unlock by falling below 25% health, then returning above 50%, 9 times in the same run.
 
 - Negative Feedback Loop: "Some incoming damage is dealt over time."
 
@@ -52,6 +58,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Buffs attack speed, move speed, damage, or armor.
 	- Can be picked up by allies.
 		- Has a short pickup delay so you don't eat them all instantly.
+		- Pickup range will increase over time to reduce the pressure to chase orbs around constantly.
 
 #### Tier-3 Item
 
@@ -64,18 +71,27 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Overrides gravity, impact fuse time, etc. on affected projectiles to unerringly track towards a target.
 
 - Go-Faster Stripes: "Your Utility skill gains more mobility."
-	- Most classes: ~+50% move/launch/jump/etc. speed during Utility skill.
-	- Huntress: also has reduced blink duration.
-	- MUL-T: reactivate Utility skill while active to extend its duration by 1 second. Boosted speed is applied during this duration.
-	- Engi: shield applies a stacking speed buff to anyone inside; missiles can be self-targeted (fire with no targets) to explosive jump.
-	- Bandit: Explosive-jump with the blast from your smokebomb.
-	- Artificer: teleports to wall location (placeholder, intended effect is launch ramp or icy ground).
-	- Captain, DLC characters: WIP! No item effect yet.
+	- <details><summary>Class-specific details (click to expand):</summary>
+
+		- Most classes: ~+50% move/launch/jump/etc. speed during Utility skill.
+		- Huntress: also has reduced blink duration.
+		- MUL-T: reactivate Utility skill while active to extend its duration by 1 second. Boosted speed is applied during this duration.
+		- Engi: shield applies a stacking speed buff to anyone inside; missiles can be self-targeted (fire with no targets) to explosive jump.
+		- Bandit: Explosive-jump with the blast from your smokebomb.
+		- Artificer: teleports to wall location (placeholder, intended effect is launch ramp or icy ground).
+		- Captain: small airstrike causes a no-damage blast jump; nuke launch becomes more controllable and displays a trajectory preview. Both grant fall damage prevention until your next collision with terrain.
+		- DLC characters: WIP! No item effect yet.
+
+	</details>
+
+	- Unlock by trimping (jump or fall onto a ramp fast enough that you get launched upwards).
 
 #### Lunar Item
 
 - RC Controller: "Nearby turrets and drones attack with you... BUT no longer attack automatically."
 	- Also adds a +100% (+25% per stack) attack speed buff to affected turrets/drones.
+
+- Bismuth Tonic: "Gain resistance when hit by one enemy type... BUT gain weakness to the others."
 
 #### Equipment
 
@@ -119,6 +135,29 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.9.0** *The Artifice Update, Part 2*
+
+- ADDED ITEMS: Triskelion Brooch, Bismuth Tonic!
+
+- Greatly reduced texture scales to match vanilla (for filesize purposes).
+
+- Causal Camera: should work properly in multiplayer now. Probably. ...Maybe.
+
+- Pulse Monitor: Added an unlock achievement.
+
+- Go-Faster Stripes:
+	- Made the pickup model and icon less octagonal.
+	- Now works on Captain. Airstrike has launch force vs allies with no damage, nuke has trajectory preview and more controllable launch, both provide fall damage protection.
+	- Removed unintentional duplicated force application from Engineer missile effect.
+	- Added an unlock achievement.
+
+- Pixie Tube:
+	- Wisps now increase the range at which they gravitate towards allies over time (6 m --> 36 m).
+	- Shortened wisp arming delay (2.5 s --> 2 s) and increased lifetime to account for arming delay (10s --> 12s).
+	- Wisps are now dimmer during their arming delay.
+	- Made timing on wisp VFX more consistent.
+	- Pickup model now flickers its fuses on at random.
+
 **1.8.0** *The Artifice Update, Part 1*
 
 - ADDED ITEMS: Negative Feedback Loop, Pixie Tube, Go-Faster Stripes, Causal Camera!
@@ -147,8 +186,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - ADDED ITEMS: Macho Moustache, Villainous Visage, Pulse Monitor, Pinball Wizard!
 - Yeah yeah it's not really a themed update, I know the name is a stretch :(
 - Updated TILER2 dependency to 6.1.0.
-
-**1.6.3**
-
-- Fixed Artifact of Safekeeping trying and failing to work in teleporterless stages (incl. Bazaar, final boss fights).
-- Fixed an edge-case NRE in Percussive Maintenance.

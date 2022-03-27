@@ -1,5 +1,28 @@
 # Tinker's Satchel Changelog
 
+**1.9.0** *The Artifice Update, Part 2*
+
+- ADDED ITEMS: Triskelion Brooch, Bismuth Tonic!
+
+- Greatly reduced texture scales to match vanilla (for filesize purposes).
+
+- Causal Camera: should work properly in multiplayer now. Probably. ...Maybe.
+
+- Pulse Monitor: Added an unlock achievement.
+
+- Go-Faster Stripes:
+	- Made the pickup model and icon less octagonal.
+	- Now works on Captain. Airstrike has launch force vs allies with no damage, nuke has trajectory preview and more controllable launch, both provide fall damage protection.
+	- Removed unintentional duplicated force application from Engineer missile effect.
+	- Added an unlock achievement.
+
+- Pixie Tube:
+	- Wisps now increase the range at which they gravitate towards allies over time (6 m --> 36 m).
+	- Shortened wisp arming delay (2.5 s --> 2 s) and increased lifetime to account for arming delay (10s --> 12s).
+	- Wisps are now dimmer during their arming delay.
+	- Made timing on wisp VFX more consistent.
+	- Pickup model now flickers its fuses on at random.
+
 **1.8.0** *The Artifice Update, Part 1*
 
 - ADDED ITEMS: Negative Feedback Loop, Pixie Tube, Go-Faster Stripes, Causal Camera!
