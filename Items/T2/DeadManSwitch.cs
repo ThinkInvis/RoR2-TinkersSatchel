@@ -47,6 +47,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            var unlockable = UnlockableAPI.AddUnlockable<TkSatDeadManSwitchAchievement>();
+            LanguageAPI.Add("TKSAT_DEADMANSWITCH_ACHIEVEMENT_NAME", "Nine Lives");
+            LanguageAPI.Add("TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION", "Survive falling to low health 9 times in the same run (must return to above 50% health each time).");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -96,5 +102,55 @@ namespace ThinkInvisible.TinkersSatchel {
                 body.equipmentSlot.PerformEquipmentAction(eqp);
             }
         }
+    }
+
+    public class TkSatDeadManSwitchAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_DEADMANSWITCH_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => DeadManSwitch.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/deadManSwitchIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.HealthComponent.FixedUpdate += HealthComponent_FixedUpdate;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.HealthComponent.FixedUpdate -= HealthComponent_FixedUpdate;
+        }
+
+
+        private void HealthComponent_FixedUpdate(On.RoR2.HealthComponent.orig_FixedUpdate orig, HealthComponent self) {
+            orig(self);
+            if(!self || !self.alive || self.body?.masterObject != localUser.cachedMasterObject) return;
+            var cpt = self.body.masterObject.GetComponent<DeadManSwitchAchievementTracker>();
+            if(!cpt) cpt = self.body.masterObject.AddComponent<DeadManSwitchAchievementTracker>();
+            if(self.isHealthLow) {
+                if(!cpt.lowHealthHysteresis) {
+                    cpt.lowHealthHysteresis = true;
+                    cpt.totalLowHealthThisRun++;
+                }
+            } else if((self.health + self.shield) / self.fullCombinedHealth > 0.5f) {
+                cpt.lowHealthHysteresis = false;
+                if(cpt.totalLowHealthThisRun >= 9)
+                    Grant();
+            }
+        }
+    }
+
+    public class DeadManSwitchAchievementTracker : MonoBehaviour {
+        public int totalLowHealthThisRun = 0;
+        public bool lowHealthHysteresis = false;
     }
 }
