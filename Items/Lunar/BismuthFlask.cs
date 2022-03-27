@@ -91,7 +91,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public float ModifyDamage(float damage, BodyIndex sourceBodyIndex) {
             var count = BismuthFlask.instance.GetCount(body);
-            Debug.Log($"Took {damage} damage from {sourceBodyIndex}, {count} stacks");
             if(count <= 0 || sourceBodyIndex == BodyIndex.None) {
                 lastHitBodyIndex = BodyIndex.None;
                 return damage;
@@ -102,10 +101,8 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             if(lastHitBodyIndex == sourceBodyIndex) {
                 damage /= 1f + BismuthFlask.instance.resistAmount * count;
-                Debug.Log("    Resisting");
             } else {
                 damage *= 1f + BismuthFlask.instance.weakAmount * count;
-                Debug.Log("    Weakening");
             }
             lastHitBodyIndex = sourceBodyIndex;
             return damage;
