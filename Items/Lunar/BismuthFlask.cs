@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Gain resistance when hit by one enemy type... <color=#FF7F7F>BUT gain weakness to the others.</color>";
-        protected override string GetDescString(string langid = null) => $"On being hit by one <style=cIsDamage>type of enemy</style>: take <style=cIsHealing>{Pct(resistAmount, 1)} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{Pct(weakAmount, 1)} more damage</style> from all other types.";
+        protected override string GetDescString(string langid = null) => $"On being hit by one <style=cIsDamage>type of enemy</style>: take <style=cIsHealing>{Pct(resistAmount, 1)} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{Pct(weakAmount, 1)} more damage</style> from all other types. Wears off after {duration:N0} seconds.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -30,6 +30,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fractional damage increase per stack for unresisted attack types, linear: damage = original * (1 + resistAmount * stacks)", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float weakAmount { get; private set; } = 0.2f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Duration of the item's effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float duration { get; private set; } = 10f;
 
 
 
@@ -82,11 +86,18 @@ namespace ThinkInvisible.TinkersSatchel {
     [RequireComponent(typeof(CharacterBody))]
     public class DamageSourceResistanceTracker  : MonoBehaviour {
         BodyIndex lastHitBodyIndex = BodyIndex.None;
+        float stopwatch = 0f;
 
         CharacterBody body;
 
         void Awake() {
             body = GetComponent<CharacterBody>();
+        }
+
+        void FixedUpdate() {
+            if(stopwatch > 0f) {
+                stopwatch -= Time.fixedDeltaTime;
+            } else lastHitBodyIndex = BodyIndex.None;
         }
 
         public float ModifyDamage(float damage, BodyIndex sourceBodyIndex) {
@@ -105,6 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 damage *= 1f + BismuthFlask.instance.weakAmount * count;
             }
             lastHitBodyIndex = sourceBodyIndex;
+            stopwatch = BismuthFlask.instance.duration;
             return damage;
         }
     }
