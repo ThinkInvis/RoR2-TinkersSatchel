@@ -136,7 +136,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var count = GetCount(report.attackerBody);
                 if(count <= 0 || !Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, report.attackerMaster)) return;
                 bool isFreeze = (report.damageInfo.damageType & DamageType.Freeze2s) != DamageType.Generic;
-                bool isStun = (report.damageInfo.damageType & DamageType.Stun1s) != DamageType.Generic;
+                bool isStun = (report.damageInfo.damageType & DamageType.Stun1s) != DamageType.Generic || (report.damageInfo.damageType & DamageType.Shock5s) != DamageType.Generic;
                 if(isFreeze) {
                     bool doStun = rng.nextBool;
                     if(doStun) {
