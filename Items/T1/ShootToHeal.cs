@@ -79,7 +79,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         self.ignoredHealthComponentList.Add(cpt.healthComponent);
                         var count = GetCount(self.attacker.GetComponent<CharacterBody>());
                         if(count > 0) {
-                            cpt.healthComponent.Heal(count, default);
+                            cpt.healthComponent.Heal(count * self.procCoefficient, default);
                         }
                     }
 
@@ -95,7 +95,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!self.owner || !hitInfo.hitHurtBox) return retv;
             var count = GetCount(self.owner.GetComponent<CharacterBody>());
             if(hitInfo.hitHurtBox.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                hitInfo.hitHurtBox.healthComponent.Heal(count, default);
+                hitInfo.hitHurtBox.healthComponent.Heal(count * self.procCoefficient, default);
             }
             return retv;
         }
@@ -106,7 +106,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var hb = collision.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner.GetComponent<CharacterBody>());
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                hb.healthComponent.Heal(count, default);
+                hb.healthComponent.Heal(count * self.procCoefficient, default);
             }
         }
 
@@ -116,7 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var hb = collider.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner.GetComponent<CharacterBody>());
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                hb.healthComponent.Heal(count, default);
+                hb.healthComponent.Heal(count * self.procCoefficient, default);
             }
         }
     }
