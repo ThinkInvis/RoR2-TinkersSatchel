@@ -80,6 +80,24 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupBehavior();
 
             FakeInventory.blacklist.Add(itemDef);
+            //scrap
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhite"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreen"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapRed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapYellow"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapRedSuppressed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreenSuppressed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhiteSuppressed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrap"));
+            //consumed items
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrapConsumed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeConsumed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeVoidConsumed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/FragileDamageBonusConsumed"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/HealingPotionConsumed"));
+            //AI summons (bugged)
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/BeetleGland"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RoboBallBuddy"));
         }
 
         public override void Install() {
