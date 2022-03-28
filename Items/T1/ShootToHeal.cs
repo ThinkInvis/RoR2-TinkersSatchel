@@ -18,12 +18,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Hit allies to heal them.";
-        protected override string GetDescString(string langid = null) => $"Hitting an ally with a direct attack heals them for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style></style>.";
+        protected override string GetDescString(string langid = null) => $"Hitting an ally with a direct attack heals them for <style=cIsHealing>{healAmount:N1} health <style=cStack>(+{healAmount:N1} per stack)</style></style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
 
-        /////// Other Fields/Properties //////
+        ////// Config //////
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Healing amount, in flat HP, per stack.",
+            AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float healAmount { get; private set; } = 2f;
+
+        ////// Other Fields/Properties //////
 
         internal UnlockableDef unlockable;
 
@@ -79,7 +86,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         self.ignoredHealthComponentList.Add(cpt.healthComponent);
                         var count = GetCount(self.attacker.GetComponent<CharacterBody>());
                         if(count > 0) {
-                            cpt.healthComponent.Heal(count * self.procCoefficient, default);
+                            cpt.healthComponent.Heal(count * self.procCoefficient * healAmount, default);
                         }
                     }
 
@@ -95,7 +102,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!self.owner || !hitInfo.hitHurtBox) return retv;
             var count = GetCount(self.owner.GetComponent<CharacterBody>());
             if(hitInfo.hitHurtBox.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                hitInfo.hitHurtBox.healthComponent.Heal(count * self.procCoefficient, default);
+                hitInfo.hitHurtBox.healthComponent.Heal(count * self.procCoefficient * healAmount, default);
             }
             return retv;
         }
@@ -106,7 +113,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var hb = collision.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner.GetComponent<CharacterBody>());
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                hb.healthComponent.Heal(count * self.procCoefficient, default);
+                hb.healthComponent.Heal(count * self.procCoefficient * healAmount, default);
             }
         }
 
@@ -116,7 +123,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var hb = collider.gameObject.GetComponent<HurtBox>();
             var count = GetCount(self.owner.GetComponent<CharacterBody>());
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                hb.healthComponent.Heal(count * self.procCoefficient, default);
+                hb.healthComponent.Heal(count * self.procCoefficient * healAmount, default);
             }
         }
     }
