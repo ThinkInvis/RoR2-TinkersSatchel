@@ -69,8 +69,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(self && GetCount(self.body) > 0) {
-                var atkb = damageInfo.attacker?.GetComponent<CharacterBody>();
+            if(self && self.body && damageInfo.attacker && GetCount(self.body) > 0) {
+                var atkb = damageInfo.attacker.GetComponent<CharacterBody>();
                 if(!atkb) {
                     orig(self, damageInfo);
                     return;
