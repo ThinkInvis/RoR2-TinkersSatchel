@@ -92,8 +92,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private bool BulletAttack_ProcessHit(On.RoR2.BulletAttack.orig_ProcessHit orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo) {
             var retv = orig(self, ref hitInfo);
-            var count = GetCount(self.owner?.GetComponent<CharacterBody>());
-            if(hitInfo.hitHurtBox?.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
+            if(!self.owner || !hitInfo.hitHurtBox) return retv;
+            var count = GetCount(self.owner.GetComponent<CharacterBody>());
+            if(hitInfo.hitHurtBox.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 hitInfo.hitHurtBox.healthComponent.Heal(count, default);
             }
             return retv;

@@ -120,10 +120,12 @@ namespace ThinkInvisible.TinkersSatchel {
             var cpt = cb.GetComponent<GoldenGearComponent>();
             if(!cpt) cpt = cb.gameObject.AddComponent<GoldenGearComponent>();
 
-            var newMoney = cb.master?.money ?? 0;
+            uint newMoney = 0;
+            if(cb.master)
+                newMoney = cb.master.money;
             if(inclDeploys) {
                 var dplc = cb.GetComponent<Deployable>();
-                if(dplc) newMoney += dplc.ownerMaster?.money ?? 0;
+                if(dplc && dplc.ownerMaster) newMoney += dplc.ownerMaster.money;
             }
             var newDiff = Run.instance.difficultyCoefficient;
             var newIcnt = GetCount(cb);

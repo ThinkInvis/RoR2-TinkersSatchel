@@ -102,7 +102,12 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             public void Deserialize(NetworkReader reader) {
-                _target = reader.ReadGameObject()?.GetComponent<CharacterBody>();
+                var tgto = reader.ReadGameObject();
+                if(tgto)
+                    _target = tgto.GetComponent<CharacterBody>();
+                else {
+                    TinkersSatchelPlugin._logger.LogError("Received MsgRewind for nonexistent or non-networked GameObject");
+                }
             }
 
             public void Serialize(NetworkWriter writer) {

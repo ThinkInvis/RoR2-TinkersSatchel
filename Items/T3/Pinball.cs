@@ -100,7 +100,9 @@ namespace ThinkInvisible.TinkersSatchel {
 		private GameObject BulletAttack_ProcessHitList(On.RoR2.BulletAttack.orig_ProcessHitList orig, BulletAttack self, List<BulletAttack.BulletHit> hits, ref Vector3 endPosition, List<GameObject> ignoreList) {
 			var retv = orig(self, hits, ref endPosition, ignoreList);
 
-			var count = GetCount(self.owner?.GetComponent<CharacterBody>());
+			if(!self.owner) return retv;
+
+			var count = GetCount(self.owner.GetComponent<CharacterBody>());
 
 			if(count > 0) {
 				var maxBounces = baseBounces + (count - 1) * stackBounces;
@@ -248,7 +250,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				psti.destroyWhenNotAlive = false;
 				origDamagePSTI = psti.projectileDamage.damage;
 			}
-			origSpeed = ps?.desiredForwardSpeed ?? projectile.rigidbody.velocity.magnitude;
+			if(ps) origSpeed = ps.desiredForwardSpeed;
+			else origSpeed = projectile.rigidbody.velocity.magnitude;
 		}
 
 		void FixedUpdate() {
@@ -279,13 +282,14 @@ namespace ThinkInvisible.TinkersSatchel {
 					return;
 			}
 			lastTarget = currTarget ?? hit;
+			if(currTarget)
 			currentBounces++;
 			var damageFac = 1f + currentBounces * Pinball.instance.bounceDamage;
 			if(pie)
 				pie.projectileDamage.damage = origDamagePIE * damageFac;
 			if(psti)
-				psti.projectileDamage.damage = origDamagePSTI * damageFac;
-			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.homeChance)) {
+				psti.projectileDamage.damage = origDamagePSTI * Pinball.instance.bounceDamageFrac;
+			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance)) {
 				isBouncy = false;
 				currentBounces = maxBounces;
 				var colliders = GetComponentsInChildren<Collider>();
@@ -308,7 +312,8 @@ namespace ThinkInvisible.TinkersSatchel {
 					pie.hasImpact = false;
 					pie.stopwatch = 0f;
 					pie.stopwatchAfterImpact = 0f;
-					pie.explosionEffect = (pie.impactEffect ?? pie.explosionEffect);
+					if(pie.impactEffect)
+						pie.explosionEffect = pie.impactEffect;
 					pie.DetonateServer();
 					pie.alive = true;
 				}
@@ -339,7 +344,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				currTarget = nextTarget;
 				projectile.rigidbody.velocity =
 					(nextTarget.transform.position - transform.position).normalized
-					* origSpeed * damageFac;
+					* origSpeed;
 			} else {
 				lastTarget = null;
 				currTarget = null;

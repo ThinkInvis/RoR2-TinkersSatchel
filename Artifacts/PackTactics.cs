@@ -137,11 +137,13 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Non-Public Methods //////
 
         private void AddWard(CharacterBody body) {
-            var cpt = body.GetComponentInChildren<TacticsWard>()?.gameObject;
-            if(!cpt) {
-				cpt = UnityEngine.Object.Instantiate(tacticsWardPrefab);
-				cpt.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
-				cpt.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject);
+            if(!body) return;
+            var cpt = body.GetComponentInChildren<TacticsWard>();
+            var cptObj = cpt.gameObject;
+            if(!cptObj) {
+				cptObj = UnityEngine.Object.Instantiate(tacticsWardPrefab);
+				cptObj.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
+				cptObj.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject);
             }
         }
     }

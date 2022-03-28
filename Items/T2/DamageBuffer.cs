@@ -86,7 +86,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc_S, (byte)locIndex);
                 c.EmitDelegate<Func<HealthComponent, float, float>>((hc, origFinalDamage) => {
-                    var count = GetCount(hc?.body);
+                    if(!hc) return origFinalDamage;
+                    var count = GetCount(hc.body);
                     if(count <= 0) return origFinalDamage;
                     var cpt = hc.GetComponent<DelayedDamageBufferComponent>();
                     if(!cpt) cpt = hc.gameObject.AddComponent<DelayedDamageBufferComponent>();
@@ -155,13 +156,16 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                     bufferDamage.RemoveAll(x => x.curr <= 0f);
                     isApplying = true;
+                    Vector3 pos = transform.position;
+                    if(hc.body)
+                        pos = hc.body.corePosition;
                     hc.TakeDamage(new DamageInfo {
                         attacker = null,
                         crit = false,
                         damage = accum,
                         force = Vector3.zero,
                         inflictor = null,
-                        position = hc.body?.corePosition ?? transform.position,
+                        position = pos,
                         procCoefficient = 0,
                         damageColorIndex = DamageColorIndex.Item,
                         damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.DoT

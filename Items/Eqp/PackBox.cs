@@ -177,8 +177,10 @@ namespace ThinkInvisible.TinkersSatchel {
             } else {
                 indPrefab = packIndicatorPrefab;
                 var res = FindNearestBoxable(self.gameObject, self.GetAimRay(), 10f, 20f, false);
+                Transform tsf = null;
+                if(res) tsf = res.transform;
                 self.currentTarget = new EquipmentSlot.UserTargetInfo {
-                    transformToIndicateAt = res?.transform,
+                    transformToIndicateAt = tsf,
                     pickupController = null,
                     hurtBox = null,
                     rootObject = res
@@ -197,8 +199,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, RoR2.UI.EquipmentIcon self) {
             orig(self);
-            if(self.iconImage && self.currentDisplayData.equipmentDef == instance.equipmentDef) {
-                var cpt = self.targetEquipmentSlot?.characterBody?.GetComponent<PackBoxTracker>();
+            if(self.iconImage && self.currentDisplayData.equipmentDef == instance.equipmentDef && self.targetEquipmentSlot && self.targetEquipmentSlot.characterBody) {
+                var cpt = self.targetEquipmentSlot.characterBody.GetComponent<PackBoxTracker>();
                 if(cpt && cpt.packedObject)
                     self.iconImage.texture = instance.secondaryIconResource.texture;
             }
@@ -209,7 +211,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!cpt) cpt = slot.characterBody.gameObject.AddComponent<PackBoxTracker>();
 
             if(cpt.packedObject == null) {
-                if(validObjectNames.Contains(slot.currentTarget.rootObject?.name)) {
+                if(slot.currentTarget.rootObject && validObjectNames.Contains(slot.currentTarget.rootObject.name)) {
                     var shopcpt = slot.currentTarget.rootObject.GetComponent<ShopTerminalBehavior>();
                     if(shopcpt && shopcpt.serverMultiShopController)
                         slot.currentTarget.rootObject = shopcpt.serverMultiShopController.transform.root.gameObject;

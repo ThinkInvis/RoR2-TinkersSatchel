@@ -196,7 +196,14 @@ namespace ThinkInvisible.TinkersSatchel {
                         victimSSOH.SetFrozen(2f);
                 }
             }
-            var attackerDamage = inflictDotInfo.attackerObject.GetComponent<CharacterBody>()?.damage ?? inflictDotInfo.totalDamage ?? 1f;
+            var attackerDamage = 1f;
+            if(inflictDotInfo.attackerObject) {
+                var body = inflictDotInfo.attackerObject.GetComponent<CharacterBody>();
+                if(body)
+                    attackerDamage = body.damage;
+            } else if(inflictDotInfo.totalDamage != null) {
+                attackerDamage = inflictDotInfo.totalDamage.Value;
+            }
             victimBody.healthComponent.TakeDamage(new DamageInfo {
                 attacker = inflictDotInfo.attackerObject,
                 crit = false,

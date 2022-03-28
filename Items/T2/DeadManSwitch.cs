@@ -133,7 +133,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void HealthComponent_FixedUpdate(On.RoR2.HealthComponent.orig_FixedUpdate orig, HealthComponent self) {
             orig(self);
-            if(!self || !self.alive || self.body?.masterObject != localUser.cachedMasterObject) return;
+            if(!self || !self.alive || !self.body || self.body.masterObject != localUser.cachedMasterObject) return;
             var cpt = self.body.masterObject.GetComponent<DeadManSwitchAchievementTracker>();
             if(!cpt) cpt = self.body.masterObject.AddComponent<DeadManSwitchAchievementTracker>();
             if(self.isHealthLow) {

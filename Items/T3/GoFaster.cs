@@ -573,7 +573,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
 		void Update() {
-			var body = LocalUserManager.GetFirstLocalUser()?.cachedBodyObject;
+			var body = LocalUserManager.GetFirstLocalUser().cachedBodyObject;
 			if(!body || (body.transform.position - transform.position).magnitude > radius) {
 				line.enabled = false;
 				return;

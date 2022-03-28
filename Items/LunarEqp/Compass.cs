@@ -52,7 +52,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
 			if (TeleporterInteraction.instance
-                && slot.characterBody?.master?.playerCharacterMasterController
+                && slot.characterBody && slot.characterBody.master
+                && slot.characterBody.master.playerCharacterMasterController
                 && !slot.GetComponent<SilverCompassFlag>()
                 && !TeleporterInteraction.instance.GetComponent<SilverCompassFlag>()) {
 				TeleporterInteraction.instance.AddShrineStack();

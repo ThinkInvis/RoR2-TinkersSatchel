@@ -102,7 +102,11 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void GenericSkill_RunRecharge(On.RoR2.GenericSkill.orig_RunRecharge orig, GenericSkill self, float dt) {
-            var cpt = self.characterBody?.GetComponent<WranglerReceiverComponent>();
+            if(!self.characterBody) {
+                orig(self, dt);
+                return;
+            }
+            var cpt = self.characterBody.GetComponent<WranglerReceiverComponent>();
             if(cpt && cpt.cachedWranglerCount > 0) {
                 dt *= baseExtraSpeed + stackExtraSpeed * (cpt.cachedWranglerCount - 1);
             }
@@ -111,8 +115,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void BaseAI_UpdateBodyInputs(On.RoR2.CharacterAI.BaseAI.orig_UpdateBodyInputs orig, RoR2.CharacterAI.BaseAI self) {
             orig(self);
-            var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
-            if(cpt && cpt.isWrangled && self.leader?.characterBody) {
+            if(!self.body || self.leader == null) return;
+            var cpt = self.body.GetComponent<WranglerReceiverComponent>();
+            if(cpt && cpt.isWrangled && self.leader.characterBody) {
                 var fireEverything = self.leader.characterBody.inputBank.skill1.down;
                 self.bodyInputBank.skill1.PushState(fireEverything);
                 self.bodyInputBank.skill2.PushState(fireEverything);
@@ -124,14 +129,16 @@ namespace ThinkInvisible.TinkersSatchel {
         private RoR2.CharacterAI.BaseAI.SkillDriverEvaluation BaseAI_EvaluateSkillDrivers(On.RoR2.CharacterAI.BaseAI.orig_EvaluateSkillDrivers orig, RoR2.CharacterAI.BaseAI self) {
             var retv = orig(self);
 
-            var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
+            if(!self.body) return retv;
+
+            var cpt = self.body.GetComponent<WranglerReceiverComponent>();
             if(!cpt) {
-                if(validBodyNames.Contains(self.body?.name))
+                if(validBodyNames.Contains(self.body.name))
                     cpt = self.body.gameObject.AddComponent<WranglerReceiverComponent>();
             }
             if(!cpt) return retv;
 
-            if(!self.leader?.characterBody
+            if(self.leader == null || !self.leader.characterBody
                 || Vector3.Distance(
                     self.body.corePosition,
                     self.leader.characterBody.corePosition
@@ -142,7 +149,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(cpt.isWrangled) {
                 //force drones to fly to leader
-                var health = self.bodyHealthComponent?.combinedHealthFraction ?? 1f;
+                float health = 1f;
+                if(self.bodyHealthComponent)
+                    health = self.bodyHealthComponent.combinedHealthFraction;
                 var f = System.Array.Find(self.skillDrivers, x => x.customName == "HardLeashToLeader");
                 if(f) {
                     return self.EvaluateSingleSkillDriver(in retv, f, health) ?? retv;
@@ -152,8 +161,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void BaseAI_UpdateBodyAim(On.RoR2.CharacterAI.BaseAI.orig_UpdateBodyAim orig, RoR2.CharacterAI.BaseAI self, float deltaTime) {
-            var cpt = self.body?.GetComponent<WranglerReceiverComponent>();
-            if(cpt && cpt.isWrangled && self.leader?.characterBody) {
+            if(!self.body || self.leader == null) {
+                orig(self, deltaTime);
+                return;
+            }
+            var cpt = self.body.GetComponent<WranglerReceiverComponent>();
+            if(cpt && cpt.isWrangled && self.leader.characterBody) {
                 var scpt = self.leader.characterBody.GetComponent<WranglerSenderComponent>();
                 if(!scpt)
                     scpt = self.leader.gameObject.AddComponent<WranglerSenderComponent>();
