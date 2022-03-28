@@ -98,6 +98,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Public API //////
+        
+        public void BlacklistItem(ItemDef def) {
+            mimicBlacklist.Add(def);
+        }
+
+
+
         ////// Hooks //////
 
         private void On_InvGiveItemByIndex(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
