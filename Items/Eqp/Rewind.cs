@@ -290,6 +290,8 @@ namespace ThinkInvisible.TinkersSatchel {
                         body.AddTimedBuff(tb.buffIndex, tb.timer);
                     }
                     for(var i = 0; i < buffs.Length; i++) { //undoes erroneous buff index changes from AddTimedBuff
+                        var def = BuffCatalog.GetBuffDef((BuffIndex)i);
+                        if(def == RoR2Content.Buffs.Immune || def == RoR2Content.Buffs.HiddenInvincibility) continue;
                         body.SetBuffCount((BuffIndex)i, buffs[i]);
                     }
 
