@@ -218,7 +218,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!pbh)
                         pbh = slot.currentTarget.rootObject.AddComponent<PackBoxHandler>();
 
-                    pbh.TryPack(cpt, null);
+                    pbh.TryPackServer(cpt, null);
 
                     return false;
                 }
@@ -229,7 +229,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     return false;
                 }
                 if(TryGetBoxablePlacePos(slot.GetAimRay(), out Vector3 placeLoc, out _)) {
-                    return pbh.TryPlace(cpt, placeLoc);
+                    return pbh.TryPlaceServer(cpt, placeLoc);
                 } else return false;
             }
 
@@ -297,10 +297,6 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             public void OnReceived() {
-                if(!NetworkClient.active) {
-                    TinkersSatchelPlugin._logger.LogError($"Client-targeted MsgPackboxPack received by server-only game instance");
-                    return;
-                }
                 if(!_target) {
                     TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPack for null GameObject");
                     return;
@@ -316,7 +312,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var pbt = _owner.GetComponent<PackBoxTracker>();
                 if(!pbt) pbt = _owner.AddComponent<PackBoxTracker>();
 
-                pbh.TryPack(pbt, _aux);
+                pbh.PackGlobal(pbt, _aux);
             }
 
             public MsgPackboxPack(GameObject target, PackBoxTracker owner, GameObject[] aux) {
@@ -344,16 +340,12 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             public void OnReceived() {
-                if(!NetworkClient.active) {
-                    TinkersSatchelPlugin._logger.LogError($"Client-targeted MsgPackboxPlace received by server-only game instance");
-                    return;
-                }
                 if(!_target) {
-                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxUnpack for null GameObject");
+                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPlace for null GameObject");
                     return;
                 }
                 if(!_owner) {
-                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPack for null GameObject");
+                    TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPlace for null GameObject");
                     return;
                 }
 
@@ -361,11 +353,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 var pbt = _owner.GetComponent<PackBoxTracker>();
 
                 if(!pbh || !pbt) {
-                    TinkersSatchelPlugin._logger.LogError($"MsgPackboxPack has an invalid GameObject (names: {_target.name} {_owner.name})");
+                    TinkersSatchelPlugin._logger.LogError($"MsgPackboxPlace has an invalid GameObject (names: {_target.name} {_owner.name})");
                     return;
                 }
 
-                pbh.TryPlace(pbt, _pos);
+                pbh.PlaceGlobal(pbt, _pos);
             }
 
             public MsgPackboxPlace(GameObject target, PackBoxTracker owner, Vector3 pos) {
@@ -432,18 +424,17 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public bool TryPlace(PackBoxTracker from, Vector3 pos) {
+        public bool TryPlaceServer(PackBoxTracker from, Vector3 pos) {
+            if(!NetworkServer.active) {
+                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPlaceServer called on client");
+                return false;
+            }
             if(!from || from.packedObject != gameObject) {
-                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPlace called on null PackBoxTracker, or this PackBoxHandler was not contained in it");
+                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPlaceServer called on null PackBoxTracker, or this PackBoxHandler was not contained in it");
                 return false;
             }
 
-            PlaceGlobal(from, pos);
-
-            if(NetworkServer.active && !NetworkClient.active)
-                new PackBox.MsgPackboxPlace(gameObject, from, pos).Send(R2API.Networking.NetworkDestination.Clients);
-            if(NetworkClient.active)
-                PlaceClient(pos);
+            new PackBox.MsgPackboxPlace(gameObject, from, pos).Send(R2API.Networking.NetworkDestination.Clients);
 
             return true;
         }
@@ -476,20 +467,21 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             from.packedObject = null;
             isBoxed = false;
+            if(NetworkClient.active)
+                PlaceClient(pos);
         }
         
-        public bool TryPack(PackBoxTracker into, GameObject[] auxOverride) {
+        public bool TryPackServer(PackBoxTracker into, GameObject[] auxOverride) {
+            if(!NetworkServer.active) {
+                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPackServer called on client");
+                return false;
+            }
             if(!into) {
-                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPack called on null PackBoxTracker");
+                TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPackServer called on null PackBoxTracker");
                 return false;
             }
 
-            PackGlobal(into, auxOverride);
-            if(NetworkServer.active && !NetworkClient.active)
-                new PackBox.MsgPackboxPack(gameObject, into, auxiliaryPackedObjects.Select(x => x.Key).ToArray()).Send(R2API.Networking.NetworkDestination.Clients);
-            if(NetworkClient.active)
-                PackClient();
-
+            new PackBox.MsgPackboxPack(gameObject, into, auxiliaryPackedObjects.Select(x => x.Key).ToArray()).Send(R2API.Networking.NetworkDestination.Clients);
             return true;
         }
 
@@ -505,6 +497,8 @@ namespace ThinkInvisible.TinkersSatchel {
             into.packedObject = gameObject;
             queuedDeactivate = true;
             CollectAuxiliary(auxOverride);
+            if(NetworkClient.active)
+                PackClient();
         }
     }
 }
