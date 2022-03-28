@@ -132,7 +132,6 @@ namespace ThinkInvisible.TinkersSatchel {
             base.OnEnter();
             cpt = outer.commonComponents.characterBody.GetComponent<RewindComponent>();
             currFrame = cpt.frames.Count;
-            Debug.Log($"Entering RewindState with {cpt.frames.Count} frames");
             if(characterModel) {
                 characterModel.invisibilityCount--;
             }
