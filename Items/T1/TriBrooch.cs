@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to combine ignite, freeze, and stun.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {Pct(procChance)} <style=cStack>(+{Pct(procChance)} per stack)</style> chance to also cause one of the other effects listed for <style=cIsDamage>{Pct(procBaseDamage)} base damage <style=cStack>(+{Pct(procStackDamage)} per stack)</style></style>.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {Pct(procBaseChance, 0, 1f)} <style=cStack>(+{Pct(procStackChance, 0, 1f)} per stack)</style> chance to also cause one of the other effects listed for <style=cIsDamage>{Pct(procBaseDamage)} base damage <style=cStack>(+{Pct(procStackDamage)} per stack)</style></style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -27,8 +27,12 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Config ///////
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc chance per stack (linear, percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float procChance { get; private set; } = 9f;
+        [AutoConfig("Proc chance at first stack (linear, percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        public float procBaseChance { get; private set; } = 9f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc chance per additional stack (linear, percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        public float procStackChance { get; private set; } = 9f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proc damage, as base damage fraction, at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
@@ -159,7 +163,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.EmitDelegate<Action<SetStateOnHurt, DamageReport>>((self, report) => {
                     if(report == null || !report.attackerBody || !report.victimBody) return;
                     var count = GetCount(report.attackerBody);
-                    if(count <= 0 || !Util.CheckRoll(procChance * (float)count, report.attackerMaster)) return;
+                    if(count <= 0 || !Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, report.attackerMaster)) return;
                     bool doFreeze = rng.nextBool;
                     if(doFreeze) {
                         InflictFreezeOrStun(count, self, report, false);
