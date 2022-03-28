@@ -134,7 +134,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!self.targetStateMachine || !self.spawnedOverNetwork || !report.attackerBody)
                     return;
                 var count = GetCount(report.attackerBody);
-                if(count <= 0) return;
+                if(count <= 0 || !Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, report.attackerMaster)) return;
                 bool isFreeze = (report.damageInfo.damageType & DamageType.Freeze2s) != DamageType.Generic;
                 bool isStun = (report.damageInfo.damageType & DamageType.Stun1s) != DamageType.Generic;
                 if(isFreeze) {
@@ -181,8 +181,11 @@ namespace ThinkInvisible.TinkersSatchel {
             if(isInternalIgnite || !inflictDotInfo.attackerObject || !inflictDotInfo.victimObject) return;
             var victimBody = inflictDotInfo.victimObject.GetComponent<CharacterBody>();
             var victimSSOH = inflictDotInfo.victimObject.GetComponent<SetStateOnHurt>();
-            var count = GetCount(inflictDotInfo.attackerObject.GetComponent<CharacterBody>());
+            var atkb = inflictDotInfo.attackerObject.GetComponent<CharacterBody>();
+            var count = GetCount(atkb);
             if(count <= 0 || !victimBody || !victimSSOH) return;
+            if(!Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, atkb.master))
+                return;
             bool isStun = rng.nextBool;
             if(!victimBody.healthComponent.isInFrozenState) {
                 if(isStun) {
