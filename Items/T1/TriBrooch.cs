@@ -35,11 +35,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public float procStackChance { get; private set; } = 9f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc damage, as base damage fraction, at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Proc damage, as base damage fraction, at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float procBaseDamage { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc damage, as base damage fraction, per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Proc damage, as base damage fraction, per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float procStackDamage { get; private set; } = 0.25f;
 
 
