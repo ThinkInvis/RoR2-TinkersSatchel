@@ -23,7 +23,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		protected override string GetPickupString(string langid = null) =>
 			"Projectiles may bounce, gaining damage and homing.";
 		protected override string GetDescString(string langid = null) =>
-			$"All your projectile attacks have a {Pct(homeChance, 0, 1f)} chance to bounce <style=cStack>(not affected by luck)</style>, <style=cIsDamage>exploding</style> one extra time, <style=cIsUtility>homing</style> towards a random enemy, and gaining <style=cIsDamage>+{Pct(bounceDamage)} of their original damage</style>. Can happen up to <style=cIsDamage>{baseBounces} times <style=cStack>(+{stackBounces} per stack)</style></style> per projectile.";
+			$"All your projectile attacks have a {Pct(bounceChance, 0, 1f)} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{Pct(bounceDamageFrac)} of their original damage</style>. Can happen up to <style=cIsDamage>{baseBounces} times <style=cStack>(+{stackBounces} per stack)</style></style> per projectile.";
 		protected override string GetLoreString(string langid = null) =>
 			"Ding! Ding! Ding! Ding!";
 
@@ -39,17 +39,17 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Number of extra projectile bounces per additional stack.",
 			AutoConfigFlags.None, 0, int.MaxValue)]
-		public int stackBounces { get; private set; } = 1;
+		public int stackBounces { get; private set; } = 2;
 
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Additional multiplier to original attack damage per bounce.",
+		[AutoConfig("Fraction of original attack damage for bounced projectiles.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
-		public float bounceDamage { get; private set; } = 0.15f;
+		public float bounceDamageFrac { get; private set; } = 0.5f;
 
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Percent chance to proc.",
 			AutoConfigFlags.None, 0f, 100f)]
-		public float homeChance { get; private set; } = 35f;
+		public float bounceChance { get; private set; } = 15f;
 
 
 
@@ -102,7 +102,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			if(!self.owner) return retv;
 
-			var count = GetCount(self.owner.GetComponent<CharacterBody>());
+			var body = self.owner.GetComponent<CharacterBody>();
+			var count = GetCount(body);
 
 			if(count > 0) {
 				var maxBounces = baseBounces + (count - 1) * stackBounces;
@@ -115,7 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				var origDamage = self.damage;
 
 				for(var i = 1; i <= maxBounces; i++) {
-					if(!Util.CheckRoll(homeChance)) return retv;
+					if(!Util.CheckRoll(bounceChance, body.master)) return retv;
 					var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner))
 						.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
 						.Select(obj => {
@@ -139,7 +140,7 @@ namespace ThinkInvisible.TinkersSatchel {
 						var nextTarget = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
 						var aimVec = (nextTarget.obj.transform.position - bounceEnd).normalized;
 						var nhi = default(BulletAttack.BulletHit);
-						self.damage = origDamage * (1f + (float)i * bounceDamage);
+						self.damage = origDamage * bounceDamageFrac;
 						self.InitBulletHitFromRaycastHit(ref nhi, bounceEnd, aimVec, ref nextTarget.rayHitInfo);
 						self.ProcessHit(ref nhi);
 
@@ -173,9 +174,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self) {
 			orig(self);
-			var count = GetCount(self.owner?.GetComponent<CharacterBody>());
+			if(!self.owner) return;
+			var body = self.owner.GetComponent<CharacterBody>();
+			var count = GetCount(body);
 			var rb = self.GetComponent<Rigidbody>();
-			if(count <= 0 || !rb || !Util.CheckRoll(homeChance)) return;
+			if(count <= 0 || !rb || !Util.CheckRoll(bounceChance, body.master)) return;
 			var ppc = self.gameObject.AddComponent<PinballProjectileController>();
 			ppc.maxBounces = baseBounces + stackBounces * (count - 1);
 		}
@@ -267,10 +270,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				return;
 			}
 			//simplistic homing; todo: curveballs, predict velocity
-			var damageFac = 1f + currentBounces * Pinball.instance.bounceDamage;
 			//var oldVec = projectile.rigidbody.velocity;
 			var newVec = (currTarget.transform.position - transform.position).normalized
-				* origSpeed * damageFac;
+				* origSpeed;
 			//projectile.rigidbody.velocity = Vector3.RotateTowards(oldVec, newVec, HOMING_TURN_RATE * Time.fixedDeltaTime, float.MaxValue);
 			projectile.rigidbody.velocity = newVec;
 		}
@@ -281,15 +283,23 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(hit == lastTarget)
 					return;
 			}
-			lastTarget = currTarget ?? hit;
 			if(currTarget)
+				lastTarget = currTarget;
+			else currTarget = hit;
 			currentBounces++;
-			var damageFac = 1f + currentBounces * Pinball.instance.bounceDamage;
 			if(pie)
-				pie.projectileDamage.damage = origDamagePIE * damageFac;
+				pie.projectileDamage.damage = origDamagePIE * Pinball.instance.bounceDamageFrac;
 			if(psti)
 				psti.projectileDamage.damage = origDamagePSTI * Pinball.instance.bounceDamageFrac;
-			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance)) {
+
+			CharacterMaster ownerMaster = null;
+			if(projectile && projectile.owner) {
+				var ownerBody = projectile.owner.GetComponent<CharacterBody>();
+				if(ownerBody)
+					ownerMaster = ownerBody.master;
+			} 
+
+			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance, ownerMaster)) {
 				isBouncy = false;
 				currentBounces = maxBounces;
 				var colliders = GetComponentsInChildren<Collider>();
