@@ -138,6 +138,10 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.9.3**
+
+- Causal Camera no longer restores drop pod/teleport immunity.
+
 **1.9.2**
 
 - Balance pass.
@@ -199,20 +203,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - ADDED ITEMS: Negative Feedback Loop, Pixie Tube, Go-Faster Stripes, Causal Camera!
 - Added extra null safety to some Percussive Maintenance hooks (may fix console spam).
 - Fixed the AI blacklist setting on Pulse Monitor not having a config option.
-
-**1.7.2**
-
-- Fixed Armor Prism yoinking some of Armor Crystal's code in addition to its itemcount.
-	- (after both were enabled and obtained in the same run, latter would give no armor and former would give double).
-- Pulse Monitor no longer spams NREs after placing an Engi turret, and is now AI-blacklisted.
-- Added extra null safety to Percussive Maintenance melee attack handling.
-
-**1.7.1**
-
-- Fixed Cardboard Box not moving the healing zone of heal shrines.
-- Reduced default Cardboard Box cooldown from 180 seconds to 60 seconds.
-- Added missing "corrupts all..." pickup text to Villainous Visage.
-- Properly capitalized "BUT" in the Silver Compass description.
-- Added extra null safety to all R2API.RecalculateStatsAPI.GetStatCoefficients subscribers (may fix an edge-case hang).
-- Added missing Thunderstore description text for 1.7.0 content.
-- Updated TILER2 dependency to 6.1.2.

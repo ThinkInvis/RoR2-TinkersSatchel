@@ -1,5 +1,9 @@
 # Tinker's Satchel Changelog
 
+**1.9.3**
+
+- Causal Camera no longer restores drop pod/teleport immunity.
+
 **1.9.2**
 
 - Balance pass.
