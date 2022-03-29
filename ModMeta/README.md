@@ -99,7 +99,7 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 	- Use once to pick up a turret, shrine, purchasable, etc. Use again to put it back down.
 
 - Causal Camera: "Phase briefly and rewind yourself 10 seconds."
-	- Rewinds position, velocity, health, shields, barrier, buffs, debuffs, DoTs, and skill cooldowns/stock (except equipment).
+	- Rewinds position, velocity, health, shields, barrier, and skill cooldowns/stock (except equipment).
 
 #### Lunar Equipment
 
@@ -137,6 +137,24 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.9.4**
+
+- Balance pass.
+	- Go-Faster Stripes:
+		- Bandit: Buffed default launch force scalar from 20 to 30.
+		- MUL-T: Now has configurable number of boosts per skill cast per stack. Defaults to 3 (buffed from 1).
+	- Unstable Klein Bottle:
+		- Buffed default proc chance from 5% to 8%.
+- Causal Camera:
+	- No longer rewinds buffs, debuffs, or DoTs. This was causing *way* too many problems.
+	- No longer rewinds Captain's once-per-stage beacon skills.
+- Pixie Tube:
+	- Prevented from working with Railgunner's secondary.
+	- Reduced wisp arming time (2s --> 1.5s).
+	- Wisps are now wispier (no gravity, flit about randomly in midair, smaller particle size).
+	- Wisps on player team now wait until near the end of their lifetime (2s left) to gravitate towards non-player allies.
+- Pinball Wizard: stole some vanilla SFX for the proc effect. Only works on physical projectiles for now, and not hitscan attacks.
 
 **1.9.3**
 
@@ -197,9 +215,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Wisps are now dimmer during their arming delay.
 	- Made timing on wisp VFX more consistent.
 	- Pickup model now flickers its fuses on at random.
-
-**1.8.0** *The Artifice Update, Part 1*
-
-- ADDED ITEMS: Negative Feedback Loop, Pixie Tube, Go-Faster Stripes, Causal Camera!
-- Added extra null safety to some Percussive Maintenance hooks (may fix console spam).
-- Fixed the AI blacklist setting on Pulse Monitor not having a config option.
