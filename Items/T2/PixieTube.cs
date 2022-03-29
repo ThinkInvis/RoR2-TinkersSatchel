@@ -146,11 +146,13 @@ namespace ThinkInvisible.TinkersSatchel {
                 var cren = core.GetComponent<ParticleSystem>();
                 var ccol = cren.colorOverLifetime;
                 ccol.color = new ParticleSystem.MinMaxGradient(colors[i], colors[i].AlphaMultiplied(0f));
+                core.transform.localScale *= 0.5f;
 
                 var pulse = prefab.transform.Find("HealthOrbEffect/VFX/PulseGlow").gameObject;
                 var pren = pulse.GetComponent<ParticleSystem>();
                 var pcol = pren.colorOverLifetime;
                 pcol.color = new ParticleSystem.MinMaxGradient(colors[i], colors[i].AlphaMultiplied(0f));
+                pulse.transform.localScale *= 0.5f;
 
                 var pickup = prefab.transform.Find("PickupTrigger").gameObject;
                 pickup.GetComponent<HealthPickup>().enabled = false;
@@ -164,17 +166,19 @@ namespace ThinkInvisible.TinkersSatchel {
                 var grav = prefab.transform.Find("GravitationController").gameObject;
                 var delay = prefab.AddComponent<ActivateAfterDelay>();
                 pickup.SetActive(false);
-                grav.SetActive(false);
                 core.SetActive(false);
                 delay.targets.Add(pickup);
-                delay.targets.Add(grav);
                 delay.targets.Add(core);
                 delay.delay = PICKUP_ARMING_DELAY;
 
-                var gravramp = grav.AddComponent<GravitationRamp>();
-                gravramp.rangeStart = 6f;
-                gravramp.rangeEnd = 36f;
+                grav.GetComponent<GravitatePickup>().enabled = false;
+
+                var gravramp = grav.AddComponent<WispAnimAndGravitate>();
+                gravramp.armingDelay = PICKUP_ARMING_DELAY;
                 gravramp.duration = dstroy.duration - PICKUP_ARMING_DELAY;
+                gravramp.parentRigidbody = prefab.GetComponent<Rigidbody>();
+                gravramp.teamFilter = prefab.GetComponent<TeamFilter>();
+                gravramp.playerOnlyDuration = gravramp.duration - 2f;
 
                 prefabs[i] = prefabs[i].InstantiateClone(finalNames[i], true);
             }
@@ -277,19 +281,36 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RequireComponent(typeof(GravitatePickup), typeof(SphereCollider))]
-    public class GravitationRamp : MonoBehaviour {
-        public float rangeStart;
-        public float rangeEnd;
-        public float duration;
+    [RequireComponent(typeof(SphereCollider))]
+    public class WispAnimAndGravitate : MonoBehaviour {
+        public float rangeStart = 6f;
+        public float rangeEnd = 36f;
+        public float duration = 10f;
+        public float playerOnlyDuration = 8f;
+        public float dragDelay = 0.5f;
+        public float dragStrength = 0.01f;
+        public float maxSpeed = 60f;
+        public float acceleration = 5f;
+        public float armingDelay = 0f;
 
-        public float stopwatch;
+        public float zipDelayMin = 0.2f;
+        public float zipDelayMax = 1f;
+        public float zipStrengthMin = 5f;
+        public float zipStrengthMax = 15f;
 
-        GravitatePickup grav;
+        public TeamFilter teamFilter;
+        public Rigidbody parentRigidbody;
+
+        float stopwatch = 0f;
+        float zipStopwatch = 0f;
+
+        Transform target;
+
         SphereCollider coll;
 
+        bool GetCanPerformTargetingOps() { return NetworkServer.active && !target && stopwatch > armingDelay && teamFilter && teamFilter.teamIndex != TeamIndex.None; }
+
         void Awake() {
-            grav = GetComponent<GravitatePickup>();
             coll = GetComponent<SphereCollider>();
         }
 
@@ -297,7 +318,37 @@ namespace ThinkInvisible.TinkersSatchel {
             if(stopwatch < duration)
                 stopwatch += Time.fixedDeltaTime;
 
+            coll.enabled = stopwatch > armingDelay;
             coll.radius = Mathf.Lerp(rangeStart, rangeEnd, stopwatch / duration);
+
+            if(target) {
+                parentRigidbody.velocity = Vector3.MoveTowards(parentRigidbody.velocity, (target.position - transform.position).normalized * maxSpeed, this.acceleration);
+            } else {
+                parentRigidbody.velocity *= 1f - Mathf.Clamp01(stopwatch / dragDelay) * dragStrength;
+                if(stopwatch > armingDelay) {
+                    zipStopwatch -= Time.fixedDeltaTime;
+                    if(zipStopwatch <= 0f) {
+                        zipStopwatch = UnityEngine.Random.Range(zipDelayMin, zipDelayMax);
+                        parentRigidbody.velocity += UnityEngine.Random.onUnitSphere * UnityEngine.Random.Range(zipStrengthMin, zipStrengthMax);
+                    }
+                }
+            }
+
+            parentRigidbody.velocity -= Physics.gravity * Time.fixedDeltaTime;
+        }
+
+        void OnTriggerStay(Collider other) {
+            if(GetCanPerformTargetingOps()) {
+                var tgtTeam = TeamComponent.GetObjectTeam(other.gameObject);
+                if(tgtTeam == teamFilter.teamIndex) {
+                    var tgtBody = other.gameObject.GetComponent<CharacterBody>();
+                    if(stopwatch > playerOnlyDuration
+                        || tgtTeam != TeamIndex.Player
+                        || (tgtBody && tgtBody.isPlayerControlled)) {
+                        target = other.gameObject.transform;
+                    }
+                }
+            }
         }
     }
 }
