@@ -74,7 +74,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/EngiBody/EngiHarpoons"),
                 LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/ToolbotBody/ToolbotBodySwap"),
                 LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CaptainCancelDummy"),
-                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/PrepSupplyDrop")
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/PrepSupplyDrop"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/RailgunnerBody/RailgunnerBodyScopeHeavy"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/RailgunnerBody/RailgunnerBodyScopeLight")
             };
 
             var colors = new[] { new Color(0.15f, 0.25f, 1f), new Color(1f, 1f, 0.4f), new Color(1f, 0.25f, 0.1f), new Color(0.5f, 0.35f, 0.2f) };
