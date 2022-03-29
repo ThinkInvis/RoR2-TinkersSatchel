@@ -52,7 +52,7 @@ namespace ThinkInvisible.TinkersSatchel {
         BuffDef damageBuff;
         BuffDef armorBuff;
         RoR2.Skills.SkillDef[] blacklistedSkills;
-        const float PICKUP_ARMING_DELAY = 2f;
+        const float PICKUP_ARMING_DELAY = 1.5f;
 
 
 
