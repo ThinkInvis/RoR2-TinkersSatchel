@@ -29,7 +29,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Percent chance for Unstable Klein Bottle to proc; stacks multiplicatively.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
-        public float procChance { get; private set; } = 5f;
+        public float procChance { get; private set; } = 8f;
 
 
 
