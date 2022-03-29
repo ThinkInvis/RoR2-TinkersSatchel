@@ -42,6 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         SerializableEntityStateType rewindStateType;
+        internal RoR2.Skills.SkillDef[] blacklistedSkills;
 
 
 
@@ -56,6 +57,15 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
             rewindStateType = ContentAddition.AddEntityState<RewindState>(out _);
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgRewind>();
+
+            blacklistedSkills = new[] {
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CallSupplyDropHealing"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CallSupplyDropHacking"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CallSupplyDropShocking"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CallSupplyDropEquipmentRestock"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CaptainSkillUsedUp"),
+                LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CaptainCancelDummy")
+            };
         }
 
         public override void Install() {
@@ -240,6 +250,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
                 if(Util.HasEffectiveAuthority(body.networkIdentity)) {
                     foreach(var skill in body.skillLocator.allSkills) {
+                        if(Rewind.instance.blacklistedSkills.Contains(skill.skillDef)) continue;
+                        
                         var thisSlot = body.skillLocator.GetSkillSlotIndex(skill);
                         var stored = skillStates.Where(x => x.slot == thisSlot);
                         if(stored.Count() != 1) {
