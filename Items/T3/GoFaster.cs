@@ -49,8 +49,11 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Multiplier to BuffFrac for Bandit smokebomb: controls launch force.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float banditCloakSpeedFrac { get; private set; } = 30f;
 
-		[AutoConfig("Multiplier to BuffFrac for MUL-T dash: multiplies move speed during reactivation boosts (1 per skill use per stack).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		[AutoConfig("Multiplier to BuffFrac for MUL-T dash: multiplies move speed during reactivation boosts.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float toolbotReacBoostFrac { get; private set; } = 0.5f;
+
+		[AutoConfig("MUL-T dash: directly specify number of reactivations per cast. Stacks.", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
+		public int toolbotReacBoostCount { get; private set; } = 3;
 
 		[AutoConfig("MUL-T dash: directly specify duration of each boost. Does not stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float toolbotReacTime { get; private set; } = 1f;
@@ -251,7 +254,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(count > 0) {
 				var cpt = self.GetComponent<ToolbotDashBoostTracker>();
 				if(!cpt) cpt = self.gameObject.AddComponent<ToolbotDashBoostTracker>();
-				cpt.maxBoosts = count;
+				cpt.maxBoosts = count * toolbotReacBoostCount;
 				cpt.boostsUsed = 0;
 			}
 		}
