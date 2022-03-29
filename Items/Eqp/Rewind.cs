@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Phase briefly and rewind yourself 10 seconds.";
         protected override string GetDescString(string langid = null) =>
-            $"Phase out of existence for <style=cIsUtility>{phaseDuration:N1} seconds</style>. <style=cIsUtility>Rewind</style> your <style=cIsUtility>position</style>, <style=cIsHealth>health</style>, <style=cIsDamage>buffs/debuffs</style>, and <style=cIsUtility>skill cooldowns <style=cStack>(except equipment)</style></style> to their states from up to <style=cIsUtility>{rewindDuration:N1} seconds ago</style>.";
+            $"Phase out of existence for <style=cIsUtility>{phaseDuration:N1} seconds</style>. <style=cIsUtility>Rewind</style> your <style=cIsUtility>position</style>, <style=cIsHealth>health</style>, and <style=cIsUtility>skill cooldowns <style=cStack>(except equipment)</style></style> to their states from up to <style=cIsUtility>{rewindDuration:N1} seconds ago</style>.";
         protected override string GetLoreString(string langid = null) => $"Order: TIL-1.8c Temporal Imaging Lens Prototype\r\nTracking Number: 88***********\r\nEstimated Delivery: {rewindDuration:N0} seconds from now\r\nShipping Method:  Closed Timelike Curve\r\nShipping Address: Petrichor V\r\nShipping Details: \r\n\r\nFixed the problem with the slow-moving anomalies (< 0.01c) coming up blurry in photos. Hopefully we'll get better results on those now.\r\n\r\nDO NOT SHAKE -- I had to sacrifice some stasis field integrity. Already called UES logistics twice to correct the manifest when their equipment auto-detected localized time travel.\r\n";
 
 
@@ -191,9 +191,6 @@ namespace ThinkInvisible.TinkersSatchel {
             public Vector3 moveVec;
             public Vector3 targVec;
             public (int slot, float cd, int stock)[] skillStates;
-            public int[] buffs;
-            public List<CharacterBody.TimedBuff> timedBuffs;
-            public List<DotController.DotStack> dotStacks;
 
             internal RewindFrame() { }
 
@@ -228,27 +225,6 @@ namespace ThinkInvisible.TinkersSatchel {
                         shield = 0;
                         barrier = 0;
                     }
-                    buffs = (int[])body.buffs.Clone();
-                    timedBuffs = new List<CharacterBody.TimedBuff>();
-                    foreach(var tb in body.timedBuffs) {
-                        timedBuffs.Add(new CharacterBody.TimedBuff {
-                            buffIndex = tb.buffIndex,
-                            timer = tb.timer
-                        });
-                    }
-                    if(DotController.dotControllerLocator.TryGetValue(body.gameObject.GetInstanceID(), out var dotController)) {
-                        foreach(var dot in dotController.dotStackList) {
-                            dotStacks.Add(new DotController.DotStack {
-                                attackerObject = dot.attackerObject,
-                                attackerTeam = dot.attackerTeam,
-                                damage = dot.damage,
-                                damageType = dot.damageType,
-                                dotDef = dot.dotDef,
-                                dotIndex = dot.dotIndex,
-                                timer = dot.timer
-                            });
-                        }
-                    }
                 }
             }
 
@@ -281,25 +257,6 @@ namespace ThinkInvisible.TinkersSatchel {
                         body.healthComponent.Networkhealth = health;
                         body.healthComponent.Networkshield = shield;
                         body.healthComponent.Networkbarrier = barrier;
-                    }
-
-                    for(var i = 0; i < buffs.Length; i++) {
-                        body.ClearTimedBuffs((BuffIndex)i);
-                    }
-                    foreach(var tb in timedBuffs) {
-                        body.AddTimedBuff(tb.buffIndex, tb.timer);
-                    }
-                    for(var i = 0; i < buffs.Length; i++) { //undoes erroneous buff index changes from AddTimedBuff
-                        var def = BuffCatalog.GetBuffDef((BuffIndex)i);
-                        if(def == RoR2Content.Buffs.Immune || def == RoR2Content.Buffs.HiddenInvincibility) continue;
-                        body.SetBuffCount((BuffIndex)i, buffs[i]);
-                    }
-
-                    if(DotController.dotControllerLocator.TryGetValue(body.gameObject.GetInstanceID(), out var dotController)) {
-                        DotController.RemoveAllDots(body.gameObject);
-                        foreach(var dot in dotStacks) {
-                            DotController.InflictDot(body.gameObject, dot.attackerObject, dot.dotIndex, dot.timer);
-                        }
                     }
                 }
             }
