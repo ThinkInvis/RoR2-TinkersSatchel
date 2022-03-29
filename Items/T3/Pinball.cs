@@ -149,7 +149,6 @@ namespace ThinkInvisible.TinkersSatchel {
 								origin = nextTarget.obj.transform.position,
 								start = bounceEnd
 							};
-							//effectData.SetChildLocatorTransformReference(this.weapon, muzzleIndex);
 							EffectManager.SpawnEffect(self.tracerEffectPrefab, effectData, true);
 						}
 
@@ -297,7 +296,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				var ownerBody = projectile.owner.GetComponent<CharacterBody>();
 				if(ownerBody)
 					ownerMaster = ownerBody.master;
-			} 
+			}
+
+			Util.PlaySound("Play_lunar_reroller_activate", projectile.gameObject);
 
 			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance, ownerMaster)) {
 				isBouncy = false;
