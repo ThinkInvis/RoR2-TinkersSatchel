@@ -74,7 +74,6 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Treebot.Weapon.FireMortar2.Fire += FireMortar2_Fire;
             On.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += MissileUtils_FireMissile_MyKingdomForAStruct;
             On.EntityStates.Treebot.TreebotFireFruitSeed.OnEnter += TreebotFireFruitSeed_OnEnter;
-            On.EntityStates.Engi.EngiWeapon.FireMines.OnEnter += FireMines_OnEnter;
             On.EntityStates.Mage.Weapon.PrepWall.OnExit += PrepWall_OnExit;
             On.EntityStates.Treebot.Weapon.CreatePounder.OnExit += CreatePounder_OnExit;
             On.EntityStates.Treebot.Weapon.AimFlower.FireProjectile += AimFlower_FireProjectile;
@@ -96,7 +95,6 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Treebot.Weapon.FireMortar2.Fire -= FireMortar2_Fire;
             On.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool -= MissileUtils_FireMissile_MyKingdomForAStruct;
             On.EntityStates.Treebot.TreebotFireFruitSeed.OnEnter -= TreebotFireFruitSeed_OnEnter;
-            On.EntityStates.Engi.EngiWeapon.FireMines.OnEnter -= FireMines_OnEnter;
             On.EntityStates.Mage.Weapon.PrepWall.OnExit -= PrepWall_OnExit;
             On.EntityStates.Treebot.Weapon.CreatePounder.OnExit -= CreatePounder_OnExit;
             On.EntityStates.Treebot.Weapon.AimFlower.FireProjectile -= AimFlower_FireProjectile;
@@ -150,12 +148,6 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void TreebotFireFruitSeed_OnEnter(On.EntityStates.Treebot.TreebotFireFruitSeed.orig_OnEnter orig, EntityStates.Treebot.TreebotFireFruitSeed self) {
-            ignoreMugs = true;
-            orig(self);
-            ignoreMugs = false;
-        }
-
-        private void FireMines_OnEnter(On.EntityStates.Engi.EngiWeapon.FireMines.orig_OnEnter orig, EntityStates.Engi.EngiWeapon.FireMines self) {
             ignoreMugs = true;
             orig(self);
             ignoreMugs = false;
@@ -217,7 +209,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(self, fireProjectileInfo);
-            if(ignoreMugs || !fireProjectileInfo.owner) return;
+            if(ignoreMugs || !fireProjectileInfo.owner || (fireProjectileInfo.projectilePrefab && fireProjectileInfo.projectilePrefab.GetComponent<Deployable>())) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);
