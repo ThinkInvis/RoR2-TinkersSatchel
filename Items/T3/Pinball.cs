@@ -78,10 +78,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			var dstroy = effectPrefab.AddComponent<DestroyOnTimer>();
 			dstroy.duration = 1f;
 			effectPrefab.AddComponent<RandomPinballSFXOnEnable>();
-			effectPrefab = effectPrefab.InstantiateClone("TkSatPinballSFXHandler");
 			var vfx = effectPrefab.AddComponent<VFXAttributes>();
 			vfx.vfxPriority = VFXAttributes.VFXPriority.Medium;
 			vfx.vfxIntensity = VFXAttributes.VFXIntensity.Medium;
+			effectPrefab.AddComponent<NetworkIdentity>();
+			effectPrefab = effectPrefab.InstantiateClone("TkSatPinballSFXHandler");
 			ContentAddition.AddEffect(effectPrefab);
 		}
 
