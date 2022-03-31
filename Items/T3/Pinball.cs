@@ -56,6 +56,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Other Fields/Properties //////
 		
 		internal PhysicMaterial bouncyPhysmat;
+		internal GameObject effectPrefab;
 
 
 
@@ -71,6 +72,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
 				.WaitForCompletion();
+
+			effectPrefab = new GameObject("TkSatTempSetupPrefab");
+			var efc = effectPrefab.AddComponent<EffectComponent>();
+			var dstroy = effectPrefab.AddComponent<DestroyOnTimer>();
+			dstroy.duration = 1f;
+			effectPrefab.AddComponent<RandomPinballSFXOnEnable>();
+			effectPrefab = effectPrefab.InstantiateClone("TkSatPinballSFXHandler");
+			var vfx = effectPrefab.AddComponent<VFXAttributes>();
+			vfx.vfxPriority = VFXAttributes.VFXPriority.Medium;
+			vfx.vfxIntensity = VFXAttributes.VFXIntensity.Medium;
+			ContentAddition.AddEffect(effectPrefab);
 		}
 
 		//todo: fix commando piercing shot, maybe blacklist rex ult
@@ -151,6 +163,12 @@ namespace ThinkInvisible.TinkersSatchel {
 							};
 							EffectManager.SpawnEffect(self.tracerEffectPrefab, effectData, true);
 						}
+
+						EffectData pinbEffData = new EffectData {
+							origin = bounceEnd,
+							start = bounceEnd
+						};
+						EffectManager.SpawnEffect(effectPrefab, pinbEffData, true);
 
 						bounceEnd = nextTarget.obj.transform.position;
 						lastBounceTarget = nextTarget.obj;
@@ -298,7 +316,13 @@ namespace ThinkInvisible.TinkersSatchel {
 					ownerMaster = ownerBody.master;
 			}
 
-			Util.PlaySound("Play_lunar_reroller_activate", projectile.gameObject);
+			if(NetworkServer.active) {
+				EffectData pinbEffData = new EffectData {
+					origin = gameObject.transform.position,
+					start = gameObject.transform.position
+				};
+				EffectManager.SpawnEffect(Pinball.instance.effectPrefab, pinbEffData, true);
+			}
 
 			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance, ownerMaster)) {
 				isBouncy = false;
@@ -361,6 +385,14 @@ namespace ThinkInvisible.TinkersSatchel {
 				currTarget = null;
 			}
 			projectile.rigidbody.angularVelocity = UnityEngine.Random.insideUnitSphere * 15f; //sp-- spEEN!!
+		}
+    }
+
+	public class RandomPinballSFXOnEnable : MonoBehaviour {
+		void OnEnable() {
+			var soundSpeed = UnityEngine.Random.Range(0f, 100f);
+			for(var i = 0; i < 10; i++) //sound is VERY quiet by default
+				Util.PlaySound("Play_UI_obj_casinoChest_swap", gameObject, "casinoChest_swapSpeed", soundSpeed);
 		}
     }
 }
