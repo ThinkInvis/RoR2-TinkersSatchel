@@ -36,6 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
+        internal BuffDef deadManSwitchBuff;
 
 
 
@@ -53,6 +54,15 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION", "Survive falling to low health 9 times in the same run (must return to above 50% health each time).");
 
             itemDef.unlockableDef = unlockable;
+
+            deadManSwitchBuff = ScriptableObject.CreateInstance<BuffDef>();
+            deadManSwitchBuff.buffColor = Color.red;
+            deadManSwitchBuff.canStack = false;
+            deadManSwitchBuff.isDebuff = false;
+            deadManSwitchBuff.isCooldown = true;
+            deadManSwitchBuff.name = "TKSATDeadManSwitch";
+            deadManSwitchBuff.iconSprite = iconResource;
+            ContentAddition.AddBuffDef(deadManSwitchBuff);
         }
 
         public override void Install() {
@@ -99,6 +109,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 icd = Mathf.Pow(1f - DeadManSwitch.instance.cdrStack, count - 1)
                     * eqp.cooldown
                     * (DeadManSwitch.instance.externalCdr ? body.inventory.CalculateEquipmentCooldownScale() : 1f);
+                body.AddTimedBuff(DeadManSwitch.instance.deadManSwitchBuff, icd);
                 body.equipmentSlot.PerformEquipmentAction(eqp);
             }
         }
