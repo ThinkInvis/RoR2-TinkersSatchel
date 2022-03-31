@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Gain armor by hoarding money.";
-        protected override string GetDescString(string langid = null) => "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>money</style>. The first point of <style=cIsHealing>armor</style> costs <style=cIsUtility>$" + goldAmt.ToString("N0") + "</style> <style=cStack>(-" + Pct(goldReduc) + " per stack, exponential; scales with difficulty)</style>; each subsequent point <style=cIsUtility>costs " + Pct(goldExp) + " more</style> than the last.";
+        protected override string GetDescString(string langid = null) => $"Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>money</style>. The first point of <style=cIsHealing>armor</style> costs <style=cIsUtility>${goldAmt:N0}</style> <style=cStack>(-{Pct(goldReduc)} per stack, exponential; scales with difficulty)</style>; each subsequent point <style=cIsUtility>costs {Pct(goldExp)} more</style> than the last.";
         protected override string GetLoreString(string langid = null) => "";
 
 

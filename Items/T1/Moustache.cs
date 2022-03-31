@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Deal more damage when surrounded.";
-        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(damageFrac)} base damage <style=cStack>(mult., per stack)</style></style> per enemy within <style=cIsDamage>{range:N0} m</style>.";
+        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(damageFrac)} base damage <style=cStack>(+{Pct(damageFrac)} per stack, linear)</style></style> per enemy within <style=cIsDamage>{range:N0} m</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 

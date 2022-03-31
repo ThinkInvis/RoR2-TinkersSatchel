@@ -16,11 +16,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>BUT it will be fraught with danger.</style>";
-        protected override string GetDescString(string langid = null) => 
-            "<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>." +
-            (useLimitPerStage == 2 ? " Works only once per stage." :
-            (useLimitPerStage == 1 ? " Works only once per player per stage." :
-            ""));
+        protected override string GetDescString(string langid = null) =>
+            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>.{(useLimitPerStage == 2 ? " Works only once per stage." : (useLimitPerStage == 1 ? " Works only once per player per stage." : ""))}";
         protected override string GetLoreString(string langid = null) => "";
 
 

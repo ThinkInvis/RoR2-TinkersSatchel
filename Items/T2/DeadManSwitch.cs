@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Activate your equipment for free at low health.";
+        protected override string GetPickupString(string langid = null) => "Auto-activate your equipment for free at low health.";
         protected override string GetDescString(string langid = null) => $"Falling below <style=cIsHealth>25% health</style> activates your <style=cIsUtility>equipment</style> without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment <style=cStack>(-{Pct(cdrStack)} per stack, mult.)</style>.";
         protected override string GetLoreString(string langid = null) => "";
 

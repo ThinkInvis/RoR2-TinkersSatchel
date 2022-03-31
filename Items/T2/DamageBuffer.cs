@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Some incoming damage is dealt over time.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, inverse-mult.)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking every {bufferRate} seconds. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking every {bufferRate} seconds. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -29,7 +29,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Config ///////
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to absorb per stack (inverse-mult.).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Amount of damage to absorb per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float bufferFrac { get; private set; } = 0.2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
