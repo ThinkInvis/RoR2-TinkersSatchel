@@ -116,6 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update; //SetDisplayData hook is bugged and uses System.ValueType instead of DisplayData, can't easily make manual hook because it's not static
             On.RoR2.UI.AllyCardController.UpdateInfo += AllyCardController_UpdateInfo;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         public override void Uninstall() {
@@ -124,11 +125,25 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
             On.RoR2.UI.EquipmentIcon.Update -= EquipmentIcon_Update;
             On.RoR2.UI.AllyCardController.UpdateInfo -= AllyCardController_UpdateInfo;
+            CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
         }
 
 
 
         ////// Hooks //////
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
+            if(!body) return;
+            var cpt = body.GetComponent<PackBoxTracker>();
+            if(cpt.packedObject && EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) != equipmentDef) {
+                var pbh = cpt.packedObject.GetComponent<PackBoxHandler>();
+                if(!pbh) {
+                    TinkersSatchelPlugin._logger.LogError("PackBoxTracker contained a packed object with no PackBoxHandler (during equipment change autodrop)");
+                    return;
+                }
+                pbh.TryPlaceServer(cpt, pbh.transform.position);
+            }
+        }
 
         private void AllyCardController_UpdateInfo(On.RoR2.UI.AllyCardController.orig_UpdateInfo orig, RoR2.UI.AllyCardController self) {
             orig(self);
