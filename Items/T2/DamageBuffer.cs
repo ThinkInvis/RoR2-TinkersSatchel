@@ -168,7 +168,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         position = pos,
                         procCoefficient = 0,
                         damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.DoT
+                        damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.DoT | DamageType.Silent
                     });
                     isApplying = false;
                 }
