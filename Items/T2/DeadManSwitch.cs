@@ -36,7 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        internal BuffDef deadManSwitchBuff;
+        public BuffDef deadManSwitchBuff { get; private set; }
 
 
 

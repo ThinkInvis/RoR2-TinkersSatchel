@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         SerializableEntityStateType rewindStateType;
         internal RoR2.Skills.SkillDef[] blacklistedSkills;
-        internal BuffDef rewindBuff;
+        public BuffDef rewindBuff { get; private set; }
 
 
 

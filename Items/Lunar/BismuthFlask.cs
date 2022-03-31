@@ -40,7 +40,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        internal BuffDef bismuthFlaskBuff;
+        public BuffDef bismuthFlaskBuff { get; private set; }
 
 
 
