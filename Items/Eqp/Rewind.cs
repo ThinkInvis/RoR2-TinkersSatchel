@@ -43,6 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         SerializableEntityStateType rewindStateType;
         internal RoR2.Skills.SkillDef[] blacklistedSkills;
+        internal BuffDef rewindBuff;
 
 
 
@@ -66,6 +67,15 @@ namespace ThinkInvisible.TinkersSatchel {
                 LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CaptainSkillUsedUp"),
                 LegacyResourcesAPI.Load<RoR2.Skills.SkillDef>("SkillDefs/CaptainBody/CaptainCancelDummy")
             };
+
+            rewindBuff = ScriptableObject.CreateInstance<BuffDef>();
+            rewindBuff.buffColor = Color.red;
+            rewindBuff.canStack = false;
+            rewindBuff.isDebuff = false;
+            rewindBuff.isCooldown = true;
+            rewindBuff.name = "TKSATRewind";
+            rewindBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/rewindBuffIcon.png");
+            ContentAddition.AddBuffDef(rewindBuff);
         }
 
         public override void Install() {
@@ -178,6 +188,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 cpt.frames[interpolatedFrame].ApplyTo(outer.commonComponents.characterBody);
                 outer.commonComponents.characterMotor.velocity = -outer.commonComponents.characterMotor.velocity;
                 Util.PlaySound(this.beginSoundString, base.gameObject);
+                outer.commonComponents.characterBody.SetBuffCount(Rewind.instance.rewindBuff.buffIndex, interpolatedFrame);
             }
         }
         public override void OnExit() {
@@ -290,6 +301,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void FixedUpdate() {
             if(!body || isRewinding) return;
+            if(!Rewind.instance.HasEquipment(body)) {
+                if(frames.Count > 0) {
+                    frames.Clear();
+                    body.SetBuffCount(Rewind.instance.rewindBuff.buffIndex, 0);
+                }
+                return;
+            }
             stopwatch -= Time.fixedDeltaTime;
             if(stopwatch <= 0f) {
                 stopwatch = Rewind.instance.frameInterval;
@@ -297,6 +315,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(frames.Count > Rewind.instance.rewindDuration / Rewind.instance.frameInterval) {
                     frames.RemoveAt(0);
                 }
+                body.SetBuffCount(Rewind.instance.rewindBuff.buffIndex, frames.Count);
             }
         }
     }
