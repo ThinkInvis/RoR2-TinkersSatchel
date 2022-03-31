@@ -135,7 +135,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             if(!body) return;
             var cpt = body.GetComponent<PackBoxTracker>();
-            if(cpt.packedObject && EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) != equipmentDef) {
+            if(cpt && cpt.packedObject && EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) != equipmentDef) {
                 var pbh = cpt.packedObject.GetComponent<PackBoxHandler>();
                 if(!pbh) {
                     TinkersSatchelPlugin._logger.LogError("PackBoxTracker contained a packed object with no PackBoxHandler (during equipment change autodrop)");
