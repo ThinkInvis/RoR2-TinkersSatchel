@@ -95,7 +95,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             if(!body || !body.inventory) return;
-            if(EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) == this.equipmentDef && !body.gameObject.GetComponent<RewindComponent>()) {
+            if(HasEquipment(body) && !body.gameObject.GetComponent<RewindComponent>()) {
                 body.gameObject.AddComponent<RewindComponent>();
             }
         }
