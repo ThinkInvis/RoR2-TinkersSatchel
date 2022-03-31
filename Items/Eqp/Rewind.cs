@@ -69,8 +69,8 @@ namespace ThinkInvisible.TinkersSatchel {
             };
 
             rewindBuff = ScriptableObject.CreateInstance<BuffDef>();
-            rewindBuff.buffColor = Color.red;
-            rewindBuff.canStack = false;
+            rewindBuff.buffColor = Color.white;
+            rewindBuff.canStack = true;
             rewindBuff.isDebuff = false;
             rewindBuff.isCooldown = true;
             rewindBuff.name = "TKSATRewind";
