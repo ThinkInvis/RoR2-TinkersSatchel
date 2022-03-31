@@ -138,6 +138,20 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.9.5**
+
+- Added informational buffs to Pulse Monitor (cooldown), Causal Camera (number of saved rewind frames), and Bismuth Tonic (remaining duration).
+- Pulse Monitor no longer spams red vignette and flinch animation (added Silent damage type).
+- Cardboard Box:
+	- Now returns packed objects to their original locations when unequipped.
+	- Can now move Warbanners.
+- Fixed Bismuth Tonic cooldown only applying to subsequent hits taken after the first.
+- Sturdy Mug no longer works on *any* Deployables (was case-by-case blacklist before). Fixes poor interaction with Railgunner utility and future-proofs for similar skills.
+- Pinball Wizard:
+	- Fixed causing sticky projectiles to not explode (e.g. Sticky Bomb, Railgunner specials) -- no longer procs on these.
+	- Now ignores the Neutral team (e.g. flying rocks hazard on Sky Meadows).
+	- Improved SFX. Now works on all projectiles and uses a more fitting vanilla sound effect.
+
 **1.9.4**
 
 - Balance pass.
@@ -197,21 +211,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.9.1**
 
 - Fixed Causal Camera spamming console errors while equipped on bodies with fewer components than usual (e.g. Engi turrets).
-
-**1.9.0** *The Artifice Update, Part 2*
-
-- ADDED ITEMS: Triskelion Brooch, Bismuth Tonic!
-- Greatly reduced texture scales to match vanilla (for filesize purposes).
-- Causal Camera: should work properly in multiplayer now. Probably. ...Maybe.
-- Pulse Monitor: Added an unlock achievement.
-- Go-Faster Stripes:
-	- Made the pickup model and icon less octagonal.
-	- Now works on Captain. Airstrike has launch force vs allies with no damage, nuke has trajectory preview and more controllable launch, both provide fall damage protection.
-	- Removed unintentional duplicated force application from Engineer missile effect.
-	- Added an unlock achievement.
-- Pixie Tube:
-	- Wisps now increase the range at which they gravitate towards allies over time (6 m --> 36 m).
-	- Shortened wisp arming delay (2.5 s --> 2 s) and increased lifetime to account for arming delay (10s --> 12s).
-	- Wisps are now dimmer during their arming delay.
-	- Made timing on wisp VFX more consistent.
-	- Pickup model now flickers its fuses on at random.

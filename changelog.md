@@ -1,5 +1,19 @@
 # Tinker's Satchel Changelog
 
+**1.9.5**
+
+- Added informational buffs to Pulse Monitor (cooldown), Causal Camera (number of saved rewind frames), and Bismuth Tonic (remaining duration).
+- Pulse Monitor no longer spams red vignette and flinch animation (added Silent damage type).
+- Cardboard Box:
+	- Now returns packed objects to their original locations when unequipped.
+	- Can now move Warbanners.
+- Fixed Bismuth Tonic cooldown only applying to subsequent hits taken after the first.
+- Sturdy Mug no longer works on *any* Deployables (was case-by-case blacklist before). Fixes poor interaction with Railgunner utility and future-proofs for similar skills.
+- Pinball Wizard:
+	- Fixed causing sticky projectiles to not explode (e.g. Sticky Bomb, Railgunner specials) -- no longer procs on these.
+	- Now ignores the Neutral team (e.g. flying rocks hazard on Sky Meadows).
+	- Improved SFX. Now works on all projectiles and uses a more fitting vanilla sound effect.
+
 **1.9.4**
 
 - Balance pass.
