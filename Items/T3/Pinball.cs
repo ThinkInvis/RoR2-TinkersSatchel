@@ -129,7 +129,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 				for(var i = 1; i <= maxBounces; i++) {
 					if(!Util.CheckRoll(bounceChance, body.master)) return retv;
-					var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner))
+					var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner), TeamIndex.Neutral)
 						.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
 						.Select(obj => {
 							if(obj == lastBounceTarget) return (null, default);
@@ -359,7 +359,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					ps.stopwatch = 0f;
 				}
 			}
-			var enemies = GatherEnemies(projectile.teamFilter.teamIndex)
+			var enemies = GatherEnemies(projectile.teamFilter.teamIndex, TeamIndex.Neutral)
 				.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
 				.Where(obj => {
 					if(obj == lastTarget) return false;
