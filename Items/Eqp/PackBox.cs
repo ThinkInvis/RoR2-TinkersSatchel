@@ -57,6 +57,7 @@ namespace ThinkInvisible.TinkersSatchel {
             "MultiShopLargeTerminal(Clone)",
             "MultiShopEquipmentTerminal(Clone)",
             "FusionCellDestructibleBody(Clone)",
+            "WarbannerWard(Clone)",
             "LunarChest(Clone)",
             "LunarShopTerminal(Clone)" //todo: disallow or kick out of bazaar, achievement
         };
