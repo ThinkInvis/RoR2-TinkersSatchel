@@ -117,6 +117,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Non-Public Methods //////
 
         void UpdateGGBuff(CharacterBody cb) {
+            if(!cb) return;
+
             var cpt = cb.GetComponent<GoldenGearComponent>();
             if(!cpt) cpt = cb.gameObject.AddComponent<GoldenGearComponent>();
 
