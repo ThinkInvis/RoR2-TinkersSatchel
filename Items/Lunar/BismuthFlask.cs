@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     //todo: aim assist with tracking (may need to build velocity table for turret projectiles?), make drones follow aim
@@ -39,6 +40,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
+        internal BuffDef bismuthFlaskBuff;
+
 
 
         ////// TILER2 Module Setup //////
@@ -50,6 +53,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            bismuthFlaskBuff = ScriptableObject.CreateInstance<BuffDef>();
+            bismuthFlaskBuff.buffColor = Color.white;
+            bismuthFlaskBuff.canStack = false;
+            bismuthFlaskBuff.isDebuff = false;
+            bismuthFlaskBuff.name = "TKSATBismuthFlask";
+            bismuthFlaskBuff.iconSprite = iconResource;
+            ContentAddition.AddBuffDef(bismuthFlaskBuff);
         }
 
         public override void Install() {
@@ -106,17 +117,16 @@ namespace ThinkInvisible.TinkersSatchel {
                 lastHitBodyIndex = BodyIndex.None;
                 return damage;
             }
-            if(lastHitBodyIndex == BodyIndex.None) {
-                lastHitBodyIndex = sourceBodyIndex;
-                return damage;
-            }
-            if(lastHitBodyIndex == sourceBodyIndex) {
-                damage /= 1f + BismuthFlask.instance.resistAmount * count;
-            } else {
-                damage *= 1f + BismuthFlask.instance.weakAmount * count;
+            if(lastHitBodyIndex != BodyIndex.None) {
+                if(lastHitBodyIndex == sourceBodyIndex) {
+                    damage /= 1f + BismuthFlask.instance.resistAmount * count;
+                } else {
+                    damage *= 1f + BismuthFlask.instance.weakAmount * count;
+                }
             }
             lastHitBodyIndex = sourceBodyIndex;
             stopwatch = BismuthFlask.instance.duration;
+            body.AddTimedBuff(BismuthFlask.instance.bismuthFlaskBuff, stopwatch);
             return damage;
         }
     }
