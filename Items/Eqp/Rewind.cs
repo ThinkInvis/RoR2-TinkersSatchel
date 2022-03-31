@@ -95,7 +95,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             if(!body || !body.inventory) return;
-            if(HasEquipment(body) && !body.gameObject.GetComponent<RewindComponent>()) {
+            if(EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) == this.equipmentDef && !body.gameObject.GetComponent<RewindComponent>()) {
                 body.gameObject.AddComponent<RewindComponent>();
             }
         }
@@ -301,7 +301,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void FixedUpdate() {
             if(!body || isRewinding) return;
-            if(!Rewind.instance.HasEquipment(body)) {
+            if(EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) != Rewind.instance.equipmentDef) {
                 if(frames.Count > 0) {
                     frames.Clear();
                     body.SetBuffCount(Rewind.instance.rewindBuff.buffIndex, 0);
