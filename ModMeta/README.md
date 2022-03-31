@@ -141,7 +141,7 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.9.5**
 
 - Added informational buffs to Pulse Monitor (cooldown), Causal Camera (number of saved rewind frames), and Bismuth Tonic (remaining duration).
-- Pulse Monitor no longer spams red vignette and flinch animation (added Silent damage type).
+- Negative Feedback Loop no longer spams red vignette and flinch animation (added Silent damage type).
 - Cardboard Box:
 	- Now returns packed objects to their original locations when unequipped.
 	- Can now move Warbanners.
