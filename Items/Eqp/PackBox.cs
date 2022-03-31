@@ -282,6 +282,11 @@ namespace ThinkInvisible.TinkersSatchel {
             var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI/180f);
             return results
                 .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+                .Concat( //OverlapSphere doesn't hit Warbanners
+                    GameObject.FindObjectsOfType<BuffWard>()
+                    .Select(x => x.gameObject)
+                    .Where(x => x.name == "WarbannerWard(Clone)" && Vector3.Distance(x.transform.position, aim.origin) < maxDistance + camAdjust)
+                    )
                 .Where(x => validObjectNames.Contains(x.name))
                 .Select(x => (target: x, vdot: Vector3.Dot(aim.direction, (x.transform.position - aim.origin).normalized)))
                 .Where(x => x.vdot > minDot
