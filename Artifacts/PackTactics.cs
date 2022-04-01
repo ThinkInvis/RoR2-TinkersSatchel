@@ -139,9 +139,8 @@ namespace ThinkInvisible.TinkersSatchel {
         private void AddWard(CharacterBody body) {
             if(!body) return;
             var cpt = body.GetComponentInChildren<TacticsWard>();
-            var cptObj = cpt.gameObject;
-            if(!cptObj) {
-				cptObj = UnityEngine.Object.Instantiate(tacticsWardPrefab);
+            if(!cpt || !cpt.gameObject) {
+				var cptObj = UnityEngine.Object.Instantiate(tacticsWardPrefab);
 				cptObj.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
 				cptObj.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject);
             }
