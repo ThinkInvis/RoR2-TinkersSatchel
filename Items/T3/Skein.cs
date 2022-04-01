@@ -3,9 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
-using System.Collections.Generic;
 using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
