@@ -138,7 +138,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					if(shortNotMovingStopwatch > Skein.instance.moveGracePeriod) {
 						movingStopwatch = 0f;
 						isStopped = true;
-						body.RecalculateStats();
+						body.statsDirty = true;
 					} else movingStopwatch += Time.fixedDeltaTime;
                 }
 			} else {
@@ -151,7 +151,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				tickStopwatch -= Time.fixedDeltaTime;
 				if(tickStopwatch <= 0f) {
 					tickStopwatch = MOVING_TICK_RATE;
-					body.RecalculateStats();
+					body.statsDirty = true;
 				}
 			}
         }
