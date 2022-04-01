@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Recombobulator : Equipment<Recombobulator> {
+        //TODO: maybe also allow on enemies/bosses?
 
         ////// Equipment Data //////
 
@@ -49,8 +50,8 @@ namespace ThinkInvisible.TinkersSatchel {
             "Duplicator(Clone)",
             "DuplicatorLarge(Clone)",
             "DuplicatorWild(Clone)",
-            "Scrapper(Clone)", //todo: Shrine of the Mountain (may be missing from PackBox too)
-            "MultiShopTerminal(Clone)", //maybe also allow on enemies/bosses?
+            "Scrapper(Clone)",
+            "MultiShopTerminal(Clone)",
             "MultiShopLargeTerminal(Clone)",
             "MultiShopEquipmentTerminal(Clone)",
             "LunarChest(Clone)"
