@@ -34,7 +34,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Mostly-Tame Mimic</b></td>
 			<td><details>
 				<summary>Mimics your other items at random.</summary>
-				Picks one of your other items to mimic <small>(each stack is tracked separately)</small>. Every 3 seconds, the mimic has a 15% chance to switch to a new item.
+				<small>Picks one of your other items to mimic (each stack is tracked separately). Every 3 seconds, the mimic has a 15% chance to switch to a new item.</small>
 			</details></td>
 			<td><ul>
 				<li>Each individual stack has a small chance over time to switch which item it's mimicking.</li>
@@ -46,7 +46,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Sturdy Mug</b></td>
 			<td><details>
 				<summary>Chance to shoot extra, unpredictable projectiles.</summary>
-				All projectile attacks gain a 10% <small>(+10% per stack)</small> chance to fire an extra copy with 17.5&degr; of inaccuracy.
+				<small>All projectile attacks gain a 10% (+10% per stack) chance to fire an extra copy with 17.5&deg; of inaccuracy.</small>
 			</details></td>
 			<td><ul>
 				<li>Works on most dumbfire projectiles, but not missiles, ground-target AoEs, or deployables.</li>
@@ -59,7 +59,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Percussive Maintenance</b></td>
 			<td><details>
 				<summary>Hit allies to heal them.</summary>
-				Hitting an ally with a direct attack heals them for 2.0 health <small>(+2.0 per stack)</small>.
+				<small>Hitting an ally with a direct attack heals them for 2.0 health (+2.0 per stack).</small>
 			</details></td>
 			<td><ul>
 				<li>Double healing of and lower tier than Leeching Seed, due to the opportunity cost of dealing damage to enemies, needing to see and hit your probably-juking-very-hard teammates, etc.</li>
@@ -71,7 +71,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Macho Moustache</b></td>
 			<td><details>
 				<summary>Deal more damage when surrounded.</summary>
-				Gain +5% base damage <small>(+5% per stack, linear)</small> per enemy within 10 m.
+				<small>Gain +5% base damage (+5% per stack, linear) per enemy within 10 m.</small>
 			</details></td>
 			<td><ul>
 				<li>Lower range than Focus Crystal, and provides ~1/4 as much damage per stack; however, the effect ceiling is higher if you're willing to put yourself in additional danger.</li>
@@ -82,11 +82,21 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Triskelion Brooch</b></td>
 			<td><details>
 				<summary>Chance to combine ignite, freeze, and stun.</summary>
-				Ignites, freezes, and stuns have a 9% <small>(+9% per stack)</small> chance to also cause one of the other effects listed for 100% base damage <small>(+25% per stack)</small>.
+				<small>Ignites, freezes, and stuns have a 9% (+9% per stack) chance to also cause one of the other effects listed for 100% base damage (+25% per stack).</small>
 			</details></td>
 			<td><ul>
 				<li>Frozen enemies are stunproof, so only extra damage will occur if a freeze also procs a stun.</li>
 				<li><details><summary>Unlock (spoilers!):</summary>Stun, then freeze, then ignite the same enemy within 3 seconds (any player may contribute).</details></li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/motionTrackerIcon.png?raw=true" width=256></td>
+			<td><b>Old War Lidar</b></td>
+			<td><details>
+				<summary>Deal more damage to persistent combatants.</summary>
+				<small>Deal up to 15% more damage (+15% per stack) to any enemy you have recently hit or been hit by, ramping up over 15 seconds.</small>
+			</details></td>
+			<td><ul>
 			</ul></td>
 		</tr>
 		<tr>
@@ -97,7 +107,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Armor Crystal</b></td>
 			<td><details>
 				<summary>Gain armor by hoarding money.</summary>
-				Gain armor based on your currently held money. The first point of armor costs $10 <small>(-10% per stack, exponential; scales with difficulty)</small>; each subsequent point costs 7.5% more than the last.
+				<small>Gain armor based on your currently held money. The first point of armor costs $10 (-10% per stack, exponential; scales with difficulty); each subsequent point costs 7.5% more than the last.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -107,7 +117,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Unstable Klein Bottle</b></td>
 			<td><details>
 				<summary>Chance to push nearby enemies on taking damage.</summary>
-				8.0% (+8.0% per stack, mult.) chance to push away enemies within 20 m after taking damage. <small>Has an internal cooldown of 0.5 s.</small>
+				<small>8.0% (+8.0% per stack, mult.) chance to push away enemies within 20 m after taking damage. Has an internal cooldown of 0.5 s.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -117,10 +127,10 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Pulse Monitor</b></td>
 			<td><details>
 				<summary>Auto-activate your equipment for free at low health.</summary>
-				Falling below 25% health activates your equipment without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment <small>(-15% per stack, mult.)</small>.
+				<small>Falling below 25% health activates your equipment without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment (-15% per stack, mult.).</small>
 			</details></td>
 			<td><ul>
-				<li>Uses equipment's unmodified cooldown and applies its own ICD. Has a config option to allow other ICD sources like Fuel Cell to also apply, disabled by default.</li>
+				<li>Uses equipment's unmodified cooldown and applies its own cooldown reduction. Has a config option to allow other CDR sources like Fuel Cell to also apply, disabled by default.</li>
 				<li><details><summary>Unlock (spoilers!):</summary>Fall below 25% health, then return above 50%, 9 times in the same run.</details></li>
 			</ul></td>
 		</tr>
@@ -129,7 +139,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Negative Feedback Loop</b></td>
 			<td><details>
 				<summary>Some incoming damage is dealt over time.</summary>
-				20% <small>(+20% per stack, hyperbolic)</small> of incoming damage is applied gradually over 5 seconds, ticking every 0.2 seconds. Healing past max health will apply to the pool of delayed damage.
+				<small>20% (+20% per stack, hyperbolic) of incoming damage is applied gradually over 5 seconds, ticking every 0.2 seconds. Healing past max health will apply to the pool of delayed damage.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -139,7 +149,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Pixie Tube</b></td>
 			<td><details>
 				<summary>Drop random buffs on using non-primary skills.</summary>
-				You drop 1 <small>(+1 per stack)</small> random elemental wisp when you use a non-primary skill. Elemental wisps can be picked up by any ally as a small, stacking buff for 10 seconds: +3% damage, +5% movement speed, +5% attack speed, or 10 armor.
+				<small>You drop 1 (+1 per stack) random elemental wisp when you use a non-primary skill. Elemental wisps can be picked up by any ally as a small, stacking buff for 10 seconds: +3% damage, +5% movement speed, +5% attack speed, or 10 armor.</small>
 			</details></td>
 			<td><ul>
 				<li>Has a short pickup delay so you don't eat them all instantly if you're moving away from them.</li>
@@ -196,6 +206,17 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/skeinIcon.png?raw=true" width=256></td>
+			<td><b>Spacetime Skein</b></td>
+			<td><details>
+				<summary>Gain mass while stationary. Lose mass while moving.</summary>
+				Standing still reduces the next damage and knockback you take by up to 50% <small>(+50% per stack, hyperbolic)</small>. Moving increasing your move and attack speed by up to 50% <small>(+50% per stack, linear)</small>. Effect ramps up over 5 seconds, and is lost once you start or stop moving (latter has a brief grace period).
+			</details></td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		
+		<tr>
 			<td colspan="4" align="center"><h3>Equipments</h3></td>
 		</tr>
 		<tr>
@@ -217,6 +238,27 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</details></td>
 			<td><ul>
 				<li>Rewinds position, velocity, health, shields, barrier, and skill cooldowns/stock (except equipment).</li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/recombobulatorIcon.png?raw=true" width=256></td>
+			<td><b>Quantum Recombobulator</b></td>
+			<td><details>
+				<summary>Reroll an interactable once. <small>[Cooldown: 60 s]</small></summary>
+					Reroll an interactable into a different one which is valid for the current stage. Only works once per interactable.
+			</details></td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/reviveOnceIcon.png?raw=true" width=256></td>
+			<td><b>Command Terminal</b></td>
+			<td><details>
+				<summary>Revive an ally or summon a drone. Consumed on use. <small>[Cooldown: 10 s]</small></summary>
+					Revives one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a random drone instead. Will be consumed on use.
+			</details></td>
+			<td><ul>
+				<li>Can summon equipment drones with random equipment.</li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -349,6 +391,14 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.10.0** *The Science! Update*
+
+- ADDED ITEMS: Motion Tracker, Spacetime Skein!
+- ADDED EQUIPMENT: Command Terminal, Quantum Recombobulator!
+- Cardboard Box now works on Shrines of the Mountain, Cleansing Pools, Shrines of Order, Altars of Gold, and Explosive Tar Pots.
+- Cardboard Box and Silver Compass can no longer be triggered by Bottled Chaos.
+- Causal Camera can now be triggered by Bottled Chaos.
 
 **1.9.6**
 
