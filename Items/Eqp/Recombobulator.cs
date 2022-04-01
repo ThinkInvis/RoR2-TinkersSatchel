@@ -12,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override string displayName => "Quantum Recombobulator";
         public override bool isLunar => false;
         public override bool canBeRandomlyTriggered => false;
-        public override float cooldown { get; protected set; } = 90f;
+        public override float cooldown { get; protected set; } = 60f;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Reroll an interactable once.";
