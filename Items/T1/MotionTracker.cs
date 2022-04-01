@@ -11,13 +11,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Motion Tracker";
+        public override string displayName => "Old War Lidar";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Deal increasing damage during combat.";
-        protected override string GetDescString(string langid = null) => $"While in combat with an enemy, deal up to <style=cIsDamage>{Pct(damageFrac)} more damage</style> to that enemy <style=cStack>(+{Pct(damageFrac)} per stack)</style>, ramping up over {damageTime:N0} seconds.";
+        protected override string GetPickupString(string langid = null) => "Deal more damage to persistent combatants.";
+        protected override string GetDescString(string langid = null) => $"Deal up to <style=cIsDamage>{Pct(damageFrac)} more damage <style=cStack>(+{Pct(damageFrac)} per stack)</style></style> to any enemy you have recently hit or been hit by, <style=cIsUtility>ramping up</style> over {damageTime:N0} seconds.";
         protected override string GetLoreString(string langid = null) => "";
 
 
