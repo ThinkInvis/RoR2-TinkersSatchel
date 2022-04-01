@@ -93,6 +93,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					damageInfo.damage *= fac;
 					if(damageInfo.canRejectForce)
 						damageInfo.force *= fac;
+					cpt.ForceResetStopped();
                 }
             }
 			orig(self, damageInfo);
@@ -119,6 +120,10 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!isStopped) return 0;
 			return Mathf.Clamp01(shortNotMovingStopwatch / Skein.instance.massChangeDuration);
 		}
+
+		public void ForceResetStopped() {
+			shortNotMovingStopwatch = 0f;
+        }
 
 		void Awake() {
 			body = GetComponent<CharacterBody>();
