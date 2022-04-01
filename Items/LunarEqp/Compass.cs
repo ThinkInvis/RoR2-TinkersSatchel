@@ -12,6 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Silver Compass";
         public override bool isLunar => true;
+        public override bool canBeRandomlyTriggered => false;
         public override float cooldown {get; protected set;} = 180f;
 
         protected override string GetNameString(string langid = null) => displayName;
