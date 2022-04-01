@@ -350,6 +350,15 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.9.6**
+
+- Fixed Artifact of Tactics not working and spamming NREs per frame.
+- Added extra null safety in a couple other places.
+- Major rework of Thunderstore readme page layout.
+	- We got tables!
+	- And icons!
+	- And lists! But less of these than before actually!
+
 **1.9.5**
 
 - Added informational buffs to Pulse Monitor (cooldown), Causal Camera (number of saved rewind frames), and Bismuth Tonic (remaining duration).
@@ -419,7 +428,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Causal Camera:
 	- Removed a debug log that managed to slip through the cracks.
 	- Added missing entry to the Thunderstore description.
-
-**1.9.1**
-
-- Fixed Causal Camera spamming console errors while equipped on bodies with fewer components than usual (e.g. Engi turrets).

@@ -1,5 +1,14 @@
 # Tinker's Satchel Changelog
 
+**1.9.6**
+
+- Fixed Artifact of Tactics not working and spamming NREs per frame.
+- Added extra null safety in a couple other places.
+- Major rework of Thunderstore readme page layout.
+	- We got tables!
+	- And icons!
+	- And lists! But less of these than before actually!
+
 **1.9.5**
 
 - Added informational buffs to Pulse Monitor (cooldown), Causal Camera (number of saved rewind frames), and Bismuth Tonic (remaining duration).
