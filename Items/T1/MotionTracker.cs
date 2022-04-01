@@ -12,8 +12,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Item Data //////
         
         public override string displayName => "Motion Tracker";
-        public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
+        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Deal increasing damage during combat.";
@@ -26,7 +26,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFrac { get; private set; } = 0.2f;
+        public float damageFrac { get; private set; } = 0.15f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time in combat required to reach maximum damage bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
