@@ -165,7 +165,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>H3AD-53T</b></td>
 			<td><details>
 				<summary>Your Utility skill builds a stunning static charge.</summary>
-				After activating your Utility skill, the next 5 enemies <small>(+3 per stack)</small> your path crosses will take 400% damage <small>(+150% per stack)</small> and be stunned for 5 seconds.
+				<small>After activating your Utility skill, the next 5 enemies (+3 per stack) your path crosses will take 400% damage (+150% per stack) and be stunned for 5 seconds.</small>
 			</details></td>
 			<td><ul>
 				<li>Grants or refreshes charges of a buff. Running into or phasing through an enemy spends a charge to deal damage and stun.</li>
@@ -177,7 +177,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Pinball Wizard</b></td>
 			<td><details>
 				<summary>Projectiles may bounce and home.</summary>
-				All your projectile attacks have a 15% chance to bounce, exploding one extra time and homing towards a random enemy with 50% of their original damage. Can happen up to 3 times <small>(+2 per stack)</small> per projectile.
+				<small>All your projectile attacks have a 15% chance to bounce, exploding one extra time and homing towards a random enemy with 50% of their original damage. Can happen up to 3 times (+2 per stack) per projectile.</small>
 			</details></td>
 			<td><ul>
 				<li>Overrides gravity, impact fuse time, etc. on affected projectiles to unerringly track towards a target.</li>
@@ -189,7 +189,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Go-Faster Stripes</b></td>
 			<td><details>
 				<summary>Your Utility skill gains more mobility.</summary>
-				Upgrades your Utility skill, greatly increasing its mobility.
+				<small>Upgrades your Utility skill, greatly increasing its mobility.</small>
 			</details></td>
 			<td><ul>
 				<li><details><summary>Class-specific details (click to expand):</summary><ul>
@@ -210,12 +210,11 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Spacetime Skein</b></td>
 			<td><details>
 				<summary>Gain mass while stationary. Lose mass while moving.</summary>
-				Standing still reduces the next damage and knockback you take by up to 50% <small>(+50% per stack, hyperbolic)</small>. Moving increasing your move and attack speed by up to 50% <small>(+50% per stack, linear)</small>. Effect ramps up over 5 seconds, and is lost once you start or stop moving (latter has a brief grace period).
+				<small>Standing still reduces the next damage and knockback you take by up to 50% (+50% per stack, hyperbolic). Moving increasing your move and attack speed by up to 50% (+50% per stack, linear). Effect ramps up over 5 seconds, and is lost once you start or stop moving (latter has a brief grace period).</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
 		</tr>
-		
 		<tr>
 			<td colspan="4" align="center"><h3>Equipments</h3></td>
 		</tr>
@@ -224,7 +223,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Cardboard Box</b></td>
 			<td><details>
 				<summary>Pack up and move. <small>[Cooldown: 60 s]</small></summary>
-					Use once to pack up a turret, healing shrine, or most other interactables. Use again to place the packed object and put the Cardboard Box on cooldown.
+				<small>Use once to pack up a turret, healing shrine, or most other interactables. Use again to place the packed object and put the Cardboard Box on cooldown.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -234,7 +233,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Causal Camera</b></td>
 			<td><details>
 				<summary>Phase briefly and rewind yourself 10 seconds. <small>[Cooldown: 90 s]</small></summary>
-					Phase out of existence for 2.0 seconds. Rewind your position, health, and skill cooldowns <small>(except equipment)</small> to their states from up to 10.0 seconds ago.
+				<small>Phase out of existence for 2.0 seconds. Rewind your position, health, and skill cooldowns <small>(except equipment)</small> to their states from up to 10.0 seconds ago.</small>
 			</details></td>
 			<td><ul>
 				<li>Rewinds position, velocity, health, shields, barrier, and skill cooldowns/stock (except equipment).</li>
@@ -245,7 +244,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Quantum Recombobulator</b></td>
 			<td><details>
 				<summary>Reroll an interactable once. <small>[Cooldown: 60 s]</small></summary>
-					Reroll an interactable into a different one which is valid for the current stage. Only works once per interactable.
+				<small>Reroll an interactable into a different one which is valid for the current stage. Only works once per interactable.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -255,7 +254,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Command Terminal</b></td>
 			<td><details>
 				<summary>Revive an ally or summon a drone. Consumed on use. <small>[Cooldown: 10 s]</small></summary>
-					Revives one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a random drone instead. Will be consumed on use.
+				<small>Revives one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a random drone instead. Will be consumed on use.</small>
 			</details></td>
 			<td><ul>
 				<li>Can summon equipment drones with random equipment.</li>
@@ -269,7 +268,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>RC Controller</b></td>
 			<td><details>
 				<summary>Nearby turrets and drones attack with you... <i>BUT no longer attack automatically.</i></summary>
-				All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +100% attack speed <small>(+25% per stack)</small>.
+				<small>All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +100% attack speed (+25% per stack).</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -279,7 +278,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Bismuth Tonic</b></td>
 			<td><details>
 				<summary>Gain resistance when hit by one enemy type... <i>BUT gain weakness to the others.</i></summary>
-					On being hit by one type of enemy: take 12.5% less damage from subsequent attacks from that type, but 20% more damage from all other types. Wears off after 10 seconds.
+				<small>On being hit by one type of enemy: take 12.5% less damage from subsequent attacks from that type, but 20% more damage from all other types. Wears off after 10 seconds.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -292,7 +291,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Silver Compass</b></td>
 			<td><details>
 				<summary>Shows you a path... <i>BUT it will be fraught with danger.</i> <small>[Cooldown*: 180 s]</small></summary>
-					Immediately reveals the teleporter. Also adds two stacks of Challenge of the Mountain to the current stage, one of which will not provide extra item drops. Works only once per player per stage.
+				<small>Immediately reveals the teleporter. Also adds two stacks of Challenge of the Mountain to the current stage, one of which will not provide extra item drops. Works only once per player per stage.</small>
 			</details></td>
 			<td><ul>
 				<li>*Works only once per player per stage, <i>in addition to</i> a long cooldown in case of very fast stage clears. Both of these are configurable.</li>
@@ -306,7 +305,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Villainous Visage (T1)</b></td>
 			<td><details>
 				<summary>Deal more damage when given time to plot. Corrupts all Macho Moustaches.</summary>
-					While out of combat, build up a damage buff that will last 2 seconds once in combat. Builds 3% damage per second <small>(+3% per stack)</small>, up to 15% <small>(+15% per stack)</small>. Corrupts all Macho Moustaches.
+				<small>While out of combat, build up a damage buff that will last 2 seconds once in combat. Builds 3% damage per second (+3% per stack), up to 15% (+15% per stack). Corrupts all Macho Moustaches.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
@@ -316,7 +315,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Armor Prism (T2)</b></td>
 			<td><details>
 				<summary>Gain massive armor by focusing your item build. Corrupts all Armor Crystals.</summary>
-					Gain armor based on your currently held types of item (fewer is better). Having only Armor Prisms gives 500 armor <small>(+25% per stack, inverse-exponential)</small>; each subsequent item type reduces armor by 12.5%. Corrupts all Armor Crystals.
+				<small>Gain armor based on your currently held types of item (fewer is better). Having only Armor Prisms gives 500 armor (+25% per stack, inverse-exponential); each subsequent item type reduces armor by 12.5%. Corrupts all Armor Crystals.</small>
 			</details></td>
 			<td><ul>
 			</ul></td>
