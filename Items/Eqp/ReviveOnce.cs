@@ -112,8 +112,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 TinkersSatchelPlugin._logger.LogError($"Pod {podObj} spawned for revived prefab {obj} has no seat!");
             }
             NetworkServer.Spawn(podObj);
-            var dot = podObj.AddComponent<DestroyOnTimer>();
-            dot.duration = 10f;
             objBody.SetBodyStateToPreferredInitialState();
 
             slot.inventory.SetEquipmentIndex(EquipmentIndex.None);
