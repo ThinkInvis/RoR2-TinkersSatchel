@@ -165,10 +165,14 @@ namespace ThinkInvisible.TinkersSatchel {
 						movingStopwatch = 0f;
 						isStopped = true;
 						body.statsDirty = true;
+						body.SetBuffCount(Skein.instance.speedBuff.buffIndex, 0);
 					} else movingStopwatch += Time.fixedDeltaTime;
                 }
 			} else {
-				isStopped = false;
+				if(isStopped) {
+					body.SetBuffCount(Skein.instance.resistBuff.buffIndex, 0);
+					isStopped = false;
+				}
 				movingStopwatch += Time.fixedDeltaTime;
 				shortNotMovingStopwatch = 0f;
 			}
