@@ -287,6 +287,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var results = Physics.OverlapSphere(aim.origin, maxDistance + camAdjust, Physics.AllLayers, QueryTriggerInteraction.Collide);
             var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI/180f);
             return results
+                .Where(x => x && x.gameObject)
                 .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
                 .Concat( //OverlapSphere doesn't hit Warbanners
                     GameObject.FindObjectsOfType<BuffWard>()
