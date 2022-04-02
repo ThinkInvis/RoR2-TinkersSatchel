@@ -80,6 +80,15 @@ namespace ThinkInvisible.TinkersSatchel {
                 var newBody = which.Respawn(nodePos, nodeRot);
                 if(!newBody) return false;
                 obj = newBody.gameObject;
+                string rezTargetName = Language.GetString(newBody.baseNameToken);
+                var newBodyUser = Util.LookUpBodyNetworkUser(newBody);
+                if(newBodyUser)
+                    rezTargetName = newBodyUser.userName;
+                var rezzerName = slot.characterBody ? Language.GetString(slot.characterBody.baseNameToken) : "Someone";
+                var rezzerUser = Util.LookUpBodyNetworkUser(slot.characterBody);
+                if(rezzerUser)
+                    rezzerName = rezzerUser.userName;
+                NetUtil.ServerSendGlobalChatMsg($"{rezzerName} called down a clone of {rezTargetName}!");
             } else {
                 var which = rng.NextElementUniform(droneMasterPrefabs);
                 var summon = new MasterSummon {
