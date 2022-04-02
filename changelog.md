@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.10.2**
+
+- Fixed any and all game VFX going missing at random (caused by Pinball Wizard effect prefab waking up during game load).
+- Go-Faster Stripes: self-targeted Engi missiles now properly explode (with a grenade explosion but we can't win 'em all).
+
 **1.10.1**
 
 - Spacetime Skein now has a percentage buff indicating its ramp-up progress.

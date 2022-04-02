@@ -391,6 +391,11 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.10.2**
+
+- Fixed any and all game VFX going missing at random (caused by Pinball Wizard effect prefab waking up during game load).
+- Go-Faster Stripes: self-targeted Engi missiles now properly explode (with a grenade explosion but we can't win 'em all).
+
 **1.10.1**
 
 - Spacetime Skein now has a percentage buff indicating its ramp-up progress.
@@ -431,21 +436,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Fixed causing sticky projectiles to not explode (e.g. Sticky Bomb, Railgunner specials) -- no longer procs on these.
 	- Now ignores the Neutral team (e.g. flying rocks hazard on Sky Meadows).
 	- Improved SFX. Now works on all projectiles and uses a more fitting vanilla sound effect.
-
-**1.9.4**
-
-- Balance pass.
-	- Go-Faster Stripes:
-		- Bandit: Buffed default launch force scalar from 20 to 30.
-		- MUL-T: Now has configurable number of boosts per skill cast per stack. Defaults to 3 (buffed from 1).
-	- Unstable Klein Bottle:
-		- Buffed default proc chance from 5% to 8%.
-- Causal Camera:
-	- No longer rewinds buffs, debuffs, or DoTs. This was causing *way* too many problems.
-	- No longer rewinds Captain's once-per-stage beacon skills.
-- Pixie Tube:
-	- Prevented from working with Railgunner's secondary.
-	- Reduced wisp arming time (2s --> 1.5s).
-	- Wisps are now wispier (no gravity, flit about randomly in midair, smaller particle size).
-	- Wisps on player team now wait until near the end of their lifetime (2s left) to gravitate towards non-player allies.
-- Pinball Wizard: stole some vanilla SFX for the proc effect. Only works on physical projectiles for now, and not hitscan attacks.
