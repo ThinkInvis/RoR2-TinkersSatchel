@@ -391,6 +391,17 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.10.1**
+
+- Spacetime Skein now has a percentage buff indicating its ramp-up progress.
+- Added a few greebles to Old War Lidar.
+- UV-mapped and baked Old War Lidar multi-material into a single material (experimenting with workflow, will apply to other items later).
+- Fixed Spacetime Skein almost never detecting movement.
+- Quantum Recombobulator no longer works on interactables that have already been used/are in use.
+- Command Terminal now displays a chat message when it revives someone.
+- Command Terminal now exposes its list of valid random drones for other mods to add to (`ReviveOnce.instance.droneMasterPrefabs.Add(GameObject prefab);`).
+- Fixed an uncommon, mostly-harmless NRE in Quantum Recombobulator and Cardboard Box.
+
 **1.10.0** *The Science! Update, Part 1*
 
 - ADDED ITEMS/EQUIPMENTS: Motion Tracker, Spacetime Skein, Command Terminal, Quantum Recombobulator!
@@ -438,7 +449,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Wisps are now wispier (no gravity, flit about randomly in midair, smaller particle size).
 	- Wisps on player team now wait until near the end of their lifetime (2s left) to gravitate towards non-player allies.
 - Pinball Wizard: stole some vanilla SFX for the proc effect. Only works on physical projectiles for now, and not hitscan attacks.
-
-**1.9.3**
-
-- Causal Camera no longer restores drop pod/teleport immunity.
