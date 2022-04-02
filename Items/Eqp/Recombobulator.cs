@@ -77,6 +77,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+            On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping;
         }
 
         public override void Uninstall() {
@@ -84,6 +85,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.SceneDirector.GenerateInteractableCardSelection -= SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
+            On.RoR2.ScrapperController.BeginScrapping -= ScrapperController_BeginScrapping;
         }
 
 
@@ -111,6 +113,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Hooks //////
+
+        private void ScrapperController_BeginScrapping(On.RoR2.ScrapperController.orig_BeginScrapping orig, ScrapperController self, int intPickupIndex) {
+            orig(self, intPickupIndex);
+            if(self && !self.GetComponent<RecombobulatorFlag>())
+                self.gameObject.AddComponent<RecombobulatorFlag>();
+        }
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator) {
             orig(self, activator);
