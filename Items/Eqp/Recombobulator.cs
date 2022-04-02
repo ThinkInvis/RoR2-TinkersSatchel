@@ -122,7 +122,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator) {
             orig(self, activator);
-            if(self && self.CanBeAffordedByInteractor(activator))
+            if(self && self.CanBeAffordedByInteractor(activator) && !self.GetComponent<RecombobulatorFlag>())
                 self.gameObject.AddComponent<RecombobulatorFlag>();
         }
 
