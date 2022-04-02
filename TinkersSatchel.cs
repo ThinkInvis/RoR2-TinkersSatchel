@@ -12,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
-    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(PrefabAPI), nameof(RecalculateStatsAPI), nameof(UnlockableAPI))]
+    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(PrefabAPI), nameof(RecalculateStatsAPI), nameof(UnlockableAPI), nameof(DirectorAPI))]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
         public const string ModVer = "1.10.2";
@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private static ConfigFile cfgFile;
         
-        internal static FilingDictionary<CatalogBoilerplate> masterItemList = new FilingDictionary<CatalogBoilerplate>();
+        internal static FilingDictionary<T2Module> allModules = new FilingDictionary<T2Module>();
         
         internal static BepInEx.Logging.ManualLogSource _logger;
 
@@ -35,18 +35,19 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             cfgFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
-            masterItemList = T2Module.InitAll<CatalogBoilerplate>(new T2Module.ModInfo {
+            var modInfo = new T2Module.ModInfo {
                 displayName = "Tinker's Satchel",
                 longIdentifier = "TinkersSatchel",
                 shortIdentifier = "TKSAT",
                 mainConfigFile = cfgFile
-            });
+            };
+            allModules = T2Module.InitAll<T2Module>(modInfo);
 
-            T2Module.SetupAll_PluginAwake(masterItemList);
+            T2Module.SetupAll_PluginAwake(allModules);
         }
 
         private void Start() {
-            T2Module.SetupAll_PluginStart(masterItemList);
+            T2Module.SetupAll_PluginStart(allModules);
         }
     }
 }
