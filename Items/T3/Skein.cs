@@ -40,6 +40,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+		////// Other Fields/Properties //////
+		
+		public BuffDef speedBuff { get; private set; }
+		public BuffDef resistBuff { get; private set; }
+
+
 		////// TILER2 Module Setup //////
 
 		public Skein() {
@@ -49,6 +55,22 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void SetupAttributes() {
 			base.SetupAttributes();
+
+			speedBuff = ScriptableObject.CreateInstance<BuffDef>();
+			speedBuff.buffColor = Color.white;
+			speedBuff.canStack = true;
+			speedBuff.isDebuff = false;
+			speedBuff.name = "TKSATSkeinSpeed";
+			speedBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/skeinSpeedBuffIcon.png");
+			ContentAddition.AddBuffDef(speedBuff);
+
+			resistBuff = ScriptableObject.CreateInstance<BuffDef>();
+			resistBuff.buffColor = Color.white;
+			resistBuff.canStack = true;
+			resistBuff.isDebuff = false;
+			resistBuff.name = "TKSATSkeinResist";
+			resistBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/skeinResistBuffIcon.png");
+			ContentAddition.AddBuffDef(resistBuff);
 		}
 
 		public override void Install() {
@@ -103,7 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 	[RequireComponent(typeof(CharacterBody))]
 	public class SkeinTracker : MonoBehaviour {
-		const float MOVING_TICK_RATE = 0.5f;
+		const float RECALC_TICK_RATE = 0.5f;
 
 		float movingStopwatch = 0f;
 		float shortNotMovingStopwatch = 0f;
@@ -153,12 +175,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			prevPos = body.transform.position;
 
-			if(!isStopped) {
-				tickStopwatch -= Time.fixedDeltaTime;
-				if(tickStopwatch <= 0f) {
-					tickStopwatch = MOVING_TICK_RATE;
-					body.statsDirty = true;
-				}
+			tickStopwatch -= Time.fixedDeltaTime;
+			if(tickStopwatch <= 0f) {
+				tickStopwatch = RECALC_TICK_RATE;
+				if(!isStopped) body.statsDirty = true;
+				body.SetBuffCount((isStopped ? Skein.instance.resistBuff : Skein.instance.speedBuff).buffIndex,
+					Mathf.FloorToInt((isStopped ? GetResistanceScalar() : GetMovementScalar()) * 100));
 			}
         }
     }
