@@ -125,7 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 	[RequireComponent(typeof(CharacterBody))]
 	public class SkeinTracker : MonoBehaviour {
-		const float RECALC_TICK_RATE = 0.5f;
+		const float RECALC_TICK_RATE = 0.2f;
 
 		float movingStopwatch = 0f;
 		float shortNotMovingStopwatch = 0f;
