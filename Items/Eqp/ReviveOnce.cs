@@ -4,6 +4,7 @@ using TILER2;
 using System.Linq;
 using RoR2.Navigation;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ReviveOnce : Equipment<ReviveOnce> {
@@ -24,7 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        GameObject[] droneMasterPrefabs;
+        public readonly List<GameObject> droneMasterPrefabs = new List<GameObject>();
 
 
 
@@ -37,13 +38,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-            droneMasterPrefabs = new[] {
+            droneMasterPrefabs.AddRange(new[] {
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/EquipmentDroneMaster"),
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/Drone1Master"),
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/Drone2Master"),
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/FlameDroneMaster"),
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/DroneMissileMaster")
-            };
+                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/DroneMissileMaster")}
+            );
         }
 
         public override void Install() {
