@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
 using static TILER2.MiscUtil;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Skein : Item<Skein> {
@@ -109,6 +110,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		float tickStopwatch = 0f;
 		bool isStopped = false;
 
+		Vector3 prevPos;
+
 		CharacterBody body;
 
 		public float GetMovementScalar() {
@@ -127,12 +130,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		void Awake() {
 			body = GetComponent<CharacterBody>();
+			prevPos = body.transform.position;
         }
 
 		void FixedUpdate() {
-			if(!body) return;
+			if(!body || !NetworkServer.active) return;
 			float minMove = 0.1f * Time.fixedDeltaTime;
-			if((body.transform.position - body.previousPosition).sqrMagnitude <= minMove * minMove) {
+			if((body.transform.position - prevPos).sqrMagnitude <= minMove * minMove) {
 				shortNotMovingStopwatch += Time.fixedDeltaTime;
 				if(!isStopped) {
 					if(shortNotMovingStopwatch > Skein.instance.moveGracePeriod) {
@@ -146,6 +150,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				movingStopwatch += Time.fixedDeltaTime;
 				shortNotMovingStopwatch = 0f;
 			}
+
+			prevPos = body.transform.position;
 
 			if(!isStopped) {
 				tickStopwatch -= Time.fixedDeltaTime;
