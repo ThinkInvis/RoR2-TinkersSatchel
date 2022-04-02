@@ -75,12 +75,14 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             On.RoR2.SceneDirector.GenerateInteractableCardSelection -= SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
         }
 
 
@@ -107,6 +109,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Hooks //////
+
+        private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator) {
+            orig(self, activator);
+            if(self && self.CanBeAffordedByInteractor(activator))
+                self.gameObject.AddComponent<RecombobulatorFlag>();
+        }
 
         private WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self) {
             var retv = orig(self);
@@ -136,7 +144,8 @@ namespace ThinkInvisible.TinkersSatchel {
             };
 
             if(self.currentTarget.rootObject != null) {
-                if(!res.GetComponent<RecombobulatorFlag>()) {
+                var purch = res.GetComponent<PurchaseInteraction>();
+                if(!res.GetComponent<RecombobulatorFlag>() && (!purch || purch.available)) {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerIndicator");
                 } else {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
@@ -155,6 +164,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 && !slot.currentTarget.rootObject.GetComponent<RecombobulatorFlag>()
                 && mostRecentDeck != null
                 && Run.instance) {
+
+                bool hadPurch = false;
+                var oldPurch = slot.currentTarget.rootObject.GetComponent<PurchaseInteraction>();
+                if(oldPurch) {
+                    if(!oldPurch.available) return false;
+                }
 
                 var shopcpt = slot.currentTarget.rootObject.GetComponent<ShopTerminalBehavior>();
                 if(shopcpt && shopcpt.serverMultiShopController) {
