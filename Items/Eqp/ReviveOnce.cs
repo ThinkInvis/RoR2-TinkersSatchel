@@ -117,9 +117,9 @@ namespace ThinkInvisible.TinkersSatchel {
                     var pdef = PickupCatalog.GetPickupDef(drop);
                     if(wardPersist && pdef != null && pdef.itemIndex != ItemIndex.None) {
                         int remCount = 1;
-                        if(pickupDef.itemTier == ItemTier.Tier2 || pickupDef.itemTier == ItemTier.VoidTier2)
+                        if(pdef.itemTier == ItemTier.Tier2 || pdef.itemTier == ItemTier.VoidTier2)
                             remCount = 3;
-                        if(pickupDef.itemTier == ItemTier.Tier1 || pickupDef.itemTier == ItemTier.VoidTier1)
+                        if(pdef.itemTier == ItemTier.Tier1 || pdef.itemTier == ItemTier.VoidTier1)
                             remCount = 5;
                         wardPersist.index = pdef.itemIndex;
                         wardPersist.count = remCount;
