@@ -73,16 +73,19 @@ namespace ThinkInvisible.TinkersSatchel {
 			bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
 				.WaitForCompletion();
 
-			effectPrefab = new GameObject("TkSatTempSetupPrefab");
-			var efc = effectPrefab.AddComponent<EffectComponent>();
-			var dstroy = effectPrefab.AddComponent<DestroyOnTimer>();
+			var tspp = new GameObject("TkSatTempSetupPrefabPrefab");
+			var tsp = tspp.InstantiateClone("TkSatTempSetupPrefab", false);
+			GameObject.Destroy(tspp);
+			var efc = tsp.AddComponent<EffectComponent>();
+			var dstroy = tsp.AddComponent<DestroyOnTimer>();
 			dstroy.duration = 1f;
-			effectPrefab.AddComponent<RandomPinballSFXOnEnable>();
-			var vfx = effectPrefab.AddComponent<VFXAttributes>();
+			tsp.AddComponent<RandomPinballSFXOnEnable>();
+			var vfx = tsp.AddComponent<VFXAttributes>();
 			vfx.vfxPriority = VFXAttributes.VFXPriority.Medium;
 			vfx.vfxIntensity = VFXAttributes.VFXIntensity.Medium;
-			effectPrefab.AddComponent<NetworkIdentity>();
-			effectPrefab = effectPrefab.InstantiateClone("TkSatPinballSFXHandler");
+			tsp.AddComponent<NetworkIdentity>();
+			effectPrefab = tsp.InstantiateClone("TkSatPinballSFXHandler");
+			GameObject.Destroy(tsp);
 			ContentAddition.AddEffect(effectPrefab);
 		}
 
