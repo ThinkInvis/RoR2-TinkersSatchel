@@ -6,6 +6,7 @@ using System.Linq;
 namespace ThinkInvisible.TinkersSatchel {
     public class Recombobulator : Equipment<Recombobulator> {
         //TODO: maybe also allow on enemies/bosses?
+        //TODO: keep existing cost for stage
 
         ////// Equipment Data //////
 
