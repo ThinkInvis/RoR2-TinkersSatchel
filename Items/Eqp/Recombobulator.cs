@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Reroll an interactable once.";
-        protected override string GetDescString(string langid = null) => $"Reroll an interactable into a different one which is valid for the current stage. Only works once per interactable.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Reroll</style> an interactable into a different one which is valid for the current stage. <style=cIsUtility>Only works once per interactable</style>.";
         protected override string GetLoreString(string langid = null) => $"";
 
 

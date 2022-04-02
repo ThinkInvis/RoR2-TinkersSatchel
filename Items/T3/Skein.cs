@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		protected override string GetPickupString(string langid = null) =>
 			"Gain mass while stationary. Lose mass while moving.";
 		protected override string GetDescString(string langid = null) =>
-			$"Standing still reduces the next damage and knockback you take by up to {Pct(highMassFrac)} (+{Pct(highMassFrac)} per stack, hyperbolic). Moving increasing your move and attack speed by up to {Pct(lowMassFrac)} (+{Pct(lowMassFrac)} per stack, linear). Effect ramps up over {massChangeDuration:N0} seconds, and is lost once you start or stop moving (latter has a brief grace period).";
+			$"Standing still reduces the next <style=cIsDamage>damage and knockback</style> you take by up to <style=cIsDamage>{Pct(highMassFrac)} <style=cStack>(+{Pct(highMassFrac)} per stack, hyperbolic)</style></style>. Moving increasing your <style=cIsUtility>move and attack speed</style> by up to <style=cIsUtility>{Pct(lowMassFrac)} <style=cStack>(+{Pct(lowMassFrac)} per stack, linear)</style></style>. Effect ramps up over {massChangeDuration:N0} seconds, and is lost once you start or stop moving (latter has a brief grace period).";
 		protected override string GetLoreString(string langid = null) => "";
 
 

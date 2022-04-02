@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Revive an ally or summon a drone. Consumed on use.";
-        protected override string GetDescString(string langid = null) => $"Revives one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a random drone instead. Will be consumed on use.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Revives</style> one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a <style=cIsUtility>random drone</style> instead. <color=#FF7F7F>Will be consumed on use</style>.";
         protected override string GetLoreString(string langid = null) => $"";
 
 
