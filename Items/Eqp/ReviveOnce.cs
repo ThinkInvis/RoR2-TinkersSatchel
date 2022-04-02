@@ -43,7 +43,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/Drone1Master"),
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/Drone2Master"),
                 LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/FlameDroneMaster"),
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/DroneMissileMaster")}
+                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/DroneMissileMaster"),
+                ItemDrone.instance.itemDroneMasterPrefab}
             );
         }
 
@@ -107,6 +108,21 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(droneInv) {
                         var randomEqp = rng.NextElementUniform(RoR2.Artifacts.EnigmaArtifactManager.validEquipment); 
                         droneInv.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
+                    }
+                } else if(which == ItemDrone.instance.itemDroneMasterPrefab) {
+                    var wardPersist = summon.GetComponent<ItemDroneWardPersist>();
+
+                    var drops = LegacyResourcesAPI.Load<BasicPickupDropTable>("DropTables/dtSmallChest");
+                    var drop = drops.GenerateDrop(rng);
+                    var pdef = PickupCatalog.GetPickupDef(drop);
+                    if(wardPersist && pdef != null && pdef.itemIndex != ItemIndex.None) {
+                        int remCount = 1;
+                        if(pickupDef.itemTier == ItemTier.Tier2 || pickupDef.itemTier == ItemTier.VoidTier2)
+                            remCount = 3;
+                        if(pickupDef.itemTier == ItemTier.Tier1 || pickupDef.itemTier == ItemTier.VoidTier1)
+                            remCount = 5;
+                        wardPersist.index = pdef.itemIndex;
+                        wardPersist.count = remCount;
                     }
                 }
             }
