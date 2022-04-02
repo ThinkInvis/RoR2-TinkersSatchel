@@ -319,16 +319,15 @@ namespace ThinkInvisible.TinkersSatchel {
 				self.PlayAnimation((self.fireIndex % 2 == 0) ? "Gesture Left Cannon, Additive" : "Gesture Right Cannon, Additive", "FireHarpoon");
 
 				ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
-					projectilePrefab = EntityStates.Engi.EngiMissilePainter.Fire.projectilePrefab,
+					projectilePrefab = EntityStates.Engi.EngiWeapon.FireGrenades.projectilePrefab,
 					position = self.characterBody.footPosition,
 					rotation = Util.QuaternionSafeLookRotation(Vector3.up),
 					procChainMask = default,
 					target = self.gameObject,
 					owner = self.characterBody.gameObject,
-					damage = 0,
-					crit = false,
-					force = 0,
-					damageColorIndex = DamageColorIndex.Item
+					fuseOverride = 0f,
+					useFuseOverride = true,
+					_fuseOverride = 0f
 				});
 
 				self.activatorSkillSlot.DeductStock(1);
