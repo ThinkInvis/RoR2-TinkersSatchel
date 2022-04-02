@@ -1,5 +1,12 @@
 # Tinker's Satchel Changelog
 
+**1.10.0** *The Science! Update, Part 1*
+
+- ADDED ITEMS/EQUIPMENTS: Motion Tracker, Spacetime Skein, Command Terminal, Quantum Recombobulator!
+- Cardboard Box now works on Shrines of the Mountain, Cleansing Pools, Shrines of Order, Altars of Gold, and Explosive Tar Pots.
+- Cardboard Box and Silver Compass can no longer be triggered by Bottled Chaos.
+- Causal Camera can now be triggered by Bottled Chaos.
+
 **1.9.6**
 
 - Fixed Artifact of Tactics not working and spamming NREs per frame.

@@ -391,10 +391,9 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
-**1.10.0** *The Science! Update*
+**1.10.0** *The Science! Update, Part 1*
 
-- ADDED ITEMS: Motion Tracker, Spacetime Skein!
-- ADDED EQUIPMENT: Command Terminal, Quantum Recombobulator!
+- ADDED ITEMS/EQUIPMENTS: Motion Tracker, Spacetime Skein, Command Terminal, Quantum Recombobulator!
 - Cardboard Box now works on Shrines of the Mountain, Cleansing Pools, Shrines of Order, Altars of Gold, and Explosive Tar Pots.
 - Cardboard Box and Silver Compass can no longer be triggered by Bottled Chaos.
 - Causal Camera can now be triggered by Bottled Chaos.
@@ -443,37 +442,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.9.3**
 
 - Causal Camera no longer restores drop pod/teleport immunity.
-
-**1.9.2**
-
-- Balance pass.
-	- Bismuth Flask:
-		- Now has an effect duration (10s by default) instead of lasting forever.
-		- This item is meant to reward skillful kiting, not punish you for fighting more than one enemy type ever.
-	- Pinball Wizard:
-		- I greatly underestimated how powerful auto-aim bounces on missed attacks could be >_>
-		- Now affected by luck, but has a lower default proc chance (35% --> 15%).
-		- No longer stacks damage per bounce.
-		- Bouncing projectiles now deal less damage (50% by default).
-		- Extra bounces per additional stack buffed (1 --> 2), as this is the only remaining per-stack scaling on this item.
-	- Triskelion Brooch:
-		- Shock from Captain's secondary now counts as a stun for purposes of triggering this item.
-	- Mostly-Tame Mimic:
-		- No longer mimics useless items (scrap/consumed).
-	- Percussive Maintenance:
-		- Now scales based on proc coefficient (matches Leeching Seed behavior).
-		- Buffed default healing amount per stack (1hp --> 2hp) due to the opportunity cost of dealing damage, which Leeching Seed does not have.
-- Bismuth Tonic: Fixed a serious NRE related to Engineer turrets.
-- Fixed Cardboard Box not syncing for clients on non-dedicated servers.
-- Triskelion Brooch:
-	- Fixed proc chance not being checked and always proccing in some cases.
-	- Fixed proc chance being capped at 1% and displaying in logbook at 100x its actual value.
-	- Split proc chance into base/stack configs.
-	- Removed upper cap from damage configs.
-- Percussive Maintenance healing amount is now configurable.
-- Mostly-Tame Mimic:
-	- No longer mimics AI summons (Queen's Gland and Empathy Cores) due to a bug.
-	- Now exposes the public API method `Mimic.instance.BlacklistItem(ItemDef)` to add an item to its internal blacklist.
-- Causal Camera:
-	- Removed a debug log that managed to slip through the cracks.
-	- Added missing entry to the Thunderstore description.
