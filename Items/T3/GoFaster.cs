@@ -62,7 +62,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float engiSharedBuffFrac { get; private set; } = 0.35f;
 
 		[AutoConfig("Multiplier to BuffFrac for Engineer missiles: controls launch force per consumed missile.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float engiBoostFrac { get; private set; } = 35f;
+		public float engiBoostFrac { get; private set; } = 50f;
 
 		/*[AutoConfig("Multiplier to BuffFrac for Artificer wall: NYI. Current effect is teleport to top of wall, which cannot be meaningfully boosted.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float artiSpeedPadFrac { get; private set; } = 20f;*/
