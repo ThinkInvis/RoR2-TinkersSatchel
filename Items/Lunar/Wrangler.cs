@@ -123,6 +123,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 self.bodyInputBank.skill2.PushState(fireEverything);
                 self.bodyInputBank.skill3.PushState(fireEverything);
                 self.bodyInputBank.skill4.PushState(fireEverything);
+                self.bodyInputBank.activateEquipment.PushState(fireEverything);
             }
         }
 
