@@ -239,9 +239,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
                 if(idpc) {
                     idpc.currentInteractor = activator;
+                    self.SetOptionsFromInteractor(activator);
                 }
             }
-            self.SetOptionsFromInteractor(activator);
             orig(self, activator);
         }
 
