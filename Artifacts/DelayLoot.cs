@@ -101,7 +101,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!droplet) return;
             deferredDrops.Add(droplet);
             droplet.SetActive(false);
-            var pctrl = droplet.GetComponent<PickupDropletController>();
+            /*var pctrl = droplet.GetComponent<PickupDropletController>();
             if(!pctrl) return;
             var pdef = PickupCatalog.GetPickupDef(pctrl.pickupIndex);
 
@@ -113,7 +113,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 };
                 effectData.SetNetworkedObjectReference(TeleporterInteraction.instance.gameObject);
                 EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
-            }
+            }*/
         }
     }
 }
