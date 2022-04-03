@@ -32,6 +32,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var tmpBodySetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/EquipmentDroneBody").InstantiateClone("TkSatTempSetupPrefab", false);
             var body = tmpBodySetup.GetComponent<CharacterBody>();
             body.baseNameToken = "TKSAT_ITEMDRONE_BODY_NAME";
+            body.baseMoveSpeed *= 2.5f;
             var ward = tmpBodySetup.AddComponent<ItemWard>();
             ward.radius = 60f; // doesn't work at all, stays at default 10. TODO: how and why??
             ward.displayRadiusFracH = 0.015f;
