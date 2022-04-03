@@ -193,19 +193,20 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!droplet) return;
             deferredDrops.Add(droplet);
             droplet.SetActive(false);
-            /*var pctrl = droplet.GetComponent<PickupDropletController>();
+            var pctrl = droplet.GetComponent<PickupDropletController>();
             if(!pctrl) return;
             var pdef = PickupCatalog.GetPickupDef(pctrl.pickupIndex);
 
             if(pdef != null && pdef.itemIndex != ItemIndex.None) {
-                var effectData = new EffectData {
+                NetUtil.ServerSendGlobalChatMsg($"<color=#{Util.RGBToHex(pdef.baseColor)}>{Language.GetString(pdef.nameToken)}</color> has been taken for safekeeping.");
+                /*var effectData = new EffectData {
                     origin = droplet.transform.position,
                     genericFloat = 1f,
                     genericUInt = (uint)(pdef.itemIndex + 1)
                 };
                 effectData.SetNetworkedObjectReference(TeleporterInteraction.instance.gameObject);
-                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
-            }*/
+                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);*/
+            }
         }
     }
 }
