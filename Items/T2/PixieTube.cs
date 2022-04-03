@@ -19,8 +19,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility });
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Drop random buffs on using non-primary skills.";
-        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use a non-primary skill</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {buffDuration:N0} seconds: <color=#ffaa77>+{Pct(buffDamageAmt)} damage</color>, <color=#9999ff>+{Pct(buffMoveAmt)} movement speed</color>, <color=#eeff55>+{Pct(buffAttackAmt)} attack speed</color>, or <color=#997755>{buffArmorAmt:N0} armor</color>.";
+        protected override string GetPickupString(string langid = null) => "Drop random buffs on using skills.";
+        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>(non-primary skills have a cooldown of 10 seconds)</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {buffDuration:N0} seconds: <color=#ffaa77>+{Pct(buffDamageAmt)} damage</color>, <color=#9999ff>+{Pct(buffMoveAmt)} movement speed</color>, <color=#eeff55>+{Pct(buffAttackAmt)} attack speed</color>, or <color=#997755>{buffArmorAmt:N0} armor</color>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -218,9 +218,17 @@ namespace ThinkInvisible.TinkersSatchel {
         private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
             orig(self, skill);
             if(!NetworkServer.active) return;
+            
             if(self && self.skillLocator
-                && self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary
                 && !blacklistedSkills.Contains(skill.skillDef)) {
+                bool isPrimary = self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary;
+                PixieTubeStopwatch pts = self.gameObject.GetComponent<PixieTubeStopwatch>();
+                if(!pts)
+                    pts = self.gameObject.AddComponent<PixieTubeStopwatch>();
+                if(isPrimary) {
+                    if(pts.stopwatchIsZero) pts.SetStopwatch();
+                    else return;
+                }
                 var count = GetCount(self);
                 for(var i = 0; i < count; i++) {
                     SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
@@ -278,6 +286,16 @@ namespace ThinkInvisible.TinkersSatchel {
                 target.SetActive(false);
             }
             stopwatch = 0f;
+        }
+    }
+
+    public class PixieTubeStopwatch : MonoBehaviour {
+        float stopwatch = 0f;
+        public bool stopwatchIsZero => stopwatch <= 0f;
+        public void SetStopwatch() { stopwatch = 10f; }
+        void FixedUpdate() {
+            if(!stopwatchIsZero)
+                stopwatch -= Time.fixedDeltaTime;
         }
     }
 
