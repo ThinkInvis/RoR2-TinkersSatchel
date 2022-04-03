@@ -1,4 +1,7 @@
-﻿using RoR2;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using RoR2;
+using System;
 using System.Collections.Generic;
 using TILER2;
 using UnityEngine;
@@ -21,7 +24,7 @@ namespace ThinkInvisible.TinkersSatchel {
         bool shouldDeferDrops = true;
         Vector3 lootShowerLoc = Vector3.zero;
         float lootShowerTimer = 0f;
-        List<GenericPickupController.CreatePickupInfo> deferredDrops = new List<GenericPickupController.CreatePickupInfo>();
+        List<GameObject> deferredDrops = new List<GameObject>();
 
 
 
@@ -35,7 +38,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             Stage.onServerStageBegin += Stage_onServerStageBegin;
-            On.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 += PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
+            IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 += PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
             On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
         }
@@ -43,8 +46,9 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Uninstall() {
             base.Uninstall();
             Stage.onServerStageBegin -= Stage_onServerStageBegin;
-            On.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 -= PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
+            IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 -= PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
             GlobalEventManager.onCharacterDeathGlobal -= GlobalEventManager_onCharacterDeathGlobal;
+            On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
         }
 
 
@@ -58,7 +62,10 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(lootShowerTimer <= 0f) {
                     var rvel = UnityEngine.Random.onUnitSphere;
                     rvel.y = Mathf.Abs(rvel.y) + 0.75f;
-                    PickupDropletController.CreatePickupDroplet(deferredDrops[0], lootShowerLoc, rvel * UnityEngine.Random.Range(10f, 40f));
+                    var rbody = deferredDrops[0].GetComponent<Rigidbody>();
+                    rbody.velocity = rvel * UnityEngine.Random.Range(10f, 40f);
+                    deferredDrops[0].transform.position = lootShowerLoc;
+                    deferredDrops[0].SetActive(true);
                     deferredDrops.RemoveAt(0);
                     lootShowerTimer = 0.125f;
                 }
@@ -76,12 +83,37 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        private void PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3(On.RoR2.PickupDropletController.orig_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 orig, GenericPickupController.CreatePickupInfo pickupInfo, Vector3 position, Vector3 velocity) {
-            if(!IsActiveAndEnabled() || !shouldDeferDrops || !TeleporterInteraction.instance) {
-                orig(pickupInfo, position, velocity);
-                return;
+        private void PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3(ILContext il) {
+            ILCursor c = new ILCursor(il);
+            if(c.TryGotoNext(MoveType.Before,
+                x => x.MatchCallOrCallvirt<NetworkServer>(nameof(NetworkServer.Spawn)))) {
+                c.Emit(OpCodes.Dup);
+                c.EmitDelegate<Action<GameObject>>(obj => {
+                    if(IsActiveAndEnabled() && shouldDeferDrops && TeleporterInteraction.instance)
+                        DeferDroplet(obj);
+                });
+            } else {
+                TinkersSatchelPlugin._logger.LogError("DelayLoot failed to apply IL hook (PickupDropletController_CreatePickupDroplet): couldn't find target instructions");
             }
-            deferredDrops.Add(pickupInfo);
+        }
+
+        void DeferDroplet(GameObject droplet) {
+            if(!droplet) return;
+            deferredDrops.Add(droplet);
+            droplet.SetActive(false);
+            var pctrl = droplet.GetComponent<PickupDropletController>();
+            if(!pctrl) return;
+            var pdef = PickupCatalog.GetPickupDef(pctrl.pickupIndex);
+
+            if(pdef != null && pdef.itemIndex != ItemIndex.None) {
+                var effectData = new EffectData {
+                    origin = droplet.transform.position,
+                    genericFloat = 1f,
+                    genericUInt = (uint)(pdef.itemIndex + 1)
+                };
+                effectData.SetNetworkedObjectReference(TeleporterInteraction.instance.gameObject);
+                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
+            }
         }
     }
 }
