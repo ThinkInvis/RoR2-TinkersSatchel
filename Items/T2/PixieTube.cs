@@ -221,13 +221,12 @@ namespace ThinkInvisible.TinkersSatchel {
             
             if(self && self.skillLocator
                 && !blacklistedSkills.Contains(skill.skillDef)) {
-                bool isPrimary = self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary;
-                PixieTubeStopwatch pts = self.gameObject.GetComponent<PixieTubeStopwatch>();
+                bool isPrimary = self.skillLocator.FindSkillSlot(skill) == SkillSlot.Primary;
+                var pts = self.gameObject.GetComponent<PixieTubeStopwatch>();
                 if(!pts)
                     pts = self.gameObject.AddComponent<PixieTubeStopwatch>();
                 if(isPrimary) {
-                    if(pts.stopwatchIsZero) pts.SetStopwatch();
-                    else return;
+                    if(!pts.CheckProc()) return;
                 }
                 var count = GetCount(self);
                 for(var i = 0; i < count; i++) {
@@ -291,10 +290,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class PixieTubeStopwatch : MonoBehaviour {
         float stopwatch = 0f;
-        public bool stopwatchIsZero => stopwatch <= 0f;
-        public void SetStopwatch() { stopwatch = 10f; }
+        public bool CheckProc() {
+            if(stopwatch <= 0f) {
+                stopwatch = 6f;
+                return true;
+            }
+            return false;
+        }
         void FixedUpdate() {
-            if(!stopwatchIsZero)
+            if(stopwatch > 0f)
                 stopwatch -= Time.fixedDeltaTime;
         }
     }
