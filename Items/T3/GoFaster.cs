@@ -244,7 +244,10 @@ namespace ThinkInvisible.TinkersSatchel {
 					dir = self.characterBody.characterDirection.forward;
 				dir.y += 0.75f;
 				dir = dir.normalized;
-				self.characterBody.characterMotor.ApplyForce(mainSpeed * massAdjust * dir, false, false);
+				var yvelCancel = self.characterBody.characterMotor
+					? new Vector3(0f, -self.characterBody.characterMotor.velocity.y, 0f)
+					: Vector3.zero;
+				self.characterBody.characterMotor.ApplyForce(mainSpeed * massAdjust * dir + yvelCancel * massAdjust, false, false);
 			}
 		}
 
