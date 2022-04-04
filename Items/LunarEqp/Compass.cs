@@ -34,7 +34,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public Compass() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/SilverCompass.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/compassIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/compassIcon.png");
         }
 
         public override void SetupAttributes() {

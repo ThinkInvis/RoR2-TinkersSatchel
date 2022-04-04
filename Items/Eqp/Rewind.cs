@@ -51,7 +51,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public Rewind() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Rewind.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/rewindIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/rewindIcon.png");
         }
 
         public override void SetupAttributes() {
@@ -74,7 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
             rewindBuff.isDebuff = false;
             rewindBuff.isCooldown = true;
             rewindBuff.name = "TKSATRewind";
-            rewindBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/rewindBuffIcon.png");
+            rewindBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/rewindBuffIcon.png");
             ContentAddition.AddBuffDef(rewindBuff);
         }
 

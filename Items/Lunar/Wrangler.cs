@@ -61,7 +61,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public Wrangler() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Wrangler.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/wranglerIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/wranglerIcon.png");
         }
 
         public override void SetupAttributes() {

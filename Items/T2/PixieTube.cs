@@ -60,7 +60,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public PixieTube() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/PixieTube.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/pixieTubeIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/pixieTubeIcon.png");
         }
 
         public override void SetupAttributes() {

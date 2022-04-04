@@ -46,7 +46,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public DamageBuffer() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/DamageBuffer.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/damageBufferIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/damageBufferIcon.png");
         }
 
         public override void SetupAttributes() {

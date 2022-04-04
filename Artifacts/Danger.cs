@@ -28,8 +28,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
         
         public Danger() {
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/danger_on.png");
-            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/danger_off.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/danger_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/danger_off.png");
         }
 
         public override void Install() {

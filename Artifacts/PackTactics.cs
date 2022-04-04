@@ -49,8 +49,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
         #region TILER2 Module Setup
         public PackTactics() {
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_on.png");
-            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_off.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/tactics_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/tactics_off.png");
         }
 
         public override void SetupConfig() {
@@ -71,7 +71,7 @@ namespace ThinkInvisible.TinkersSatchel {
             tacticsBuff.canStack = true;
             tacticsBuff.isDebuff = false;
             tacticsBuff.name = modInfo.shortIdentifier + "TacticsBuff";
-            tacticsBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/tactics_on.png");
+            tacticsBuff.iconSprite = iconResource;
             ContentAddition.AddBuffDef(tacticsBuff);
 
             var tacticsPrefabPrefab = new GameObject("TacticsAuraPrefabPrefab");

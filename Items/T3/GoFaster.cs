@@ -116,7 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public GoFaster() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/GoFaster.prefab");
-			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/goFasterIcon.png");
+			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/goFasterIcon.png");
 		}
 
 		public override void SetupAttributes() {
@@ -503,7 +503,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public string AchievementDescToken => "TKSAT_GOFASTER_ACHIEVEMENT_DESCRIPTION";
 		public string UnlockableNameToken => GoFaster.instance.nameToken;
 
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/goFasterIcon.png");
+		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/goFasterIcon.png");
 
 		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
 			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

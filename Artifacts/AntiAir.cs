@@ -24,8 +24,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
 
         public AntiAir() {
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/antiair_on.png");
-            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/antiair_off.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/antiair_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/antiair_off.png");
         }
 
         public override void Install() {

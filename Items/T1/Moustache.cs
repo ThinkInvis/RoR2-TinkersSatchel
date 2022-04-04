@@ -42,7 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
         public Moustache() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Moustache.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/moustacheIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/moustacheIcon.png");
         }
 
         public override void SetupAttributes() {

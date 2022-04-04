@@ -34,8 +34,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
 
         public DelayLoot() {
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/delayitems_on.png");
-            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/delayitems_off.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/delayitems_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/delayitems_off.png");
         }
 
         public override void Install() {

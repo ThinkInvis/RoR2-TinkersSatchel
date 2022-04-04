@@ -64,7 +64,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public Pinball() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Pinball.prefab");
-			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/pinballIcon.png");
+			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/pinballIcon.png");
 		}
 
 		public override void SetupAttributes() {

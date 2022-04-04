@@ -50,7 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public Skein() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Skein.prefab");
-			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/skeinIcon.png");
+			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/skeinIcon.png");
 		}
 
 		public override void SetupAttributes() {
@@ -61,7 +61,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			speedBuff.canStack = true;
 			speedBuff.isDebuff = false;
 			speedBuff.name = "TKSATSkeinSpeed";
-			speedBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/skeinSpeedBuffIcon.png");
+			speedBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/skeinSpeedBuffIcon.png");
 			ContentAddition.AddBuffDef(speedBuff);
 
 			resistBuff = ScriptableObject.CreateInstance<BuffDef>();
@@ -69,7 +69,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			resistBuff.canStack = true;
 			resistBuff.isDebuff = false;
 			resistBuff.name = "TKSATSkeinResist";
-			resistBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/skeinResistBuffIcon.png");
+			resistBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/skeinResistBuffIcon.png");
 			ContentAddition.AddBuffDef(resistBuff);
 		}
 

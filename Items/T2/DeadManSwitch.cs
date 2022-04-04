@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
         public DeadManSwitch() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/DeadManSwitch.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/deadManSwitchIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/deadManSwitchIcon.png");
         }
 
         public override void SetupAttributes() {
@@ -61,7 +61,7 @@ namespace ThinkInvisible.TinkersSatchel {
             deadManSwitchBuff.isDebuff = false;
             deadManSwitchBuff.isCooldown = true;
             deadManSwitchBuff.name = "TKSATDeadManSwitch";
-            deadManSwitchBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/deadManSwitchBuff.png");
+            deadManSwitchBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/deadManSwitchBuff.png");
             ContentAddition.AddBuffDef(deadManSwitchBuff);
         }
 
@@ -123,7 +123,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string AchievementDescToken => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION";
         public string UnlockableNameToken => DeadManSwitch.instance.nameToken;
 
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/deadManSwitchIcon.png");
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/deadManSwitchIcon.png");
 
         public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

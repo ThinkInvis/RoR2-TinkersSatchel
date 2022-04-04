@@ -56,7 +56,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public GoldenGear() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/GoldenGear.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/goldenGearIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/goldenGearIcon.png");
         }
 
         public override void SetupAttributes() {

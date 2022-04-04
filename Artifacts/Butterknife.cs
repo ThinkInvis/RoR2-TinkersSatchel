@@ -25,8 +25,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
 
         public Butterknife() {
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/butterknife_on.png");
-            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/butterknife_off.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/butterknife_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/butterknife_off.png");
             cbDamageSetter = typeof(CharacterBody).GetPropertyCached("damage").GetSetMethod(true);
             cbAttackSetter = typeof(CharacterBody).GetPropertyCached("attackSpeed").GetSetMethod(true);
         }

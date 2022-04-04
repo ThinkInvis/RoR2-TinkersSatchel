@@ -48,7 +48,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public BismuthFlask() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/BismuthFlask.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/Icons/bismuthFlaskIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/bismuthFlaskIcon.png");
         }
 
         public override void SetupAttributes() {
