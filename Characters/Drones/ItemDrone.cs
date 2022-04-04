@@ -46,6 +46,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var ren = wardInd.transform.Find("IndicatorSphere").GetComponent<MeshRenderer>();
             ren.material.SetFloat("_AlphaBoost", 0.45f);
             ward.rangeIndicator = wardInd.transform;
+            tmpBodySetup.AddComponent<ItemDroneDropOnDeath>();
 
             itemDroneBodyPrefab = tmpBodySetup.InstantiateClone("TkSatItemDroneBody");
             GameObject.Destroy(tmpBodySetup);
@@ -262,11 +263,35 @@ namespace ThinkInvisible.TinkersSatchel {
     public class ItemDronePurchaseController : MonoBehaviour {
         public Interactor currentInteractor;
     }
+
+    [RequireComponent(typeof(CharacterBody))]
+    public class ItemDroneDropOnDeath : MonoBehaviour, IOnKilledServerReceiver {
+        CharacterBody body;
+
+        void Awake() {
+            body = GetComponent<CharacterBody>();
+        }
+
+        public void OnKilledServer(DamageReport damageReport) {
+            if(!body || !body.master || !body.master.IsDeadAndOutOfLivesServer()) return;
+            var idwp = body.master.GetComponent<ItemDroneWardPersist>();
+            if(!idwp || idwp.count <= 0) return;
+
+            var theta = 360f / (float)idwp.count;
+            for(int i = 0; i < idwp.count; i++) {
+                var vel = Quaternion.AngleAxis((float)i * theta, Vector3.up) * new Vector3(5f, 5f);
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(idwp.index), transform.position, vel);
+            }
+            MonoBehaviour.Destroy(this);
+        }
+    }
+
     [RequireComponent(typeof(CharacterMaster))]
     public class ItemDroneWardPersist : MonoBehaviour {
         public ItemIndex index = ItemIndex.None;
         public int count = 0;
         CharacterMaster master;
+        bool hasDropped = false;
         void Awake() {
             master = GetComponent<CharacterMaster>();
         }
