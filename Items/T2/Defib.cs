@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Heals can crit.";
+        protected override string GetPickupString(string langid = null) => "Your heals can crit.";
         protected override string GetDescString(string langid = null) => $"Your <style=cIsDamage>crit chance</style> applies to all <style=cIsHealing>outgoing healing</style> for <style=cIsHealth>+{Pct(critFracBase)} <style=cStack>(+{Pct(critFracStack)} per stack)</style> HP healed</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
