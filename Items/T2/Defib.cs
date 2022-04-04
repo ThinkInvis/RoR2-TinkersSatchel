@@ -37,6 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public float critFracStack { get; private set; } = 0.25f;
 
 
+
         ////// Other Fields/Properties //////
 
         public Stack<CharacterBody> healingSourceStack = new Stack<CharacterBody>();
