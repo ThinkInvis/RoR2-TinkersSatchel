@@ -26,12 +26,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Config //////
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Maximum damage/knockback to block per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
 		public float highMassFrac { get; private set; } = 0.5f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
 		[AutoConfig("Maximum speed to add per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
 		public float lowMassFrac { get; private set; } = 0.5f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Time required to reach maximum buff, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float massChangeDuration { get; private set; } = 5f;
 

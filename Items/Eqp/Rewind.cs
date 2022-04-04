@@ -28,9 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration of the phasing effect, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float phaseDuration { get; private set; } = 2f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float rewindDuration { get; private set; } = 10f;
 

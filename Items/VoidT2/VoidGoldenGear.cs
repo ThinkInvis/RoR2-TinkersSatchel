@@ -27,15 +27,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Armor given at minimum item type variety (1).", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
         public int armorAmtBase { get; private set; } = 500;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Multiplier of armor scaling per additional item type (higher = less penalty).", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float varietyExp { get; private set; } = 0.875f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Exponential multiplier for increased ArmorAmt per stack (higher = more powerful).", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float armorStacking { get; private set; } = 0.25f;
 

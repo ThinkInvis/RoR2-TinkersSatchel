@@ -25,21 +25,23 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
         public int goldAmt { get; private set; } = 10;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Exponential factor of GoldAmt scaling per additional point of armor.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float goldExp { get; private set; } = 0.075f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Inverse-exponential multiplier for reduced GoldAmt per stack (higher = more powerful).", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float goldReduc { get; private set; } = 0.1f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Minimum possible goldAmt as affected by item stacking.", AutoConfigFlags.PreventNetMismatch, float.Epsilon, float.MaxValue)]
         public float goldMin { get; private set; } = 0.0001f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("If true, deployables (e.g. Engineer turrets) with Armor Crystal will benefit from their master's money.",
             AutoConfigFlags.PreventNetMismatch)]
         public bool inclDeploys { get; private set; } = true;

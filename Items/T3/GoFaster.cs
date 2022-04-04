@@ -27,7 +27,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 		////// Config //////
-		
+
 		[AutoConfig("Controls general power of this item (multiplies all other Frac configs). newSpeed ~ baseSpeed * (1 + buffFrac * specificFrac * stack count).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float buffFrac { get; private set; } = 1f;
 

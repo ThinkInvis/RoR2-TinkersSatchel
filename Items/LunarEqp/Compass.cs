@@ -25,6 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("0: Allows unlimited uses per stage. 1: Only once per character per stage. 2: Only once per stage.", AutoConfigFlags.None, 0, 2)]
         public int useLimitPerStage { get; private set; } = 1;
 
