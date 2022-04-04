@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using EntityStates;
+using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Rewind : Equipment<Rewind> {
