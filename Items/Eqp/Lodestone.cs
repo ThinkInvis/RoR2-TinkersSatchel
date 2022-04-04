@@ -1,0 +1,206 @@
+﻿using RoR2;
+using UnityEngine;
+using TILER2;
+using System.Linq;
+using RoR2.Navigation;
+using UnityEngine.Networking;
+using System.Collections.Generic;
+using R2API;
+using static TILER2.MiscUtil;
+using System;
+
+namespace ThinkInvisible.TinkersSatchel {
+    public class Lodestone : Equipment<Lodestone> {
+
+        ////// Equipment Data //////
+
+        public override string displayName => "Lodestone";
+        public override bool isLunar => false;
+        public override bool canBeRandomlyTriggered => true;
+        public override float cooldown { get; protected set; } = 20f;
+
+        protected override string GetNameString(string langid = null) => displayName;
+        protected override string GetPickupString(string langid = null) => "Pull nearby enemies and allied item effects.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Pull</style> enemies within {enemyRange:N0} m towards yourself for <style=cIsDamage>{Pct(baseDamageFrac)} base damage</style>. <style=cIsUtility>Pull</style> drops, orbs, and projectiles caused by ally items within {objectRange:N0} m to your location.";
+        protected override string GetLoreString(string langid = null) => $"";
+
+
+
+        ////// Config //////
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Fraction of base damage to inflict.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float baseDamageFrac { get; private set; } = 4f;
+
+        [AutoConfig("Range for pulling enemies.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        public float enemyRange { get; private set; } = 40f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Range for pulling other objects.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float objectRange { get; private set; } = 150f;
+
+
+
+        ////// Other Fields/Properties //////
+
+        private GameObject blackHolePrefab;
+        public HashSet<string> validObjectNamesRB { get; private set; } = new HashSet<string>();
+        public HashSet<string> validObjectNamesNoRB { get; private set; } = new HashSet<string>();
+        const float PULL_FORCE = 60f;
+
+
+
+        ////// TILER2 Module Setup //////
+
+        public Lodestone() {
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Lodestone.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/lodestoneIcon.png");
+        }
+
+        public override void SetupAttributes() {
+            base.SetupAttributes();
+
+            var tempPfb = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/GravSphere").InstantiateClone("temporary setup prefab", false);
+            var proj = tempPfb.GetComponent<RoR2.Projectile.ProjectileSimple>();
+            proj.desiredForwardSpeed = 0;
+            proj.lifetime = 0.5f;
+            var projCtrl = tempPfb.GetComponent<RoR2.Projectile.ProjectileController>();
+            projCtrl.procCoefficient = 0;
+            var dmg = proj.GetComponent<RoR2.Projectile.ProjectileDamage>();
+            dmg.damage = 0f;
+            dmg.enabled = false;
+            var force = tempPfb.GetComponent<RadialForce>();
+            force.enabled = false;
+
+            var sph = tempPfb.transform.Find("Sphere");
+            sph.gameObject.SetActive(false);
+
+            var sps = tempPfb.transform.Find("Sparks");
+            var spsPart = sps.GetComponent<ParticleSystem>();
+            var spsShape = spsPart.shape;
+            spsShape.radius = 30f;
+
+            blackHolePrefab = tempPfb.InstantiateClone("LodestoneProcPrefab", true);
+            UnityEngine.Object.Destroy(tempPfb);
+
+            ContentAddition.AddProjectile(blackHolePrefab);
+
+            validObjectNamesRB.UnionWith(new[] {
+                "HealPack(Clone)",
+                "StickyBomb(Clone)",
+                "TkSatPixieMovePack(Clone)",
+                "TkSatPixieAttackPack(Clone)",
+                "TkSatPixieDamagePack(Clone)",
+                "TkDatPixieArmorPack(Clone)",
+                "AmmoPack(Clone)",
+                "BonusMoneyPack(Clone)",
+                "ShurikenProjectile(Clone)",
+                "FireMeatBall(Clone)",
+                "DeathProjectile(Clone)",
+                "BeamSphere(Clone)",
+                "GravSphere(Clone)",
+                "Sawmerang(Clone)",
+                "LunarSunProjectile(Clone)"
+            });
+            validObjectNamesNoRB.UnionWith(new[] { //may have RB, but should teleport anyways
+                "DeskplantWard(Clone)",
+                "CrippleWard(Clone)",
+                "WarbannerWard(Clone)",
+                "DamageZoneWard(Clone)"
+            });
+        }
+
+        public override void Install() {
+            base.Install();
+        }
+
+        public override void Uninstall() {
+            base.Uninstall();
+        }
+
+
+
+        ////// Hooks //////
+
+        protected override bool PerformEquipmentAction(EquipmentSlot slot) {
+            if(!slot.characterBody) return false;
+
+            RoR2.Projectile.ProjectileManager.instance.FireProjectile(
+                blackHolePrefab,
+                slot.characterBody.corePosition, Quaternion.identity,
+                slot.characterBody.gameObject,
+                0f, 0f, false);
+
+            PullEnemies(slot);
+            PullObjects(slot);
+
+            return true;
+        }
+
+        void PullObjects(EquipmentSlot slot) {
+            var rbObjectsInRange = Physics.OverlapSphere(slot.characterBody.corePosition, objectRange, Physics.AllLayers, QueryTriggerInteraction.Collide)
+                .Select(x => x.gameObject)
+                .Where(x => validObjectNamesRB.Contains(x.name))
+                .Select(x => x.GetComponent<Rigidbody>())
+                .Where(x => x);
+            var nonRbObjectsInRange = GameObject.FindObjectsOfType<GameObject>() //TODO: add colliders to all of these prefabs
+                .Where(x => validObjectNamesNoRB.Contains(x.name)
+                    && Vector3.Distance(x.transform.position, slot.characterBody.corePosition) < objectRange);
+
+            foreach(var rb in rbObjectsInRange) {
+                var sticky = rb.gameObject.GetComponent<RoR2.Projectile.ProjectileStickOnImpact>();
+                if(sticky) {
+                    sticky.Detach();
+                    sticky.enabled = false;
+                }
+
+                var velVec = slot.characterBody.transform.position - rb.transform.position;
+
+                if(rb.useGravity && !rb.gameObject.name.Contains("TkSatPixie")) {
+                    var trajectory = MiscUtil.CalculateVelocityForFinalPosition(rb.transform.position, slot.characterBody.transform.position, 1f);
+                    velVec = trajectory.vInitial;
+                } else {
+                    velVec.Normalize();
+                    velVec *= PULL_FORCE;
+                }
+                rb.AddForce(velVec - rb.velocity, ForceMode.VelocityChange);
+            }
+
+            foreach(var nrb in nonRbObjectsInRange) {
+                nrb.transform.position = slot.characterBody.corePosition;
+            }
+        }
+
+        void PullEnemies(EquipmentSlot slot) {
+            var teamMembers = new List<TeamComponent>();
+            bool isFF = FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off;
+            var scan = ((TeamIndex[])Enum.GetValues(typeof(TeamIndex)));
+            var myTeam = TeamComponent.GetObjectTeam(slot.characterBody.gameObject);
+            foreach(var ind in scan) {
+                if(isFF || myTeam != ind)
+                    teamMembers.AddRange(TeamComponent.GetTeamMembers(ind));
+            }
+            teamMembers.Remove(slot.characterBody.teamComponent);
+            float sqrad = enemyRange * enemyRange;
+            foreach(TeamComponent tcpt in teamMembers) {
+                var velVec = slot.characterBody.transform.position - tcpt.transform.position;
+                if(velVec.sqrMagnitude <= sqrad && tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
+                    var trajectory = MiscUtil.CalculateVelocityForFinalPosition(tcpt.transform.position, slot.characterBody.transform.position, 1f);
+                    var mcpt = tcpt.body.GetComponent<IPhysMotor>();
+                    tcpt.body.healthComponent.TakeDamage(new DamageInfo {
+                        attacker = slot.characterBody.gameObject,
+                        crit = slot.characterBody.RollCrit(),
+                        damage = slot.characterBody.damage * baseDamageFrac,
+                        damageColorIndex = DamageColorIndex.Default,
+                        damageType = DamageType.Generic | DamageType.AOE,
+                        canRejectForce = false,
+                        force = (trajectory.vInitial - ((mcpt != null) ? mcpt.velocity : Vector3.zero)) * ((mcpt != null) ? mcpt.mass : 1f),
+                        position = tcpt.body.corePosition,
+                        procChainMask = default,
+                        procCoefficient = 1f
+                    });
+                }
+            }
+        }
+    }
+}
