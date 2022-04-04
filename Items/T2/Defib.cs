@@ -89,7 +89,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             //not instantiated by default
             origColorValue = DamageColor.colors[(int)DamageColorIndex.CritHeal];
-            DamageColor.colors[(int)DamageColorIndex.CritHeal] = new Color(0.3f, 1f, 0.65f);
+            DamageColor.colors[(int)DamageColorIndex.CritHeal] = new Color(0.45f, 1f, 0.7f);
         }
 
         public override void Uninstall() {
