@@ -1,5 +1,24 @@
 # Tinker's Satchel Changelog
 
+**1.11.0** *The Science! Update, Part 2*
+
+- ADDED INTERACTABLES: Item Drone!
+- ADDED ITEMS/EQUIPMENTS: Lodestone, Defibrillator!
+- Balance pass.
+	- Buffed Go-Faster Stripes' effect on Engineer's missiles (35 m/s --> 50 m/s).
+	- Go-Faster Stripes blast-jumping on Engineer and Bandit now resets vertical velocity.
+	- RC Controller now causes Equipment Drones to activate equipment.
+	- Pixie Tube may now proc on primary skill once every 5 seconds (allows effects on characters with only a primary skill, e.g. some monsters).
+- Artifact of Safekeeping:
+	- Vastly improved item drop trajectories (notably: much smaller chance to send items off cliffs).
+		- Item droplets will now try to find clear trajectories towards open navigation graph nodes.
+		- If not enough clear paths exist around the boss, will try scanning from the teleporter instead.
+		- If both methods fail to find any nodes, items will launch in a fixed circle around the teleporter.
+	- Hooks made more compatible with other mods.
+- Fixed missing TILER2 AutoConfigUpdateActions on many items (changing some configs mid-game would not immediately update language and/or character stats).
+- Updated R2API dependency to 4.3.5.
+- Updated TILER2 dependency to 6.2.0.
+
 **1.10.2**
 
 - Fixed any and all game VFX going missing at random (caused by Pinball Wizard effect prefab waking up during game load).
