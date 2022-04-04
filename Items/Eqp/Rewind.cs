@@ -176,11 +176,6 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        //Sigmoid-like curve as a function of x with fixed points at (0, 0), (0.5, 0.5), and (1, 1). Has flatter ends and steeper midpoint as b increases.
-        float SteepSigmoid01(float x, float b) {
-            return 0.5f - (float)System.Math.Tanh(2*b*(x-0.5f))/(2f*(float)System.Math.Tanh(-b));
-        }
-
         public override void FixedUpdate() {
             base.FixedUpdate();
 

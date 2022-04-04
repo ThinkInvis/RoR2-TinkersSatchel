@@ -8,6 +8,7 @@ using System.Linq;
 using TILER2;
 using UnityEngine;
 using UnityEngine.Networking;
+using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class DelayLoot : Artifact<DelayLoot> {
@@ -52,67 +53,6 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 -= PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
             GlobalEventManager.onCharacterDeathGlobal -= GlobalEventManager_onCharacterDeathGlobal;
             On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
-        }
-
-
-
-        ////// Private Methods //////
-        
-        static (Vector3 vInitial, float tFinal) CalculateVelocityForFinalPosition(Vector3 source, Vector3 target, float extraPeakHeight) {
-            var deltaPos = target - source;
-            var yF = deltaPos.y;
-            var yPeak = Mathf.Max(Mathf.Max(yF, 0) + extraPeakHeight, yF, 0);
-            //everything will be absolutely ruined if gravity goes in any direction other than -y. them's the breaks.
-            var g = -Physics.gravity.y;
-            //calculate initial vertical velocity
-            float vY0 = Mathf.Sqrt(2f * g * yPeak);
-            //calculate total travel time from vertical velocity
-            float tF = Mathf.Sqrt(2) / g * (Mathf.Sqrt(g * (yPeak - yF)) + Mathf.Sqrt(g * yPeak));
-            //use total travel time to calculate other velocity components
-            var vX0 = deltaPos.x / tF;
-            var vZ0 = deltaPos.z / tF;
-            return (new Vector3(vX0, vY0, vZ0), tF);
-        }
-
-        static bool TrajectorySphereCast(out RaycastHit hit, Vector3 source, Vector3 vInitial, float tFinal, float radius, int resolution, int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction qTI = QueryTriggerInteraction.UseGlobal) {
-            Vector3 p0, p1;
-            p1 = source;
-            for(var i = 0; i < resolution; i++) {
-                p0 = p1;
-                p1 = Trajectory.CalculatePositionAtTime(source, vInitial, ((float)i/(float)resolution + 1f) * tFinal);
-                var del = (p1 - p0);
-                var didHit = Physics.SphereCast(new Ray(p0, del.normalized), radius, out hit, del.magnitude, layerMask, qTI);
-                if(didHit) return true;
-            }
-            hit = default;
-            return false;
-        }
-
-        //collects N launch velocities that will reach the N nearest free navnodes outside a minimum range without hitting anything else
-        static List<Vector3> CollectNearestNodeLaunchVelocities(
-            NodeGraph graph, int desiredCount, float minRange, float maxRange,
-            Vector3 source, float extraPeakHeight, float radius, float maxDeviation, int trajectoryResolution,
-            int layerMask = Physics.DefaultRaycastLayers, QueryTriggerInteraction qTI = QueryTriggerInteraction.UseGlobal) {
-            var nodeLocs = graph.FindNodesInRange(source, minRange, maxRange, HullMask.Human)
-                .Select(x => { graph.GetNodePosition(x, out Vector3 xloc); return xloc; })
-                .OrderBy(x => (x - source).sqrMagnitude);
-
-            List<Vector3> retv = new List<Vector3>();
-
-            var mDevSq = maxDeviation * maxDeviation;
-
-            foreach(var loc in nodeLocs) {
-                var trajectory = CalculateVelocityForFinalPosition(source, loc, extraPeakHeight);
-                var didHit = TrajectorySphereCast(out RaycastHit hit,
-                    source, trajectory.vInitial, trajectory.tFinal,
-                    radius, trajectoryResolution, layerMask, qTI);
-                if(didHit && (hit.point - loc).sqrMagnitude <= mDevSq)
-                    retv.Add(trajectory.vInitial);
-                if(retv.Count >= desiredCount)
-                    break;
-            }
-
-            return retv;
         }
 
 

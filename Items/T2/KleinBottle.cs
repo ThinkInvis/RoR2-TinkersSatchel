@@ -160,9 +160,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
         }
-        float Remap(float x, float minFrom, float maxFrom, float minTo, float maxTo) {
-            return maxTo + (maxTo - minTo) * ((x - minFrom) / (maxFrom - minFrom));
-        }
     }
 
     public class KleinBottleTimeTracker : MonoBehaviour {
