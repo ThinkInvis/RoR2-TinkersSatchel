@@ -7,7 +7,6 @@ using R2API;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
-using RoR2.Orbs;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {

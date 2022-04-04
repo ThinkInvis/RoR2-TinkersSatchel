@@ -291,7 +291,6 @@ namespace ThinkInvisible.TinkersSatchel {
         public ItemIndex index = ItemIndex.None;
         public int count = 0;
         CharacterMaster master;
-        bool hasDropped = false;
         void Awake() {
             master = GetComponent<CharacterMaster>();
         }
