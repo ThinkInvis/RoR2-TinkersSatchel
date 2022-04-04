@@ -79,7 +79,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public PackBox() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/PackBox.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/packBoxIconOpen.png");
-            secondaryiconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/packBoxIconClosed.png");
+            secondaryIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/packBoxIconClosed.png");
         }
 
         public override void SetupAttributes() {
