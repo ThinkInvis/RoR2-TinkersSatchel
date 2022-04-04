@@ -48,7 +48,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public Defib() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Defib.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/Defib.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/defibIcon.png");
         }
 
         public override void SetupAttributes() {
