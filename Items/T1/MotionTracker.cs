@@ -53,7 +53,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatMotionTrackerAchievement>();
             LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_NAME", "Why Won't You Die?!");
-            LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION", "Completely charge a teleporter without dying or killing the boss.");
+            LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION", "Fully charge a Teleporter without killing the boss or dying.");
 
             itemDef.unlockableDef = unlockable;
         }
