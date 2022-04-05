@@ -22,6 +22,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Config //////
+
+        public enum AnnounceItemsMode {
+            Nothing, Vague, ItemTier, ItemName
+        }
+        [AutoConfig("What to display in chat when an item is taken for safekeeping.")]
+        public AnnounceItemsMode announceItems { get; private set; } = AnnounceItemsMode.ItemName;
+
+
+
         ////// Other Fields/Properties //////
 
         bool shouldDeferDrops = true;
@@ -129,6 +139,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
+
         void DeferDroplet(GameObject droplet) {
             if(!droplet) return;
             deferredDrops.Add(droplet);
@@ -137,8 +148,29 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!pctrl) return;
             var pdef = PickupCatalog.GetPickupDef(pctrl.pickupIndex);
 
-            if(pdef != null && pdef.itemIndex != ItemIndex.None) {
-                NetUtil.ServerSendGlobalChatMsg($"<color=#{Util.RGBToHex(pdef.baseColor)}>{Language.GetString(pdef.nameToken)}</color> has been taken for safekeeping.");
+            if(pdef != null && announceItems != AnnounceItemsMode.Nothing) {
+                string displayName = "Something";
+                if(announceItems == AnnounceItemsMode.ItemName) {
+                    displayName = $"<color=#{Util.RGBToHex(pdef.baseColor)}>{Language.GetString(pdef.nameToken)}</color>";
+                } else if(announceItems == AnnounceItemsMode.ItemTier) {
+                    var tierString = "Something strange";
+                    if(pdef.itemTier == ItemTier.Tier1)
+                        tierString = "A tier-1 item";
+                    if(pdef.itemTier == ItemTier.Tier2)
+                        tierString = "A tier-2 item";
+                    if(pdef.itemTier == ItemTier.Tier3)
+                        tierString = "A tier-3 item";
+                    if(pdef.itemTier == ItemTier.Lunar)
+                        tierString = "A lunar item";
+                    if(pdef.itemTier == ItemTier.Boss)
+                        tierString = "A boss item";
+                    if(pdef.itemTier == ItemTier.VoidTier1 || pdef.itemTier == ItemTier.VoidTier2 || pdef.itemTier == ItemTier.VoidTier3 || pdef.itemTier == ItemTier.VoidBoss)
+                        tierString = "A void item";
+                    if(pdef.equipmentIndex != EquipmentIndex.None)
+                        tierString = pdef.isLunar ? "A lunar equipment" : "An equipment";
+                    displayName = $"<color=#{Util.RGBToHex(pdef.baseColor)}>{tierString}</color>";
+                }
+                NetUtil.ServerSendGlobalChatMsg($"{displayName} has been taken for safekeeping.");
                 /*var effectData = new EffectData {
                     origin = droplet.transform.position,
                     genericFloat = 1f,
