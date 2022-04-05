@@ -129,7 +129,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 spawnCard = itemDroneSpawnCard,
                 minimumStageCompletions = 0,
                 preventOverhead = false,
-                selectionWeight = 4, //eqp drone is 2, normal drones are 7
+                selectionWeight = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             itemDroneDCH = new DirectorAPI.DirectorCardHolder {
@@ -153,6 +153,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.PickupPickerController.OnInteractionBegin += PickupPickerController_OnInteractionBegin;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.RoR2.CharacterBody.GetDisplayName += CharacterBody_GetDisplayName;
+            itemDroneDirectorCard.selectionWeight = 4;
         }
 
         public override void Uninstall() {
@@ -161,6 +162,8 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.PickupPickerController.OnInteractionBegin -= PickupPickerController_OnInteractionBegin;
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
             On.RoR2.CharacterBody.GetDisplayName -= CharacterBody_GetDisplayName;
+            DirectorAPI.Helpers.RemoveExistingInteractable(itemDroneDCH.Card.spawnCard.name);
+            itemDroneDirectorCard.selectionWeight = 0;
         }
 
 
