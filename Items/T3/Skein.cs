@@ -218,22 +218,26 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void OnInstall() {
 			base.OnInstall();
-            On.RoR2.UserAchievementManager.GrantAchievement += UserAchievementManager_GrantAchievement;
+            On.RoR2.RoR2Application.Update += RoR2Application_Update;
 		}
 
         public override void OnUninstall() {
 			base.OnUninstall();
-			On.RoR2.UserAchievementManager.GrantAchievement -= UserAchievementManager_GrantAchievement;
+			On.RoR2.RoR2Application.Update -= RoR2Application_Update;
 		}
 
-		private void UserAchievementManager_GrantAchievement(On.RoR2.UserAchievementManager.orig_GrantAchievement orig, UserAchievementManager self, AchievementDef achievementDef) {
-			orig(self, achievementDef);
-
-			if(self.userProfile.HasUnlockable(Defib.unlockable)
-				&& self.userProfile.HasUnlockable(ShootToHeal.unlockable)
-				&& self.userProfile.HasUnlockable(Pinball.unlockable)
-				&& self.userProfile.HasUnlockable(Lodestone.unlockable))
-				Grant();
+		float stopwatch = 0f;
+		private void RoR2Application_Update(On.RoR2.RoR2Application.orig_Update orig, RoR2Application self) {
+			orig(self);
+			stopwatch -= Time.deltaTime;
+			if(stopwatch <= 0f) {
+				stopwatch = 1f;
+				if(userProfile.HasUnlockable(Defib.unlockable)
+					&& userProfile.HasUnlockable(ShootToHeal.unlockable)
+					&& userProfile.HasUnlockable(Pinball.unlockable)
+					&& userProfile.HasUnlockable(Lodestone.unlockable))
+					Grant();
+			}
 		}
 	}
 }
