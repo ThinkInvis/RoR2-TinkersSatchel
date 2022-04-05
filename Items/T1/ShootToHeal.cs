@@ -47,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatShootToHealAchievement>();
             LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_NAME", "One-Man Band");
-            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Item Set: Have all 3 different musical instruments at once.");
+            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Item Set: Musical instruments. Have ALL 3 at once.");
 
             itemDef.unlockableDef = unlockable;
         }

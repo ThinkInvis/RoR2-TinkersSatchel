@@ -59,7 +59,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatDefibAchievement>();
             LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_NAME", "Medic!");
-            LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 4 or more (of 7) different shareable healing items at once.");
+            LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_DESCRIPTION", "Item Set: Shareable healing. Have 4 or more (of 7) at once.");
 
             itemDef.unlockableDef = unlockable;
         }

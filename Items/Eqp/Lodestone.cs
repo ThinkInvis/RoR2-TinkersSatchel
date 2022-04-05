@@ -112,7 +112,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatLodestoneAchievement>();
             LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_NAME", "Drive Me Closer");
-            LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 6 or more (of 15) different close-range items at once.");
+            LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION", "Item Set: Close-range. Have 6 or more (of 15) at once.");
 
             equipmentDef.unlockableDef = unlockable;
         }

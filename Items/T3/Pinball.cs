@@ -91,7 +91,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			unlockable = UnlockableAPI.AddUnlockable<TkSatPinballAchievement>();
 			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_NAME", "Woe, Explosions Be Upon Ye");
-			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 3 or more (of 6) different damage-on-kill items at once.");
+			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_DESCRIPTION", "Item Set: Damage-on-kill items. Have 3 or more (of 6) at once.");
 
 			itemDef.unlockableDef = unlockable;
 		}
