@@ -136,7 +136,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string AchievementDescToken => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION";
         public string UnlockableNameToken => ShootToHeal.instance.nameToken;
 
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/shootToHealIcon.png");
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/shootToHealIcon.png");
 
         public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
