@@ -39,7 +39,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
         public ShootToHeal() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/ShootToHeal.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/shootToHealIcon.png");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/shootToHealIcon.png");
         }
 
         public override void SetupAttributes() {
