@@ -1,5 +1,16 @@
 # Tinker's Satchel Changelog
 
+**1.11.1**
+
+- Added unlock achievements to Macho Moustache (+Villainous Visage), Old War Lidar, Unstable Klein Bottle, Defibrillator, Pinball Wizard, Spacetime Skein, Lodestone, and Quantum Recombobulator.
+- Added a config to disable self-proc on Triskellion Brooch (self-proc is allowed by default).
+- Fixed Quantum Recombobulator being usable twice on the same object if it recombobulates into a multishop.
+- Artifact of Safekeeping:
+	- Added a config option controlling what to display in chat when an item is taken (specific item name, item tier only, vague "something was taken", or nothing).
+	- Now has a configurable announcement for items dropped when the boss dies (item tier counts, total item count, or nothing).
+- All unlock achievement icons now display with the correct background (instead of no background).
+- Updated TILER2 dependency to 6.3.0.
+
 **1.11.0** *The Science! Update, Part 2*
 
 - ADDED INTERACTABLES: Item Drone!

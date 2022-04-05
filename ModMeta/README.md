@@ -95,6 +95,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li>Lower range than Focus Crystal, and provides ~1/4 as much damage per stack; however, the effect ceiling is higher if you're willing to put yourself in additional danger.</li>
+				<li><details><summary>Unlock (spoilers!):</summary>Be within the activation range for this item of 5 or more enemies at once.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -121,6 +122,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				</details>
 			</td>
 			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Fully charge a Teleporter without dying or killing the boss.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -148,6 +150,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				</details>
 			</td>
 			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Block, or take 1 or less points of damage from, 3 attacks in a row.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -202,6 +205,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li>Does not apply to healing received from other characters (e.g. someone else's Bustling Fungus stacks), but anyone receiving shared healing from you may receive crit healing.</li>
+				<li><details><summary>Unlock (spoilers!):</summary>Have any 4 of Bustling Fungus, Monster Tooth, Percussive Maintenance, Lepton Daisy, Interstellar Desk Plant, and Gnarled Woodsprite at once.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -233,6 +237,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><ul>
 				<li>Overrides gravity, impact fuse time, etc. on affected projectiles to unerringly track towards a target.</li>
 				<li>Ding!</li>
+				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Gasoline, Will-o'-the-wisp, Ceremonial Dagger, Frost Relic, Resonance Disc, and Shatterspleen at once.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -268,6 +273,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				</details>
 			</td>
 			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Complete the achievements for Percussive Maintenance, Defibrillator, Pinball Wizard, and Lodestone.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -334,6 +340,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li>Second effect applies to: Monster Tooth, Sticky Bomb, Warbanner, Pixie Tube, Bandolier, Ghor's Tome, Shuriken, Interstellar Desk Plant, Molten Perforator, Forgive Me Please, Preon Accumulator, Primordial Cube, Sawmerang, Effigy of Grief, Egocentrism, Mercurial Rachis.</li>
+				<li><details><summary>Unlock (spoilers!):</summary>Have any 6 of Bustling Fungus, Focus Crystal, Macho Moustache, Villainous Visage, Razorwire, Unstable Klein Bottle, Frost Relic, Unstable Tesla Coil, N'kuhana's Opinion, H3AD-53T, Little Disciple, Mired Urn, Egocentrism, Blast Shower, and Helfire Tincture at once.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -392,6 +399,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				</details>
 			</td>
 			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Macho Moustache.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -490,6 +498,8 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td><b>Artifact of Safekeeping</b></td>
 			<td>All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.</td>
 			<td><ul>
+				<li>Provides a config option to control the level of detail of chat announcements when an item is taken.</li>
+				<li>Provides a config option to control the level of detail of chat announcements when the boss is killed.</li>
 			</ul></td>
 		</tr>
 	</tbody>
@@ -507,6 +517,17 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.11.1**
+
+- Added unlock achievements to Macho Moustache (+Villainous Visage), Old War Lidar, Unstable Klein Bottle, Defibrillator, Pinball Wizard, Spacetime Skein, Lodestone, and Quantum Recombobulator.
+- Added a config to disable self-proc on Triskellion Brooch (self-proc is allowed by default).
+- Fixed Quantum Recombobulator being usable twice on the same object if it recombobulates into a multishop.
+- Artifact of Safekeeping:
+	- Added a config option controlling what to display in chat when an item is taken (specific item name, item tier only, vague "something was taken", or nothing).
+	- Now has a configurable announcement for items dropped when the boss dies (item tier counts, total item count, or nothing).
+- All unlock achievement icons now display with the correct background (instead of no background).
+- Updated TILER2 dependency to 6.3.0.
 
 **1.11.0** *The Science! Update, Part 2*
 
@@ -550,26 +571,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Cardboard Box now works on Shrines of the Mountain, Cleansing Pools, Shrines of Order, Altars of Gold, and Explosive Tar Pots.
 - Cardboard Box and Silver Compass can no longer be triggered by Bottled Chaos.
 - Causal Camera can now be triggered by Bottled Chaos.
-
-**1.9.6**
-
-- Fixed Artifact of Tactics not working and spamming NREs per frame.
-- Added extra null safety in a couple other places.
-- Major rework of Thunderstore readme page layout.
-	- We got tables!
-	- And icons!
-	- And lists! But less of these than before actually!
-
-**1.9.5**
-
-- Added informational buffs to Pulse Monitor (cooldown), Causal Camera (number of saved rewind frames), and Bismuth Tonic (remaining duration).
-- Negative Feedback Loop no longer spams red vignette and flinch animation (added Silent damage type).
-- Cardboard Box:
-	- Now returns packed objects to their original locations when unequipped.
-	- Can now move Warbanners.
-- Fixed Bismuth Tonic cooldown only applying to subsequent hits taken after the first.
-- Sturdy Mug no longer works on *any* Deployables (was case-by-case blacklist before). Fixes poor interaction with Railgunner utility and future-proofs for similar skills.
-- Pinball Wizard:
-	- Fixed causing sticky projectiles to not explode (e.g. Sticky Bomb, Railgunner specials) -- no longer procs on these.
-	- Now ignores the Neutral team (e.g. flying rocks hazard on Sky Meadows).
-	- Improved SFX. Now works on all projectiles and uses a more fitting vanilla sound effect.
