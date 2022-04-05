@@ -518,6 +518,10 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.11.2**
+
+- Fixed Item Drone interactables spawning while disabled.
+
 **1.11.1**
 
 - Added unlock achievements to Macho Moustache (+Villainous Visage), Old War Lidar, Unstable Klein Bottle, Defibrillator, Pinball Wizard, Spacetime Skein, Lodestone, and Quantum Recombobulator.
@@ -564,10 +568,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Command Terminal now displays a chat message when it revives someone.
 - Command Terminal now exposes its list of valid random drones for other mods to add to (`ReviveOnce.instance.droneMasterPrefabs.Add(GameObject prefab);`).
 - Fixed an uncommon, mostly-harmless NRE in Quantum Recombobulator and Cardboard Box.
-
-**1.10.0** *The Science! Update, Part 1*
-
-- ADDED ITEMS/EQUIPMENTS: Motion Tracker, Spacetime Skein, Command Terminal, Quantum Recombobulator!
-- Cardboard Box now works on Shrines of the Mountain, Cleansing Pools, Shrines of Order, Altars of Gold, and Explosive Tar Pots.
-- Cardboard Box and Silver Compass can no longer be triggered by Bottled Chaos.
-- Causal Camera can now be triggered by Bottled Chaos.

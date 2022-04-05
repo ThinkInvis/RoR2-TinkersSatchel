@@ -1,5 +1,9 @@
 # Tinker's Satchel Changelog
 
+**1.11.2**
+
+- Fixed Item Drone interactables spawning while disabled.
+
 **1.11.1**
 
 - Added unlock achievements to Macho Moustache (+Villainous Visage), Old War Lidar, Unstable Klein Bottle, Defibrillator, Pinball Wizard, Spacetime Skein, Lodestone, and Quantum Recombobulator.
