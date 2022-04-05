@@ -158,20 +158,20 @@ namespace ThinkInvisible.TinkersSatchel {
                         } else totalOther++;
                     }
                     List<string> displays = new List<string>();
-                    if(totalItemTiers.ContainsKey(ItemTier.Tier1)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier1Item)}>{totalItemTiers[ItemTier.Tier1]} tier-1 items</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Tier2)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier2Item)}>{totalItemTiers[ItemTier.Tier2]} tier-2 items</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Tier3)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier3Item)}>{totalItemTiers[ItemTier.Tier3]} tier-3 items</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Lunar)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalItemTiers[ItemTier.Lunar]} lunar items</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Boss)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.BossItem)}>{totalItemTiers[ItemTier.Boss]} boss items</color>");
-                    if(totalEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Equipment)}>{totalEquipments} equipments</color>");
-                    if(totalLunarEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalLunarEquipments} lunar equipments</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Tier1)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier1Item)}>{totalItemTiers[ItemTier.Tier1]} tier-1 item{NPlur(totalItemTiers[ItemTier.Tier1])}</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Tier2)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier2Item)}>{totalItemTiers[ItemTier.Tier2]} tier-2 item{NPlur(totalItemTiers[ItemTier.Tier2])}</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Tier3)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier3Item)}>{totalItemTiers[ItemTier.Tier3]} tier-3 item{NPlur(totalItemTiers[ItemTier.Tier3])}</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Lunar)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalItemTiers[ItemTier.Lunar]} lunar item{NPlur(totalItemTiers[ItemTier.Lunar])}</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Boss)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.BossItem)}>{totalItemTiers[ItemTier.Boss]} boss item{NPlur(totalItemTiers[ItemTier.Boss])}</color>");
+                    if(totalEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Equipment)}>{totalEquipments} equipment{NPlur(totalEquipments)}</color>");
+                    if(totalLunarEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalLunarEquipments} lunar equipment{NPlur(totalLunarEquipments)}</color>");
                     int totalVoidCount = 0;
                     if(totalItemTiers.ContainsKey(ItemTier.VoidTier1)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier1]; }
                     if(totalItemTiers.ContainsKey(ItemTier.VoidTier2)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier2]; }
                     if(totalItemTiers.ContainsKey(ItemTier.VoidTier3)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier3]; }
                     if(totalItemTiers.ContainsKey(ItemTier.VoidBoss)) { totalVoidCount += totalItemTiers[ItemTier.VoidBoss]; }
-                    if(totalVoidCount > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.VoidItem)}>{totalVoidCount} void items</color>");
-                    if(totalOther > 0) displays.Add($"{totalOther} other drops");
+                    if(totalVoidCount > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.VoidItem)}>{totalVoidCount} void item{NPlur(totalVoidCount)}</color>");
+                    if(totalOther > 0) displays.Add($"{totalOther} other drop{NPlur(totalOther)}");
 
                     if(displays.Count == 0) {
                     } else if(displays.Count == 1) {
