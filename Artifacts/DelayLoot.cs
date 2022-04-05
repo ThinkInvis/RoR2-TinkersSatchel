@@ -137,7 +137,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     string lunarColorHex = "";
                     string equipmentColorHex = "";
                     foreach(var drop in deferredDrops) {
-                        if(drop && drop.TryGetComponent<GenericPickupController>(out var pickup)) {
+                        if(drop && drop.TryGetComponent<PickupDropletController>(out var pickup)) {
                             var pdef = PickupCatalog.GetPickupDef(pickup.pickupIndex);
                             if(pdef != null) {
                                 if(pdef.itemIndex != ItemIndex.None && pdef.itemTier != ItemTier.NoTier) {
