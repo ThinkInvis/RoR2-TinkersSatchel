@@ -231,6 +231,13 @@ namespace ThinkInvisible.TinkersSatchel {
                     purch.Networkcost = Run.instance.GetDifficultyScaledCost(purch.cost);
                 }
                 obj.AddComponent<RecombobulatorFlag>();
+
+                var shopcpt2 = obj.GetComponent<MultiShopController>();
+                if(shopcpt2) {
+                    foreach(var term in shopcpt2.terminalGameObjects)
+                        term.AddComponent<RecombobulatorFlag>();
+                }
+
                 return true;
             }
             return false;
