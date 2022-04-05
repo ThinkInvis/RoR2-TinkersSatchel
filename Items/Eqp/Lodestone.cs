@@ -47,6 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public HashSet<string> validObjectNamesRB { get; private set; } = new HashSet<string>();
         public HashSet<string> validObjectNamesNoRB { get; private set; } = new HashSet<string>();
         const float PULL_FORCE = 60f;
+        internal static UnlockableDef unlockable;
 
 
 
@@ -108,6 +109,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 "WarbannerWard(Clone)",
                 "DamageZoneWard(Clone)"
             });
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatLodestoneAchievement>();
+            LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_NAME", "Drive Me Closer");
+            LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 5 different close-range items at once.");
+
+            equipmentDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -201,6 +208,63 @@ namespace ThinkInvisible.TinkersSatchel {
                     });
                 }
             }
+        }
+    }
+
+    public class TkSatLodestoneAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_LODESTONE_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_LODESTONE_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_LODESTONE_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => Lodestone.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/lodestoneIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
+        }
+
+        private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+            orig(self);
+            if(localUser.cachedMaster != self) return;
+            int matches = 0;
+            if(self.inventory.GetItemCount(RoR2Content.Items.Mushroom) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.NearbyDamageBonus) > 0) matches++;
+            if(Moustache.instance.GetCount(self.inventory) > 0 || VoidMoustache.instance.GetCount(self.inventory) > 0) matches++;
+
+            if(self.inventory.GetItemCount(RoR2Content.Items.Thorns) > 0) matches++;
+            if(KleinBottle.instance.GetCount(self.inventory) > 0) matches++;
+
+            if(self.inventory.GetItemCount(RoR2Content.Items.Icicle) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.ShockNearby) > 0) matches++;
+            if(Headset.instance.GetCount(self.inventory) > 0) matches++;
+
+            if(self.inventory.GetItemCount(RoR2Content.Items.NovaOnHeal) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.SiphonOnLowHealth) > 0) matches++;
+
+            if(self.inventory.GetItemCount(DLC1Content.Items.LunarSun) > 0) matches++;
+
+            if(self.inventory.currentEquipmentIndex == RoR2Content.Equipment.Cleanse.equipmentIndex
+                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.Cleanse.equipmentIndex)
+                matches++;
+            if(self.inventory.currentEquipmentIndex == RoR2Content.Equipment.BurnNearby.equipmentIndex
+                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.BurnNearby.equipmentIndex)
+                matches++;
+            if(matches >= 5)
+                Grant();
         }
     }
 }

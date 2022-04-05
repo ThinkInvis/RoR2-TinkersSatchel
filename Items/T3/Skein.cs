@@ -231,7 +231,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			if(self.userProfile.HasUnlockable(Defib.unlockable)
 				&& self.userProfile.HasUnlockable(ShootToHeal.unlockable)
-				&& self.userProfile.HasUnlockable(Pinball.unlockable))
+				&& self.userProfile.HasUnlockable(Pinball.unlockable)
+				&& self.userProfile.HasUnlockable(Lodestone.unlockable))
 				Grant();
 		}
 	}
