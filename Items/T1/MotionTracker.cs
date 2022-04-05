@@ -150,14 +150,14 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
-            On.RoR2.TeleporterInteraction.ChargingState.FixedUpdate += ChargingState_FixedUpdate;
+            On.RoR2.TeleporterInteraction.UpdateMonstersClear += TeleporterInteraction_UpdateMonstersClear;
             On.RoR2.CharacterMaster.OnBodyDeath += CharacterMaster_OnBodyDeath;
         }
 
         public override void OnUninstall() {
             base.OnUninstall();
             On.RoR2.TeleporterInteraction.ChargingState.OnEnter -= ChargingState_OnEnter;
-            On.RoR2.TeleporterInteraction.ChargingState.FixedUpdate -= ChargingState_FixedUpdate;
+            On.RoR2.TeleporterInteraction.UpdateMonstersClear -= TeleporterInteraction_UpdateMonstersClear;
             On.RoR2.CharacterMaster.OnBodyDeath -= CharacterMaster_OnBodyDeath;
         }
 
@@ -171,13 +171,10 @@ namespace ThinkInvisible.TinkersSatchel {
             qualifies = true;
         }
 
-        private void ChargingState_FixedUpdate(On.RoR2.TeleporterInteraction.ChargingState.orig_FixedUpdate orig, EntityStates.BaseState self) {
+        private void TeleporterInteraction_UpdateMonstersClear(On.RoR2.TeleporterInteraction.orig_UpdateMonstersClear orig, TeleporterInteraction self) {
             orig(self);
-            if(self != null && self is TeleporterInteraction.ChargingState cs && cs != null) {
-                var teleInt = cs.teleporterInteraction;
-                if(teleInt && teleInt.holdoutZoneController && teleInt.holdoutZoneController.charge >= 1f && !teleInt.monstersCleared && qualifies)
-                    Grant();
-            }
+            if(self && !self.monstersCleared && self.holdoutZoneController && self.holdoutZoneController.charge >= 1f && qualifies)
+                Grant();
         }
     }
 }
