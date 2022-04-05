@@ -200,14 +200,14 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         int consecutiveBlocks = 0;
-        float cooldown = 0f;
+        float lastHit = 0f;
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             var prevH = self.combinedHealth;
             orig(self, damageInfo);
             if(!self || !self.body || self.body != localUser.cachedBody) return;
             var currH = self.combinedHealth;
-            if(cooldown > 0f) return;
-            cooldown = 0.1f;
+            if(Time.fixedDeltaTime - lastHit < 0.1f) return;
+            lastHit = Time.fixedDeltaTime;
             if(damageInfo.rejected || prevH - currH <= 1f)
                 consecutiveBlocks++;
             else
