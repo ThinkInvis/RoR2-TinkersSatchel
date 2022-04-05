@@ -79,7 +79,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			unlockable = UnlockableAPI.AddUnlockable<TkSatSkeinAchievement>();
 			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_NAME", "Phenomenal Cosmic Power");
-			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION", "Complete all 3 Item Set achievements.");
+			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION", "Complete all 4 Item Set achievements.");
 
 			itemDef.unlockableDef = unlockable;
 		}
