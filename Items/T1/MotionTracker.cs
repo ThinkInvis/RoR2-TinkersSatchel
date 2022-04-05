@@ -173,9 +173,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ChargingState_FixedUpdate(On.RoR2.TeleporterInteraction.ChargingState.orig_FixedUpdate orig, EntityStates.BaseState self) {
             orig(self);
-            var teleInt = ((TeleporterInteraction.BaseTeleporterState)self).teleporterInteraction;
-            if(teleInt.holdoutZoneController.charge >= 1f && !teleInt.monstersCleared && qualifies)
-                Grant();
+            if(self is TeleporterInteraction.ChargingState cs) {
+                var teleInt = cs.teleporterInteraction;
+                if(teleInt && teleInt.holdoutZoneController && teleInt.holdoutZoneController.charge >= 1f && !teleInt.monstersCleared && qualifies)
+                    Grant();
+            }
         }
     }
 }
