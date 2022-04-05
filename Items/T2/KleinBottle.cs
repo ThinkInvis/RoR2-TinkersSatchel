@@ -41,6 +41,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private GameObject blackHolePrefab;
 
+        internal static UnlockableDef unlockable;
+
 
 
         ////// TILER2 Module Setup //////
@@ -79,6 +81,12 @@ namespace ThinkInvisible.TinkersSatchel {
             UnityEngine.Object.Destroy(tempPfb);
 
             ContentAddition.AddProjectile(blackHolePrefab);
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatKleinBottleAchievement>();
+            LanguageAPI.Add("TKSAT_KLEINBOTTLE_ACHIEVEMENT_NAME", "Can't Touch This");
+            LanguageAPI.Add("TKSAT_KLEINBOTTLE_ACHIEVEMENT_DESCRIPTION", "Block, or take 1 or less points of damage from, 3 attacks in a row.");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -163,5 +171,47 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class KleinBottleTimeTracker : MonoBehaviour {
         public float LastTimestamp = 0f;
+    }
+
+    public class TkSatKleinBottleAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_KLEINBOTTLE_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_KLEINBOTTLE_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_KLEINBOTTLE_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_KLEINBOTTLE_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => KleinBottle.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/kleinBottleIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+        }
+
+        int consecutiveBlocks = 0;
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
+            var prevH = self.combinedHealth;
+            orig(self, damageInfo);
+            if(!self || !self.body || self.body != localUser.cachedBody) return;
+            var currH = self.combinedHealth;
+            if(damageInfo.rejected || prevH - currH <= 1f)
+                consecutiveBlocks++;
+            else
+                consecutiveBlocks = 0;
+
+            if(consecutiveBlocks >= 3)
+                Grant();
+        }
     }
 }
