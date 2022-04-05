@@ -183,7 +183,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {String.Join(", ", displays)} is yours.");
                     }
                 } else if(announceDrop == AnnounceDropMode.TotalItemCount && deferredDrops.Count > 0) {
-                    NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {deferredDrops.Count} item{NPlur(deferredDrops.Count)} is yours.");
+                    NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {deferredDrops.Count} drop{NPlur(deferredDrops.Count)} is yours.");
                 }
             }
         }
