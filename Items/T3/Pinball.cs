@@ -57,6 +57,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		
 		internal PhysicMaterial bouncyPhysmat;
 		internal GameObject effectPrefab;
+		internal static UnlockableDef unlockable;
 
 
 
@@ -87,6 +88,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			effectPrefab = tsp.InstantiateClone("TkSatPinballSFXHandler");
 			GameObject.Destroy(tsp);
 			ContentAddition.AddEffect(effectPrefab);
+
+			unlockable = UnlockableAPI.AddUnlockable<TkSatPinballAchievement>();
+			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_NAME", "Woe, Explosions Be Upon Ye");
+			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 3 or more (of 6) different damage-on-kill items at once.");
+
+			itemDef.unlockableDef = unlockable;
 		}
 
 		//todo: fix commando piercing shot, maybe blacklist rex ult
@@ -399,4 +406,45 @@ namespace ThinkInvisible.TinkersSatchel {
 				Util.PlaySound("Play_UI_obj_casinoChest_swap", gameObject, "casinoChest_swapSpeed", soundSpeed);
 		}
     }
+
+	public class TkSatPinballAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+		public string AchievementIdentifier => "TKSAT_PINBALL_ACHIEVEMENT_ID";
+		public string UnlockableIdentifier => "TKSAT_PINBALL_UNLOCKABLE_ID";
+		public string PrerequisiteUnlockableIdentifier => "";
+		public string AchievementNameToken => "TKSAT_PINBALL_ACHIEVEMENT_NAME";
+		public string AchievementDescToken => "TKSAT_PINBALL_ACHIEVEMENT_DESCRIPTION";
+		public string UnlockableNameToken => Pinball.instance.nameToken;
+
+		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/pinballIcon.png");
+
+		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+		public override void OnInstall() {
+			base.OnInstall();
+			On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
+		}
+
+		public override void OnUninstall() {
+			base.OnUninstall();
+			On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
+		}
+
+		private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+			orig(self);
+			if(localUser.cachedMaster != self) return;
+			int matches = 0;
+			if(self.inventory.GetItemCount(RoR2Content.Items.ExplodeOnDeath) > 0) matches++;
+			if(self.inventory.GetItemCount(RoR2Content.Items.IgniteOnKill) > 0) matches++;
+			if(self.inventory.GetItemCount(RoR2Content.Items.Dagger) > 0) matches++;
+			if(self.inventory.GetItemCount(RoR2Content.Items.Icicle) > 0) matches++;
+			if(self.inventory.GetItemCount(RoR2Content.Items.LaserTurbine) > 0) matches++;
+			if(self.inventory.GetItemCount(RoR2Content.Items.BleedOnHitAndExplode) > 0) matches++;
+			if(matches >= 3)
+				Grant();
+		}
+	}
 }

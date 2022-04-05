@@ -47,6 +47,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		
 		public BuffDef speedBuff { get; private set; }
 		public BuffDef resistBuff { get; private set; }
+		internal static UnlockableDef unlockable;
+
 
 
 		////// TILER2 Module Setup //////
@@ -74,6 +76,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			resistBuff.name = "TKSATSkeinResist";
 			resistBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/skeinResistBuffIcon.png");
 			ContentAddition.AddBuffDef(resistBuff);
+
+			unlockable = UnlockableAPI.AddUnlockable<TkSatSkeinAchievement>();
+			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_NAME", "Phenomenal Cosmic Power");
+			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION", "Complete all 3 Item Set achievements.");
+
+			itemDef.unlockableDef = unlockable;
 		}
 
 		public override void Install() {
@@ -191,4 +199,40 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
         }
     }
+
+	public class TkSatSkeinAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+		public string AchievementIdentifier => "TKSAT_SKEIN_ACHIEVEMENT_ID";
+		public string UnlockableIdentifier => "TKSAT_SKEIN_UNLOCKABLE_ID";
+		public string PrerequisiteUnlockableIdentifier => "";
+		public string AchievementNameToken => "TKSAT_SKEIN_ACHIEVEMENT_NAME";
+		public string AchievementDescToken => "TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION";
+		public string UnlockableNameToken => Skein.instance.nameToken;
+
+		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/skeinIcon.png");
+
+		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+		public override void OnInstall() {
+			base.OnInstall();
+            On.RoR2.UserAchievementManager.GrantAchievement += UserAchievementManager_GrantAchievement;
+		}
+
+        public override void OnUninstall() {
+			base.OnUninstall();
+			On.RoR2.UserAchievementManager.GrantAchievement -= UserAchievementManager_GrantAchievement;
+		}
+
+		private void UserAchievementManager_GrantAchievement(On.RoR2.UserAchievementManager.orig_GrantAchievement orig, UserAchievementManager self, AchievementDef achievementDef) {
+			orig(self, achievementDef);
+
+			if(self.userProfile.HasUnlockable(Defib.unlockable)
+				&& self.userProfile.HasUnlockable(ShootToHeal.unlockable)
+				&& self.userProfile.HasUnlockable(Pinball.unlockable))
+				Grant();
+		}
+	}
 }

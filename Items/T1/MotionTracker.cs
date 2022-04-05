@@ -5,6 +5,7 @@ using TILER2;
 using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using System.Linq;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MotionTracker : Item<MotionTracker> {
@@ -34,6 +35,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Other Fields/Properties //////
+        
+        internal static UnlockableDef unlockable;
+
+
+
         ////// TILER2 Module Setup //////
         
         public MotionTracker() {
@@ -43,6 +50,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatMotionTrackerAchievement>();
+            LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_NAME", "Why Won't You Die?!");
+            LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION", "Completely charge a teleporter without dying or killing the boss.");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -113,6 +126,56 @@ namespace ThinkInvisible.TinkersSatchel {
                 else
                     activeCombatants[kvp.Key] = (nsw, kvp.Value.duration + Time.fixedDeltaTime);
             }
+        }
+    }
+
+    public class TkSatMotionTrackerAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_MOTIONTRACKER_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => MotionTracker.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/motionTrackerIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        static bool qualifies = false;
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
+            On.RoR2.TeleporterInteraction.ChargingState.FixedUpdate += ChargingState_FixedUpdate;
+            On.RoR2.CharacterMaster.OnBodyDeath += CharacterMaster_OnBodyDeath;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.TeleporterInteraction.ChargingState.OnEnter -= ChargingState_OnEnter;
+            On.RoR2.TeleporterInteraction.ChargingState.FixedUpdate -= ChargingState_FixedUpdate;
+            On.RoR2.CharacterMaster.OnBodyDeath -= CharacterMaster_OnBodyDeath;
+        }
+
+        private void CharacterMaster_OnBodyDeath(On.RoR2.CharacterMaster.orig_OnBodyDeath orig, CharacterMaster self, CharacterBody body) {
+            orig(self, body);
+            if(localUser.cachedMaster == self)
+                qualifies = false;
+        }
+
+        private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, EntityStates.BaseState self) {
+            qualifies = true;
+        }
+
+        private void ChargingState_FixedUpdate(On.RoR2.TeleporterInteraction.ChargingState.orig_FixedUpdate orig, EntityStates.BaseState self) {
+            orig(self);
+            var teleInt = ((TeleporterInteraction.BaseTeleporterState)self).teleporterInteraction;
+            if(teleInt.holdoutZoneController.charge >= 1f && !teleInt.monstersCleared && qualifies)
+                Grant();
         }
     }
 }

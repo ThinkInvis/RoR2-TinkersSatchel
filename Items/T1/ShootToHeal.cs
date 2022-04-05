@@ -32,7 +32,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        internal UnlockableDef unlockable;
+        internal static UnlockableDef unlockable;
 
 
 
@@ -47,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatShootToHealAchievement>();
             LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_NAME", "One-Man Band");
-            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Have 3 different musical instruments at once.");
+            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Item Set: Have all 3 different musical instruments at once.");
 
             itemDef.unlockableDef = unlockable;
         }

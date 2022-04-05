@@ -9,6 +9,7 @@ using RoR2.Orbs;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using UnityEngine.Networking;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Defib : Item<Defib> {
@@ -42,6 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public Stack<CharacterBody> healingSourceStack = new Stack<CharacterBody>();
         Color origColorValue;
+        internal static UnlockableDef unlockable;
 
 
 
@@ -54,6 +56,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatDefibAchievement>();
+            LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_NAME", "Medic!");
+            LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 4 or more (of 7) different shareable healing items at once.");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -375,5 +383,51 @@ namespace ThinkInvisible.TinkersSatchel {
         //find users of HealFraction, RepeatHealComponent
         //attach owner info to HealthPickup, HealOrb, VendingMachineOrb
         //calc player to find crit chance from randomly weighted by count on Lepton Daisy
+    }
+
+    public class TkSatDefibAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_DEFIB_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_DEFIB_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_DEFIB_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_DEFIB_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => Defib.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/defibIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
+        }
+
+        private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+            orig(self);
+            if(localUser.cachedMaster != self) return;
+            int matches = 0;
+            if(self.inventory.GetItemCount(RoR2Content.Items.Mushroom) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.Tooth) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.TPHealingNova) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.Plant) > 0) matches++;
+            if(ShootToHeal.instance.GetCount(self.inventory) > 0) matches++;
+            if(self.inventory.currentEquipmentIndex == RoR2Content.Equipment.PassiveHealing.equipmentIndex
+                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.PassiveHealing.equipmentIndex)
+                matches++;
+            if(self.inventory.currentEquipmentIndex == DLC1Content.Equipment.VendingMachine.equipmentIndex
+                || self.inventory.alternateEquipmentIndex == DLC1Content.Equipment.VendingMachine.equipmentIndex)
+                matches++;
+            if(matches >= 4)
+                Grant();
+        }
     }
 }
