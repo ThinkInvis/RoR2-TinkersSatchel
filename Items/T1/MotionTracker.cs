@@ -137,7 +137,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string AchievementDescToken => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION";
         public string UnlockableNameToken => MotionTracker.instance.nameToken;
 
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/motionTrackerIcon.png");
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/motionTrackerIcon.png");
 
         public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

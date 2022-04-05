@@ -123,7 +123,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string AchievementDescToken => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION";
         public string UnlockableNameToken => DeadManSwitch.instance.nameToken;
 
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/deadManSwitchIcon.png");
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/deadManSwitchIcon.png");
 
         public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

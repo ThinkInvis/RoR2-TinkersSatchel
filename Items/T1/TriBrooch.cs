@@ -229,7 +229,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string AchievementDescToken => "TKSAT_TRIBROOCH_ACHIEVEMENT_DESCRIPTION";
         public string UnlockableNameToken => TriBrooch.instance.nameToken;
 
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/triBroochIcon.png");
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/triBroochIcon.png");
 
         public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

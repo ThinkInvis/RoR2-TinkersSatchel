@@ -131,7 +131,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public string AchievementDescToken => "TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION";
         public string UnlockableNameToken => Moustache.instance.nameToken;
 
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/moustacheIcon.png");
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/moustacheIcon.png");
 
         public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
             Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

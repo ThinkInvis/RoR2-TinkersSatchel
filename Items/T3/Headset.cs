@@ -207,7 +207,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public string AchievementDescToken => "TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION";
 		public string UnlockableNameToken => Headset.instance.nameToken;
 
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/headsetIcon.png");
+		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/headsetIcon.png");
 
 		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
 			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});

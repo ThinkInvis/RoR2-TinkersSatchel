@@ -208,7 +208,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public string AchievementDescToken => "TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION";
 		public string UnlockableNameToken => Skein.instance.nameToken;
 
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/skeinIcon.png");
+		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/skeinIcon.png");
 
 		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
 			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
