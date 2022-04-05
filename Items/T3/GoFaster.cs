@@ -47,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float huntressBlink2RangeFac { get; private set; } = 0.35f;
 
 		[AutoConfig("Multiplier to BuffFrac for Bandit smokebomb: controls launch force.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float banditCloakSpeedFrac { get; private set; } = 30f;
+		public float banditCloakSpeedFrac { get; private set; } = 40f;
 
 		[AutoConfig("Multiplier to BuffFrac for MUL-T dash: multiplies move speed during reactivation boosts.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float toolbotReacBoostFrac { get; private set; } = 0.5f;
