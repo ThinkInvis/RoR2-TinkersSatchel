@@ -112,7 +112,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatLodestoneAchievement>();
             LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_NAME", "Drive Me Closer");
-            LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 5 different close-range items at once.");
+            LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION", "Item Set: Have 6 or more (of 15) different close-range items at once.");
 
             equipmentDef.unlockableDef = unlockable;
         }
@@ -250,10 +250,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(self.inventory.GetItemCount(RoR2Content.Items.Icicle) > 0) matches++;
             if(self.inventory.GetItemCount(RoR2Content.Items.ShockNearby) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.NovaOnHeal) > 0) matches++;
             if(Headset.instance.GetCount(self.inventory) > 0) matches++;
 
-            if(self.inventory.GetItemCount(RoR2Content.Items.NovaOnHeal) > 0) matches++;
             if(self.inventory.GetItemCount(RoR2Content.Items.SiphonOnLowHealth) > 0) matches++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.SprintWisp) > 0) matches++;
 
             if(self.inventory.GetItemCount(DLC1Content.Items.LunarSun) > 0) matches++;
 
@@ -263,7 +264,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self.inventory.currentEquipmentIndex == RoR2Content.Equipment.BurnNearby.equipmentIndex
                 || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.BurnNearby.equipmentIndex)
                 matches++;
-            if(matches >= 5)
+            if(matches >= 6)
                 Grant();
         }
     }
