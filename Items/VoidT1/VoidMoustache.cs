@@ -96,6 +96,11 @@ namespace ThinkInvisible.TinkersSatchel {
             };
         }
 
+        public override void SetupBehavior() {
+            base.SetupBehavior();
+            itemDef.unlockableDef = Moustache.unlockable; //apply in later stage to make sure Moustache loads first
+        }
+
         public override void Install() {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;

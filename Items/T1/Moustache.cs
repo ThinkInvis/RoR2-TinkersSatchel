@@ -36,6 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         public BuffDef moustacheBuff { get; private set; }
+        internal static UnlockableDef unlockable;
 
 
 
@@ -55,6 +56,12 @@ namespace ThinkInvisible.TinkersSatchel {
             moustacheBuff.name = "TKSATMoustache";
             moustacheBuff.iconSprite = iconResource;
             ContentAddition.AddBuffDef(moustacheBuff);
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatMoustacheAchievement>();
+            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_NAME", "Imperiled");
+            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION", "Be very close to 5 or more enemies at once.");
+
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -112,6 +119,47 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
 
                 body.MarkAllStatsDirty();
+            }
+        }
+    }
+
+    public class TkSatMoustacheAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_MOUSTACHE_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_MOUSTACHE_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_MOUSTACHE_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => Moustache.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/moustacheIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
+        }
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
+        }
+
+        float stopwatch = 0f;
+        private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self) {
+            orig(self);
+            if(!self || self != localUser.cachedBody) return;
+            stopwatch -= Time.fixedDeltaTime;
+            if(stopwatch <= 0f) {
+                stopwatch = 0.5f;
+                var mdt = self.GetComponent<MoustacheDamageTracker>();
+                if(!mdt)
+                    mdt = self.gameObject.AddComponent<MoustacheDamageTracker>();
+                if(mdt.lastEnemiesTracked >= 5)
+                    Grant();
             }
         }
     }
