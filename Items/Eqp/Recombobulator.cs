@@ -2,6 +2,10 @@
 using UnityEngine;
 using TILER2;
 using System.Linq;
+using R2API;
+using MonoMod.Cil;
+using Mono.Cecil.Cil;
+using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Recombobulator : Equipment<Recombobulator> {
@@ -58,7 +62,7 @@ namespace ThinkInvisible.TinkersSatchel {
             "LunarChest(Clone)"
         };
         WeightedSelection<DirectorCard> mostRecentDeck = null;
-
+        internal static UnlockableDef unlockable;
 
 
         ////// TILER2 Module Setup //////
@@ -70,6 +74,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = UnlockableAPI.AddUnlockable<TkSatRecombobulatorAchievement>();
+            LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_NAME", "Risktaker");
+            LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION", "Recycle a rare or boss item.");
+
+            equipmentDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -175,7 +185,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 && mostRecentDeck != null
                 && Run.instance) {
 
-                bool hadPurch = false;
                 var oldPurch = slot.currentTarget.rootObject.GetComponent<PurchaseInteraction>();
                 if(oldPurch) {
                     if(!oldPurch.available) return false;
@@ -229,4 +238,50 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
     public class RecombobulatorFlag : MonoBehaviour {}
+
+    public class TkSatRecombobulatorAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
+        public string AchievementIdentifier => "TKSAT_RECOMBOBULATOR_ACHIEVEMENT_ID";
+        public string UnlockableIdentifier => "TKSAT_RECOMBOBULATOR_UNLOCKABLE_ID";
+        public string PrerequisiteUnlockableIdentifier => "";
+        public string AchievementNameToken => "TKSAT_RECOMBOBULATOR_ACHIEVEMENT_NAME";
+        public string AchievementDescToken => "TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION";
+        public string UnlockableNameToken => Recombobulator.instance.nameToken;
+
+        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/recombobulatorIcon.png");
+
+        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
+            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
+
+        public override void OnInstall() {
+            base.OnInstall();
+
+            IL.RoR2.EquipmentSlot.FireRecycle += EquipmentSlot_FireRecycle;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+
+            IL.RoR2.EquipmentSlot.FireRecycle -= EquipmentSlot_FireRecycle;
+        }
+
+        private void EquipmentSlot_FireRecycle(ILContext il) {
+            ILCursor c = new ILCursor(il);
+
+            if(c.TryGotoNext(MoveType.Before, x => x.MatchCallOrCallvirt<GenericPickupController>("set_NetworkpickupIndex"))) {
+                c.Emit(OpCodes.Dup);
+                c.EmitDelegate<Action<PickupIndex>>(pind => {
+                    var pdef = PickupCatalog.GetPickupDef(pind);
+                    if(pdef != null
+                    && (pdef.itemTier == ItemTier.Tier3 || pdef.itemTier == ItemTier.VoidTier3
+                    || pdef.itemTier == ItemTier.Boss || pdef.itemTier == ItemTier.VoidBoss))
+                        Grant();
+                });
+            } else {
+                TinkersSatchelPlugin._logger.LogError("TkSatRecombobulatorAchievement: failed to apply IL hook (EquipmentSlot_FireRecycle); could not find target instructions. Achievement will not trigger.");
+            }
+        }
+    }
 }
