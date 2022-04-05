@@ -10,6 +10,7 @@
 	- RC Controller now causes Equipment Drones to activate equipment.
 	- Pixie Tube may now proc on primary skill once every 5 seconds (allows effects on characters with only a primary skill, e.g. some monsters).
 - Artifact of Safekeeping:
+	- Now displays a chat message for each item taken by the teleporter boss.
 	- Vastly improved item drop trajectories (notably: much smaller chance to send items off cliffs).
 		- Item droplets will now try to find clear trajectories towards open navigation graph nodes.
 		- If not enough clear paths exist around the boss, will try scanning from the teleporter instead.
