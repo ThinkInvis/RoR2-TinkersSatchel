@@ -168,6 +168,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, EntityStates.BaseState self) {
+            orig(self);
             qualifies = true;
         }
 
