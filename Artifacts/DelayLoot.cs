@@ -30,6 +30,12 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("What to display in chat when an item is taken for safekeeping.")]
         public AnnounceItemsMode announceItems { get; private set; } = AnnounceItemsMode.ItemName;
 
+        public enum AnnounceDropMode {
+            Nothing, TotalItemCount, ItemTierCounts
+        }
+        [AutoConfig("What to display in chat when the teleporter boss is killed.")]
+        public AnnounceDropMode announceDrop { get; private set; } = AnnounceDropMode.ItemTierCounts;
+
 
 
         ////// Other Fields/Properties //////
@@ -117,10 +123,67 @@ namespace ThinkInvisible.TinkersSatchel {
                         TinkersSatchelPlugin._logger.LogWarning("DelayLoot: couldn't find enough free navnodes to drop items at from boss, falling back to TP");
                         launchVelocities = lvel2;
                         lootShowerLoc = ls2;
-                    } 
+                    }
                     if(launchVelocities.Count < deferredDrops.Count) {
                         TinkersSatchelPlugin._logger.LogWarning("DelayLoot: couldn't find enough free navnodes to drop items at from any source, some items will stack");
                     }
+                }
+
+                if(announceDrop == AnnounceDropMode.ItemTierCounts) {
+                    Dictionary<ItemTier, int> totalItemTiers = new Dictionary<ItemTier, int>();
+                    int totalEquipments = 0;
+                    int totalLunarEquipments = 0;
+                    int totalOther = 0;
+                    string lunarColorHex = "";
+                    string equipmentColorHex = "";
+                    foreach(var drop in deferredDrops) {
+                        if(drop && drop.TryGetComponent<GenericPickupController>(out var pickup)) {
+                            var pdef = PickupCatalog.GetPickupDef(pickup.pickupIndex);
+                            if(pdef != null) {
+                                if(pdef.itemIndex != ItemIndex.None && pdef.itemTier != ItemTier.NoTier) {
+                                    if(!totalItemTiers.ContainsKey(pdef.itemTier)) {
+                                        totalItemTiers[pdef.itemTier] = 0;
+                                    }
+                                    totalItemTiers[pdef.itemTier]++;
+                                } else if(pdef.equipmentIndex != EquipmentIndex.None) {
+                                    if(pdef.isLunar) {
+                                        totalLunarEquipments++;
+                                        lunarColorHex = Util.RGBToHex(pdef.baseColor);
+                                    } else {
+                                        totalEquipments++;
+                                        equipmentColorHex = Util.RGBToHex(pdef.baseColor);
+                                    }
+                                } else totalOther++;
+                            } else totalOther++;
+                        } else totalOther++;
+                    }
+                    List<string> displays = new List<string>();
+                    if(totalItemTiers.ContainsKey(ItemTier.Tier1)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier1Item)}>{totalItemTiers[ItemTier.Tier1]} tier-1 items</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Tier2)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier2Item)}>{totalItemTiers[ItemTier.Tier2]} tier-2 items</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Tier3)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier3Item)}>{totalItemTiers[ItemTier.Tier3]} tier-3 items</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Lunar)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalItemTiers[ItemTier.Lunar]} lunar items</color>");
+                    if(totalItemTiers.ContainsKey(ItemTier.Boss)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.BossItem)}>{totalItemTiers[ItemTier.Boss]} boss items</color>");
+                    if(totalEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Equipment)}>{totalEquipments} equipments</color>");
+                    if(totalLunarEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalLunarEquipments} lunar equipments</color>");
+                    int totalVoidCount = 0;
+                    if(totalItemTiers.ContainsKey(ItemTier.VoidTier1)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier1]; }
+                    if(totalItemTiers.ContainsKey(ItemTier.VoidTier2)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier2]; }
+                    if(totalItemTiers.ContainsKey(ItemTier.VoidTier3)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier3]; }
+                    if(totalItemTiers.ContainsKey(ItemTier.VoidBoss)) { totalVoidCount += totalItemTiers[ItemTier.VoidBoss]; }
+                    if(totalVoidCount > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.VoidItem)}>{totalVoidCount} void items</color>");
+                    if(totalOther > 0) displays.Add($"{totalOther} other drops");
+
+                    if(displays.Count == 0) {
+                    } else if(displays.Count == 1) {
+                        NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {displays[0]} is yours.");
+                    } else if(displays.Count == 2) {
+                        NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {String.Join(" and ", displays)} is yours.");
+                    } else {
+                        displays[displays.Count - 1] = "and " + displays[displays.Count - 1];
+                        NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {String.Join(", ", displays)} is yours.");
+                    }
+                } else if(announceDrop == AnnounceDropMode.TotalItemCount && deferredDrops.Count > 0) {
+                    NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {deferredDrops.Count} items is yours.");
                 }
             }
         }
