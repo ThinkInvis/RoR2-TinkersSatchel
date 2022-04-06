@@ -32,12 +32,14 @@ namespace ThinkInvisible.TinkersSatchel {
             "Turret1Broken(Clone)",
             "Drone1Broken(Clone)",
             "Drone2Broken(Clone)",
-            "GoldChest(Clone)",
+            "EquipmentDroneBroken(Clone)",
             "MissileDroneBroken(Clone)",
             "FlameDroneBroken(Clone)",
             "MegaDroneBroken(Clone)",
             "Chest1(Clone)",
             "Chest2(Clone)",
+            "GoldChest(Clone)",
+            "CasinoChest(Clone)",
             "KeyLockbox(Clone)",
             "ShrineHealing(Clone)",
             "EquipmentBarrel(Clone)",
@@ -59,7 +61,8 @@ namespace ThinkInvisible.TinkersSatchel {
             "MultiShopTerminal(Clone)",
             "MultiShopLargeTerminal(Clone)",
             "MultiShopEquipmentTerminal(Clone)",
-            "LunarChest(Clone)"
+            "LunarChest(Clone)",
+            "TkSatItemDroneBroken(Clone)"
         };
         WeightedSelection<DirectorCard> mostRecentDeck = null;
         internal static UnlockableDef unlockable;

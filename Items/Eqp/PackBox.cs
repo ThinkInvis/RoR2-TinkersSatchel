@@ -35,9 +35,11 @@ namespace ThinkInvisible.TinkersSatchel {
             "Drone1Broken(Clone)",
             "Drone2Broken(Clone)",
             "GoldChest(Clone)",
+            "CasinoChest(Clone)",
             "MissileDroneBroken(Clone)",
             "FlameDroneBroken(Clone)",
             "MegaDroneBroken(Clone)",
+            "EquipmentDroneBroken(Clone)",
             "Chest1(Clone)",
             "Chest2(Clone)",
             "KeyLockbox(Clone)",
@@ -65,7 +67,8 @@ namespace ThinkInvisible.TinkersSatchel {
             "ExplosivePotDestructibleBody(Clone)",
             "WarbannerWard(Clone)",
             "LunarChest(Clone)",
-            "LunarShopTerminal(Clone)" //todo: disallow or kick out of bazaar, achievement
+            "LunarShopTerminal(Clone)", //todo: disallow or kick out of bazaar, achievement
+            "TkSatItemDroneBroken(Clone)"
         };
         readonly Sprite secondaryIconResource;
         GameObject packIndicatorPrefab;
