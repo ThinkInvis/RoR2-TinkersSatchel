@@ -60,7 +60,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// TILER2 Module Setup //////
 
         public Wrangler() {
-            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Wrangler.prefab");
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Wrangler.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/wranglerIcon.png");
         }
 

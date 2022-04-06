@@ -115,7 +115,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// TILER2 Module Setup //////
 
 		public GoFaster() {
-			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/GoFaster.prefab");
+			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/GoFaster.prefab");
 			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/goFasterIcon.png");
 		}
 

@@ -68,7 +68,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// TILER2 Module Setup //////
 
 		public Headset() {
-			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Headset.prefab");
+			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Headset.prefab");
 			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/headsetIcon.png");
 		}
 

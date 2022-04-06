@@ -64,7 +64,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// TILER2 Module Setup //////
 
 		public Pinball() {
-			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Pinball.prefab");
+			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Pinball.prefab");
 			iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/pinballIcon.png");
 		}
 
