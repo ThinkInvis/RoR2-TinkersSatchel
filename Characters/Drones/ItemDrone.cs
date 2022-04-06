@@ -109,6 +109,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ////spawncard////
 
             itemDroneSpawnCard = ScriptableObject.CreateInstance<InteractableSpawnCard>();
+            itemDroneSpawnCard.name = "TkSatItemDroneSpawnCard";
             itemDroneSpawnCard.prefab = itemDroneInteractablePrefab;
             itemDroneSpawnCard.sendOverNetwork = true;
             itemDroneSpawnCard.hullSize = HullClassification.Human;
@@ -129,7 +130,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 spawnCard = itemDroneSpawnCard,
                 minimumStageCompletions = 0,
                 preventOverhead = false,
-                selectionWeight = 0,
+                selectionWeight = 4, //equip drone is 2, normal drones are 7
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             itemDroneDCH = new DirectorAPI.DirectorCardHolder {
@@ -138,7 +139,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 MonsterCategory = DirectorAPI.MonsterCategory.Invalid
             };
 
-            DirectorAPI.Helpers.AddNewInteractable(itemDroneDCH);
         }
 
         public override void SetupBehavior() {
@@ -147,13 +147,17 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupConfig() {
             base.SetupConfig();
         }
+
         public override void Install() {
             base.Install();
             On.RoR2.PickupPickerController.HandlePickupSelected += PickupPickerController_HandlePickupSelected;
             On.RoR2.PickupPickerController.OnInteractionBegin += PickupPickerController_OnInteractionBegin;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.RoR2.CharacterBody.GetDisplayName += CharacterBody_GetDisplayName;
-            itemDroneDirectorCard.selectionWeight = 4;
+
+            DirectorAPI.Helpers.AddNewInteractable(itemDroneDCH);
+            if(ClassicStageInfo.instance)
+                DirectorAPI.Helpers.TryApplyChangesNow();
         }
 
         public override void Uninstall() {
@@ -162,8 +166,10 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.PickupPickerController.OnInteractionBegin -= PickupPickerController_OnInteractionBegin;
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
             On.RoR2.CharacterBody.GetDisplayName -= CharacterBody_GetDisplayName;
-            DirectorAPI.Helpers.RemoveExistingInteractable(itemDroneDCH.Card.spawnCard.name);
-            itemDroneDirectorCard.selectionWeight = 0;
+
+            DirectorAPI.Helpers.RemoveExistingInteractable(itemDroneDirectorCard.spawnCard.name);
+            if(ClassicStageInfo.instance)
+                DirectorAPI.Helpers.TryApplyChangesNow();
         }
 
 
