@@ -206,8 +206,8 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, damageInfo);
             if(!self || !self.body || self.body != localUser.cachedBody) return;
             var currH = self.combinedHealth;
-            if(Time.fixedDeltaTime - lastHit < 0.1f) return;
-            lastHit = Time.fixedDeltaTime;
+            if((Time.fixedTime) - lastHit < 0.1f) return;
+            lastHit = Time.fixedTime;
             if(damageInfo.rejected || prevH - currH <= 1f)
                 consecutiveBlocks++;
             else
