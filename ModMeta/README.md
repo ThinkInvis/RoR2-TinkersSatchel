@@ -518,6 +518,10 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.11.3**
+
+- Fixed Unstable Klein Bottle's unlock achievement not triggering.
+
 **1.11.2**
 
 - Fixed Item Drone interactables spawning while disabled.
@@ -557,14 +561,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Fixed any and all game VFX going missing at random (caused by Pinball Wizard effect prefab waking up during game load).
 - Go-Faster Stripes: self-targeted Engi missiles now properly explode (with a grenade explosion but we can't win 'em all).
-
-**1.10.1**
-
-- Spacetime Skein now has a percentage buff indicating its ramp-up progress.
-- Added a few greebles to Old War Lidar.
-- UV-mapped and baked Old War Lidar multi-material into a single material (experimenting with workflow, will apply to other items later).
-- Fixed Spacetime Skein almost never detecting movement.
-- Quantum Recombobulator no longer works on interactables that have already been used/are in use.
-- Command Terminal now displays a chat message when it revives someone.
-- Command Terminal now exposes its list of valid random drones for other mods to add to (`ReviveOnce.instance.droneMasterPrefabs.Add(GameObject prefab);`).
-- Fixed an uncommon, mostly-harmless NRE in Quantum Recombobulator and Cardboard Box.

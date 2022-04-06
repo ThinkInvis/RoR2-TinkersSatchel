@@ -1,5 +1,9 @@
 # Tinker's Satchel Changelog
 
+**1.11.3**
+
+- Fixed Unstable Klein Bottle's unlock achievement not triggering.
+
 **1.11.2**
 
 - Fixed Item Drone interactables spawning while disabled.
