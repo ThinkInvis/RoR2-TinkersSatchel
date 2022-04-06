@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TILER2;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -29,26 +30,58 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
 
             ////body////
-            var tmpBodySetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/EquipmentDroneBody").InstantiateClone("TkSatTempSetupPrefab", false);
-            var body = tmpBodySetup.GetComponent<CharacterBody>();
-            body.baseNameToken = "TKSAT_ITEMDRONE_BODY_NAME";
-            body.baseMoveSpeed *= 2.5f;
-            var ward = tmpBodySetup.AddComponent<ItemWard>();
+            itemDroneBodyPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBody.prefab").InstantiateClone("TkSatTempSetupPrefab", false);
+            var tmpBodySetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/EquipmentDroneBody").InstantiateClone("TkSatTempSetupPrefab2", false);
+            var ward = itemDroneBodyPrefab.AddComponent<ItemWard>();
             ward.radius = 60f; // doesn't work at all, stays at default 10. TODO: how and why??
             ward.displayRadiusFracH = 0.015f;
             ward.displayRadiusFracV = 0f;
             ward.displayRadiusOffset = Vector3.down * 2f;
             ward.displayIndivScale *= 0.35f;
-            var model = tmpBodySetup.GetComponent<ModelLocator>();
-            model.modelTransform.localScale = new Vector3(0.2f, 0.4f, 0.2f);
+            var model = itemDroneBodyPrefab.GetComponent<ModelLocator>();
+            model.modelTransform.GetComponent<Animator>().SetFloat("PropSpinSpeed", 100f);
+            model.modelBaseTransform.localScale *= 10f;
             var wardInd = GameObject.Instantiate(ItemWard.stockIndicatorPrefab, model.modelBaseTransform);
             wardInd.transform.localPosition = Vector3.zero;
             var ren = wardInd.transform.Find("IndicatorSphere").GetComponent<MeshRenderer>();
             ren.material.SetFloat("_AlphaBoost", 0.45f);
             ward.rangeIndicator = wardInd.transform;
-            tmpBodySetup.AddComponent<ItemDroneDropOnDeath>();
+            itemDroneBodyPrefab.AddComponent<ItemDroneDropOnDeath>();
 
-            itemDroneBodyPrefab = tmpBodySetup.InstantiateClone("TkSatItemDroneBody");
+            itemDroneBodyPrefab.GetComponent<CameraTargetParams>().cameraParams = Addressables.LoadAssetAsync<CharacterCameraParams>("RoR2/Base/Common/ccpStandard.asset")
+                .WaitForCompletion();
+            itemDroneBodyPrefab.GetComponent<CapsuleCollider>().material = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatItems.physicMaterial")
+                .WaitForCompletion();
+
+            foreach(var akEvent in tmpBodySetup.GetComponents<AkEvent>()) {
+                var newEvent = itemDroneBodyPrefab.AddComponent<AkEvent>();
+                newEvent.triggerList = akEvent.triggerList.ToArray().ToList();
+                newEvent.useOtherObject = akEvent.useOtherObject;
+                newEvent.actionOnEventType = akEvent.actionOnEventType;
+                newEvent.curveInterpolation = akEvent.curveInterpolation;
+                newEvent.enableActionOnEvent = akEvent.enableActionOnEvent;
+                newEvent.data = akEvent.data;
+                newEvent.useCallbacks = akEvent.useCallbacks;
+                newEvent.Callbacks = akEvent.Callbacks.ToArray().ToList();
+                newEvent.playingId = akEvent.playingId;
+                newEvent.soundEmitterObject = tmpBodySetup;
+                newEvent.transitionDuration = akEvent.transitionDuration;
+            }
+
+            var coreMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetConstructionBlue.mat")
+                .WaitForCompletion();
+            var bladesMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Drones/matDroneBrokenGeneric.mat")
+                .WaitForCompletion();
+
+            var mdl = itemDroneBodyPrefab.transform.Find("Model Base/mdlItemDrone").GetComponent<CharacterModel>();
+            mdl.baseRendererInfos[0].defaultMaterial = coreMtl;
+            mdl.baseRendererInfos[0].renderer.material = coreMtl;
+            for(int i = 1; i <= 3; i++) {
+                mdl.baseRendererInfos[i].defaultMaterial = bladesMtl;
+                mdl.baseRendererInfos[i].renderer.material = bladesMtl;
+            }
+
+            itemDroneBodyPrefab = itemDroneBodyPrefab.InstantiateClone("TkSatItemDroneBody");
             GameObject.Destroy(tmpBodySetup);
 
             ////master////
@@ -101,7 +134,7 @@ namespace ThinkInvisible.TinkersSatchel {
             ppc.available = true;
             tmpInteractableSetup.AddComponent<ItemDronePurchaseController>();
             var model2 = tmpInteractableSetup.GetComponent<ModelLocator>();
-            model2.modelTransform.localScale = new Vector3(0.2f, 0.2f, 0.4f);
+            model2.modelTransform.localScale = new Vector3(2f, 2f, 4f);
 
             itemDroneInteractablePrefab = tmpInteractableSetup.InstantiateClone("TkSatItemDroneBroken");
             GameObject.Destroy(tmpInteractableSetup);
