@@ -65,6 +65,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
 
+            On.EntityStates.Drone.DeathState.OnImpactServer += DeathState_OnImpactServer;
+
             DirectorAPI.Helpers.AddNewInteractable(bulwarkDroneDCH);
             if(ClassicStageInfo.instance)
                 DirectorAPI.Helpers.TryApplyChangesNow();
@@ -72,6 +74,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Uninstall() {
             base.Uninstall();
+
+            On.EntityStates.Drone.DeathState.OnImpactServer -= DeathState_OnImpactServer;
 
             DirectorAPI.Helpers.RemoveExistingInteractable(bulwarkDroneDirectorCard.spawnCard.name);
             if(ClassicStageInfo.instance)
@@ -150,6 +154,21 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
 
+        private void DeathState_OnImpactServer(On.EntityStates.Drone.DeathState.orig_OnImpactServer orig, EntityStates.Drone.DeathState self, Vector3 contactPoint) {
+            orig(self, contactPoint);
+            if(self.characterBody && BodyCatalog.GetBodyPrefab(self.characterBody.bodyIndex) == bulwarkDroneBodyPrefab) {
+                var broken = DirectorCore.instance.TrySpawnObject(
+                    new DirectorSpawnRequest(bulwarkDroneSpawnCard, new DirectorPlacementRule {
+                        placementMode = DirectorPlacementRule.PlacementMode.Direct,
+                        position = contactPoint
+                    }, this.rng));
+                if(broken) {
+                    var purch = broken.GetComponent<PurchaseInteraction>();
+                    if(purch && purch.costType == CostTypeIndex.Money)
+                        purch.Networkcost = Run.instance.GetDifficultyScaledCost(purch.cost);
+                }
+            }
+        }
     }
 
     [RequireComponent(typeof(TeamComponent))]
