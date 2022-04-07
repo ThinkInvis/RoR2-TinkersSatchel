@@ -1,8 +1,6 @@
 ﻿using R2API;
 using RoR2;
-using RoR2.CharacterAI;
 using RoR2.UI;
-using System.Collections.Generic;
 using System.Linq;
 using TILER2;
 using UnityEngine;
@@ -11,13 +9,7 @@ using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ItemDrone : T2Module<ItemDrone> {
-        public GameObject itemDroneInteractablePrefab;
-        public GameObject itemDroneBodyPrefab;
-        public GameObject itemDroneMasterPrefab;
-        public InteractableSpawnCard itemDroneSpawnCard;
-        public DirectorCard itemDroneDirectorCard;
-        public GameObject itemDronePanelPrefab;
-        public DirectorAPI.DirectorCardHolder itemDroneDCH;
+        ////// Language //////
 
         public override void RefreshPermanentLanguage() {
             permanentGenericLanguageTokens.Add("TKSAT_ITEMDRONE_NAME", "Item Drone");
@@ -26,27 +18,89 @@ namespace ThinkInvisible.TinkersSatchel {
             permanentGenericLanguageTokens.Add("TKSAT_ITEMDRONE_CONTEXT", "Give Item");
             base.RefreshPermanentLanguage();
         }
+
+        ////// Config //////
+        
+
+
+        ////// Other Fields/Properties //////
+
+        public GameObject itemDroneInteractablePrefab;
+        public GameObject itemDroneBodyPrefab;
+        public GameObject itemDroneMasterPrefab;
+        public InteractableSpawnCard itemDroneSpawnCard;
+        public DirectorCard itemDroneDirectorCard;
+        public GameObject itemDronePanelPrefab;
+        public DirectorAPI.DirectorCardHolder itemDroneDCH;
+
+
+
+        ////// TILER2 Module Setup //////
+
         public override void SetupAttributes() {
             base.SetupAttributes();
 
+            LoadBodyPrefab();
+            ModifyBodyPrefabWithVanillaAssets();
+
+            itemDroneMasterPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneMaster.prefab");
+
+            CreatePanelPrefab();
+
+            LoadInteractablePrefab();
+            ModifyInteractablePrefabWithVanillaAssets();
+
+            ContentAddition.AddBody(itemDroneBodyPrefab);
+            ContentAddition.AddMaster(itemDroneMasterPrefab);
+            ContentAddition.AddNetworkedObject(itemDroneInteractablePrefab);
+
+            SetupSpawnCard();
+        }
+
+        public override void SetupBehavior() {
+            base.SetupBehavior();
+        }
+        public override void SetupConfig() {
+            base.SetupConfig();
+        }
+
+        public override void Install() {
+            base.Install();
+            On.RoR2.CharacterBody.GetDisplayName += CharacterBody_GetDisplayName;
+
+            DirectorAPI.Helpers.AddNewInteractable(itemDroneDCH);
+            if(ClassicStageInfo.instance)
+                DirectorAPI.Helpers.TryApplyChangesNow();
+        }
+
+        public override void Uninstall() {
+            base.Uninstall();
+            On.RoR2.CharacterBody.GetDisplayName -= CharacterBody_GetDisplayName;
+
+            DirectorAPI.Helpers.RemoveExistingInteractable(itemDroneDirectorCard.spawnCard.name);
+            if(ClassicStageInfo.instance)
+                DirectorAPI.Helpers.TryApplyChangesNow();
+        }
+
+
+
+        ////// Private Methods //////
+
+        void LoadBodyPrefab() {
             ////body////
-            itemDroneBodyPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBody.prefab").InstantiateClone("TkSatTempSetupPrefab", false);
-            var tmpBodySetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/EquipmentDroneBody").InstantiateClone("TkSatTempSetupPrefab2", false);
-            var ward = itemDroneBodyPrefab.AddComponent<ItemWard>();
-            ward.radius = 60f; // doesn't work at all, stays at default 10. TODO: how and why??
-            ward.displayRadiusFracH = 0.015f;
-            ward.displayRadiusFracV = 0f;
-            ward.displayRadiusOffset = Vector3.down * 2f;
-            ward.displayIndivScale *= 0.35f;
-            var model = itemDroneBodyPrefab.GetComponent<ModelLocator>();
-            model.modelTransform.GetComponent<Animator>().SetFloat("PropSpinSpeed", 100f);
-            model.modelBaseTransform.localScale *= 10f;
-            var wardInd = GameObject.Instantiate(ItemWard.stockIndicatorPrefab, model.modelBaseTransform);
+            itemDroneBodyPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBody.prefab");
+
+            var ward = itemDroneBodyPrefab.GetComponent<ItemWard>();
+            var wardInd = ItemWard.stockIndicatorPrefab.InstantiateClone("ItemDroneDisplayWard", false);
+            wardInd.transform.parent = itemDroneBodyPrefab.transform;
             wardInd.transform.localPosition = Vector3.zero;
             var ren = wardInd.transform.Find("IndicatorSphere").GetComponent<MeshRenderer>();
             ren.material.SetFloat("_AlphaBoost", 0.45f);
             ward.rangeIndicator = wardInd.transform;
-            itemDroneBodyPrefab.AddComponent<ItemDroneDropOnDeath>();
+        }
+
+        void ModifyBodyPrefabWithVanillaAssets() {
+            var tmpBodySetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/EquipmentDroneBody").InstantiateClone("TkSatTempSetupPrefab2", false);
 
             itemDroneBodyPrefab.GetComponent<CameraTargetParams>().cameraParams = Addressables.LoadAssetAsync<CharacterCameraParams>("RoR2/Base/Common/ccpStandard.asset")
                 .WaitForCompletion();
@@ -73,7 +127,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var bladesMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Drones/matDroneBrokenGeneric.mat")
                 .WaitForCompletion();
 
-            var mdl = itemDroneBodyPrefab.transform.Find("Model Base/mdlItemDrone").GetComponent<CharacterModel>();
+            var mdl = itemDroneBodyPrefab.transform.Find("Model Base/ItemDroneArmature").GetComponent<CharacterModel>();
             mdl.baseRendererInfos[0].defaultMaterial = coreMtl;
             mdl.baseRendererInfos[0].renderer.material = coreMtl;
             for(int i = 1; i <= 3; i++) {
@@ -81,30 +135,10 @@ namespace ThinkInvisible.TinkersSatchel {
                 mdl.baseRendererInfos[i].renderer.material = bladesMtl;
             }
 
-            itemDroneBodyPrefab = itemDroneBodyPrefab.InstantiateClone("TkSatItemDroneBody");
             GameObject.Destroy(tmpBodySetup);
+        }
 
-            ////master////
-            var tmpMasterSetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/EquipmentDroneMaster").InstantiateClone("TkSatTempSetupPrefab", false);
-            var persist = tmpMasterSetup.AddComponent<ItemDroneWardPersist>();
-            var master = tmpMasterSetup.GetComponent<CharacterMaster>();
-            master.bodyPrefab = itemDroneBodyPrefab;
-            foreach(var skilldriver in master.GetComponents<AISkillDriver>()) {
-                if(skilldriver.customName == "IdleNearLeaderWhenNoEnemies") {
-                    skilldriver.maxDistance = 15f;
-                } else if(skilldriver.customName == "ChaseDownRandomEnemiesIfLeaderIsDead") {
-                    skilldriver.moveTargetType = AISkillDriver.TargetType.NearestFriendlyInSkillRange;
-                    skilldriver.skillSlot = SkillSlot.None;
-                } else if(skilldriver.customName == "ReturnToLeaderWhenNoEnemies" || skilldriver.customName == "HardLeashToLeader" || skilldriver.customName == "SoftLeashToLeader") {
-                } else {
-                    skilldriver.enabled = false;
-                }
-            }
-
-            itemDroneMasterPrefab = tmpMasterSetup.InstantiateClone("TkSatItemDroneMaster");
-            GameObject.Destroy(tmpMasterSetup);
-
-            ////scrapper panel////
+        void CreatePanelPrefab() {
             var tmpPanelSetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/UI/ScrapperPickerPanel").InstantiateClone("TkSatTempSetupPrefab", false);
             var label = tmpPanelSetup.transform.Find("MainPanel/Juice/Label").GetComponent<HGTextMeshProUGUI>();
             label.text = "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>";
@@ -113,98 +147,46 @@ namespace ThinkInvisible.TinkersSatchel {
 
             itemDronePanelPrefab = tmpPanelSetup.InstantiateClone("TkSatItemDronePanel", false);
             GameObject.Destroy(tmpPanelSetup);
+        }
 
-            ////interactable////
-            var tmpInteractableSetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BrokenDrones/EquipmentDroneBroken").InstantiateClone("TkSatTempSetupPrefab", false);
-            //MonoBehaviour.Destroy(tmpInteractableSetup.GetComponent<PurchaseInteraction>());
-            var purch = tmpInteractableSetup.GetComponent<PurchaseInteraction>();
-            purch.contextToken = "TKSAT_ITEMDRONE_CONTEXT";
-            purch.costType = CostTypeIndex.None;
-            purch.cost = 0;
-            var smb = tmpInteractableSetup.GetComponent<SummonMasterBehavior>();
-            smb.masterPrefab = itemDroneMasterPrefab;
-            smb.callOnEquipmentSpentOnPurchase = false;
-            var nwui = tmpInteractableSetup.AddComponent<NetworkUIPromptController>();
-            var gdnp = tmpInteractableSetup.GetComponent<GenericDisplayNameProvider>();
-            gdnp.displayToken = "TKSAT_ITEMDRONE_NAME";
-            var ppc = tmpInteractableSetup.AddComponent<PickupPickerController>();
-            ppc.panelPrefab = itemDronePanelPrefab;
-            ppc.cutoffDistance = 10f;
-            ppc.contextString = "TKSAT_ITEMDRONE_CONTEXT";
-            ppc.available = true;
-            tmpInteractableSetup.AddComponent<ItemDronePurchaseController>();
-            var model2 = tmpInteractableSetup.GetComponent<ModelLocator>();
-            model2.modelTransform.localScale = new Vector3(2f, 2f, 4f);
+        void LoadInteractablePrefab() {
+            itemDroneInteractablePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBroken.prefab");
 
-            itemDroneInteractablePrefab = tmpInteractableSetup.InstantiateClone("TkSatItemDroneBroken");
-            GameObject.Destroy(tmpInteractableSetup);
+            itemDroneInteractablePrefab.GetComponent<PickupPickerController>().available = true;
+            itemDroneInteractablePrefab.GetComponent<PickupPickerController>().panelPrefab = itemDronePanelPrefab;
+        }
 
-            ////spawncard////
+        void ModifyInteractablePrefabWithVanillaAssets() {
+            var brokenMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Drones/matDroneBrokenGeneric.mat")
+                .WaitForCompletion();
+            itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/ItemDrone").GetComponent<MeshRenderer>().material = brokenMtl;
+            itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/Prop1/Prop1 1").GetComponent<MeshRenderer>().material = brokenMtl;
+            itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/Prop2/Prop2 1").GetComponent<MeshRenderer>().material = brokenMtl;
+            itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/Prop3/Prop3 1").GetComponent<MeshRenderer>().material = brokenMtl;
+        }
 
-            itemDroneSpawnCard = ScriptableObject.CreateInstance<InteractableSpawnCard>();
-            itemDroneSpawnCard.name = "TkSatItemDroneSpawnCard";
-            itemDroneSpawnCard.prefab = itemDroneInteractablePrefab;
-            itemDroneSpawnCard.sendOverNetwork = true;
-            itemDroneSpawnCard.hullSize = HullClassification.Human;
-            itemDroneSpawnCard.nodeGraphType = RoR2.Navigation.MapNodeGroup.GraphType.Ground;
-            itemDroneSpawnCard.requiredFlags = RoR2.Navigation.NodeFlags.None;
-            itemDroneSpawnCard.forbiddenFlags = RoR2.Navigation.NodeFlags.NoChestSpawn;
-            itemDroneSpawnCard.directorCreditCost = 15;
-            itemDroneSpawnCard.occupyPosition = true;
-            itemDroneSpawnCard.eliteRules = SpawnCard.EliteRules.Default;
-            itemDroneSpawnCard.orientToFloor = true;
-            itemDroneSpawnCard.slightlyRandomizeOrientation = true;
-            itemDroneSpawnCard.skipSpawnWhenSacrificeArtifactEnabled = false;
-
-            ContentAddition.AddBody(itemDroneBodyPrefab);
-            ContentAddition.AddMaster(itemDroneMasterPrefab);
+        void SetupSpawnCard() {
+            itemDroneSpawnCard = TinkersSatchelPlugin.resources.LoadAsset<InteractableSpawnCard>("Assets/TinkersSatchel/Prefabs/Characters/iscTkSatItemDrone.asset");
 
             itemDroneDirectorCard = new DirectorCard {
                 spawnCard = itemDroneSpawnCard,
                 minimumStageCompletions = 0,
                 preventOverhead = false,
-                selectionWeight = 4, //equip drone is 2, normal drones are 7
+                //selectionWeight = 4, //equip drone is 2, normal drones are 7
+                selectionWeight = 9999,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             itemDroneDCH = new DirectorAPI.DirectorCardHolder {
                 Card = itemDroneDirectorCard,
-                InteractableCategory = DirectorAPI.InteractableCategory.Drones,
+                //InteractableCategory = DirectorAPI.InteractableCategory.Drones,
+                InteractableCategory = DirectorAPI.InteractableCategory.Chests,
                 MonsterCategory = DirectorAPI.MonsterCategory.Invalid
             };
-
         }
 
-        public override void SetupBehavior() {
-            base.SetupBehavior();
-        }
-        public override void SetupConfig() {
-            base.SetupConfig();
-        }
 
-        public override void Install() {
-            base.Install();
-            On.RoR2.PickupPickerController.HandlePickupSelected += PickupPickerController_HandlePickupSelected;
-            On.RoR2.PickupPickerController.OnInteractionBegin += PickupPickerController_OnInteractionBegin;
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.CharacterBody.GetDisplayName += CharacterBody_GetDisplayName;
 
-            DirectorAPI.Helpers.AddNewInteractable(itemDroneDCH);
-            if(ClassicStageInfo.instance)
-                DirectorAPI.Helpers.TryApplyChangesNow();
-        }
-
-        public override void Uninstall() {
-            base.Uninstall();
-            On.RoR2.PickupPickerController.HandlePickupSelected -= PickupPickerController_HandlePickupSelected;
-            On.RoR2.PickupPickerController.OnInteractionBegin -= PickupPickerController_OnInteractionBegin;
-            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.CharacterBody.GetDisplayName -= CharacterBody_GetDisplayName;
-
-            DirectorAPI.Helpers.RemoveExistingInteractable(itemDroneDirectorCard.spawnCard.name);
-            if(ClassicStageInfo.instance)
-                DirectorAPI.Helpers.TryApplyChangesNow();
-        }
-
+        ////// Hooks //////
 
         private string CharacterBody_GetDisplayName(On.RoR2.CharacterBody.orig_GetDisplayName orig, CharacterBody self) {
             var retv = orig(self);
@@ -222,22 +204,21 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             return retv;
         }
+    }
 
-        private void PickupPickerController_HandlePickupSelected(On.RoR2.PickupPickerController.orig_HandlePickupSelected orig, PickupPickerController self, int choiceIndex) {
-            orig(self, choiceIndex);
+    public class ItemDronePurchaseController : NetworkBehaviour {
+        Interactor currentInteractor;
 
+        public void SetInteractor(Interactor interactor) {
+            this.currentInteractor = interactor;
+        }
+
+        public void HandlePurchase(int pind) {
             if(!NetworkServer.active) return;
 
-            var idpc = self.GetComponent<ItemDronePurchaseController>();
-            if(!idpc) return;
-            self.networkUIPromptController.ClearParticipant();
-            if((ulong)choiceIndex >= (ulong)((long)self.options.Length))
-                return;
-            ref var pickupRef = ref self.options[choiceIndex];
-            if(!pickupRef.available) return;
-            PickupDef pickupDef = PickupCatalog.GetPickupDef(new PickupIndex(pickupRef.pickupIndex.value));
-            if(pickupDef == null || !idpc.currentInteractor) return;
-            var body = idpc.currentInteractor.GetComponent<CharacterBody>();
+            PickupDef pickupDef = PickupCatalog.GetPickupDef(new PickupIndex(pind));
+            if(pickupDef == null || !currentInteractor) return;
+            var body = currentInteractor.GetComponent<CharacterBody>();
             if(!body || !body.inventory)
                 return;
             var count = body.inventory.GetItemCount(pickupDef.itemIndex);
@@ -251,11 +232,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
             remCount = Mathf.Min(count, remCount);
 
-            var summon = self.GetComponent<SummonMasterBehavior>();
-            var cm = summon.OpenSummonReturnMaster(idpc.currentInteractor);
+            var summon = GetComponent<SummonMasterBehavior>();
+            var cm = summon.OpenSummonReturnMaster(currentInteractor);
             var cmBody = cm.GetBodyObject();
             var persist = cm.GetComponent<ItemDroneWardPersist>();
-            if(!cmBody || !persist)
+            if(!summon || !cmBody || !persist)
                 return;
             var cmWard = cmBody.GetComponent<ItemWard>();
             //cmWard.radius = 50f;
@@ -267,43 +248,15 @@ namespace ThinkInvisible.TinkersSatchel {
             for(var i = 0; i < remCount; i++) {
                 var effectData = new EffectData {
                     origin = body.corePosition,
-                    genericFloat = Mathf.Lerp(1.5f, 2.5f, (float)i/(float)remCount),
+                    genericFloat = Mathf.Lerp(1.5f, 2.5f, (float)i / (float)remCount),
                     genericUInt = (uint)(pickupDef.itemIndex + 1)
                 };
                 effectData.SetNetworkedObjectReference(cmBody);
                 EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
             }
 
-            GameObject.Destroy(self.gameObject);
+            GameObject.Destroy(this.gameObject);
         }
-
-        private void PickupPickerController_OnInteractionBegin(On.RoR2.PickupPickerController.orig_OnInteractionBegin orig, PickupPickerController self, Interactor activator) {
-            if(self && NetworkServer.active) {
-                var idpc = self.GetComponent<ItemDronePurchaseController>();
-
-                if(idpc) {
-                    idpc.currentInteractor = activator;
-                    self.SetOptionsFromInteractor(activator);
-                }
-            }
-            orig(self, activator);
-        }
-
-        private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator) {
-            if(self && NetworkServer.active) {
-                var idpc = self.GetComponent<ItemDronePurchaseController>();
-
-                if(idpc) {
-                    self.GetComponent<PickupPickerController>().OnInteractionBegin(activator);
-                    return;
-                }
-            }
-            orig(self, activator);
-        }
-    }
-
-    public class ItemDronePurchaseController : MonoBehaviour {
-        public Interactor currentInteractor;
     }
 
     [RequireComponent(typeof(CharacterBody))]
