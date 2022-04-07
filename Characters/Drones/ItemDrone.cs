@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
             LoadBodyPrefab();
             ModifyBodyPrefabWithVanillaAssets();
 
-            itemDroneMasterPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneMaster.prefab");
+            itemDroneMasterPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDrone/ItemDroneMaster.prefab");
 
             CreatePanelPrefab();
 
@@ -88,7 +88,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void LoadBodyPrefab() {
             ////body////
-            itemDroneBodyPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBody.prefab");
+            itemDroneBodyPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDrone/ItemDroneBody.prefab");
         }
 
         void ModifyBodyPrefabWithVanillaAssets() {
@@ -151,7 +151,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void LoadInteractablePrefab() {
-            itemDroneInteractablePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBroken.prefab");
+            itemDroneInteractablePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDrone/ItemDroneBroken.prefab");
 
             itemDroneInteractablePrefab.GetComponent<PickupPickerController>().available = true;
             itemDroneInteractablePrefab.GetComponent<PickupPickerController>().panelPrefab = itemDronePanelPrefab;
@@ -167,7 +167,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void SetupSpawnCard() {
-            itemDroneSpawnCard = TinkersSatchelPlugin.resources.LoadAsset<InteractableSpawnCard>("Assets/TinkersSatchel/Prefabs/Characters/iscTkSatItemDrone.asset");
+            itemDroneSpawnCard = TinkersSatchelPlugin.resources.LoadAsset<InteractableSpawnCard>("Assets/TinkersSatchel/Prefabs/Characters/ItemDrone/iscTkSatItemDrone.asset");
 
             itemDroneDirectorCard = new DirectorCard {
                 spawnCard = itemDroneSpawnCard,
