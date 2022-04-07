@@ -87,7 +87,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             bulwarkDroneBodyPrefab.GetComponent<CameraTargetParams>().cameraParams = Addressables.LoadAssetAsync<CharacterCameraParams>("RoR2/Base/Common/ccpStandard.asset")
                 .WaitForCompletion();
-            bulwarkDroneBodyPrefab.GetComponent<CapsuleCollider>().material = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatItems.physicMaterial")
+            bulwarkDroneBodyPrefab.GetComponent<BoxCollider>().material = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatItems.physicMaterial")
                 .WaitForCompletion();
 
             foreach(var akEvent in tmpBodySetup.GetComponents<AkEvent>()) {
