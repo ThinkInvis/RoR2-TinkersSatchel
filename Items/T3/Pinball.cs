@@ -202,7 +202,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self) {
 			orig(self);
-			if(!self.owner || self.GetComponent<ProjectileStickOnImpact>()) return;
+			if(!self || !self.owner || self.GetComponent<ProjectileStickOnImpact>()) return;
 			var body = self.owner.GetComponent<CharacterBody>();
 			var count = GetCount(body);
 			var rb = self.GetComponent<Rigidbody>();
