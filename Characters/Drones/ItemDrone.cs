@@ -334,7 +334,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(PickupPickerController))]
     public class PickupPickerControllerFilteredSelector : MonoBehaviour {
-        public HashSet<ItemDef> blacklistedItems;
+        public HashSet<ItemDef> blacklistedItems = new HashSet<ItemDef>();
         PickupPickerController ppc;
 
         void Awake() {
