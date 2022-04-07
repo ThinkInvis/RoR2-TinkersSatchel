@@ -1,6 +1,7 @@
 ﻿using R2API;
 using RoR2;
 using RoR2.UI;
+using System.Collections.Generic;
 using System.Linq;
 using TILER2;
 using UnityEngine;
@@ -153,8 +154,30 @@ namespace ThinkInvisible.TinkersSatchel {
         void LoadInteractablePrefab() {
             itemDroneInteractablePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDrone/ItemDroneBroken.prefab");
 
-            itemDroneInteractablePrefab.GetComponent<PickupPickerController>().available = true;
-            itemDroneInteractablePrefab.GetComponent<PickupPickerController>().panelPrefab = itemDronePanelPrefab;
+            var ppc = itemDroneInteractablePrefab.GetComponent<PickupPickerController>();
+            ppc.available = true;
+            ppc.panelPrefab = itemDronePanelPrefab;
+
+            var ppcf = itemDroneInteractablePrefab.GetComponent<PickupPickerControllerFilteredSelector>();
+
+            //scrap
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhite"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreen"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapRed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapYellow"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapRedSuppressed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreenSuppressed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhiteSuppressed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrap"));
+            //consumed items
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrapConsumed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeConsumed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeVoidConsumed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/FragileDamageBonusConsumed"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/HealingPotionConsumed"));
+            //AI summons (bugged)
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/BeetleGland"));
+            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RoboBallBuddy"));
         }
 
         void ModifyInteractablePrefabWithVanillaAssets() {
@@ -306,6 +329,35 @@ namespace ThinkInvisible.TinkersSatchel {
                 for(var i = 0; i < ctc; i++)
                     ward.ServerRemoveItem(index);
             }
+        }
+    }
+
+    [RequireComponent(typeof(PickupPickerController))]
+    public class PickupPickerControllerFilteredSelector : MonoBehaviour {
+        public HashSet<ItemDef> blacklistedItems;
+        PickupPickerController ppc;
+
+        void Awake() {
+            ppc = GetComponent<PickupPickerController>();
+        }
+
+        public void SetOptionsFromInteractor(Interactor activator) {
+            if(!activator) return;
+            var body = activator.GetComponent<CharacterBody>();
+            if(!body || !body.inventory) return;
+            var opts = new List<PickupPickerController.Option>();
+            for(int i = 0; i < body.inventory.itemAcquisitionOrder.Count; i++) {
+                var iind = body.inventory.itemAcquisitionOrder[i];
+                var idef = ItemCatalog.GetItemDef(iind);
+                var pind = PickupCatalog.FindPickupIndex(iind);
+                if(idef && pind != PickupIndex.none && idef.canRemove && !idef.hidden && !blacklistedItems.Contains(idef)) {
+                    opts.Add(new PickupPickerController.Option {
+                        available = true,
+                        pickupIndex = pind
+                    });
+                }
+            }
+            ppc.SetOptionsServer(opts.ToArray());
         }
     }
 }
