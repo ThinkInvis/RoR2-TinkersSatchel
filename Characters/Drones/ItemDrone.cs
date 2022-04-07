@@ -89,14 +89,6 @@ namespace ThinkInvisible.TinkersSatchel {
         void LoadBodyPrefab() {
             ////body////
             itemDroneBodyPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/ItemDroneBody.prefab");
-
-            var ward = itemDroneBodyPrefab.GetComponent<ItemWard>();
-            var wardInd = ItemWard.stockIndicatorPrefab.InstantiateClone("ItemDroneDisplayWard", false);
-            wardInd.transform.parent = itemDroneBodyPrefab.transform;
-            wardInd.transform.localPosition = Vector3.zero;
-            var ren = wardInd.transform.Find("IndicatorSphere").GetComponent<MeshRenderer>();
-            ren.material.SetFloat("_AlphaBoost", 0.45f);
-            ward.rangeIndicator = wardInd.transform;
         }
 
         void ModifyBodyPrefabWithVanillaAssets() {
@@ -136,6 +128,15 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             GameObject.Destroy(tmpBodySetup);
+
+            var ren = itemDroneBodyPrefab.transform.Find("WardRangeScale/WardRangeInd").gameObject.GetComponent<MeshRenderer>();
+            ren.material = ItemWard.stockIndicatorPrefab.transform.Find("IndicatorSphere").gameObject.GetComponent<MeshRenderer>().material;
+            ren.material.SetTexture("_RemapTex",
+                Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/ColorRamps/texRampDefault.png")
+                .WaitForCompletion());
+            ren.material.SetFloat("_AlphaBoost", 0.475f);
+            ren.material.SetColor("_CutoffScroll", new Color(0.8f, 0.8f, 0.85f));
+            ren.material.SetColor("_RimColor", new Color(0.8f, 0.8f, 0.85f));
         }
 
         void CreatePanelPrefab() {
