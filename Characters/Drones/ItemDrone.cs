@@ -191,7 +191,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private string CharacterBody_GetDisplayName(On.RoR2.CharacterBody.orig_GetDisplayName orig, CharacterBody self) {
             var retv = orig(self);
-            if(self.name == "TkSatItemDroneBody(Clone)") {
+            if(self.name == "ItemDroneBody(Clone)") {
                 var ward = self.GetComponent<ItemWard>();
                 if(!ward || ward.itemcounts.Count == 0) return retv;
                 var idef = ItemCatalog.GetItemDef(ward.itemcounts.First().Key);
