@@ -1,9 +1,7 @@
 ﻿using RoR2;
 using UnityEngine;
 using TILER2;
-using R2API.Utils;
 using static TILER2.MiscUtil;
-using UnityEngine.Networking;
 using R2API;
 using RoR2.Projectile;
 using UnityEngine.AddressableAssets;
@@ -21,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Throw a bomb that will detonate when damaged... <style=cDeath>BUT it may damage survivors too.</style>";
         protected override string GetDescString(string langid = null) =>
-            $"Throw a <style=cIsDamage>live mortar shell</style> that will embed in the ground. After taking any damage, or after 10 seconds, the shell <style=cIsDamage>explodes for {Pct(damageFrac)} damage</style> <style=cDeath>to ALL characters in range</style>.";
+            $"Throw a <style=cIsDamage>live mortar shell</style> that will embed in the ground. After taking any damage, or after 10 seconds, the shell <style=cIsDamage>explodes for {Pct(damageFrac)} damage</style> to <style=cDeath>ALL characters</style> in range.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -84,13 +82,21 @@ namespace ThinkInvisible.TinkersSatchel {
                 damageColorIndex = DamageColorIndex.Item,
                 force = 100f,
                 owner = slot.gameObject,
-                position = aimRay.origin + aimRay.direction * 2f,
-                rotation = aimRot,
-                speedOverride = 30f,
-                useSpeedOverride = true
+                position = aimRay.origin,
+                rotation = aimRot
             });
 
             return true;
         }
-	}
+    }
+
+    [RequireComponent(typeof(CharacterBody), typeof(ProjectileExplosion))]
+    public class ProjectileExplodeOnDeath : MonoBehaviour, IOnKilledServerReceiver {
+        public void OnKilledServer(DamageReport damageReport) {
+            var pbody = GetComponent<CharacterBody>();
+            var pexp = GetComponent<ProjectileExplosion>();
+            if(!pbody || !pexp) return;
+            pexp.Detonate();
+        }
+    }
 }
