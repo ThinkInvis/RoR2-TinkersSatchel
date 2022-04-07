@@ -112,6 +112,12 @@ namespace ThinkInvisible.TinkersSatchel {
             mdl.baseRendererInfos[0].defaultMaterial = coreMtl;
             mdl.baseRendererInfos[0].renderer.material = coreMtl;
 
+            var partMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matOpaqueDustLargeDirectional.mat")
+                .WaitForCompletion();
+
+            var pren = bulwarkDroneBodyPrefab.transform.Find("Model Base/BulwarkDrone/ThrusterExhaust").GetComponent<ParticleSystemRenderer>();
+            pren.material = partMtl;
+
             GameObject.Destroy(tmpBodySetup);
         }
 
