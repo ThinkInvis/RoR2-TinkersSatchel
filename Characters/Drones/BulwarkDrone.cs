@@ -1,12 +1,10 @@
 ﻿using R2API;
 using RoR2;
 using RoR2.CharacterAI;
-using RoR2.UI;
 using System.Linq;
 using TILER2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class BulwarkDrone : T2Module<BulwarkDrone> {
