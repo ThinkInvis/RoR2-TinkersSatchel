@@ -178,6 +178,8 @@ namespace ThinkInvisible.TinkersSatchel {
                         ai.currentEnemy.gameObject = this.gameObject;
                         ai.currentEnemy.bestHurtBox = hurtbox;
                         ai.enemyAttention = scanInterval;
+                    } else if(ai.currentEnemy.gameObject == this.gameObject) {
+                        ai.currentEnemy.Reset();
                     }
                 }
             }
