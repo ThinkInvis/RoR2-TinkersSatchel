@@ -89,6 +89,12 @@ namespace ThinkInvisible.TinkersSatchel {
             mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreenSuppressed"));
             mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhiteSuppressed"));
             mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrap"));
+            //consumable items
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrap"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLife"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeVoid"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/FragileDamageBonus"));
+            mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/HealingPotion"));
             //consumed items
             mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrapConsumed"));
             mimicBlacklist.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeConsumed"));
