@@ -136,14 +136,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 spawnCard = bulwarkDroneSpawnCard,
                 minimumStageCompletions = 0,
                 preventOverhead = false,
-                //selectionWeight = 4, //equip drone is 2, normal drones are 7
-                selectionWeight = 9999,
+                selectionWeight = 4, //equip drone is 2, normal drones are 7
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             bulwarkDroneDCH = new DirectorAPI.DirectorCardHolder {
                 Card = bulwarkDroneDirectorCard,
-                //InteractableCategory = DirectorAPI.InteractableCategory.Drones,
-                InteractableCategory = DirectorAPI.InteractableCategory.Chests,
+                InteractableCategory = DirectorAPI.InteractableCategory.Drones,
                 MonsterCategory = DirectorAPI.MonsterCategory.Invalid
             };
         }
