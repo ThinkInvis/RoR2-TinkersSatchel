@@ -14,17 +14,17 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, and artifacts (for now -- more content types pending!). In total, this mod includes:
 
-- 26 total items/equipments:
+- 30 total items/equipments:
 	- 6 tier-1,
 	- 6 tier-2,
-	- 4 tier-3,
+	- 5 tier-3,
 	- 5 equipments,
-	- 2 lunar items,
-	- 1 lunar equipment,
+	- 3 lunar items,
+	- 3 lunar equipments,
 	- 1 tier-1 void,
 	- 1 tier-2 void;
-- 1 interactable:
-	- a drone;
+- 2 interactables:
+	- 2 drones;
 - and 5 artifacts.
 
 ### Mod Content: Items & Equipments
@@ -185,7 +185,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>Pixie Tube</b><br>
 				<details>
 					<summary>Drop random buffs on using skills.</summary>
-					<small>You drop 1 (+1 per stack) random elemental wisp when you use any skill (non-primary skills have a cooldown of 5 seconds). Elemental wisps can be picked up by any ally as a small, stacking buff for 10 seconds: +3% damage, +5% movement speed, +5% attack speed, or 10 armor.</small>
+					<small>You drop 1 (+1 per stack) random elemental wisp< when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Elemental wisps can be picked up by any ally as a small, stacking buff for 10 seconds: +2.5% damage, +5% movement speed, +5% attack speed, or 10 armor.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -274,6 +274,18 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li><details><summary>Unlock (spoilers!):</summary>Complete the achievements for Percussive Maintenance, Defibrillator, Pinball Wizard, and Lodestone.</details></li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/shrinkRayIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Shrink Ray</b><br>
+				<details>
+					<summary>Suppress a single target's non-primary skills and damage.</summary>
+					<small>Once every 2.5 seconds, hitting an enemy disables their non-primary skills and reduces their damage by 50% for 3.0 seconds (+3.0 seconds per stack).</small>
+				</details>
+			</td>
+			<td><ul>
 			</ul></td>
 		</tr>
 		<tr>
@@ -371,6 +383,18 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Hydroponic Cell</b><br>
+				<details>
+					<summary>Half of damage and healing received combine into damage on your next strike... <i>BUT you heal for 50% less.</i></summary>
+					<small>Store nutrients on taking damage equal to 50% (+50% per stack, hyperbolic) of the damage taken, up to 10x your max health. 50% (+50% per stack, hyperbolic) of incoming healing is blocked. Each point of blocked healing instead converts 1 point of nutrients into 0.5 points of damage on your next strike, up to 100x your damage stat.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Lunar Equipments</h3></td>
 		</tr>
 		<tr>
@@ -384,6 +408,30 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li>*Works only once per player per stage, <i>in addition to</i> a long cooldown in case of very fast stage clears. Both of these are configurable.</li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/unstableBombIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Faulty Mortar Tube</b><br>
+				<details>
+				<summary>Throw a bomb that will detonate when damaged... <i>BUT it may damage survivors too.</i> <small>[Cooldown: 40 s]</small></summary>
+				<small>Throw a live mortar shell that will embed in the ground. After taking any damage, or after 10 seconds, the shell explodes for 8000% damage to ALL characters in range.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EMPIcon.png?raw=true" width=256></td>
+			<td>
+				<b>EMP Device</b><br>
+				<details>
+				<summary>Disable skills on enemies... <i>BUT disable non-primary skills on survivors.</i> <small>[Cooldown: 60 s]</small></summary>
+				<small>For 10 seconds, all skills on enemies and non-primary skills on survivors within 100 m will be disabled. Also clears enemy projectiles when used.</small>
+				</details>
+			</td>
+			<td><ul>
 			</ul></td>
 		</tr>
 		<tr>
@@ -442,6 +490,18 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li>Will drop contained items on death.</li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td>Custom Icon NYI</td>
+			<td>
+				<b>Bulwark Drone</b><br>
+				<details>
+					<summary>Enemies near the drone will attack it more often. Has high health and innate shield and armor.</summary>
+					<small>Found slightly more commonly than Equipment Drones, a Bulwark Drone is purchased with money (2x as much as a Gunner Drone). Bulwark Drones have very high health, as well as an innate regenerating shield and damage-resisting armor. An activated Bulwark Drone will follow you (or, if dead, another ally) closely; every 5 seconds, every enemy within 100 meters of the Bulwark Drone will have a 50% chance to be forced to attack it for the duration.</small>
+				</details>
+			</td>
+			<td><ul>
 			</ul></td>
 		</tr>
 	</tbody>
@@ -509,14 +569,29 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 - Items have no DisplayRules.
 - Most items need some effects & model polish in general.
+	- Broken drones are missing smoke/sparks effects.
 - Some class-specific item behaviors on Go-Faster Stripes are missing or placeholders.
-- Pinball Wizard's internal mechanics are held together with duct tape and a prayer. No known issues but they're definitely there somewhere.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**1.12.0** *The Science! Update, Part 3*
+
+- ADDED INTERACTABLES: Bulwark Drone!
+- ADDED ITEMS: Faulty Mortar Tube, Hydroponic Cell, EMP Device, Shrink Ray!
+- Balance pass.
+	- Buffed Item Drone radius (60 m --> 100 m).
+	- Item Drone no longer accepts AI summon items like Queen's Gland, nor consumable/consumed items.
+	- Mostly-Tame Mimic no longer mimics consumable items.
+	- Pixie Tube now has a separate 3 second cooldown on each non-primary skill (addresses spammability on modded characters with mode swap skills).
+	- Pixie Tube now triggers on equipment.
+- Item Drone:
+	- Now has a custom model and cleaner setup code (thanks ThunderKit!).
+	- Improved spawncard compatibility (now properly registered/deregistered instead of setting spawn weight to 0).
+- Cardboard Box and Quantum Recombobulator now work on Broken Equipment Drones, Broken Item Drones, and Casino Chests.
 
 **1.11.3**
 
@@ -556,8 +631,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed missing TILER2 AutoConfigUpdateActions on many items (changing some configs mid-game would not immediately update language and/or character stats).
 - Updated R2API dependency to 4.3.5.
 - Updated TILER2 dependency to 6.2.0.
-
-**1.10.2**
-
-- Fixed any and all game VFX going missing at random (caused by Pinball Wizard effect prefab waking up during game load).
-- Go-Faster Stripes: self-targeted Engi missiles now properly explode (with a grenade explosion but we can't win 'em all).

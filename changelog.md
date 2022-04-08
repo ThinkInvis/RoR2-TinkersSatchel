@@ -1,5 +1,20 @@
 # Tinker's Satchel Changelog
 
+**1.12.0** *The Science! Update, Part 3*
+
+- ADDED INTERACTABLES: Bulwark Drone!
+- ADDED ITEMS: Faulty Mortar Tube, Hydroponic Cell, EMP Device, Shrink Ray!
+- Balance pass.
+	- Buffed Item Drone radius (60 m --> 100 m).
+	- Item Drone no longer accepts AI summon items like Queen's Gland, nor consumable/consumed items.
+	- Mostly-Tame Mimic no longer mimics consumable items.
+	- Pixie Tube now has a separate 3 second cooldown on each non-primary skill (addresses spammability on modded characters with mode swap skills).
+	- Pixie Tube now triggers on equipment.
+- Item Drone:
+	- Now has a custom model and cleaner setup code (thanks ThunderKit!).
+	- Improved spawncard compatibility (now properly registered/deregistered instead of setting spawn weight to 0).
+- Cardboard Box and Quantum Recombobulator now work on Broken Equipment Drones, Broken Item Drones, and Casino Chests.
+
 **1.11.3**
 
 - Fixed Unstable Klein Bottle's unlock achievement not triggering.
