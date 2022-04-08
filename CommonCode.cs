@@ -9,7 +9,9 @@ using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class CommonCode : T2Module<CommonCode> {
-		public override void RefreshPermanentLanguage() {
+        public override bool managedEnable => false;
+
+        public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_DISABLED_SKILL_NAME", "Suppressed Skill");
 			permanentGenericLanguageTokens.Add("TKSAT_DISABLED_SKILL_DESCRIPTION", "Something has temporarily prevented you from using this skill!");
 
