@@ -7,6 +7,7 @@ using BepInEx.Configuration;
 using Path = System.IO.Path;
 using TILER2;
 using static TILER2.MiscUtil;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     [BepInPlugin(ModGuid, ModName, ModVer)]
@@ -43,7 +44,9 @@ namespace ThinkInvisible.TinkersSatchel {
             };
             allModules = T2Module.InitAll<T2Module>(modInfo);
 
-            T2Module.SetupAll_PluginAwake(allModules);
+            var earlyLoad = new[] { CommonCode.instance };
+            T2Module.SetupAll_PluginAwake(earlyLoad);
+            T2Module.SetupAll_PluginAwake(allModules.Except(earlyLoad));
         }
 
         private void Start() {
