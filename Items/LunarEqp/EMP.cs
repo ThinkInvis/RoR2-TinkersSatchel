@@ -5,6 +5,7 @@ using static TILER2.MiscUtil;
 using R2API;
 using RoR2.Projectile;
 using UnityEngine.AddressableAssets;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class EMP : Equipment<EMP> {
@@ -19,8 +20,20 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Disable skills on enemies... <style=cDeath>BUT disable non-primary skills on survivors.</style>";
         protected override string GetDescString(string langid = null) =>
-            $"For 10 seconds, <style=cIsUtility>all skills</style> on enemies and <style=cIsUtility>non-primary skills</style> on survivors within 100 m will be <color=#FF7F7F>disabled</style>.";
+            $"For {duration:N0} seconds, <style=cIsUtility>all skills</style> on enemies and <style=cIsUtility>non-primary skills</style> on survivors within {range:N0} m will be <color=#FF7F7F>disabled</style>. Also clears <style=cIsDamage>enemy projectiles</style> when used.";
         protected override string GetLoreString(string langid = null) => "";
+
+
+
+        ////// Config //////
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Range of all equipment effects.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float range { get; private set; } = 100f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Duration of skill disable.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float duration { get; private set; } = 10f;
 
 
 
@@ -40,7 +53,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
-            float sqrad = 100f * 100f;
+            float sqrad = range * range;
             foreach(var tcpt in GameObject.FindObjectsOfType<TeamComponent>()) {
                 var deltaPos = tcpt.transform.position - slot.transform.position;
                 if(deltaPos.sqrMagnitude <= sqrad) {
@@ -49,20 +62,31 @@ namespace ThinkInvisible.TinkersSatchel {
                         var stsd = tcpt.body.gameObject.GetComponent<ServerTimedSkillDisable>();
                         if(!stsd) stsd = tcpt.body.gameObject.AddComponent<ServerTimedSkillDisable>();
                         if(!isSurvivor) {
-                            stsd.ServerApply(10f, SkillSlot.Primary);
+                            stsd.ServerApply(duration, SkillSlot.Primary);
                         }
-                        stsd.ServerApply(10f, SkillSlot.Secondary);
-                        stsd.ServerApply(10f, SkillSlot.Utility);
-                        stsd.ServerApply(10f, SkillSlot.Special);
+                        stsd.ServerApply(duration, SkillSlot.Secondary);
+                        stsd.ServerApply(duration, SkillSlot.Utility);
+                        stsd.ServerApply(duration, SkillSlot.Special);
                     }
                 }
             }
 
             EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/FusionCellExplosion"), new EffectData {
                 origin = slot.characterBody ? slot.characterBody.corePosition : slot.transform.position,
-                scale = 100f,
+                scale = range,
                 color = Color.cyan
             }, true);
+            
+            var myTeam = slot.teamComponent.teamIndex;
+            var toDelete = new List<ProjectileController>();
+            foreach(var projectile in InstanceTracker.GetInstancesList<ProjectileController>()) {
+                if(!projectile.cannotBeDeleted
+                    && projectile.teamFilter.teamIndex != myTeam
+                    && (projectile.transform.position - (slot.characterBody ? slot.characterBody.corePosition : slot.transform.position)).sqrMagnitude < sqrad)
+                    toDelete.Add(projectile);
+            }
+            for(int i = toDelete.Count - 1; i >= 0; i--)
+                GameObject.Destroy(toDelete[i].gameObject);
 
             return true;
         }
