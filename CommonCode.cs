@@ -26,6 +26,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			disabledSkillDef = SkillUtil.CloneSkillDef(captainSD);
 			disabledSkillDef.skillNameToken = "TKSAT_DISABLED_SKILL_NAME";
 			disabledSkillDef.skillDescriptionToken = "TKSAT_DISABLED_SKILL_DESCRIPTION";
+			disabledSkillDef.dontAllowPastMaxStocks = false;
+			disabledSkillDef.beginSkillCooldownOnSkillEnd = true;
 
 			ContentAddition.AddSkillDef(disabledSkillDef);
 
