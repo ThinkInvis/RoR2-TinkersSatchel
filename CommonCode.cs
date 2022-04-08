@@ -39,6 +39,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupBehavior() {
             base.SetupBehavior();
+
+            On.RoR2.Util.CleanseBody += Util_CleanseBody;
+        }
+
+        private void Util_CleanseBody(On.RoR2.Util.orig_CleanseBody orig, CharacterBody characterBody, bool removeDebuffs, bool removeBuffs, bool removeCooldownBuffs, bool removeDots, bool removeStun, bool removeNearbyProjectiles) {
+			orig(characterBody, removeDebuffs, removeBuffs, removeCooldownBuffs, removeDots, removeStun, removeNearbyProjectiles);
+			if(removeDebuffs && characterBody && characterBody.TryGetComponent<ServerTimedSkillDisable>(out var stsd)) {
+				stsd.ServerCleanse();
+            }
         }
     }
 
@@ -64,10 +73,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
 		void OnDestroy() {
-			new MsgRemove(SkillSlot.Primary, body).Send(R2API.Networking.NetworkDestination.Clients);
-			new MsgRemove(SkillSlot.Secondary, body).Send(R2API.Networking.NetworkDestination.Clients);
-			new MsgRemove(SkillSlot.Utility, body).Send(R2API.Networking.NetworkDestination.Clients);
-			new MsgRemove(SkillSlot.Special, body).Send(R2API.Networking.NetworkDestination.Clients);
+			ServerCleanse();
 		}
 
 		public void ServerApply(float time, SkillSlot slot) {
@@ -106,6 +112,21 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 			new MsgApply(slot, body).Send(R2API.Networking.NetworkDestination.Clients);
 		}
+
+		public void ServerCleanse() {
+			if(primaryDisablers.Count > 0)
+				new MsgRemove(SkillSlot.Primary, body, cachedPrimaryCooldown, cachedPrimaryStock).Send(R2API.Networking.NetworkDestination.Clients);
+			if(secondaryDisablers.Count > 0)
+				new MsgRemove(SkillSlot.Secondary, body, cachedSecondaryCooldown, cachedSecondaryStock).Send(R2API.Networking.NetworkDestination.Clients);
+			if(utilityDisablers.Count > 0)
+				new MsgRemove(SkillSlot.Utility, body, cachedUtilityCooldown, cachedUtilityStock).Send(R2API.Networking.NetworkDestination.Clients);
+			if(specialDisablers.Count > 0)
+				new MsgRemove(SkillSlot.Special, body, cachedSpecialCooldown, cachedSpecialStock).Send(R2API.Networking.NetworkDestination.Clients);
+			primaryDisablers.Clear();
+			secondaryDisablers.Clear();
+			utilityDisablers.Clear();
+			specialDisablers.Clear();
+        }
 
 		void FixedUpdate() {
 			if(!NetworkServer.active) return;
