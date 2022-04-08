@@ -18,8 +18,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
 		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) => "Suppress non-primary skills and damage on hit.";
-		protected override string GetDescString(string langid = null) => $"Once every 3 seconds, hitting an enemy disables their <style=cIsUtility>non-primary skills</style> and reduces their <style=cIsDamage>damage</style> by 50% for 3 seconds <style=cStack>(+3 seconds per stack)</style>.";
+		protected override string GetPickupString(string langid = null) => "Suppress a single target's non-primary skills and damage.";
+		protected override string GetDescString(string langid = null) => $"Once every {icd:N1} seconds, hitting an enemy disables their <style=cIsUtility>non-primary skills</style> and reduces their <style=cIsDamage>damage</style> by 50% for {duration:N1} seconds <style=cStack>(+{duration:N1} seconds per stack)</style>.";
 		protected override string GetLoreString(string langid = null) => "";
 
 
