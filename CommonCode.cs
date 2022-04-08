@@ -48,6 +48,14 @@ namespace ThinkInvisible.TinkersSatchel {
 		List<float> secondaryDisablers = new List<float>();
 		List<float> utilityDisablers = new List<float>();
 		List<float> specialDisablers = new List<float>();
+		float cachedPrimaryCooldown;
+		float cachedSecondaryCooldown;
+		float cachedUtilityCooldown;
+		float cachedSpecialCooldown;
+		int cachedPrimaryStock;
+		int cachedSecondaryStock;
+		int cachedUtilityStock;
+		int cachedSpecialStock;
 
 		CharacterBody body;
 
@@ -66,15 +74,31 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!NetworkServer.active) return;
 			switch(slot) {
 				case SkillSlot.Primary:
+					if(primaryDisablers.Count == 0 && body.skillLocator && body.skillLocator.primary) {
+						cachedPrimaryCooldown = body.skillLocator.primary.rechargeStopwatch;
+						cachedPrimaryStock = body.skillLocator.primary.stock;
+					}
 					primaryDisablers.Add(time);
 					break;
 				case SkillSlot.Secondary:
+					if(secondaryDisablers.Count == 0 && body.skillLocator && body.skillLocator.secondary) {
+						cachedSecondaryCooldown = body.skillLocator.secondary.rechargeStopwatch;
+						cachedSecondaryStock = body.skillLocator.secondary.stock;
+					}
 					secondaryDisablers.Add(time);
 					break;
 				case SkillSlot.Utility:
+					if(utilityDisablers.Count == 0 && body.skillLocator && body.skillLocator.utility) {
+						cachedUtilityCooldown = body.skillLocator.utility.rechargeStopwatch;
+						cachedUtilityStock = body.skillLocator.utility.stock;
+					}
 					utilityDisablers.Add(time);
 					break;
 				case SkillSlot.Special:
+					if(specialDisablers.Count == 0 && body.skillLocator && body.skillLocator.special) {
+						cachedSpecialCooldown = body.skillLocator.special.rechargeStopwatch;
+						cachedSpecialStock = body.skillLocator.special.stock;
+					}
 					specialDisablers.Add(time);
 					break;
 				default:
@@ -111,13 +135,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			bool hasUtilityNow = utilityDisablers.Count > 0;
 			bool hasSpecialNow = specialDisablers.Count > 0;
 			if(hadPrimary && !hasPrimaryNow)
-				new MsgRemove(SkillSlot.Primary, body).Send(R2API.Networking.NetworkDestination.Clients);
+				new MsgRemove(SkillSlot.Primary, body, cachedPrimaryCooldown, cachedPrimaryStock).Send(R2API.Networking.NetworkDestination.Clients);
 			if(hadSecondary && !hasSecondaryNow)
-				new MsgRemove(SkillSlot.Secondary, body).Send(R2API.Networking.NetworkDestination.Clients);
+				new MsgRemove(SkillSlot.Secondary, body, cachedSecondaryCooldown, cachedSecondaryStock).Send(R2API.Networking.NetworkDestination.Clients);
 			if(hadUtility && !hasUtilityNow)
-				new MsgRemove(SkillSlot.Utility, body).Send(R2API.Networking.NetworkDestination.Clients);
+				new MsgRemove(SkillSlot.Utility, body, cachedUtilityCooldown, cachedUtilityStock).Send(R2API.Networking.NetworkDestination.Clients);
 			if(hadSpecial && !hasSpecialNow)
-				new MsgRemove(SkillSlot.Special, body).Send(R2API.Networking.NetworkDestination.Clients);
+				new MsgRemove(SkillSlot.Special, body, cachedSpecialCooldown, cachedSpecialStock).Send(R2API.Networking.NetworkDestination.Clients);
 		}
 
         public struct MsgApply : INetMessage {
@@ -160,10 +184,14 @@ namespace ThinkInvisible.TinkersSatchel {
 		public struct MsgRemove : INetMessage {
 			SkillSlot _slot;
 			CharacterBody _target;
+			float _cooldown;
+			int _stock;
 
-			public MsgRemove(SkillSlot slot, CharacterBody target) {
+			public MsgRemove(SkillSlot slot, CharacterBody target, float cooldown, int stock) {
 				_slot = slot;
 				_target = target;
+				_cooldown = cooldown;
+				_stock = stock;
 			}
 
 			public void Deserialize(NetworkReader reader) {
@@ -171,11 +199,15 @@ namespace ThinkInvisible.TinkersSatchel {
 				var tgto = reader.ReadGameObject();
 				if(tgto)
 					_target = tgto.GetComponent<CharacterBody>();
+				_cooldown = reader.ReadSingle();
+				_stock = reader.ReadInt32();
 			}
 
 			public void Serialize(NetworkWriter writer) {
 				writer.Write((sbyte)_slot);
 				writer.Write(_target.gameObject);
+				writer.Write(_cooldown);
+				writer.Write(_stock);
 			}
 
 			public void OnReceived() {
@@ -186,6 +218,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				var sk = _target.skillLocator.GetSkill(_slot);
 				if(sk) {
 					sk.UnsetSkillOverride(_target.gameObject, CommonCode.disabledSkillDef, GenericSkill.SkillOverridePriority.Network);
+					sk.rechargeStopwatch = _cooldown;
+					sk.stock = _stock;
 				}
 			}
 		}
