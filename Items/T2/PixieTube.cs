@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Drop random buffs on using skills.";
-        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>(non-primary skills have a cooldown of 5 seconds)</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {buffDuration:N0} seconds: <color=#ffaa77>+{Pct(buffDamageAmt)} damage</color>, <color=#9999ff>+{Pct(buffMoveAmt)} movement speed</color>, <color=#eeff55>+{Pct(buffAttackAmt)} attack speed</color>, or <color=#997755>{buffArmorAmt:N0} armor</color>.";
+        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {buffDuration:N0} seconds: <color=#ffaa77>+{Pct(buffDamageAmt)} damage</color>, <color=#9999ff>+{Pct(buffMoveAmt)} movement speed</color>, <color=#eeff55>+{Pct(buffAttackAmt)} attack speed</color>, or <color=#997755>{buffArmorAmt:N0} armor</color>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -46,6 +46,14 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Flat armor bonus from the Earth buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float buffArmorAmt { get; private set; } = 10f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Internal cooldown on each non-primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float perSkillCooldown { get; private set; } = 3f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Internal cooldown on primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float primaryCooldown { get; private set; } = 6f;
 
 
 
@@ -195,6 +203,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
             On.EntityStates.Engi.EngiMissilePainter.Fire.FireMissile += Fire_FireMissile;
             On.EntityStates.Engi.EngiWeapon.PlaceTurret.FixedUpdate += PlaceTurret_FixedUpdate;
+            On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
         }
 
         public override void Uninstall() {
@@ -226,18 +235,33 @@ namespace ThinkInvisible.TinkersSatchel {
             
             if(self && self.skillLocator
                 && !blacklistedSkills.Contains(skill.skillDef)) {
-                bool isPrimary = self.skillLocator.FindSkillSlot(skill) == SkillSlot.Primary;
+                var count = GetCount(self);
+                if(count <= 0) return;
                 var pts = self.gameObject.GetComponent<PixieTubeStopwatch>();
                 if(!pts)
                     pts = self.gameObject.AddComponent<PixieTubeStopwatch>();
-                if(isPrimary) {
-                    if(!pts.CheckProc()) return;
-                }
-                var count = GetCount(self);
+                if(!pts.CheckProc(self.skillLocator.FindSkillSlot(skill))) return;
                 for(var i = 0; i < count; i++) {
                     SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
                 }
             }
+        }
+
+        private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef) {
+            var retv = orig(self, equipmentDef);
+            if(self && self.characterBody) {
+                var count = GetCount(self.characterBody);
+                if(count <= 0) return retv;
+                var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
+                if(!pts)
+                    pts = self.characterBody.gameObject.AddComponent<PixieTubeStopwatch>();
+                if(pts.CheckProcEquipment()) {
+                    for(var i = 0; i < count; i++) {
+                        SpawnWisp(self.characterBody.corePosition, self.characterBody.teamComponent ? self.characterBody.teamComponent.teamIndex : TeamIndex.None);
+                    }
+                }
+            }
+            return retv;
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
@@ -294,17 +318,27 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
     public class PixieTubeStopwatch : MonoBehaviour {
-        float stopwatch = 0f;
-        public bool CheckProc() {
-            if(stopwatch <= 0f) {
-                stopwatch = 6f;
+        float[] stopwatches = new[] { 0f, 0f, 0f, 0f, 0f };
+        public bool CheckProc(SkillSlot slot) {
+            if(slot == SkillSlot.None || slot > SkillSlot.Special) return false;
+            if(stopwatches[(int)slot] <= 0f) {
+                stopwatches[(int)slot] = (slot == SkillSlot.Primary) ? PixieTube.instance.primaryCooldown : PixieTube.instance.perSkillCooldown;
+                return true;
+            }
+            return false;
+        }
+        public bool CheckProcEquipment() {
+            if(stopwatches[4] <= 0f) {
+                stopwatches[4] = PixieTube.instance.perSkillCooldown;
                 return true;
             }
             return false;
         }
         void FixedUpdate() {
-            if(stopwatch > 0f)
-                stopwatch -= Time.fixedDeltaTime;
+            for(int i = 0; i < stopwatches.Length; i++) {
+                if(stopwatches[i] > 0f)
+                    stopwatches[i] -= Time.fixedDeltaTime;
+            }
         }
     }
 
