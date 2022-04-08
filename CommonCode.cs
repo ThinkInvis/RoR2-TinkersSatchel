@@ -145,8 +145,10 @@ namespace ThinkInvisible.TinkersSatchel {
 				var sk = _target.skillLocator.GetSkill(_slot);
 				if(sk) {
 					sk.SetSkillOverride(_target.gameObject, CommonCode.disabledSkillDef, GenericSkill.SkillOverridePriority.Network);
-					if(sk.stateMachine) //stop ongoing skills
+					if(sk.stateMachine) { //stop ongoing skills
 						sk.stateMachine.SetInterruptState(new EntityStates.Idle(), EntityStates.InterruptPriority.Any);
+						sk.stateMachine.SetNextStateToMain();
+					}
 				}
 			}
 		}
