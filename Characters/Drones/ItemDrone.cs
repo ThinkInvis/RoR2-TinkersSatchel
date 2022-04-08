@@ -317,8 +317,8 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!body) return;
             var ward = body.GetComponent<ItemWard>();
             if(!ward) return;
-            if(ward.radius != 80f)
-                ward.radius = 80f;
+            if(ward.radius != 100f)
+                ward.radius = 100f;
             int oldCount = 0;
             ward.itemcounts.TryGetValue(index, out oldCount);
             var ctc = Mathf.Abs(oldCount - count);
