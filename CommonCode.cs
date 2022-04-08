@@ -144,7 +144,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
 				var sk = _target.skillLocator.GetSkill(_slot);
 				if(sk) {
-					sk.SetSkillOverride(this, CommonCode.disabledSkillDef, GenericSkill.SkillOverridePriority.Network);
+					sk.SetSkillOverride(_target.gameObject, CommonCode.disabledSkillDef, GenericSkill.SkillOverridePriority.Network);
 					if(sk.stateMachine) //stop ongoing skills
 						sk.stateMachine.SetInterruptState(new EntityStates.Idle(), EntityStates.InterruptPriority.Any);
 				}
@@ -179,7 +179,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				}
 				var sk = _target.skillLocator.GetSkill(_slot);
 				if(sk) {
-					sk.UnsetSkillOverride(this, CommonCode.disabledSkillDef, GenericSkill.SkillOverridePriority.Network);
+					sk.UnsetSkillOverride(_target.gameObject, CommonCode.disabledSkillDef, GenericSkill.SkillOverridePriority.Network);
 				}
 			}
 		}
