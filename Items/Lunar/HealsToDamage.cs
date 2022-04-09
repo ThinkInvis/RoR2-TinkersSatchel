@@ -117,7 +117,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(!damageInfo.rejected && damageInfo.attacker && victim && victim.TryGetComponent<HealthComponent>(out var victimHealth) && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && damageInfo.attacker.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
                 var damageFrac = damageInfo.damage / attackerBody.damage;
-                if(damageInfo.damage / attackerBody.damage >= triggerBigHitFrac) {
+                if(damageFrac >= triggerBigHitFrac) {
                     victimHealth.TakeDamage(new DamageInfo {
                         attacker = damageInfo.attacker,
                         canRejectForce = true,
