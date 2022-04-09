@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to push nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> enemies within {PULL_RADIUS:N0} m after taking damage. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
+        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style> after taking damage. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -29,6 +29,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Percent chance for Unstable Klein Bottle to proc; stacks multiplicatively.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
         public float procChance { get; private set; } = 8f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageFrac { get; private set; } = 0.5f;
 
 
 
@@ -136,6 +140,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                     teamMembers.Remove(self.body.teamComponent);
                     float sqrad = PULL_RADIUS * PULL_RADIUS;
+                    var isCrit = self.body.RollCrit();
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
@@ -153,9 +158,22 @@ namespace ThinkInvisible.TinkersSatchel {
                             pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
                             velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
 
-                            if(tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
+                            if(tcpt.body && tcpt.body.isActiveAndEnabled) {
+                                if(tcpt.body.healthComponent) tcpt.body.healthComponent.TakeDamage(new DamageInfo {
+                                    attacker = self.gameObject,
+                                    canRejectForce = true,
+                                    crit = isCrit,
+                                    damage = self.body.damage * damageFrac,
+                                    damageColorIndex = DamageColorIndex.Item,
+                                    damageType = DamageType.AOE,
+                                    force = Vector3.zero,
+                                    inflictor = null,
+                                    position = tcpt.body.corePosition,
+                                    procChainMask = default,
+                                    procCoefficient = 1f
+                                });
                                 var mcpt = tcpt.body.GetComponent<IPhysMotor>();
-                                if(mcpt != null)
+                                if(mcpt != null && !tcpt.body.isBoss && !tcpt.body.isChampion)
                                     mcpt.ApplyForceImpulse(new PhysForceInfo {
                                         force = velVec * PULL_FORCE * mcpt.mass,
                                         ignoreGroundStick = true,
