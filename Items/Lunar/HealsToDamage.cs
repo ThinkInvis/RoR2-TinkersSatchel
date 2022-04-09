@@ -3,8 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
-using static R2API.RecalculateStatsAPI;
-using System.Linq;
 using R2API;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
