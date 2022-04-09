@@ -202,7 +202,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 / (HealsToDamage.instance.maxStoredNutrientsRatio * body.healthComponent.fullHealth)));
             body.SetBuffCount(HealsToDamage.instance.damageBonusDisplayBuff.buffIndex, Mathf.FloorToInt(
                 storedDamageOut * 100f
-                / HealsToDamage.instance.maxStoredDamageRatio * body.damage));
+                / (HealsToDamage.instance.maxStoredDamageRatio * body.damage)));
         }
     }
 }
