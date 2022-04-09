@@ -91,6 +91,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
         }
 
@@ -98,6 +99,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
             IL.RoR2.HealthComponent.Heal -= HealthComponent_Heal;
         }
 
@@ -110,15 +112,30 @@ namespace ThinkInvisible.TinkersSatchel {
                 body.gameObject.AddComponent<HealDamageConversionTracker>();
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(damageInfo != null && damageInfo.attacker) {
-                if(damageInfo.attacker.TryGetComponent<HealDamageConversionTracker>(out var hdct) && damageInfo.attacker.TryGetComponent<CharacterBody>(out var body)) {
-                    var damageFrac = damageInfo.damage / body.damage;
-                    if(damageFrac >= triggerBigHitFrac) {
-                        damageInfo.damage = (body.damage + hdct.EmptyDamageBuffer()) * damageFrac;
-                    }
+        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
+            orig(self, damageInfo, victim);
+
+            if(!damageInfo.rejected && damageInfo.attacker && victim && victim.TryGetComponent<HealthComponent>(out var victimHealth) && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && damageInfo.attacker.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
+                var damageFrac = damageInfo.damage / attackerBody.damage;
+                if(damageInfo.damage / attackerBody.damage >= triggerBigHitFrac) {
+                    victimHealth.TakeDamage(new DamageInfo {
+                        attacker = damageInfo.attacker,
+                        canRejectForce = true,
+                        crit = false,
+                        damage = damageFrac * hdct.EmptyDamageBuffer(),
+                        damageColorIndex = DamageColorIndex.Item,
+                        damageType = DamageType.Silent,
+                        force = Vector3.zero,
+                        inflictor = damageInfo.inflictor,
+                        position = damageInfo.position,
+                        procChainMask = damageInfo.procChainMask,
+                        procCoefficient = 0f
+                    });
                 }
             }
+        }
+
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             float h1 = 0;
             if(self) h1 = self.health;
             orig(self, damageInfo);
