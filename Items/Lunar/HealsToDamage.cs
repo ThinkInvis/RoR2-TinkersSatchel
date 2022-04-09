@@ -199,8 +199,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void UpdateBuffs() {
-            body.SetBuffCount(HealsToDamage.instance.nutrientsDisplayBuff.buffIndex, Mathf.CeilToInt(storedDamageIn * HealsToDamage.instance.extraConversionMalus / body.damage));
-            body.SetBuffCount(HealsToDamage.instance.damageBonusDisplayBuff.buffIndex, Mathf.CeilToInt(storedDamageOut / body.damage));
+            body.SetBuffCount(HealsToDamage.instance.nutrientsDisplayBuff.buffIndex, Mathf.FloorToInt(
+                storedDamageIn * 100f
+                / (HealsToDamage.instance.maxStoredNutrientsRatio * body.healthComponent.fullHealth)));
+            body.SetBuffCount(HealsToDamage.instance.damageBonusDisplayBuff.buffIndex, Mathf.FloorToInt(
+                storedDamageOut * 100f
+                / HealsToDamage.instance.maxStoredDamageRatio * body.damage));
         }
     }
 }
