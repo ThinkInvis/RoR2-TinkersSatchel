@@ -114,7 +114,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(damageInfo != null && damageInfo.attacker) {
                 if(damageInfo.attacker.TryGetComponent<HealDamageConversionTracker>(out var hdct) && damageInfo.attacker.TryGetComponent<CharacterBody>(out var body)) {
                     var damageFrac = damageInfo.damage / body.damage;
-                    if(damageFrac / body.damage > triggerBigHitFrac) {
+                    if(damageFrac >= triggerBigHitFrac) {
                         damageInfo.damage = (body.damage + hdct.EmptyDamageBuffer()) * damageFrac;
                     }
                 }
