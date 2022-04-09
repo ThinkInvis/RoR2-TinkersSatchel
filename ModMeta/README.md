@@ -388,7 +388,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>Hydroponic Cell</b><br>
 				<details>
 					<summary>Half of damage and healing received combine into damage on your next strike... <i>BUT you heal for 50% less.</i></summary>
-					<small>Store nutrients on taking damage equal to 50% (+50% per stack, hyperbolic) of the damage taken, up to 10x your max health. 50% (+50% per stack, hyperbolic) of incoming healing is blocked. Each point of blocked healing instead converts 1 point of nutrients into 0.5 points of damage on your next strike, up to 100x your damage stat.</small>
+					<small>Store nutrients on taking damage equal to 50% (+50% per stack, hyperbolic) of the damage taken, up to 10x your max health. 50% (+50% per stack, hyperbolic) of incoming healing is blocked. Each point of blocked healing instead converts 1 point of nutrients into 0.5 points of base damage, up to 100x your damage stat. This bonus damage will be consumed by your next attack that deals more than 400% damage.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -480,7 +480,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td colspan="3" align="center"><h3>Drones</h3></td>
 		</tr>
 		<tr>
-			<td>Custom Icon NYI</td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/ItemDroneIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Item Drone</b><br>
 				<details>
@@ -493,7 +493,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</ul></td>
 		</tr>
 		<tr>
-			<td>Custom Icon NYI</td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/BulwarkDroneIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Bulwark Drone</b><br>
 				<details>
@@ -578,6 +578,19 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.12.1**
+
+- Balance pass.
+	- Hydroponic Cell now adds base damage instead of direct damage.
+	- Hydroponic Cell now has a minimum hit threshold similar to the elemental bands (defaults to the same amount, 400%).
+	- Unstable Klein Bottle now deals damage (50% by default).
+	- Allowed Pixie Tube to work on some previously-blacklisted skills (MUL-T and Railgunner mode switches) now that an ICD is in place.
+	- Reduced Bulwark Drone shield (100 --> 60) and armor (50 --> 20). Testing found it to be both too evasive and too tanky at once.
+- Hydroponic Cell informational buffs are now percentages of max charge (was previously integer times max health / damage stat).
+- Hydroponic Cell is now implemented as a separate instance of damage due to technical limitations on the minimum hit threshold.
+- Improved AI on Item Drone and Equipment Drone. Slightly. They're still drones.
+- Item Drone and Equipment Drone now use continuous collision detection (much lower chance of flying through walls).
+
 **1.12.0** *The Science! Update, Part 3*
 
 - ADDED INTERACTABLES: Bulwark Drone!
@@ -611,23 +624,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Now has a configurable announcement for items dropped when the boss dies (item tier counts, total item count, or nothing).
 - All unlock achievement icons now display with the correct background (instead of no background).
 - Updated TILER2 dependency to 6.3.0.
-
-**1.11.0** *The Science! Update, Part 2*
-
-- ADDED INTERACTABLES: Item Drone!
-- ADDED ITEMS/EQUIPMENTS: Lodestone, Defibrillator!
-- Balance pass.
-	- Buffed Go-Faster Stripes' effect on Engineer's missiles (35 m/s --> 50 m/s).
-	- Go-Faster Stripes blast-jumping on Engineer and Bandit now resets vertical velocity.
-	- RC Controller now causes Equipment Drones to activate equipment.
-	- Pixie Tube may now proc on primary skill once every 5 seconds (allows effects on characters with only a primary skill, e.g. some monsters).
-- Artifact of Safekeeping:
-	- Now displays a chat message for each item taken by the teleporter boss.
-	- Vastly improved item drop trajectories (notably: much smaller chance to send items off cliffs).
-		- Item droplets will now try to find clear trajectories towards open navigation graph nodes.
-		- If not enough clear paths exist around the boss, will try scanning from the teleporter instead.
-		- If both methods fail to find any nodes, items will launch in a fixed circle around the teleporter.
-	- Hooks made more compatible with other mods.
-- Fixed missing TILER2 AutoConfigUpdateActions on many items (changing some configs mid-game would not immediately update language and/or character stats).
-- Updated R2API dependency to 4.3.5.
-- Updated TILER2 dependency to 6.2.0.

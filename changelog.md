@@ -1,5 +1,18 @@
 # Tinker's Satchel Changelog
 
+**1.12.1**
+
+- Balance pass.
+	- Hydroponic Cell now adds base damage instead of direct damage.
+	- Hydroponic Cell now has a minimum hit threshold similar to the elemental bands (defaults to the same amount, 400%).
+	- Unstable Klein Bottle now deals damage (50% by default).
+	- Allowed Pixie Tube to work on some previously-blacklisted skills (MUL-T and Railgunner mode switches) now that an ICD is in place.
+	- Reduced Bulwark Drone shield (100 --> 60) and armor (50 --> 20). Testing found it to be both too evasive and too tanky at once.
+- Hydroponic Cell informational buffs are now percentages of max charge (was previously integer times max health / damage stat).
+- Hydroponic Cell is now implemented as a separate instance of damage due to technical limitations on the minimum hit threshold.
+- Improved AI on Item Drone and Equipment Drone. Slightly. They're still drones.
+- Item Drone and Equipment Drone now use continuous collision detection (much lower chance of flying through walls).
+
 **1.12.0** *The Science! Update, Part 3*
 
 - ADDED INTERACTABLES: Bulwark Drone!
