@@ -22,7 +22,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Half of damage and healing received combine into damage on your next strike... <color=#FF7F7F>BUT you heal for 50% less.</color>";
-        protected override string GetDescString(string langid = null) => $"Store <color=#FF7F7F>nutrients</color> on <style=cIsDamage>taking damage</style> equal to <style=cIsDamage>{Pct(damageRatio)} <style=cStack>(+{Pct(damageRatio)} per stack, hyperbolic)</style></style> of the damage taken, up to {maxStoredNutrientsRatio:N0}x your <style=cIsHealth>max health</style>. <style=cIsHealing>{Pct(healingRatio)} <style=cStack>(+{Pct(healingRatio)} per stack, hyperbolic)</style> of incoming healing</style> is <color=#FF7F7F>blocked</color>. Each point of blocked <style=cIsHealing>healing</style> instead converts 1 point of <color=#FF7F7F>nutrients</color> into {extraConversionMalus:N1} points of <style=cIsDamage>damage</style> on your next strike, up to {maxStoredDamageRatio+1:N0}x your <style=cIsDamage>damage stat</style>.";
+        protected override string GetDescString(string langid = null) => $"Store <color=#FF7F7F>nutrients</color> on <style=cIsDamage>taking damage</style> equal to <style=cIsDamage>{Pct(damageRatio)} <style=cStack>(+{Pct(damageRatio)} per stack, hyperbolic)</style></style> of the damage taken, up to {maxStoredNutrientsRatio:N0}x your <style=cIsHealth>max health</style>. <style=cIsHealing>{Pct(healingRatio)} <style=cStack>(+{Pct(healingRatio)} per stack, hyperbolic)</style> of incoming healing</style> is <color=#FF7F7F>blocked</color>. Each point of blocked <style=cIsHealing>healing</style> instead converts 1 point of <color=#FF7F7F>nutrients</color> into {extraConversionMalus:N1} points of <style=cIsDamage>base damage</style>, up to {maxStoredDamageRatio + 1:N0}x your <style=cIsDamage>damage stat</style>. This bonus damage will be consumed by your next attack that deals more than <style=cIsDamage>{Pct(triggerBigHitFrac)} damage</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -48,6 +48,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum amount of outgoing bonus damage to store as a fraction of base damage.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float maxStoredDamageRatio { get; private set; } = 99f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Minimum fraction of damage stat required to proc on hit.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float triggerBigHitFrac { get; private set; } = 4f;
 
 
 
@@ -111,7 +115,10 @@ namespace ThinkInvisible.TinkersSatchel {
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             if(damageInfo != null && damageInfo.attacker) {
                 if(damageInfo.attacker.TryGetComponent<HealDamageConversionTracker>(out var hdct) && damageInfo.attacker.TryGetComponent<CharacterBody>(out var body)) {
-                    damageInfo.damage += hdct.EmptyDamageBuffer();
+                    var damageFrac = damageInfo.damage / body.damage;
+                    if(damageFrac / body.damage > triggerBigHitFrac) {
+                        damageInfo.damage = (body.damage + hdct.EmptyDamageBuffer()) * damageFrac;
+                    }
                 }
             }
             float h1 = 0;
