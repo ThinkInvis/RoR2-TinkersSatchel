@@ -124,7 +124,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         crit = false,
                         damage = damageFrac * hdct.EmptyDamageBuffer(),
                         damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.Silent,
+                        damageType = DamageType.Silent | DamageType.BypassArmor | DamageType.BypassBlock,
                         force = Vector3.zero,
                         inflictor = damageInfo.inflictor,
                         position = damageInfo.position,
