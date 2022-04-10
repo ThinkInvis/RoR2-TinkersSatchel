@@ -102,7 +102,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupConfig() {
             base.SetupConfig();
             meleeSurvivorBodyNames.UnionWith(meleeBodyNamesConfig.Split(',')
-                .Select(x => x.Trim()));
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {
@@ -157,7 +157,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
 
-                            bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name + "(Clone)");
+                            bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name);
                             if(self.body.name == "ToolbotBody(Clone)")
                                 shouldPull &= self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
 

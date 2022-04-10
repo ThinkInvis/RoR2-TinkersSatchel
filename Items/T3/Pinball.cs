@@ -105,7 +105,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupConfig() {
             base.SetupConfig();
 			projectileNameBlacklist.UnionWith(blacklistedProjectiles.Split(',')
-				.Select(x => x.Trim()));
+				.Select(x => x.Trim() + "(Clone)"));
 		}
 
         //todo: fix commando piercing shot (does not cause effect)
@@ -214,7 +214,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self) {
 			orig(self);
-			if(!self || !self.owner || self.GetComponent<ProjectileStickOnImpact>() || self.GetComponent<Deployable>() || projectileNameBlacklist.Contains(self.gameObject.name + "(Clone)")) return;
+			if(!self || !self.owner || self.GetComponent<ProjectileStickOnImpact>() || self.GetComponent<Deployable>() || projectileNameBlacklist.Contains(self.gameObject.name)) return;
 			var body = self.owner.GetComponent<CharacterBody>();
 			var count = GetCount(body);
 			var rb = self.GetComponent<Rigidbody>();
