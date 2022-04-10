@@ -222,7 +222,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 WeightedSelection<DirectorCard> filteredDeck = new WeightedSelection<DirectorCard>(8);
                 for(var i = 0; i < mostRecentDeck.Count; i++) {
                     var card = mostRecentDeck.GetChoice(i);
-                    if(card.value != null && card.value.IsAvailable())
+                    if(card.value != null && card.value.IsAvailable() && (validObjectNames.Contains(card.value.spawnCard.prefab.name) || validObjectNames.Contains(card.value.spawnCard.prefab.name + "(Clone)")))
                         filteredDeck.AddChoice(card);
                 }
                 if(filteredDeck.Count == 0)
