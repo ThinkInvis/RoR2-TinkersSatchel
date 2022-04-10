@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "The bigger the fight, the higher your damage.";
-        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(stackingDamageFrac, 1)} damage <style=cStack>(+{Pct(stackingDamageFrac, 1)} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{maxRange:N0} m</style>. Elites count for {eliteBonus : N1} more. Bosses count for {champBonus : N1} more.";
+        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(stackingDamageFrac, 1)} damage <style=cStack>(+{Pct(stackingDamageFrac, 1)} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{maxRange:N0} m</style>. Elites count as {eliteBonus+1 : N1} enemies, bosses count as {champBonus+1 : N1} enemies, and elite bosses count as {eliteBonus+champBonus+1} enemies.";
         protected override string GetLoreString(string langid = null) => "";
 
 
