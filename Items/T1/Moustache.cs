@@ -65,8 +65,8 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(moustacheBuff);
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatMoustacheAchievement>();
-            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_NAME", "Imperiled");
-            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION", "Be very close to 5 or more enemies at once.");
+            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_NAME", "Big Brawl");
+            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION", "Participate in a very busy fight.");
 
             itemDef.unlockableDef = unlockable;
         }
@@ -171,7 +171,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var mdt = self.GetComponent<MoustacheDamageTracker>();
                 if(!mdt)
                     mdt = self.gameObject.AddComponent<MoustacheDamageTracker>();
-                if(mdt.lastEnemyScoreTracked >= 5)
+                if(mdt.lastEnemyScoreTracked >= 30f)
                     Grant();
             }
         }
