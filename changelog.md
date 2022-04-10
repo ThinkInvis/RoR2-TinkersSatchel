@@ -1,5 +1,33 @@
 # Tinker's Satchel Changelog
 
+**1.12.2**
+
+- Balance pass.
+	- Macho Moustache:
+		- Now has a radius of 100 m (was 10 m).
+		- Now provides a damage bonus of 1% per enemy per stack (was 5%).
+		- Now only works on enemies in combat (used a skill recently) or danger (was hurt recently).
+		- Now counts elites and champions/bosses as multiple enemies (default +2/+4).
+		- Renamed existing config options to force changes, as this is effectively a major rework to further differentiate the item from Focus Crystal.
+	- Negative Feedback Loop:
+		- No longer triggers on-hurt items.
+		- No longer applies to fall damage.
+		- Now procs its DoT once per frame (effectively continuously) by default. This config was not forced to update; default 0.2s will still be in place for already-installed copies of the mod.
+	- Percussive Maintenance:
+		- Now also heals you when you heal an ally (for 25% the amount by default).
+	- Unstable Klein Bottle:
+		- Now pulls enemies instead of pushing if procced by a melee survivor. List of melee survivors is configurable (by body name).
+	- RC Controller:
+		- Nerfed first-stack fire rate to match per-extra-stack rate (100% --> 25%).
+	- Quantum Recombobulator:
+		- By default, can no longer work on, nor turn objects into, money barrels or Rusty Key boxes (latter did not work anyways).
+- Percussive Maintenance now passes through proc chain masks instead of using an empty one.
+- Phrasing tweak on Defibrillator description.
+- Fixed Pinball Wizard unintentionally affecting deployables and Rex's Special skill. Now has a configurable projectile name blacklist.
+- Quantum Recombobulator and Cardboard Box now expose their lists of valid object names to config.
+	- WARNING: May have unintended results on some untested objects!
+- Cardboard Box and Quantum Recombobulator now work on Broken Equipment Drones and Broken Item Drones, for real this time.
+
 **1.12.1**
 
 - Balance pass.

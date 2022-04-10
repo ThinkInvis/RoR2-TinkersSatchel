@@ -15,8 +15,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Deal more damage when surrounded.";
-        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(damageFrac)} base damage <style=cStack>(+{Pct(damageFrac)} per stack, linear)</style></style> per enemy within <style=cIsDamage>{range:N0} m</style>.";
+        protected override string GetPickupString(string langid = null) => "The bigger the fight, the higher your damage.";
+        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(stackingDamageFrac, 1)} damage <style=cStack>(+{Pct(stackingDamageFrac, 1)} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{maxRange:N0} m</style>. Elites count as {eliteBonus+1 : N1} enemies, bosses count as {champBonus+1 : N1} enemies, and elite bosses count as {eliteBonus+champBonus+1} enemies.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -25,12 +25,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Enemy scan range, in meters.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float range { get; private set; } = 10f;
+        public float maxRange { get; private set; } = 100f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Fractional damage bonus per enemy per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFrac { get; private set; } = 0.05f;
+        public float stackingDamageFrac { get; private set; } = 0.01f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
+        [AutoConfig("Enemy count to add per elite in range.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float eliteBonus { get; private set; } = 2f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
+        [AutoConfig("Enemy count to add per champion/boss in range.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float champBonus { get; private set; } = 4f;
 
 
         ////// Other Fields/Properties //////
@@ -58,8 +65,8 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(moustacheBuff);
 
             unlockable = UnlockableAPI.AddUnlockable<TkSatMoustacheAchievement>();
-            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_NAME", "Imperiled");
-            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION", "Be very close to 5 or more enemies at once.");
+            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_NAME", "Big Brawl");
+            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION", "Participate in a very busy fight.");
 
             itemDef.unlockableDef = unlockable;
         }
@@ -89,14 +96,14 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!sender) return;
             var cpt = sender.GetComponent<MoustacheDamageTracker>();
             if(!cpt) return;
-            sender.SetBuffCount(moustacheBuff.buffIndex, GetCount(sender) * cpt.lastEnemiesTracked);
-            args.damageMultAdd += cpt.lastEnemiesTracked * GetCount(sender) * damageFrac;
+            sender.SetBuffCount(moustacheBuff.buffIndex, Mathf.FloorToInt(GetCount(sender) * cpt.lastEnemyScoreTracked));
+            args.damageMultAdd += cpt.lastEnemyScoreTracked * GetCount(sender) * stackingDamageFrac;
         }
     }
 
     [RequireComponent(typeof(CharacterBody))]
     public class MoustacheDamageTracker : MonoBehaviour {
-        public int lastEnemiesTracked = 0;
+        public float lastEnemyScoreTracked = 0;
 
         float _stopwatch = 0f;
         CharacterBody body;
@@ -112,10 +119,16 @@ namespace ThinkInvisible.TinkersSatchel {
             if(_stopwatch < 0f) {
                 _stopwatch = UPDATE_INTERVAL;
                 var targets = MiscUtil.GatherEnemies(TeamComponent.GetObjectTeam(this.gameObject));
-                lastEnemiesTracked = 0;
+                lastEnemyScoreTracked = 0;
                 foreach(var target in targets) {
-                    if(Vector3.Distance(target.transform.position, this.transform.position) < Moustache.instance.range)
-                        lastEnemiesTracked++;
+                    if(Vector3.Distance(target.transform.position, this.transform.position) < Moustache.instance.maxRange) {
+                        if(!target.body || (target.body.outOfCombat && target.body.outOfDanger)) continue;
+                        lastEnemyScoreTracked += 1f;
+                        if(target.body.isElite)
+                            lastEnemyScoreTracked += Moustache.instance.eliteBonus;
+                        if(target.body.isBoss || target.body.isChampion)
+                            lastEnemyScoreTracked += Moustache.instance.champBonus;
+                    }
                 }
 
                 body.MarkAllStatsDirty();
@@ -158,7 +171,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var mdt = self.GetComponent<MoustacheDamageTracker>();
                 if(!mdt)
                     mdt = self.gameObject.AddComponent<MoustacheDamageTracker>();
-                if(mdt.lastEnemiesTracked >= 5)
+                if(mdt.lastEnemyScoreTracked >= 30f)
                     Grant();
             }
         }

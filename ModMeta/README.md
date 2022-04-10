@@ -76,7 +76,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>Percussive Maintenance</b><br>
 				<details>
 					<summary>Hit allies to heal them.</summary>
-					<small>Hitting an ally with a direct attack heals them for 2.0 health (+2.0 per stack).</small>
+					<small>Hitting an ally with a direct attack heals them for 2.0 health (+2.0 per stack) and you for 25% as much.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -89,13 +89,12 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td>
 				<b>Macho Moustache</b><br>
 				<details>
-					<summary>Deal more damage when surrounded.</summary>
-					<small>Gain +5% base damage (+5% per stack, linear) per enemy within 10 m.</small>
+					<summary>The bigger the fight, the higher your damage.</summary>
+					<small>Gain 1% damage (+1% per stack, linear) per in-combat or in-danger enemy within 100 m. Elites count as 3 enemies, bosses count as 5 enemies, and elite bosses count as 7 enemies.</small>
 				</details>
 			</td>
 			<td><ul>
-				<li>Lower range than Focus Crystal, and provides ~1/4 as much damage per stack; however, the effect ceiling is higher if you're willing to put yourself in additional danger.</li>
-				<li><details><summary>Unlock (spoilers!):</summary>Be within the activation range for this item of 5 or more enemies at once.</details></li>
+				<li><details><summary>Unlock (spoilers!):</summary>Be in a fight with a score of 30 or more (scored as if you had 1 stack of this item).</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -145,8 +144,8 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			<td>
 				<b>Unstable Klein Bottle</b><br>
 				<details>
-					<summary>Chance to push nearby enemies on taking damage.</summary>
-					<small>8.0% (+8.0% per stack, mult.) chance to push away enemies within 20 m after taking damage. Has an internal cooldown of 0.5 s.</small>
+					<summary>Chance to push or pull nearby enemies on taking damage.</summary>
+					<small>8.0% (+8.0% per stack, mult.) chance to push away or pull (pulls on melee survivors) enemies within 20 m after taking damage. Has an internal cooldown of 0.5 s.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -173,7 +172,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>Negative Feedback Loop</b><br>
 				<details>
 					<summary>Some incoming damage is dealt over time.</summary>
-					<small>20% (+20% per stack, hyperbolic) of incoming damage is applied gradually over 5 seconds, ticking every 0.2 seconds. Healing past max health will apply to the pool of delayed damage.</small>
+					<small>20% (+20% per stack, hyperbolic) of incoming damage is applied gradually over 5 seconds, ticking continuously. Healing past max health will apply to the pool of delayed damage.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -200,7 +199,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>Defibrillator</b><br>
 				<details>
 					<summary>Your heals can crit.</summary>
-					<small>Your crit chance applies to all outgoing healing for +50% (+25% per stack) HP healed.</small>
+					<small>Your crit chance applies to all healing that you cause, for +50% (+25% per stack) HP healed.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -236,6 +235,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 			</td>
 			<td><ul>
 				<li>Overrides gravity, impact fuse time, etc. on affected projectiles to unerringly track towards a target.</li>
+				<li>Does not work on deployables (mines, shields, etc.), sticky projectiles, or either of Rex's Special skills.</li>
 				<li>Ding!</li>
 				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Gasoline, Will-o'-the-wisp, Ceremonial Dagger, Frost Relic, Resonance Disc, and Shatterspleen at once.</details></li>
 			</ul></td>
@@ -364,7 +364,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>RC Controller</b><br>
 				<details>
 					<summary>Nearby turrets and drones attack with you... <i>BUT no longer attack automatically.</i></summary>
-					<small>All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +100% attack speed (+25% per stack).</small>
+					<small>All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +25% attack speed (+25% per stack).</small>
 				</details>
 			</td>
 			<td><ul>
@@ -578,6 +578,29 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.12.2**
+
+- Balance pass.
+	- Macho Moustache:
+		- Now has a radius of 100 m (was 10 m).
+		- Now provides a damage bonus of 1% per enemy per stack (was 5%).
+		- Now only works on enemies in combat (used a skill recently) or danger (was hurt recently).
+		- Now counts elites and champions/bosses as multiple enemies (default +2/+4).
+		- Renamed existing config options to force changes, as this is effectively a major rework to further differentiate the item from Focus Crystal.
+	- Negative Feedback Loop:
+		- No longer triggers on-hurt items.
+		- No longer applies to fall damage.
+		- Now procs its DoT once per frame (effectively continuously) by default. This config was not forced to update; default 0.2s will still be in place for already-installed copies of the mod.
+	- Percussive Maintenance:
+		- Now also heals you when you heal an ally (for 25% the amount by default).
+	- Unstable Klein Bottle:
+		- Now pulls enemies instead of pushing if procced by a melee survivor. List of melee survivors is configurable (by body name).
+	- RC Controller:
+		- Nerfed first-stack fire rate to match per-extra-stack rate (100% --> 25%).
+- Percussive Maintenance now passes through proc chain masks instead of using an empty one.
+- Phrasing tweak on Defibrillator description.
+- Fixed Pinball Wizard unintentionally affecting deployables and Rex's Special skill. Now has a configurable projectile name blacklist.
+
 **1.12.1**
 
 - Balance pass.
@@ -613,14 +636,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.11.2**
 
 - Fixed Item Drone interactables spawning while disabled.
-
-**1.11.1**
-
-- Added unlock achievements to Macho Moustache (+Villainous Visage), Old War Lidar, Unstable Klein Bottle, Defibrillator, Pinball Wizard, Spacetime Skein, Lodestone, and Quantum Recombobulator.
-- Added a config to disable self-proc on Triskellion Brooch (self-proc is allowed by default).
-- Fixed Quantum Recombobulator being usable twice on the same object if it recombobulates into a multishop.
-- Artifact of Safekeeping:
-	- Added a config option controlling what to display in chat when an item is taken (specific item name, item tier only, vague "something was taken", or nothing).
-	- Now has a configurable announcement for items dropped when the boss dies (item tier counts, total item count, or nothing).
-- All unlock achievement icons now display with the correct background (instead of no background).
-- Updated TILER2 dependency to 6.3.0.

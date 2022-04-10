@@ -7,6 +7,7 @@ using R2API;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {
@@ -18,8 +19,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to push nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style> after taking damage. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
+        protected override string GetPickupString(string langid = null) => "Chance to push or pull nearby enemies on taking damage.";
+        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -34,6 +35,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
 
+        [AutoConfig("Which survivor body names count as melee and proc pull instead of push (comma-delimited, leading/trailing whitespace will be ignored). MUL-T has special hardcoded handling for detecting Power-Saw, but will never count as melee if not in this list.",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string meleeBodyNamesConfig { get; private set; } = "CrocoBody, MercBody, LoaderBody, ToolbotBody";
 
 
         ////// Other Fields/Properties //////
@@ -46,6 +50,8 @@ namespace ThinkInvisible.TinkersSatchel {
         private GameObject blackHolePrefab;
 
         internal static UnlockableDef unlockable;
+
+        public HashSet<string> meleeSurvivorBodyNames { get; private set; } = new HashSet<string>();
 
 
 
@@ -91,6 +97,12 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_KLEINBOTTLE_ACHIEVEMENT_DESCRIPTION", "Block, or take 1 or less points of damage from, 3 attacks in a row.");
 
             itemDef.unlockableDef = unlockable;
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            meleeSurvivorBodyNames.UnionWith(meleeBodyNamesConfig.Split(',')
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {
@@ -144,19 +156,29 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
-                            float theta;
 
-                            if(velVec.x == 0 && velVec.z == 0)
-                                theta = UnityEngine.Random.value * Mathf.PI * 2f;
-                            else
-                                theta = Mathf.Atan2(velVec.z, velVec.x);
+                            bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name);
+                            if(self.body.name == "ToolbotBody(Clone)")
+                                shouldPull &= self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
 
-                            float mag = velVec.magnitude;
-                            if(mag == 0) mag = velVec.y;
+                            if(shouldPull) {
+                                var trajectory = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
+                                velVec = trajectory.vInitial;
+                            } else {
+                                float theta;
 
-                            var pitch = Mathf.Asin(velVec.y / mag);
-                            pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
-                            velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
+                                if(velVec.x == 0 && velVec.z == 0)
+                                    theta = UnityEngine.Random.value * Mathf.PI * 2f;
+                                else
+                                    theta = Mathf.Atan2(velVec.z, velVec.x);
+
+                                float mag = velVec.magnitude;
+                                if(mag == 0) mag = velVec.y;
+
+                                var pitch = Mathf.Asin(velVec.y / mag);
+                                pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
+                                velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
+                            }
 
                             if(tcpt.body && tcpt.body.isActiveAndEnabled) {
                                 if(tcpt.body.healthComponent) tcpt.body.healthComponent.TakeDamage(new DamageInfo {

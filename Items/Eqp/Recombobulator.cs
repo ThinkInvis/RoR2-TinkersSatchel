@@ -6,6 +6,7 @@ using R2API;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Recombobulator : Equipment<Recombobulator> {
@@ -26,44 +27,51 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Config //////
+
+        [AutoConfig("Which object names are allowed for recombobulation (comma-delimited, leading/trailing whitespace will be ignored). Items not in this list will also not be selected as the new object. WARNING: May have unintended results on some untested objects!",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "Turret1Broken",
+            "Drone1Broken",
+            "Drone2Broken",
+            "EquipmentDroneBroken",
+            "MissileDroneBroken",
+            "FlameDroneBroken",
+            "MegaDroneBroken",
+            "Chest1",
+            "Chest2",
+            "GoldChest",
+            "CasinoChest",
+            "ShrineHealing",
+            "EquipmentBarrel",
+            "ShrineBlood",
+            "ShrineChance",
+            "ShrineCombat",
+            "ShrineBoss",
+            "ShrineCleanse",
+            "ShrineRestack",
+            "ShrineGoldshoresAccess",
+            "CategoryChestDamage",
+            "CategoryChestHealing",
+            "CategoryChestUtility",
+            "Duplicator",
+            "DuplicatorLarge",
+            "DuplicatorWild",
+            "Scrapper",
+            "MultiShopTerminal",
+            "MultiShopLargeTerminal",
+            "MultiShopEquipmentTerminal",
+            "LunarChest",
+            "ItemDroneBroken",
+            "BulwarkDroneBroken"
+        });
+
+
+
         ////// Other Fields/Properties //////
 
-        private static readonly string[] validObjectNames = new[] {
-            "Turret1Broken(Clone)",
-            "Drone1Broken(Clone)",
-            "Drone2Broken(Clone)",
-            "EquipmentDroneBroken(Clone)",
-            "MissileDroneBroken(Clone)",
-            "FlameDroneBroken(Clone)",
-            "MegaDroneBroken(Clone)",
-            "Chest1(Clone)",
-            "Chest2(Clone)",
-            "GoldChest(Clone)",
-            "CasinoChest(Clone)",
-            "KeyLockbox(Clone)",
-            "ShrineHealing(Clone)",
-            "EquipmentBarrel(Clone)",
-            "ShrineBlood(Clone)",
-            "ShrineChance(Clone)",
-            "ShrineCombat(Clone)",
-            "ShrineBoss(Clone)",
-            "ShrineCleanse(Clone)",
-            "ShrineRestack(Clone)",
-            "ShrineGoldshoresAccess(Clone)",
-            "CategoryChestDamage(Clone)",
-            "CategoryChestHealing(Clone)",
-            "CategoryChestUtility(Clone)",
-            "Barrel1(Clone)",
-            "Duplicator(Clone)",
-            "DuplicatorLarge(Clone)",
-            "DuplicatorWild(Clone)",
-            "Scrapper(Clone)",
-            "MultiShopTerminal(Clone)",
-            "MultiShopLargeTerminal(Clone)",
-            "MultiShopEquipmentTerminal(Clone)",
-            "LunarChest(Clone)",
-            "TkSatItemDroneBroken(Clone)"
-        };
+        public static HashSet<string> validObjectNames { get; private set; } = new HashSet<string>();
         WeightedSelection<DirectorCard> mostRecentDeck = null;
         internal static UnlockableDef unlockable;
 
@@ -83,6 +91,12 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION", "Recycle a rare or boss item.");
 
             equipmentDef.unlockableDef = unlockable;
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            validObjectNames.UnionWith(objectNamesConfig.Split(',')
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {
@@ -207,7 +221,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 WeightedSelection<DirectorCard> filteredDeck = new WeightedSelection<DirectorCard>(8);
                 for(var i = 0; i < mostRecentDeck.Count; i++) {
                     var card = mostRecentDeck.GetChoice(i);
-                    if(card.value != null && card.value.IsAvailable())
+                    if(card.value != null && card.value.IsAvailable() && (validObjectNames.Contains(card.value.spawnCard.prefab.name) || validObjectNames.Contains(card.value.spawnCard.prefab.name + "(Clone)")))
                         filteredDeck.AddChoice(card);
                 }
                 if(filteredDeck.Count == 0)

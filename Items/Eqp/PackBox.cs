@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
+using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackBox : Equipment<PackBox> {
@@ -25,51 +26,59 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Config //////
+
+        [AutoConfig("Which object names are allowed for packing (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "Turret1Body",
+            "Turret1Broken",
+            "SquidTurretBody",
+            "Drone1Broken",
+            "Drone2Broken",
+            "GoldChest",
+            "CasinoChest",
+            "MissileDroneBroken",
+            "FlameDroneBroken",
+            "MegaDroneBroken",
+            "EquipmentDroneBroken",
+            "Chest1",
+            "Chest2",
+            "KeyLockbox",
+            "ShrineHealing",
+            "EquipmentBarrel",
+            "ShrineBlood",
+            "ShrineChance",
+            "ShrineCombat",
+            "ShrineBoss",
+            "ShrineCleanse",
+            "ShrineRestack",
+            "ShrineGoldshoresAccess",
+            "CategoryChestDamage",
+            "CategoryChestHealing",
+            "CategoryChestUtility",
+            "Barrel1",
+            "Duplicator",
+            "DuplicatorLarge",
+            "DuplicatorWild",
+            "Scrapper",
+            "MultiShopTerminal",
+            "MultiShopLargeTerminal",
+            "MultiShopEquipmentTerminal",
+            "FusionCellDestructibleBody",
+            "ExplosivePotDestructibleBody",
+            "WarbannerWard",
+            "LunarChest",
+            "LunarShopTerminal", //todo: disallow or kick out of bazaar, achievement
+            "ItemDroneBroken",
+            "BulwarkDroneBroken"
+        });
+
+
 
         ////// Other Fields/Properties //////
 
-        private static readonly string[] validObjectNames = new[] {
-            "Turret1Body(Clone)",
-            "Turret1Broken(Clone)",
-            "SquidTurretBody(Clone)",
-            "Drone1Broken(Clone)",
-            "Drone2Broken(Clone)",
-            "GoldChest(Clone)",
-            "CasinoChest(Clone)",
-            "MissileDroneBroken(Clone)",
-            "FlameDroneBroken(Clone)",
-            "MegaDroneBroken(Clone)",
-            "EquipmentDroneBroken(Clone)",
-            "Chest1(Clone)",
-            "Chest2(Clone)",
-            "KeyLockbox(Clone)",
-            "ShrineHealing(Clone)",
-            "EquipmentBarrel(Clone)",
-            "ShrineBlood(Clone)",
-            "ShrineChance(Clone)",
-            "ShrineCombat(Clone)",
-            "ShrineBoss(Clone)",
-            "ShrineCleanse(Clone)",
-            "ShrineRestack(Clone)",
-            "ShrineGoldshoresAccess(Clone)",
-            "CategoryChestDamage(Clone)",
-            "CategoryChestHealing(Clone)",
-            "CategoryChestUtility(Clone)",
-            "Barrel1(Clone)",
-            "Duplicator(Clone)",
-            "DuplicatorLarge(Clone)",
-            "DuplicatorWild(Clone)",
-            "Scrapper(Clone)",
-            "MultiShopTerminal(Clone)",
-            "MultiShopLargeTerminal(Clone)",
-            "MultiShopEquipmentTerminal(Clone)",
-            "FusionCellDestructibleBody(Clone)",
-            "ExplosivePotDestructibleBody(Clone)",
-            "WarbannerWard(Clone)",
-            "LunarChest(Clone)",
-            "LunarShopTerminal(Clone)", //todo: disallow or kick out of bazaar, achievement
-            "TkSatItemDroneBroken(Clone)"
-        };
+        public static HashSet<string> validObjectNames { get; private set; } = new HashSet<string>();
         readonly Sprite secondaryIconResource;
         GameObject packIndicatorPrefab;
         GameObject placeIndicatorPrefab;
@@ -117,6 +126,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPack>();
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPlace>();
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            validObjectNames.UnionWith(objectNamesConfig.Split(',')
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {

@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Some incoming damage is dealt over time.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking every {bufferRate} seconds. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking {(bufferRate <= 0f ? "continuously" : $"every {bufferRate:N2} seconds")}. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -38,7 +38,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Tick interval of the damage buffer, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float bufferRate { get; private set; } = 0.2f;
+        public float bufferRate { get; private set; } = 0f;
 
 
 
@@ -84,9 +84,10 @@ namespace ThinkInvisible.TinkersSatchel {
                 x => x.MatchStloc((byte)locIndex))
                 ) {
                 c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldarg_1);
                 c.Emit(OpCodes.Ldloc_S, (byte)locIndex);
-                c.EmitDelegate<Func<HealthComponent, float, float>>((hc, origFinalDamage) => {
-                    if(!hc) return origFinalDamage;
+                c.EmitDelegate<Func<HealthComponent, DamageInfo, float, float>>((hc, damageInfo, origFinalDamage) => {
+                    if(!hc || damageInfo == null || (damageInfo.damageType & DamageType.FallDamage) != 0) return origFinalDamage;
                     var count = GetCount(hc.body);
                     if(count <= 0) return origFinalDamage;
                     var cpt = hc.GetComponent<DelayedDamageBufferComponent>();
@@ -148,7 +149,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(stopwatch <= 0f) {
                     stopwatch = DamageBuffer.instance.bufferRate;
                     float accum = 0f;
-                    var frac = DamageBuffer.instance.bufferRate / DamageBuffer.instance.bufferDuration;
+                    var frac = Mathf.Max(DamageBuffer.instance.bufferRate, Time.fixedDeltaTime) / DamageBuffer.instance.bufferDuration;
                     for(var i = 0; i < bufferDamage.Count; i++) {
                         var rem = Mathf.Min(bufferDamage[i].max * frac, bufferDamage[i].curr);
                         accum += rem;
@@ -156,20 +157,32 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                     bufferDamage.RemoveAll(x => x.curr <= 0f);
                     isApplying = true;
-                    Vector3 pos = transform.position;
-                    if(hc.body)
-                        pos = hc.body.corePosition;
-                    hc.TakeDamage(new DamageInfo {
-                        attacker = null,
-                        crit = false,
-                        damage = accum,
-                        force = Vector3.zero,
-                        inflictor = null,
-                        position = pos,
-                        procCoefficient = 0,
-                        damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.DoT | DamageType.Silent
-                    });
+
+                    if(accum > 0f && hc.barrier > 0f) {
+                        if(accum <= hc.barrier) {
+                            hc.Networkbarrier = hc.barrier - accum;
+                            accum = 0f;
+                        } else {
+                            accum -= hc.barrier;
+                            hc.Networkbarrier = 0f;
+                        }
+                    }
+                    if(accum > 0f && hc.shield > 0f) {
+                        if(accum <= hc.shield) {
+                            hc.Networkshield = hc.shield - accum;
+                            accum = 0f;
+                        } else {
+                            accum -= hc.shield;
+                            hc.Networkshield = 0f;
+                            EffectManager.SpawnEffect(HealthComponent.AssetReferences.shieldBreakEffectPrefab, new EffectData {
+                                origin = base.transform.position,
+                                scale = hc.body ? hc.body.radius : 1f
+                            }, true);
+                        }
+                    }
+                    if(accum > 0f)
+                        hc.Networkhealth -= accum;
+
                     isApplying = false;
                 }
             }
