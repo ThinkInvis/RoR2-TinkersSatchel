@@ -51,13 +51,19 @@ namespace ThinkInvisible.TinkersSatchel {
 			AutoConfigFlags.None, 0f, 100f)]
 		public float bounceChance { get; private set; } = 15f;
 
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+		[AutoConfig("Extra projectile names to blacklist (comma-delimited, leading/trailing whitespace will be ignored).",
+			AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+		public string blacklistedProjectiles { get; private set; } = "TreebotFlower1, TreebotFlower2, TreebotFlowerSeed";
+
 
 
 		////// Other Fields/Properties //////
-		
+
 		internal PhysicMaterial bouncyPhysmat;
 		internal GameObject effectPrefab;
 		internal static UnlockableDef unlockable;
+		public List<string> projectileNameBlacklist { get; private set; } = new List<string>();
 
 
 
@@ -96,9 +102,15 @@ namespace ThinkInvisible.TinkersSatchel {
 			itemDef.unlockableDef = unlockable;
 		}
 
-		//todo: fix commando piercing shot, maybe blacklist rex ult
+        public override void SetupConfig() {
+            base.SetupConfig();
+			projectileNameBlacklist.AddRange(blacklistedProjectiles.Split(',')
+				.Select(x => x.Trim()));
+		}
 
-		public override void Install() {
+        //todo: fix commando piercing shot (does not cause effect)
+
+        public override void Install() {
 			base.Install();
             On.RoR2.Projectile.ProjectileController.Start += ProjectileController_Start;
             On.RoR2.Projectile.ProjectileImpactExplosion.OnProjectileImpact += ProjectileImpactExplosion_OnProjectileImpact;
@@ -202,7 +214,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self) {
 			orig(self);
-			if(!self || !self.owner || self.GetComponent<ProjectileStickOnImpact>()) return;
+			if(!self || !self.owner || self.GetComponent<ProjectileStickOnImpact>() || self.GetComponent<Deployable>() || projectileNameBlacklist.Contains(self.gameObject.name + "(Clone)")) return;
 			var body = self.owner.GetComponent<CharacterBody>();
 			var count = GetCount(body);
 			var rb = self.GetComponent<Rigidbody>();
