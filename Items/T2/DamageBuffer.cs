@@ -156,20 +156,32 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                     bufferDamage.RemoveAll(x => x.curr <= 0f);
                     isApplying = true;
-                    Vector3 pos = transform.position;
-                    if(hc.body)
-                        pos = hc.body.corePosition;
-                    hc.TakeDamage(new DamageInfo {
-                        attacker = null,
-                        crit = false,
-                        damage = accum,
-                        force = Vector3.zero,
-                        inflictor = null,
-                        position = pos,
-                        procCoefficient = 0,
-                        damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.DoT | DamageType.Silent
-                    });
+
+                    if(accum > 0f && hc.barrier > 0f) {
+                        if(accum <= hc.barrier) {
+                            hc.Networkbarrier = hc.barrier - accum;
+                            accum = 0f;
+                        } else {
+                            accum -= hc.barrier;
+                            hc.Networkbarrier = 0f;
+                        }
+                    }
+                    if(accum > 0f && hc.shield > 0f) {
+                        if(accum <= hc.shield) {
+                            hc.Networkshield = hc.shield - accum;
+                            accum = 0f;
+                        } else {
+                            accum -= hc.shield;
+                            hc.Networkshield = 0f;
+                            EffectManager.SpawnEffect(HealthComponent.AssetReferences.shieldBreakEffectPrefab, new EffectData {
+                                origin = base.transform.position,
+                                scale = hc.body ? hc.body.radius : 1f
+                            }, true);
+                        }
+                    }
+                    if(accum > 0f)
+                        hc.Networkhealth -= accum;
+
                     isApplying = false;
                 }
             }
