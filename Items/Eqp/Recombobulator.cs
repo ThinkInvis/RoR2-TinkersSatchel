@@ -43,7 +43,6 @@ namespace ThinkInvisible.TinkersSatchel {
             "Chest2",
             "GoldChest",
             "CasinoChest",
-            "KeyLockbox",
             "ShrineHealing",
             "EquipmentBarrel",
             "ShrineBlood",
