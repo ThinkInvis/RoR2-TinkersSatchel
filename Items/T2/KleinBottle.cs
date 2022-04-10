@@ -7,6 +7,7 @@ using R2API;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {
@@ -34,6 +35,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Which survivor body names count as melee and proc pull instead of push (comma-delimited, leading/trailing whitespace will be ignored). MUL-T has special hardcoded handling for detecting Power-Saw, but will never count as melee if not in this list.",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string meleeBodyNamesConfig { get; private set; } = "CrocoBody, MercBody, LoaderBody, ToolbotBody";
 
 
         ////// Other Fields/Properties //////
@@ -60,13 +65,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-
-            meleeSurvivorBodyNames.AddRange(new[] {
-                "CrocoBody",
-                "MercBody",
-                "LoaderBody"
-                //MUL-T has hardcoded handling
-            });
 
             var tempPfb = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/GravSphere").InstantiateClone("temporary setup prefab", false);
             var proj = tempPfb.GetComponent<RoR2.Projectile.ProjectileSimple>();
@@ -100,6 +98,12 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_KLEINBOTTLE_ACHIEVEMENT_DESCRIPTION", "Block, or take 1 or less points of damage from, 3 attacks in a row.");
 
             itemDef.unlockableDef = unlockable;
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            meleeSurvivorBodyNames.AddRange(meleeBodyNamesConfig.Split(',')
+                .Select(x => x.Trim()));
         }
 
         public override void Install() {
@@ -156,7 +160,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
                             bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name + "(Clone)");
                             if(self.body.name == "ToolbotBody(Clone)")
-                                shouldPull = self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
+                                shouldPull &= self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
 
                             if(shouldPull) {
                                 var trajectory = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
