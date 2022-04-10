@@ -18,8 +18,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to push nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"{Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style> after taking damage. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
+        protected override string GetPickupString(string langid = null) => "Chance to push or pull nearby enemies on taking damage.";
+        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on Acrid, Mercenary, Loader, and MUL-T with Power-Saw active)</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -47,6 +47,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         internal static UnlockableDef unlockable;
 
+        public List<string> meleeSurvivorBodyNames { get; private set; } = new List<string>();
+
 
 
         ////// TILER2 Module Setup //////
@@ -58,6 +60,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            meleeSurvivorBodyNames.AddRange(new[] {
+                "CrocoBody",
+                "MercBody",
+                "LoaderBody"
+                //MUL-T has hardcoded handling
+            });
 
             var tempPfb = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/GravSphere").InstantiateClone("temporary setup prefab", false);
             var proj = tempPfb.GetComponent<RoR2.Projectile.ProjectileSimple>();
@@ -144,19 +153,29 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
-                            float theta;
 
-                            if(velVec.x == 0 && velVec.z == 0)
-                                theta = UnityEngine.Random.value * Mathf.PI * 2f;
-                            else
-                                theta = Mathf.Atan2(velVec.z, velVec.x);
+                            bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name + "(Clone)");
+                            if(self.body.name == "ToolbotBody(Clone)")
+                                shouldPull = self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
 
-                            float mag = velVec.magnitude;
-                            if(mag == 0) mag = velVec.y;
+                            if(shouldPull) {
+                                var trajectory = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
+                                velVec = trajectory.vInitial;
+                            } else {
+                                float theta;
 
-                            var pitch = Mathf.Asin(velVec.y / mag);
-                            pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
-                            velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
+                                if(velVec.x == 0 && velVec.z == 0)
+                                    theta = UnityEngine.Random.value * Mathf.PI * 2f;
+                                else
+                                    theta = Mathf.Atan2(velVec.z, velVec.x);
+
+                                float mag = velVec.magnitude;
+                                if(mag == 0) mag = velVec.y;
+
+                                var pitch = Mathf.Asin(velVec.y / mag);
+                                pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
+                                velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
+                            }
 
                             if(tcpt.body && tcpt.body.isActiveAndEnabled) {
                                 if(tcpt.body.healthComponent) tcpt.body.healthComponent.TakeDamage(new DamageInfo {
