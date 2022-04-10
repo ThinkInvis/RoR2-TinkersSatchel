@@ -136,11 +136,13 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, itemIndex, count);
             if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
-            if(!minv) {
-                minv = self.gameObject.AddComponent<MimicInventory>();
-                minv.LocateOrCreateComponentsServer();
+            if(minv || itemIndex == itemDef.itemIndex) {
+                if(!minv) {
+                    minv = self.gameObject.AddComponent<MimicInventory>();
+                    minv.LocateOrCreateComponentsServer();
+                }
+                minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
             }
-            minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
         }
 
         private void On_InvRemoveItemByIndex(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
