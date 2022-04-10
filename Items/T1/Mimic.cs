@@ -136,7 +136,10 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, itemIndex, count);
             if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
-            if(!minv) minv = self.gameObject.AddComponent<MimicInventory>();
+            if(!minv) {
+                minv = self.gameObject.AddComponent<MimicInventory>();
+                minv.LocateOrCreateComponentsServer();
+            }
             minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
         }
 
@@ -144,7 +147,10 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, itemIndex, count);
             if(count <= 0) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
-            if(!minv) minv = self.gameObject.AddComponent<MimicInventory>();
+            if(!minv) {
+                minv = self.gameObject.AddComponent<MimicInventory>();
+                minv.LocateOrCreateComponentsServer();
+            }
             if(itemIndex != catalogIndex) {
                 if(minv.fakeInv.GetRealItemCount(itemIndex) == 0)
                     minv.Redistribute(itemIndex);
@@ -182,12 +188,19 @@ namespace ThinkInvisible.TinkersSatchel {
             _mimics = new List<ItemIndex>();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
-        private void Awake() {
+        public void LocateOrCreateComponentsServer() {
             if(!NetworkServer.active) return;
             inventory = GetComponent<Inventory>();
+            if(!inventory) {
+                TinkersSatchelPlugin._logger.LogError($"MimicInventory added to incompatible GameObject \"{this.gameObject.name}\" with no Inventory");
+            }
             fakeInv = GetComponent<FakeInventory>();
             if(!fakeInv) fakeInv = gameObject.AddComponent<FakeInventory>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
+        private void Awake() {
+            LocateOrCreateComponentsServer();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
