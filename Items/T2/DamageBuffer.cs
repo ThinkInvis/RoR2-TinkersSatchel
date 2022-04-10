@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Some incoming damage is dealt over time.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking every {bufferRate} seconds. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking {(bufferRate <= 0f ? "continuously" : $"every {bufferRate:N2} seconds")}. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -38,7 +38,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Tick interval of the damage buffer, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float bufferRate { get; private set; } = 0.2f;
+        public float bufferRate { get; private set; } = 0f;
 
 
 
@@ -148,7 +148,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(stopwatch <= 0f) {
                     stopwatch = DamageBuffer.instance.bufferRate;
                     float accum = 0f;
-                    var frac = DamageBuffer.instance.bufferRate / DamageBuffer.instance.bufferDuration;
+                    var frac = Mathf.Max(DamageBuffer.instance.bufferRate, Time.fixedDeltaTime) / DamageBuffer.instance.bufferDuration;
                     for(var i = 0; i < bufferDamage.Count; i++) {
                         var rem = Mathf.Min(bufferDamage[i].max * frac, bufferDamage[i].curr);
                         accum += rem;
