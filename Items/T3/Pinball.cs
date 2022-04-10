@@ -63,7 +63,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		internal PhysicMaterial bouncyPhysmat;
 		internal GameObject effectPrefab;
 		internal static UnlockableDef unlockable;
-		public List<string> projectileNameBlacklist { get; private set; } = new List<string>();
+		public HashSet<string> projectileNameBlacklist { get; private set; } = new HashSet<string>();
 
 
 
@@ -104,7 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupConfig() {
             base.SetupConfig();
-			projectileNameBlacklist.AddRange(blacklistedProjectiles.Split(',')
+			projectileNameBlacklist.UnionWith(blacklistedProjectiles.Split(',')
 				.Select(x => x.Trim()));
 		}
 

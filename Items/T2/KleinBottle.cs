@@ -35,7 +35,6 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Which survivor body names count as melee and proc pull instead of push (comma-delimited, leading/trailing whitespace will be ignored). MUL-T has special hardcoded handling for detecting Power-Saw, but will never count as melee if not in this list.",
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
         public string meleeBodyNamesConfig { get; private set; } = "CrocoBody, MercBody, LoaderBody, ToolbotBody";
@@ -52,7 +51,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         internal static UnlockableDef unlockable;
 
-        public List<string> meleeSurvivorBodyNames { get; private set; } = new List<string>();
+        public HashSet<string> meleeSurvivorBodyNames { get; private set; } = new HashSet<string>();
 
 
 
@@ -102,7 +101,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupConfig() {
             base.SetupConfig();
-            meleeSurvivorBodyNames.AddRange(meleeBodyNamesConfig.Split(',')
+            meleeSurvivorBodyNames.UnionWith(meleeBodyNamesConfig.Split(',')
                 .Select(x => x.Trim()));
         }
 
