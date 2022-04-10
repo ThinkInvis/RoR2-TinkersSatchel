@@ -72,7 +72,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public static HashSet<string> validObjectNames = new HashSet<string>();
+        public static HashSet<string> validObjectNames { get; private set; } = new HashSet<string>();
         WeightedSelection<DirectorCard> mostRecentDeck = null;
         internal static UnlockableDef unlockable;
 
