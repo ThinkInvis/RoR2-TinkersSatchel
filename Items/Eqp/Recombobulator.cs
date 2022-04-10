@@ -6,6 +6,7 @@ using R2API;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Recombobulator : Equipment<Recombobulator> {
@@ -26,44 +27,52 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Config //////
+
+        [AutoConfig("Which object names are allowed for recombobulation (comma-delimited, leading/trailing whitespace will be ignored). Items not in this list will also not be selected as the new object.",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "Turret1Broken",
+            "Drone1Broken",
+            "Drone2Broken",
+            "EquipmentDroneBroken",
+            "MissileDroneBroken",
+            "FlameDroneBroken",
+            "MegaDroneBroken",
+            "Chest1",
+            "Chest2",
+            "GoldChest",
+            "CasinoChest",
+            "KeyLockbox",
+            "ShrineHealing",
+            "EquipmentBarrel",
+            "ShrineBlood",
+            "ShrineChance",
+            "ShrineCombat",
+            "ShrineBoss",
+            "ShrineCleanse",
+            "ShrineRestack",
+            "ShrineGoldshoresAccess",
+            "CategoryChestDamage",
+            "CategoryChestHealing",
+            "CategoryChestUtility",
+            "Duplicator",
+            "DuplicatorLarge",
+            "DuplicatorWild",
+            "Scrapper",
+            "MultiShopTerminal",
+            "MultiShopLargeTerminal",
+            "MultiShopEquipmentTerminal",
+            "LunarChest",
+            "ItemDroneBroken",
+            "BulwarkDroneBroken"
+        });
+
+
+
         ////// Other Fields/Properties //////
 
-        private static readonly string[] validObjectNames = new[] {
-            "Turret1Broken(Clone)",
-            "Drone1Broken(Clone)",
-            "Drone2Broken(Clone)",
-            "EquipmentDroneBroken(Clone)",
-            "MissileDroneBroken(Clone)",
-            "FlameDroneBroken(Clone)",
-            "MegaDroneBroken(Clone)",
-            "Chest1(Clone)",
-            "Chest2(Clone)",
-            "GoldChest(Clone)",
-            "CasinoChest(Clone)",
-            "KeyLockbox(Clone)",
-            "ShrineHealing(Clone)",
-            "EquipmentBarrel(Clone)",
-            "ShrineBlood(Clone)",
-            "ShrineChance(Clone)",
-            "ShrineCombat(Clone)",
-            "ShrineBoss(Clone)",
-            "ShrineCleanse(Clone)",
-            "ShrineRestack(Clone)",
-            "ShrineGoldshoresAccess(Clone)",
-            "CategoryChestDamage(Clone)",
-            "CategoryChestHealing(Clone)",
-            "CategoryChestUtility(Clone)",
-            "Barrel1(Clone)",
-            "Duplicator(Clone)",
-            "DuplicatorLarge(Clone)",
-            "DuplicatorWild(Clone)",
-            "Scrapper(Clone)",
-            "MultiShopTerminal(Clone)",
-            "MultiShopLargeTerminal(Clone)",
-            "MultiShopEquipmentTerminal(Clone)",
-            "LunarChest(Clone)",
-            "TkSatItemDroneBroken(Clone)"
-        };
+        public static HashSet<string> validObjectNames = new HashSet<string>();
         WeightedSelection<DirectorCard> mostRecentDeck = null;
         internal static UnlockableDef unlockable;
 
@@ -83,6 +92,12 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION", "Recycle a rare or boss item.");
 
             equipmentDef.unlockableDef = unlockable;
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            validObjectNames.UnionWith(objectNamesConfig.Split(',')
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {
