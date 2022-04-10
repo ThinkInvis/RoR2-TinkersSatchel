@@ -84,9 +84,10 @@ namespace ThinkInvisible.TinkersSatchel {
                 x => x.MatchStloc((byte)locIndex))
                 ) {
                 c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldarg_1);
                 c.Emit(OpCodes.Ldloc_S, (byte)locIndex);
-                c.EmitDelegate<Func<HealthComponent, float, float>>((hc, origFinalDamage) => {
-                    if(!hc) return origFinalDamage;
+                c.EmitDelegate<Func<HealthComponent, DamageInfo, float, float>>((hc, damageInfo, origFinalDamage) => {
+                    if(!hc || damageInfo == null || (damageInfo.damageType & DamageType.FallDamage) != 0) return origFinalDamage;
                     var count = GetCount(hc.body);
                     if(count <= 0) return origFinalDamage;
                     var cpt = hc.GetComponent<DelayedDamageBufferComponent>();
