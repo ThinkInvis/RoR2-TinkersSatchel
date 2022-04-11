@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to push or pull nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} (+{Pct(procChance, 1, 1f)} per stack, mult.) chance to <style=cIsUtility>push away</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
+        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} <style=cStack>(+{Pct(procChance, 1, 1f)} per stack, mult.)</style> chance to <style=cIsUtility>push away</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -197,7 +197,7 @@ namespace ThinkInvisible.TinkersSatchel {
                                 var mcpt = tcpt.body.GetComponent<IPhysMotor>();
                                 if(mcpt != null && !tcpt.body.isBoss && !tcpt.body.isChampion)
                                     mcpt.ApplyForceImpulse(new PhysForceInfo {
-                                        force = velVec * PULL_FORCE * mcpt.mass,
+                                        force = velVec * (shouldPull ? 1 : PULL_FORCE) * mcpt.mass,
                                         ignoreGroundStick = true,
                                         disableAirControlUntilCollision = false
                                     });
