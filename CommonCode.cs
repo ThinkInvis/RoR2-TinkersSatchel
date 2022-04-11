@@ -18,7 +18,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			permanentGenericLanguageTokens.Add("TKSAT_DISABLED_SKILL_NAME", "Suppressed Skill");
 			permanentGenericLanguageTokens.Add("TKSAT_DISABLED_SKILL_DESCRIPTION", "Something has temporarily prevented you from using this skill!");
 
-			permanentGenericLanguageTokens.Add("TKSAT_KEYWORD_TAUNT", "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only attack the source of Taunt. On both AI and survivors, any damage inflicted on any other target is reduced by 75%. Cleared early if the source of Taunt dies.</style>");
+			permanentGenericLanguageTokens.Add("TKSAT_KEYWORD_TAUNT", "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style> sources of Taunt unless no other option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is reduced by 75%. Cleared early if the source of Taunt dies.</style>");
+			permanentGenericLanguageTokens.Add("TKSAT_KEYWORD_SUPPRESS", "<style=cKeywordName>Suppressed</style><style=cSub>A Suppressed skill cannot be used and has its cooldowns frozen.</style>");
 
 			base.RefreshPermanentLanguage();
 		}
