@@ -60,6 +60,8 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Item Set: Musical instruments. Have ALL 3 at once.");
 
             itemDef.unlockableDef = unlockable;
+
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgHealTargetAndSelf>();
         }
 
         public override void Install() {
