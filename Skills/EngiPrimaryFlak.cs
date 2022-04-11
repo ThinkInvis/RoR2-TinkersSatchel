@@ -103,10 +103,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			ContentAddition.AddProjectile(projectilePrefab);
 			ContentAddition.AddProjectile(subProjectilePrefab);
 
-			if(entStateDidSucceed && ContentAddition.AddSkillDef(skillDef)) {
+			if(!entStateDidSucceed) {
+				TinkersSatchelPlugin._logger.LogError("EntityState setup failed on EngiPrimaryFlak! Skill will not appear nor function.");
+			} else if(!ContentAddition.AddSkillDef(skillDef)) {
+				TinkersSatchelPlugin._logger.LogError("SkillDef setup failed on EngiPrimaryFlak! Skill will not appear nor function.");
+			} else {
 				targetSkillFamily.AddVariant(skillDef);
-            } else {
-				TinkersSatchelPlugin._logger.LogError("EntityState or SkillDef setup failed on EngiPrimaryFlak! Skill will not appear and/or function.");
             }
 		}
 
