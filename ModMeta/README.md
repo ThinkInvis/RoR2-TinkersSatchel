@@ -578,6 +578,11 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.12.3**
+
+- Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
+- Fixed missing style tags in Unstable Klein Bottle description.
+
 **1.12.2**
 
 - Balance pass.
@@ -632,7 +637,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **1.11.3**
 
 - Fixed Unstable Klein Bottle's unlock achievement not triggering.
-
-**1.11.2**
-
-- Fixed Item Drone interactables spawning while disabled.
