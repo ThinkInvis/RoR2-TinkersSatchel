@@ -54,6 +54,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			skillDef.skillNameToken = "TKSAT_ENGI_PRIMARY_FLAK_NAME";
 			skillDef.skillDescriptionToken = "TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION";
 			skillDef.interruptPriority = InterruptPriority.Any;
+			skillDef.icon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/SkillIcons/EngiPrimaryFlak.png");
 			skillDef.baseRechargeInterval = 0;
 			skillDef.baseMaxStock = 1;
 			skillDef.rechargeStock = 1;
