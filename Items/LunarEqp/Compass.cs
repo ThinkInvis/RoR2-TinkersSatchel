@@ -41,8 +41,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE", "<style=cDeath>{0} seeks a path...</style>");
-            LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE_2P", "<style=cDeath>You seek a path...</style>");
+            LanguageAPI.Add("TKSAT_COMPASS_USE_MESSAGE", "<style=cDeath>{0} seeks a path...</style>");
+            LanguageAPI.Add("TKSAT_COMPASS_USE_MESSAGE_2P", "<style=cDeath>You seek a path...</style>");
         }
         
 
@@ -62,7 +62,7 @@ namespace ThinkInvisible.TinkersSatchel {
             TeleporterInteraction.instance.shrineBonusStacks++;
 			Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage {
 				subjectAsCharacterBody = slot.characterBody,
-				baseToken = "TINKSATCH_COMPASS_USE_MESSAGE"
+				baseToken = "TKSAT_COMPASS_USE_MESSAGE"
 			});
 
             var pctrl = slot.characterBody.master.playerCharacterMasterController.GetFieldValue<PingerController>("pingerController");
