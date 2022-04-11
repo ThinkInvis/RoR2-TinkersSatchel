@@ -190,7 +190,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			public static GameObject projectilePrefab;
 			public static float recoilAmplitude = 1f;
 			public static float spreadBloomValue = 0.3f;
-			public static float baseDuration = 0.4f;
+			public static float baseDuration = 0.55f;
 
 			int whichMuzzle = 0;
 			float duration = 0f;
