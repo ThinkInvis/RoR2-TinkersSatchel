@@ -56,6 +56,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			Fire.effectPrefab = muzzleEffectPrefab;
 
 			//R2API catalog reg
+			ContentAddition.AddEffect(muzzleEffectPrefab);
+
 			skillDef.activationState = ContentAddition.AddEntityState<Fire>(out bool entStateDidSucceed);
 
 			if(!entStateDidSucceed) {
@@ -65,7 +67,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			} else {
 				targetSkillFamily.AddVariant(skillDef);
             }
-				
 		}
 
         public override void Install() {
