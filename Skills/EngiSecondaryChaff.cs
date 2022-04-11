@@ -107,8 +107,10 @@ namespace ThinkInvisible.TinkersSatchel {
 				var hits = Physics.OverlapSphere(aim.origin, coneRange, LayerIndex.entityPrecise.mask)
 					.Where(x => Vector3.Angle(aim.direction, x.ClosestPoint(aim.origin) - aim.origin) < coneHalfAngleDegrees
 						&& TeamComponent.GetObjectTeam(x.gameObject) != teamComponent.teamIndex);
+				HashSet<HealthComponent> hitHCs = new HashSet<HealthComponent>();
 				foreach(var hit in hits) {
-					if(hit.TryGetComponent<HurtBox>(out var hb) && hb.healthComponent) {
+					if(hit.TryGetComponent<HurtBox>(out var hb) && hb.healthComponent && !hitHCs.Contains(hb.healthComponent)) {
+						hitHCs.Add(hb.healthComponent);
 						var di = new DamageInfo {
 							attacker = this.characterBody.gameObject,
 							canRejectForce = true,
