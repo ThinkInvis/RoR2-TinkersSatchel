@@ -105,12 +105,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			public void FireCone(Ray aim) {
 				var hits = Physics.OverlapSphere(aim.origin, coneRange, LayerIndex.entityPrecise.mask)
-					.Where(x => Vector3.Angle(aim.direction, x.ClosestPoint(aim.origin) - aim.origin) < coneHalfAngleDegrees
-						&& TeamComponent.GetObjectTeam(x.gameObject) != teamComponent.teamIndex);
+					.Where(x => Vector3.Angle(aim.direction, x.ClosestPoint(aim.origin) - aim.origin) < coneHalfAngleDegrees);
 				HashSet<HealthComponent> hitHCs = new HashSet<HealthComponent>();
 				foreach(var hit in hits) {
 					if(hit.TryGetComponent<HurtBox>(out var hb) && hb.healthComponent && !hitHCs.Contains(hb.healthComponent)) {
 						hitHCs.Add(hb.healthComponent);
+						if(this.healthComponent == hb.healthComponent || !FriendlyFireManager.ShouldSplashHitProceed(hb.healthComponent, this.teamComponent.teamIndex)) continue;
 						var di = new DamageInfo {
 							attacker = this.characterBody.gameObject,
 							canRejectForce = true,
@@ -134,12 +134,17 @@ namespace ThinkInvisible.TinkersSatchel {
 								foreach(var depl in orderedDepls) {
 									var rayfrom = hb.healthComponent.body.aimOrigin;
 									var rayto = depl.deployable.transform.position;
-									var deplb = depl.deployable.GetComponent<CharacterBody>();
-									if(deplb && deplb.mainHurtBox)
-										rayto = deplb.mainHurtBox.transform.position;
-									var hasNoLoS = Physics.Linecast(rayfrom, rayto, out _, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
-									if(!hasNoLoS) {
-										TauntDebuffController.ApplyTaunt(aic, this.characterBody, 4f);
+									var deplm = depl.deployable.gameObject.GetComponent<CharacterMaster>();
+									if(deplm) {
+										var deplb = deplm.GetBody();
+										if(deplb) {
+											if(deplb.mainHurtBox)
+												rayto = deplb.mainHurtBox.transform.position;
+											var hasNoLoS = Physics.Linecast(rayfrom, rayto, out _, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
+											if(!hasNoLoS) {
+												TauntDebuffController.ApplyTaunt(aic, deplb, 6f);
+											}
+										}
 									}
 								}
 							}
