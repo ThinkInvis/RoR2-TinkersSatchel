@@ -37,7 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void RefreshPermanentLanguage() {
             permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_NAME", "Smart Flak");
-            permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION", "Continuously fire AI blast-shaped proximity fragmentation shells that deal <style=cIsDamage>50% damage</style> on direct impact and up to <style=cIsDamage>8x25% damage</style> with shrapnel.");
+            permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION", "Continuously fire proximity cluster shells that deal <style=cIsDamage>50% damage</style> on direct impact and up to <style=cIsDamage>8x25% damage</style> with limited-tracking spikes.");
             base.RefreshPermanentLanguage();
         }
 
@@ -74,6 +74,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			//load vanilla assets
 			var mainMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Engi/matEngiTurret.mat")
 				.WaitForCompletion();
+			var tracerMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matTracerBrightTransparent.mat")
+				.WaitForCompletion();
 			var muzzleEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/MuzzleflashSmokeRing.prefab")
 				.WaitForCompletion();
 			var explosionEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/EngiGrenadeExplosion.prefab")
@@ -84,11 +86,13 @@ namespace ThinkInvisible.TinkersSatchel {
 				.WaitForCompletion();
 
 			//modify
-			projectilePrefab.GetComponent<ProjectileImpactExplosion>().explosionEffect = explosionEffectPrefab;
+			projectilePrefab.GetComponent<ProjectileSimple>().lifetimeExpiredEffect = explosionEffectPrefab;
+			projectilePrefab.GetComponent<ProjectileOverlapAttack>().impactEffect = shrapnelHitEffectPrefab;
 			subProjectilePrefab.GetComponent<ProjectileOverlapAttack>().impactEffect = shrapnelHitEffectPrefab;
 
 			projectileGhost.GetComponent<MeshRenderer>().material = mainMtl;
-			subProjectileGhost.GetComponent<MeshRenderer>().material = mainMtl;
+			subProjectileGhost.transform.Find("SpikeModel").GetComponent<MeshRenderer>().material = mainMtl;
+			subProjectileGhost.transform.Find("Trail").GetComponent<TrailRenderer>().material = tracerMtl;
 
 			FireContinuous.projectilePrefab = projectilePrefab;
 			FireContinuous.effectPrefab = muzzleEffectPrefab;
