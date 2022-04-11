@@ -48,7 +48,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			//load vanilla assets
 			var targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodySecondaryFamily.asset")
 				.WaitForCompletion();
-			var tracerMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matTracerBrightTransparent.mat")
+			var tracerMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Firework/matFireworkSparkle.mat")
 				.WaitForCompletion();
 
 			//modify
@@ -91,16 +91,26 @@ namespace ThinkInvisible.TinkersSatchel {
 				duration = baseDuration / attackSpeedStat;
 				var aim = GetAimRay();
 				StartAimMode(aim, 2f, false);
-				PlayCrossfade("Gesture Left Cannon, Additive", "FireGrenadeLeft", 0.5f);
-				PlayCrossfade("Gesture Left Cannon, Additive", "FireGrenadeRight", 0.5f);
 				if(effectPrefab) {
-					EffectManager.SimpleMuzzleFlash(effectPrefab, gameObject, "MuzzleLeft", false);
-					EffectManager.SimpleMuzzleFlash(effectPrefab, gameObject, "MuzzleRight", false);
+					EffectManager.SpawnEffect(effectPrefab, new EffectData {
+						origin = aim.origin,
+						rotation = Util.QuaternionSafeLookRotation(aim.direction)
+                    }, true);
 				}
 				characterBody.AddSpreadBloom(spreadBloomValue);
 				AddRecoil(-1f * recoilAmplitude, -2f * recoilAmplitude, -1f * recoilAmplitude, 1f * recoilAmplitude);
-				Util.PlaySound(EntityStates.Engi.EngiWeapon.FireGrenades.attackSoundString, base.gameObject);
+				sfxStopwatch = duration / (float)sfxIterations;
 				FireCone(aim);
+				FireFX();
+			}
+
+			public void FireFX() {
+				muzzle++;
+				if(muzzle % 2 == 0)
+					PlayCrossfade("Gesture Left Cannon, Additive", "FireGrenadeLeft", 0.1f);
+				else
+					PlayCrossfade("Gesture Right Cannon, Additive", "FireGrenadeRight", 0.1f);
+				Util.PlaySound("Play_item_proc_firework_explo", base.gameObject);
 			}
 
 			public void FireCone(Ray aim) {
@@ -159,6 +169,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			public override void FixedUpdate() {
 				base.FixedUpdate();
+				sfxStopwatch -= Time.fixedDeltaTime;
+				if(sfxStopwatch <= 0f) {
+					sfxStopwatch = duration / (float)sfxIterations;
+					FireFX();
+				}
 				if(isAuthority && fixedAge >= duration)
 					outer.SetNextStateToMain();
 			}
@@ -174,8 +189,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			public static float coneRange = 20f;
 			public static float coneHalfAngleDegrees = 60f;
 			public static float damageCoeff = 2f;
+			public static int sfxIterations = 4;
 
 			float duration = 0f;
+			float sfxStopwatch = 0f;
+			int muzzle = 0;
 		}
     }
 }
