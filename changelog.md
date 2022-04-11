@@ -1,5 +1,10 @@
 # Tinker's Satchel Changelog
 
+**1.12.3**
+
+- Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
+- Fixed missing style tags in Unstable Klein Bottle description.
+
 **1.12.2**
 
 - Balance pass.
