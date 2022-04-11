@@ -167,7 +167,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RequireComponent(typeof(TeamComponent))]
+    [RequireComponent(typeof(TeamComponent), typeof(CharacterBody))]
     public class TauntNearbyBehaviour : MonoBehaviour {
         public float range = 100f;
         public float tauntChancePerTargetPerInterval = 0.5f;
@@ -175,11 +175,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public HurtBox hurtbox;
         
         TeamComponent teamcpt;
+        CharacterBody body;
 
         float stopwatch = 0f;
 
         void Awake() {
             teamcpt = GetComponent<TeamComponent>();
+            body = GetComponent<CharacterBody>();
         }
 
         void FixedUpdate() {
@@ -195,13 +197,8 @@ namespace ThinkInvisible.TinkersSatchel {
                     .Where(x => x);
 
                 foreach(var ai in tgtsToTaunt) {
-                    if(tauntChancePerTargetPerInterval > UnityEngine.Random.value) {
-                        ai.currentEnemy.gameObject = this.gameObject;
-                        ai.currentEnemy.bestHurtBox = hurtbox;
-                        ai.enemyAttention = scanInterval;
-                    } else if(ai.currentEnemy.gameObject == this.gameObject) {
-                        ai.currentEnemy.Reset();
-                    }
+                    if(tauntChancePerTargetPerInterval > UnityEngine.Random.value)
+                        TauntDebuffController.ApplyTaunt(ai, body, scanInterval);
                 }
             }
         }

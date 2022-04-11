@@ -6,6 +6,9 @@ using UnityEngine;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class CommonCode : T2Module<CommonCode> {
@@ -15,10 +18,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			permanentGenericLanguageTokens.Add("TKSAT_DISABLED_SKILL_NAME", "Suppressed Skill");
 			permanentGenericLanguageTokens.Add("TKSAT_DISABLED_SKILL_DESCRIPTION", "Something has temporarily prevented you from using this skill!");
 
+			permanentGenericLanguageTokens.Add("TKSAT_KEYWORD_TAUNT", "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only attack the source of Taunt. On both AI and survivors, any damage inflicted on any other target is reduced by 75%. Cleared early if the source of Taunt dies.</style>");
+
 			base.RefreshPermanentLanguage();
 		}
 
 		public static SkillDef disabledSkillDef;
+		public static BuffDef tauntDebuff;
 
         public override void SetupAttributes() {
             base.SetupAttributes();
@@ -33,6 +39,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			ContentAddition.AddSkillDef(disabledSkillDef);
 
+			tauntDebuff = ScriptableObject.CreateInstance<BuffDef>();
+			tauntDebuff.buffColor = Color.white;
+			tauntDebuff.canStack = false;
+			tauntDebuff.isDebuff = true;
+			tauntDebuff.name = "TKSATTaunt";
+			tauntDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texDifficultyHardIcon.png")
+				.WaitForCompletion();
+			ContentAddition.AddBuffDef(tauntDebuff);
+
 			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgApply>();
 			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgRemove>();
 		}
@@ -41,13 +56,115 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupBehavior();
 
             On.RoR2.Util.CleanseBody += Util_CleanseBody;
+            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+        }
+
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
+			if(self && self.body && damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var atkb) && atkb.master) {
+				bool shouldApplyTauntPenalty = true;
+				bool foundAnyActiveTaunts = false;
+				foreach(var aic in atkb.master.aiComponents) {
+					if(!aic || !aic.isActiveAndEnabled || !aic.TryGetComponent<TauntDebuffController>(out var tdc)) continue;
+					if(tdc.isTaunted) {
+						foundAnyActiveTaunts = true;
+						shouldApplyTauntPenalty &= tdc.ShouldApplyTauntPenalty(self.body);
+					}
+                }
+				shouldApplyTauntPenalty &= foundAnyActiveTaunts;
+				if(shouldApplyTauntPenalty)
+					damageInfo.damage *= 0.25f;
+            }
+			orig(self, damageInfo);
         }
 
         private void Util_CleanseBody(On.RoR2.Util.orig_CleanseBody orig, CharacterBody characterBody, bool removeDebuffs, bool removeBuffs, bool removeCooldownBuffs, bool removeDots, bool removeStun, bool removeNearbyProjectiles) {
 			orig(characterBody, removeDebuffs, removeBuffs, removeCooldownBuffs, removeDots, removeStun, removeNearbyProjectiles);
-			if(removeDebuffs && characterBody && characterBody.TryGetComponent<ServerTimedSkillDisable>(out var stsd)) {
-				stsd.ServerCleanse();
+			if(removeDebuffs && characterBody) {
+				if(characterBody.TryGetComponent<ServerTimedSkillDisable>(out var stsd))
+					stsd.ServerCleanse();
+				if(characterBody.master) {
+					foreach(var aic in characterBody.master.aiComponents) {
+						if(!aic || !aic.isActiveAndEnabled || !aic.TryGetComponent<TauntDebuffController>(out var tdc)) continue;
+						tdc.Cleanse();
+					}
+				}
             }
+		}
+
+		private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS) {
+			var retv = orig(self, maxDistance, full360Vision, filterByLoS);
+			if(self && self.TryGetComponent<TauntDebuffController>(out var tdc) && tdc.isTaunted) {
+				var taunters = tdc.GetTaunters();
+				var priority = self.enemySearch.GetResults().Where(x => x && x.healthComponent && taunters.Contains(x.healthComponent.body)).FirstOrDefault();
+				if(priority == default(HurtBox))
+					return retv;
+				else return priority;
+			}
+			return retv;
+		}
+	}
+
+	[RequireComponent(typeof(BaseAI))]
+	public class TauntDebuffController : MonoBehaviour {
+		BaseAI ai;
+		Dictionary<CharacterBody, float> tauntTimers = new Dictionary<CharacterBody, float>();
+		public bool isTaunted => tauntTimers.Count > 0;
+		public HashSet<CharacterBody> GetTaunters() { return new HashSet<CharacterBody>(tauntTimers.Keys); }
+		void Awake() {
+			ai = GetComponent<BaseAI>();
+		}
+		void FixedUpdate() {
+			if(!ai) return;
+			var keys = tauntTimers.Keys.ToList();
+			bool wasTaunted = isTaunted;
+			foreach(var key in keys) {
+				if(!key) { //remove destroyed bodies
+					tauntTimers.Remove(key);
+					continue;
+                }
+				tauntTimers[key] -= Time.fixedDeltaTime;
+				if(tauntTimers[key] <= 0f) { //remove on timeout
+					tauntTimers.Remove(key);
+					continue;
+                }
+			}
+			if(isTaunted) {
+				if(ai.currentEnemy.gameObject && !tauntTimers.ContainsKey(ai.currentEnemy.gameObject.GetComponent<CharacterBody>())) {
+					ai.currentEnemy.Reset();
+				}
+			} else {
+				if(wasTaunted) {
+					ai.currentEnemy.Reset();
+					if(ai.body)
+						ai.body.SetBuffCount(CommonCode.tauntDebuff.buffIndex, 0);
+				}
+            }
+		}
+		public static void ApplyTaunt(BaseAI to, CharacterBody from, float duration) {
+			if(!to) return;
+			TauntDebuffController tdc;
+			if(!to.TryGetComponent<TauntDebuffController>(out tdc))
+				tdc = to.gameObject.AddComponent<TauntDebuffController>();
+			tdc.ApplyTaunt(from, duration);
+        }
+		public void ApplyTaunt(CharacterBody from, float duration) {
+			if(!tauntTimers.ContainsKey(from) || tauntTimers[from] < duration)
+				tauntTimers[from] = duration;
+			if(ai.body && isTaunted)
+				ai.body.SetBuffCount(CommonCode.tauntDebuff.buffIndex, 1);
+		}
+		public void Cleanse() {
+			bool wasTaunted = isTaunted;
+			tauntTimers.Clear();
+			if(wasTaunted) {
+				ai.currentEnemy.Reset();
+				if(ai.body)
+					ai.body.SetBuffCount(CommonCode.tauntDebuff.buffIndex, 0);
+			}
+		}
+		public bool ShouldApplyTauntPenalty(CharacterBody target) {
+			return tauntTimers.Count > 0 && !tauntTimers.ContainsKey(target);
         }
     }
 
