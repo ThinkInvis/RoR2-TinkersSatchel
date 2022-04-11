@@ -134,11 +134,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void On_InvGiveItemByIndex(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
-            if(count <= 0) return;
+            if(count <= 0 || !self || !NetworkServer.active) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
             if(minv || itemIndex == itemDef.itemIndex) {
                 if(!minv) {
                     minv = self.gameObject.AddComponent<MimicInventory>();
+                    if(!minv) return; //happens if object is being destroyed this frame
                     minv.LocateOrCreateComponentsServer();
                 }
                 minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
@@ -147,10 +148,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void On_InvRemoveItemByIndex(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
-            if(count <= 0) return;
+            if(count <= 0 || !self || !NetworkServer.active) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
             if(!minv) {
                 minv = self.gameObject.AddComponent<MimicInventory>();
+                if(!minv) return; //happens if object is being destroyed this frame
                 minv.LocateOrCreateComponentsServer();
             }
             if(itemIndex != catalogIndex) {
