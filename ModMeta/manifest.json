@@ -1,8 +1,8 @@
 {
   "name": "TinkersSatchel",
-  "version_number": "1.12.3",
+  "version_number": "1.13.0",
   "website_url": "https://github.com/ThinkInvis/RoR2-TinkersSatchel",
-  "description": "An adequate assortment of anomalous additions (mostly items/artifacts).",
+  "description": "An adequate assortment of anomalous additions: acquisitions, artifacts, and abilities abound.",
   "dependencies": [
     "bbepis-BepInExPack-5.4.1902",
     "tristanmcpherson-R2API-4.3.5",

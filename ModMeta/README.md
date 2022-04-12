@@ -25,6 +25,8 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 1 tier-2 void;
 - 2 interactables:
 	- 2 drones;
+- 3 skill variants:
+	- all for Engineer;
 - and 5 artifacts.
 
 ### Mod Content: Items & Equipments
@@ -465,6 +467,52 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	</tbody>
 </table>
 
+### Mod Content: Skill Variants
+
+<table>
+	<thead>
+		<tr>
+			<th>Icon</th>
+			<th>Name/Description</th>
+			<th>Notes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="3" align="center"><h3>Engineer</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
+			<td>
+				<b>Smart Flak</b><br>
+				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel is evenly distributed and tracks within 75° for 8x25% damage.
+			</td>
+			<td><ul>
+				<li>Has lower fire rate, proc coefficient, and average single-target damage than the stock primary, in exchange for the vastly improved usability.</li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiSecondaryChaff.png?raw=true" width=128></td>
+			<td>
+				<b>Chaff</b><br>
+				Deal 200% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
+			</td>
+			<td><ul>
+				<li><i>Taunt</i>: Taunted AI will only attack sources of Taunt unless no other option is available. On both AI and survivors, any damage inflicted on non-Taunting targets is reduced by 50%. Cleared early if the source of Taunt dies.</li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiUtilitySpeedispenser.png?raw=true" width=128></td>
+			<td>
+				<b>Speed Dispenser</b><br>
+				Deploy a stationary decanter that stores up to 3 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting. Charges last 15 seconds; restores 1 charge every 10 seconds.
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+	</tbody>
+</table>
+
 ### Mod Content: Interactables
 
 <table>
@@ -498,10 +546,11 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 				<b>Bulwark Drone</b><br>
 				<details>
 					<summary>Enemies near the drone will attack it more often. Has high health and innate shield and armor.</summary>
-					<small>Found slightly more commonly than Equipment Drones, a Bulwark Drone is purchased with money (2x as much as a Gunner Drone). Bulwark Drones have very high health, as well as an innate regenerating shield and damage-resisting armor. An activated Bulwark Drone will follow you (or, if dead, another ally) closely; every 5 seconds, every enemy within 100 meters of the Bulwark Drone will have a 50% chance to be forced to attack it for the duration.</small>
+					<small>Found slightly more commonly than Equipment Drones, a Bulwark Drone is purchased with money (2x as much as a Gunner Drone). Bulwark Drones have very high health, as well as an innate regenerating shield and damage-resisting armor. An activated Bulwark Drone will follow you (or, if dead, another ally) closely; every 5 seconds, every enemy within 100 meters of the Bulwark Drone will have a 50% chance to be Taunted by it for the duration.</small>
 				</details>
 			</td>
 			<td><ul>
+				<li><i>Taunt</i>: Taunted AI will only attack sources of Taunt unless no other option is available. On both AI and survivors, any damage inflicted on non-Taunting targets is reduced by 50%. Cleared early if the source of Taunt dies.</li>
 			</ul></td>
 		</tr>
 	</tbody>
@@ -578,6 +627,15 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.13.0** *The Skillful Update, Part Engineer*
+
+- ADDED SKILL VARIANTS:
+	- Engineer: Smart Flak, Chaff, Speed Dispenser!
+- Bulwark Drone now uses the same Taunt debuff added by Chaff (will now apply a damage debuff vs non-Taunters and allow attacking any Taunter).
+- Updated an older language token name format on Silver Compass (all instances of "TINKSATCH" --> "TKSAT").
+- Fixed Percussive Maintenance not working if used by multiplayer clients.
+- Fixed some Mostly-Tame Mimic NREs during object creation/destruction.
+
 **1.12.3**
 
 - Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
@@ -633,7 +691,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Now has a custom model and cleaner setup code (thanks ThunderKit!).
 	- Improved spawncard compatibility (now properly registered/deregistered instead of setting spawn weight to 0).
 - Cardboard Box and Quantum Recombobulator now work on Broken Equipment Drones, Broken Item Drones, and Casino Chests.
-
-**1.11.3**
-
-- Fixed Unstable Klein Bottle's unlock achievement not triggering.

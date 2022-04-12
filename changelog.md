@@ -1,5 +1,14 @@
 # Tinker's Satchel Changelog
 
+**1.13.0** *The Skillful Update, Part Engineer*
+
+- ADDED SKILL VARIANTS:
+	- Engineer: Smart Flak, Chaff, Speed Dispenser!
+- Bulwark Drone now uses the same Taunt debuff added by Chaff (will now apply a damage debuff vs non-Taunters and allow attacking any Taunter).
+- Updated an older language token name format on Silver Compass (all instances of "TINKSATCH" --> "TKSAT").
+- Fixed Percussive Maintenance not working if used by multiplayer clients.
+- Fixed some Mostly-Tame Mimic NREs during object creation/destruction.
+
 **1.12.3**
 
 - Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
