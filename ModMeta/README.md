@@ -12,7 +12,7 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 ## Description
 
-Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, and artifacts (for now -- more content types pending!). In total, this mod includes:
+Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
 - 30 total items/equipments:
 	- 6 tier-1,
