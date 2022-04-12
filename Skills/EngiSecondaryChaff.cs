@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
         
-		public static SkillDef skillDef { get; private set; }
+		public SkillDef skillDef { get; private set; }
 
 
 

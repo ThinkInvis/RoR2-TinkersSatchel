@@ -23,11 +23,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
         
-		public static GameObject projectilePrefab { get; private set; }
-		public static GameObject projectileGhost { get; private set; }
-		public static GameObject subProjectilePrefab { get; private set; }
-		public static GameObject subProjectileGhost { get; private set; }
-		public static SteppedSkillDef skillDef { get; private set; }
+		public GameObject projectilePrefab { get; private set; }
+		public GameObject projectileGhost { get; private set; }
+		public GameObject subProjectilePrefab { get; private set; }
+		public GameObject subProjectileGhost { get; private set; }
+		public SteppedSkillDef skillDef { get; private set; }
 
 
 		////// TILER2 Module Setup //////
@@ -232,7 +232,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				owner = projc.owner,
 				position = originalPoint.position,
 				procChainMask = projc.procChainMask,
-				projectilePrefab = EngiPrimaryFlak.subProjectilePrefab,
+				projectilePrefab = EngiPrimaryFlak.instance.subProjectilePrefab,
 				rotation = Util.QuaternionSafeLookRotation(ray.direction)
 			});
 		}
