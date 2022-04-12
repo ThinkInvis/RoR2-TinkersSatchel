@@ -132,7 +132,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					.Where(x => Vector3.Angle(aim.direction, x.ClosestPoint(aim.origin) - aim.origin) < coneHalfAngleDegrees);
 				HashSet<HealthComponent> hitHCs = new HashSet<HealthComponent>();
 				foreach(var hit in hits) {
-					if(hit.TryGetComponent<HurtBox>(out var hb) && hb.healthComponent && !hitHCs.Contains(hb.healthComponent)) {
+					if(hit && hit.TryGetComponent<HurtBox>(out var hb) && hb.healthComponent && !hitHCs.Contains(hb.healthComponent)) {
 						hitHCs.Add(hb.healthComponent);
 						if(this.healthComponent == hb.healthComponent || !FriendlyFireManager.ShouldSplashHitProceed(hb.healthComponent, this.teamComponent.teamIndex)) continue;
 						var di = new DamageInfo {
@@ -149,7 +149,7 @@ namespace ThinkInvisible.TinkersSatchel {
 							position = hb.transform.position
 						};
 						hb.healthComponent.TakeDamage(di);
-						if(!di.rejected && this.characterBody.master && hb.healthComponent.body && hb.healthComponent.body.master) {
+						if(!di.rejected && this.characterBody.master && this.characterBody.master.deployablesList != null && hb.healthComponent.body && hb.healthComponent.body.master) {
 							var aic = hb.healthComponent.body.master.aiComponents.FirstOrDefault(x => x.isActiveAndEnabled);
 							if(aic != default) {
 								var orderedDepls = this.characterBody.master.deployablesList
