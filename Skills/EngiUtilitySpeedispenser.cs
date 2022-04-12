@@ -183,8 +183,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
-			if(sender.HasBuff(speedBuff) && sender.isSprinting)
+			if(sender.HasBuff(speedBuff) && sender.isSprinting) {
 				args.moveSpeedMultAdd += 0.5f;
+				args.jumpPowerMultAdd += 0.25f;
+			}
 		}
 
 
