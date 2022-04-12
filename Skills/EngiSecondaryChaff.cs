@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.AddressableAssets;
 using EntityStates;
 using RoR2.Skills;
+using RoR2.Projectile;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class EngiSecondaryChaff : T2Module<EngiSecondaryChaff> {
@@ -96,6 +97,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				characterBody.AddSpreadBloom(spreadBloomValue);
 				AddRecoil(-1f * recoilAmplitude, -2f * recoilAmplitude, -1f * recoilAmplitude, 1f * recoilAmplitude);
 				sfxStopwatch = duration / (float)sfxIterations;
+				CleanseProjectiles(aim);
 				FireCone(aim);
 				FireFX();
 			}
@@ -107,6 +109,22 @@ namespace ThinkInvisible.TinkersSatchel {
 				else
 					PlayCrossfade("Gesture Right Cannon, Additive", "FireGrenadeRight", 0.1f);
 				Util.PlaySound("Play_item_proc_firework_explo", base.gameObject);
+			}
+
+			public void CleanseProjectiles(Ray aim) {
+				var sqrad = coneRange * coneRange;
+				var myTeam = teamComponent.teamIndex;
+				var toDelete = new List<ProjectileController>();
+				foreach(var projectile in InstanceTracker.GetInstancesList<ProjectileController>()) {
+					var del = projectile.transform.position - aim.origin;
+					if(!projectile.cannotBeDeleted
+						&& projectile.teamFilter.teamIndex != myTeam
+						&& del.sqrMagnitude < sqrad
+						&& Vector3.Angle(aim.direction, del) < coneHalfAngleDegrees)
+						toDelete.Add(projectile);
+				}
+				for(int i = toDelete.Count - 1; i >= 0; i--)
+					GameObject.Destroy(toDelete[i].gameObject);
 			}
 
 			public void FireCone(Ray aim) {
