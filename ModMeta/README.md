@@ -292,7 +292,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
 			<td>
 				<b>Smart Flak</b><br>
-				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel is evenly distributed and tracks within 75° for 8x25% damage.
+				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel is evenly distributed and tracks within 75&deg; for 8x25% damage.
 			</td>
 		</tr>
 		<tr>
@@ -341,7 +341,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 		</tr>
 	</tbody>
 </table>
-
 
 ### Mod Content: Artifacts
 
@@ -400,7 +399,7 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - ADDED SKILL VARIANTS:
 	- Engineer: Smart Flak, Chaff, Speed Dispenser!
 - Bulwark Drone now uses the same Taunt debuff added by Chaff (will now apply a damage debuff vs non-Taunters and allow attacking any Taunter).
-- Updated an older language token name format on Silver Compass (all instances of "TINKSATCH" --> "TKSAT").
+- Updated an older language token name format on Silver Compass (all instances of "TINKSATCH" &rarr; "TKSAT").
 - Fixed Percussive Maintenance not working if used by multiplayer clients.
 - Fixed some Mostly-Tame Mimic NREs during object creation/destruction.
 - Due to limitations on the length of Thunderstore readme pages, long descriptions and notes have been cut from this page's content summary. Added a link to a separate full version, similarly to the changelog link.
