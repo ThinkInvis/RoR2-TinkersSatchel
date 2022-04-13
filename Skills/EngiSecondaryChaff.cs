@@ -187,7 +187,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					CleanseProjectiles(initialAimRay);
 					FireCone(initialAimRay);
 				}
-				if(isAuthority && (fixedAge >= duration || firedCount >= iterations))
+				if(isAuthority && firedCount >= iterations)
 					outer.SetNextStateToMain();
 			}
 
