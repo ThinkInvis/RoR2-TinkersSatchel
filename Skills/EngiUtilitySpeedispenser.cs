@@ -29,7 +29,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public GameObject deployableBlueprint { get; private set; }
 		public BuffDef speedBuff { get; private set; }
 		public DeployableSlot deployableSlot { get; private set; }
-
+		bool setupSucceeded = false;
+		SkillFamily targetSkillFamily;
 
 
 		////// TILER2 Module Setup //////
@@ -45,6 +46,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			permanentGenericLanguageTokens.Add("TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME", "Speed Dispenser");
             permanentGenericLanguageTokens.Add("TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION", "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>.");
             base.RefreshPermanentLanguage();
+			//todo: allow interact to consume partial charge and renew buff
         }
 
         public override void SetupAttributes() {
@@ -58,7 +60,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			deployableBlueprint = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/EngiSpeedispenser/EngiSpeedispenserBlueprints.prefab");
 
 			//load vanilla assets
-			var targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodyUtilityFamily.asset")
+			targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodyUtilityFamily.asset")
 				.WaitForCompletion();
 			var captainSupply = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Captain/CaptainSupplyDrop, EquipmentRestock.prefab")
 				.WaitForCompletion()
@@ -140,17 +142,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			//R2API catalog reg
 
-			skillDef.activationState = ContentAddition.AddEntityState<PlaceDispenser>(out bool entStateDidSucceed);
-
-			if(!entStateDidSucceed) {
-				TinkersSatchelPlugin._logger.LogError("EntityState setup failed on EngiUtilitySpeedispenser! Skill will not appear nor function.");
-			} else if(!ContentAddition.AddSkillDef(skillDef)) {
-				TinkersSatchelPlugin._logger.LogError("SkillDef setup failed on EngiUtilitySpeedispenser! Skill will not appear nor function.");
-			} else {
-				targetSkillFamily.AddVariant(skillDef);
-            }
-
-			var dmsSerializable = ContentAddition.AddEntityState<DispenserMainState>(out entStateDidSucceed);
+			var dmsSerializable = ContentAddition.AddEntityState<DispenserMainState>(out bool entStateDidSucceed);
 
 			if(!entStateDidSucceed) {
 				TinkersSatchelPlugin._logger.LogError("EntityState setup failed on EngiUtilitySpeedispenser (DispenserMainState)! Deployable will be unusable.");
@@ -167,18 +159,34 @@ namespace ThinkInvisible.TinkersSatchel {
 			deployableSlot = DeployableAPI.RegisterDeployableSlot((master, countMult) => {
 				return 1;
 			});
+
+			skillDef.activationState = ContentAddition.AddEntityState<PlaceDispenser>(out entStateDidSucceed);
+
+			if(!entStateDidSucceed) {
+				TinkersSatchelPlugin._logger.LogError("EntityState setup failed on EngiUtilitySpeedispenser! Skill will not appear nor function.");
+			} else if(!ContentAddition.AddSkillDef(skillDef)) {
+				TinkersSatchelPlugin._logger.LogError("SkillDef setup failed on EngiUtilitySpeedispenser! Skill will not appear nor function.");
+			} else {
+				setupSucceeded = true;
+			}
 		}
 
 		public override void Install() {
             base.Install();
 
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+			if(setupSucceeded) {
+				targetSkillFamily.AddVariant(skillDef);
+				RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+			}
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
-			RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
+			if(setupSucceeded) {
+				targetSkillFamily.RemoveVariant(skillDef);
+				RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
+			}
 		}
 
 

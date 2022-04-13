@@ -21,6 +21,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
         
 		public SkillDef skillDef { get; private set; }
+		bool setupSucceeded = false;
+		SkillFamily targetSkillFamily;
 
 
 
@@ -43,7 +45,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			skillDef = TinkersSatchelPlugin.resources.LoadAsset<SkillDef>("Assets/TinkersSatchel/SkillDefs/EngiSecondaryChaff.asset");
 
 			//load vanilla assets
-			var targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodySecondaryFamily.asset")
+			targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodySecondaryFamily.asset")
 				.WaitForCompletion();
 			var tracerMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Firework/matFireworkSparkle.mat")
 				.WaitForCompletion();
@@ -62,16 +64,22 @@ namespace ThinkInvisible.TinkersSatchel {
 			} else if(!ContentAddition.AddSkillDef(skillDef)) {
 				TinkersSatchelPlugin._logger.LogError("SkillDef setup failed on EngiSecondaryChaff! Skill will not appear nor function.");
 			} else {
-				targetSkillFamily.AddVariant(skillDef);
+				setupSucceeded = true;
             }
 		}
 
         public override void Install() {
             base.Install();
-        }
+			if(setupSucceeded) {
+				targetSkillFamily.AddVariant(skillDef);
+			}
+		}
 
         public override void Uninstall() {
             base.Uninstall();
+			if(setupSucceeded) {
+				targetSkillFamily.RemoveVariant(skillDef);
+			}
 		}
 
 

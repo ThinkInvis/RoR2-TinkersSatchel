@@ -28,6 +28,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public GameObject subProjectilePrefab { get; private set; }
 		public GameObject subProjectileGhost { get; private set; }
 		public SteppedSkillDef skillDef { get; private set; }
+		bool setupSucceeded = false;
+		SkillFamily targetSkillFamily;
 
 
 		////// TILER2 Module Setup //////
@@ -83,7 +85,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				.WaitForCompletion();
 			var shrapnelHitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Commando/HitsparkCommando.prefab")
 				.WaitForCompletion();
-			var targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodyPrimaryFamily.asset")
+			targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Engi/EngiBodyPrimaryFamily.asset")
 				.WaitForCompletion();
 
 			//modify
@@ -108,17 +110,23 @@ namespace ThinkInvisible.TinkersSatchel {
 			} else if(!ContentAddition.AddSkillDef(skillDef)) {
 				TinkersSatchelPlugin._logger.LogError("SkillDef setup failed on EngiPrimaryFlak! Skill will not appear nor function.");
 			} else {
-				targetSkillFamily.AddVariant(skillDef);
+				setupSucceeded = true;
             }
 		}
 
         public override void Install() {
             base.Install();
+			if(setupSucceeded) {
+				targetSkillFamily.AddVariant(skillDef);
+			}
         }
 
         public override void Uninstall() {
             base.Uninstall();
-        }
+			if(setupSucceeded) {
+				targetSkillFamily.RemoveVariant(skillDef);
+			}
+		}
 
 
 
