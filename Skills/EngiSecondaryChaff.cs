@@ -31,7 +31,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void RefreshPermanentLanguage() {
             permanentGenericLanguageTokens.Add("TKSAT_ENGI_SECONDARY_CHAFF_NAME", "Chaff");
-            permanentGenericLanguageTokens.Add("TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION", "Deal <style=cIsDamage>200% damage</style> and <style=cIsUtility>clear enemy projectiles</style> in a frontal cone. Struck enemies within line of sight of any of your turrets will be <style=cIsUtility>Taunt</style>ed by a turret for 6 seconds.");
+            permanentGenericLanguageTokens.Add("TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION", "Deal <style=cIsDamage>4x75% damage</style> and <style=cIsUtility>clear enemy projectiles</style> in a frontal cone. Struck enemies within line of sight of any of your turrets will be <style=cIsUtility>Taunt</style>ed by a turret for 6 seconds.");
             base.RefreshPermanentLanguage();
         }
 
@@ -86,25 +86,19 @@ namespace ThinkInvisible.TinkersSatchel {
 			public override void OnEnter() {
 				base.OnEnter();
 				duration = baseDuration / attackSpeedStat;
-				var aim = GetAimRay();
-				StartAimMode(aim, 2f, false);
+				initialAimRay = GetAimRay();
+				StartAimMode(initialAimRay, 2f, false);
 				if(effectPrefab) {
 					EffectManager.SpawnEffect(effectPrefab, new EffectData {
-						origin = aim.origin,
-						rotation = Util.QuaternionSafeLookRotation(aim.direction)
+						origin = initialAimRay.origin,
+						rotation = Util.QuaternionSafeLookRotation(initialAimRay.direction)
                     }, true);
 				}
-				characterBody.AddSpreadBloom(spreadBloomValue);
-				AddRecoil(-1f * recoilAmplitude, -2f * recoilAmplitude, -1f * recoilAmplitude, 1f * recoilAmplitude);
-				sfxStopwatch = duration / (float)sfxIterations;
-				CleanseProjectiles(aim);
-				FireCone(aim);
-				FireFX();
 			}
 
 			public void FireFX() {
-				muzzle++;
-				if(muzzle % 2 == 0)
+				firedCount++;
+				if(firedCount % 2 == 0)
 					PlayCrossfade("Gesture Left Cannon, Additive", "FireGrenadeLeft", 0.1f);
 				else
 					PlayCrossfade("Gesture Right Cannon, Additive", "FireGrenadeRight", 0.1f);
@@ -145,7 +139,7 @@ namespace ThinkInvisible.TinkersSatchel {
 							force = Vector3.zero,
 							inflictor = null,
 							procChainMask = default,
-							procCoefficient = 1f,
+							procCoefficient = 0.5f,
 							position = hb.transform.position
 						};
 						hb.healthComponent.TakeDamage(di);
@@ -183,12 +177,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			public override void FixedUpdate() {
 				base.FixedUpdate();
-				sfxStopwatch -= Time.fixedDeltaTime;
-				if(sfxStopwatch <= 0f) {
-					sfxStopwatch = duration / (float)sfxIterations;
+				stopwatch -= Time.fixedDeltaTime;
+				while(stopwatch <= 0f && firedCount < iterations) {
+					firedCount++;
+					stopwatch += duration / (float)iterations;
+					characterBody.AddSpreadBloom(spreadBloomValue);
+					AddRecoil(-1f * recoilAmplitude, -2f * recoilAmplitude, -1f * recoilAmplitude, 1f * recoilAmplitude);
 					FireFX();
+					CleanseProjectiles(initialAimRay);
+					FireCone(initialAimRay);
 				}
-				if(isAuthority && fixedAge >= duration)
+				if(isAuthority && (fixedAge >= duration || firedCount >= iterations))
 					outer.SetNextStateToMain();
 			}
 
@@ -197,17 +196,18 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             public static GameObject effectPrefab;
-			public static float recoilAmplitude = 1f;
-			public static float spreadBloomValue = 0.3f;
+			public static float recoilAmplitude = 0.5f;
+			public static float spreadBloomValue = 0.15f;
 			public static float baseDuration = 0.6f;
 			public static float coneRange = 20f;
 			public static float coneHalfAngleDegrees = 60f;
-			public static float damageCoeff = 2f;
-			public static int sfxIterations = 4;
+			public static float damageCoeff = 0.75f;
+			public static int iterations = 4;
 
 			float duration = 0f;
-			float sfxStopwatch = 0f;
-			int muzzle = 0;
+			float stopwatch = 0f;
+			Ray initialAimRay;
+			int firedCount = 0;
 		}
     }
 }
