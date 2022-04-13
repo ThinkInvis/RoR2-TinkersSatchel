@@ -28,6 +28,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public GameObject deployableMaster { get; private set; }
 		public GameObject deployableBlueprint { get; private set; }
 		public BuffDef speedBuff { get; private set; }
+		public DeployableSlot deployableSlot { get; private set; }
 
 
 
@@ -163,6 +164,9 @@ namespace ThinkInvisible.TinkersSatchel {
 			ContentAddition.AddBuffDef(speedBuff);
 			ContentAddition.AddBody(deployableBody);
 			ContentAddition.AddMaster(deployableMaster);
+			deployableSlot = DeployableAPI.RegisterDeployableSlot((master, countMult) => {
+				return 1;
+			});
 		}
 
 		public override void Install() {
@@ -269,7 +273,7 @@ namespace ThinkInvisible.TinkersSatchel {
 						Deployable deployable = dispMaster.gameObject.AddComponent<Deployable>();
 						deployable.onUndeploy = new UnityEvent();
 						deployable.onUndeploy.AddListener(new UnityAction(dispMaster.TrueKill));
-						_body.master.AddDeployable(deployable, DeployableSlot.EngiBubbleShield);
+						_body.master.AddDeployable(deployable, EngiUtilitySpeedispenser.instance.deployableSlot);
 					}
 				}
 			}
