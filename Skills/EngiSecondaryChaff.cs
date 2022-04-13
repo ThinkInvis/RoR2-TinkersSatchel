@@ -91,7 +91,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 
 			public void FireFX() {
-				firedCount++;
 				if(firedCount % 2 == 0)
 					PlayCrossfade("Gesture Left Cannon, Additive", "FireGrenadeLeft", 0.1f);
 				else
