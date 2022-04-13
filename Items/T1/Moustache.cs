@@ -32,11 +32,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public float stackingDamageFrac { get; private set; } = 0.01f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Enemy count to add per elite in range.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Enemy count to add per elite in range (also separately counted as normal enemies; total count is this + 1).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float eliteBonus { get; private set; } = 2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Enemy count to add per champion/boss in range.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Enemy count to add per champion/boss in range (also separately counted as normal enemies and as elites).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float champBonus { get; private set; } = 4f;
 
 
