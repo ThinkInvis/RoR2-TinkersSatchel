@@ -42,7 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			permanentGenericLanguageTokens.Add("TKSAT_ENGI_SPEEDISPENSER_CONTEXT_ALREADY_HAVE", "Can't take speed boost\n(Don't be greedy!)");
 			permanentGenericLanguageTokens.Add("TKSAT_ENGI_SPEEDISPENSER_CONTEXT_CHARGING", "Can't take speed boost\n(Still brewing...)");
 			permanentGenericLanguageTokens.Add("TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME", "Speed Dispenser");
-            permanentGenericLanguageTokens.Add("TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION", "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 3 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>+50% speed while sprinting</style>. Charges last 15 seconds; restores 1 charge every 10 seconds.");
+            permanentGenericLanguageTokens.Add("TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION", "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>+50% speed while sprinting</style> and <style=cIsUtility>+25% jump height</style>. Charges last 15 seconds; restores 1 charge every 7.5 seconds.");
             base.RefreshPermanentLanguage();
         }
 
