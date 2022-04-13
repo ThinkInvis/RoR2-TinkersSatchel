@@ -88,12 +88,6 @@ namespace ThinkInvisible.TinkersSatchel {
 				duration = baseDuration / attackSpeedStat;
 				initialAimRay = GetAimRay();
 				StartAimMode(initialAimRay, 2f, false);
-				if(effectPrefab) {
-					EffectManager.SpawnEffect(effectPrefab, new EffectData {
-						origin = initialAimRay.origin,
-						rotation = Util.QuaternionSafeLookRotation(initialAimRay.direction)
-                    }, true);
-				}
 			}
 
 			public void FireFX() {
@@ -102,6 +96,12 @@ namespace ThinkInvisible.TinkersSatchel {
 					PlayCrossfade("Gesture Left Cannon, Additive", "FireGrenadeLeft", 0.1f);
 				else
 					PlayCrossfade("Gesture Right Cannon, Additive", "FireGrenadeRight", 0.1f);
+				if(effectPrefab) {
+					EffectManager.SpawnEffect(effectPrefab, new EffectData {
+						origin = initialAimRay.origin,
+						rotation = Util.QuaternionSafeLookRotation(initialAimRay.direction)
+					}, true);
+				}
 				Util.PlaySound("Play_item_proc_firework_explo", base.gameObject);
 			}
 
