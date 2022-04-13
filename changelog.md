@@ -1,5 +1,21 @@
 # Tinker's Satchel Changelog
 
+**1.13.1**
+
+- Balance pass.
+	- RC Controller: buffed default attack speed bonus (25% &rarr; 40%).
+	- Engineer: Speed Dispenser:
+		- Now provides a 25% jump height bonus.
+		- Now holds 4 charges (up from 3).
+		- Charges now recharge in 7.5 seconds (up from 10).
+	- Engineer: Chaff:
+		- Now deals 4x75% damage with 0.5 proc coefficient (was 1x200% damage with 1 proc coefficient).
+		- Will cleanse projectiles and taunt enemies with every hit, making it *slightly* easier to time.
+- Engineer: Chaff: Renamed to Decoy Chaff for clarity.
+- Engineer: Speed Dispenser fixes:
+	- Fixed not being set to player team.
+	- Now has its own deployable slot so mods that tweak the max shield count won't affect it.
+
 **1.13.0** *The Skillful Update, Part Engineer*
 
 - ADDED SKILL VARIANTS:

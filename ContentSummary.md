@@ -337,7 +337,7 @@
 				<b>RC Controller</b><br>
 				<details>
 					<summary>Nearby turrets and drones attack with you... <i>BUT no longer attack automatically.</i></summary>
-					<small>All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +25% attack speed (+25% per stack).</small>
+					<small>All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +40% attack speed (+40% per stack).</small>
 				</details>
 			</td>
 			<td><ul>
@@ -465,8 +465,8 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiSecondaryChaff.png?raw=true" width=128></td>
 			<td>
-				<b>Chaff</b><br>
-				Deal 200% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
+				<b>Decoy Chaff</b><br>
+				Deal 4x75% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
 			</td>
 			<td><ul>
 				<li><i>Taunt</i>: Taunted AI will only attack sources of Taunt unless no other option is available. On both AI and survivors, any damage inflicted on non-Taunting targets is reduced by 50%. Cleared early if the source of Taunt dies.</li>
@@ -476,7 +476,7 @@
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiUtilitySpeedispenser.png?raw=true" width=128></td>
 			<td>
 				<b>Speed Dispenser</b><br>
-				Deploy a stationary decanter that stores up to 3 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting. Charges last 15 seconds; restores 1 charge every 10 seconds.
+				Deploy a stationary decanter that stores up to 4 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting and +25% jump height. Charges last 15 seconds; restores 1 charge every 7.5 seconds.
 			</td>
 			<td><ul>
 			</ul></td>

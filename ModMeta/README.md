@@ -298,15 +298,15 @@ Short summaries are provided below. For a full description of each item, see: ht
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiSecondaryChaff.png?raw=true" width=128></td>
 			<td>
-				<b>Chaff</b><br>
-				Deal 200% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
+				<b>Decoy Chaff</b><br>
+				Deal 4x75% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
 			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiUtilitySpeedispenser.png?raw=true" width=128></td>
 			<td>
 				<b>Speed Dispenser</b><br>
-				Deploy a stationary decanter that stores up to 3 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting. Charges last 15 seconds; restores 1 charge every 10 seconds.
+				Deploy a stationary decanter that stores up to 4 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting and +25% jump height. Charges last 15 seconds; restores 1 charge every 7.5 seconds.
 			</td>
 		</tr>
 	</tbody>
@@ -394,6 +394,22 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.13.1**
+
+- Balance pass.
+	- RC Controller: buffed default attack speed bonus (25% &rarr; 40%).
+	- Engineer: Speed Dispenser:
+		- Now provides a 25% jump height bonus.
+		- Now holds 4 charges (up from 3).
+		- Charges now recharge in 7.5 seconds (up from 10).
+	- Engineer: Chaff:
+		- Now deals 4x75% damage with 0.5 proc coefficient (was 1x200% damage with 1 proc coefficient).
+		- Will cleanse projectiles and taunt enemies with every hit, making it *slightly* easier to time.
+- Engineer: Chaff: Renamed to Decoy Chaff for clarity.
+- Engineer: Speed Dispenser fixes:
+	- Fixed not being set to player team.
+	- Now has its own deployable slot so mods that tweak the max shield count won't affect it.
+
 **1.13.0** *The Skillful Update, Part Engineer*
 
 - ADDED SKILL VARIANTS:
@@ -444,18 +460,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Hydroponic Cell is now implemented as a separate instance of damage due to technical limitations on the minimum hit threshold.
 - Improved AI on Item Drone and Equipment Drone. Slightly. They're still drones.
 - Item Drone and Equipment Drone now use continuous collision detection (much lower chance of flying through walls).
-
-**1.12.0** *The Science! Update, Part 3*
-
-- ADDED INTERACTABLES: Bulwark Drone!
-- ADDED ITEMS: Faulty Mortar Tube, Hydroponic Cell, EMP Device, Shrink Ray!
-- Balance pass.
-	- Buffed Item Drone radius (60 m --> 100 m).
-	- Item Drone no longer accepts AI summon items like Queen's Gland, nor consumable/consumed items.
-	- Mostly-Tame Mimic no longer mimics consumable items.
-	- Pixie Tube now has a separate 3 second cooldown on each non-primary skill (addresses spammability on modded characters with mode swap skills).
-	- Pixie Tube now triggers on equipment.
-- Item Drone:
-	- Now has a custom model and cleaner setup code (thanks ThunderKit!).
-	- Improved spawncard compatibility (now properly registered/deregistered instead of setting spawn weight to 0).
-- Cardboard Box and Quantum Recombobulator now work on Broken Equipment Drones, Broken Item Drones, and Casino Chests.
