@@ -360,8 +360,8 @@
 			<td>
 				<b>Hydroponic Cell</b><br>
 				<details>
-					<summary>Half of damage and healing received combine into damage on your next strike... <i>BUT you heal for 50% less.</i></summary>
-					<small>Store nutrients on taking damage equal to 50% (+50% per stack, hyperbolic) of the damage taken, up to 10x your max health. 50% (+50% per stack, hyperbolic) of incoming healing is blocked. Each point of blocked healing instead converts 1 point of nutrients into 0.5 points of base damage, up to 100x your damage stat. This bonus damage will be consumed by your next attack that deals more than 400% damage.</small>
+					<summary>Half your healed health grows a plant that provides a single-use damage bonus... <i>BUT you don't receive the converted healing.</i></summary>
+					<small>Whenever you receive healing that applies to your health (overheal, barrier, etc. do not count), 50% (+50% per stack, hyperbolic) of this healing will be converted into base damage at a ratio of 2.00:1. This bonus damage will be consumed by your next attack that deals more than 400% damage. Stores up to 100x your damage stat.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -456,7 +456,7 @@
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
 			<td>
 				<b>Smart Flak</b><br>
-				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel is evenly distributed and tracks within 75° for 8x25% damage.
+				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel tracks enemies for up to 8x25% damage (maximum 5x25% on a single target).
 			</td>
 			<td><ul>
 				<li>Has lower fire rate, proc coefficient, and average single-target damage than the stock primary, in exchange for the vastly improved usability.</li>

@@ -1,5 +1,19 @@
 # Tinker's Satchel Changelog
 
+**1.13.2**
+
+- Balance pass.
+	- Shrink Ray no longer procs on self damage.
+		- This was unintentional, but can be considered a balance change as some base game items proc on self damage.
+	- Partially reworked Hydroponic Cell's mechanics to be simpler.
+		- While it provided some flavor, the 'nutrients' buff stage gained by taking damage was redundant, and provided a balance lever that was also redundant. This has been removed and reduced to the core purpose of requiring you to heal health (i.e. NOT overheal, barrier, etc.) to gain the item's benefit. Flavor has been relocated to the pickup text.
+- Improved descriptions of Hydroponic Cell, Engineer: Smart Flak, and Engineer: Decoy Chaff.
+- Clarified Macho Moustache config descriptions.
+- Fixed skills appearing in the loadout menu while disabled.
+- Command Terminal now exposes its list of summonable drones to config.
+- Added extra null safety to Sturdy Mug.
+	- Specifically, affected projectiles should no longer cause further errors if something causes the networked prefab list to desync in multiplayer.
+
 **1.13.1**
 
 - Balance pass.

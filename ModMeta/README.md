@@ -228,7 +228,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Hydroponic Cell</b><br>
-				Half of damage and healing received combine into damage on your next strike... <i>BUT you heal for 50% less.</i>
+				Half your healed health grows a plant that provides a single-use damage bonus... <i>BUT you don't receive the converted healing.</i>
 			</td>
 		</tr>
 		<tr>
@@ -292,7 +292,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
 			<td>
 				<b>Smart Flak</b><br>
-				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel is evenly distributed and tracks within 75&deg; for 8x25% damage.
+				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel tracks enemies for up to 8x25% damage (maximum 5x25% on a single target).
 			</td>
 		</tr>
 		<tr>
@@ -394,6 +394,20 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.13.2**
+
+- Balance pass.
+	- Shrink Ray no longer procs on self damage.
+		- This was unintentional, but can be considered a balance change as some base game items proc on self damage.
+	- Partially reworked Hydroponic Cell's mechanics to be simpler.
+		- While it provided some flavor, the 'nutrients' buff stage gained by taking damage was redundant, and provided a balance lever that was also redundant. This has been removed and reduced to the core purpose of requiring you to heal health (i.e. NOT overheal, barrier, etc.) to gain the item's benefit. Flavor has been relocated to the pickup text.
+- Improved descriptions of Hydroponic Cell, Engineer: Smart Flak, and Engineer: Decoy Chaff.
+- Clarified Macho Moustache config descriptions.
+- Fixed skills appearing in the loadout menu while disabled.
+- Command Terminal now exposes its list of summonable drones to config.
+- Added extra null safety to Sturdy Mug.
+	- Specifically, affected projectiles should no longer cause further errors if something causes the networked prefab list to desync in multiplayer.
+
 **1.13.1**
 
 - Balance pass.
@@ -447,16 +461,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Percussive Maintenance now passes through proc chain masks instead of using an empty one.
 - Phrasing tweak on Defibrillator description.
 - Fixed Pinball Wizard unintentionally affecting deployables and Rex's Special skill. Now has a configurable projectile name blacklist.
-
-**1.12.1**
-
-- Balance pass.
-	- Hydroponic Cell now adds base damage instead of direct damage.
-	- Hydroponic Cell now has a minimum hit threshold similar to the elemental bands (defaults to the same amount, 400%).
-	- Unstable Klein Bottle now deals damage (50% by default).
-	- Allowed Pixie Tube to work on some previously-blacklisted skills (MUL-T and Railgunner mode switches) now that an ICD is in place.
-	- Reduced Bulwark Drone shield (100 --> 60) and armor (50 --> 20). Testing found it to be both too evasive and too tanky at once.
-- Hydroponic Cell informational buffs are now percentages of max charge (was previously integer times max health / damage stat).
-- Hydroponic Cell is now implemented as a separate instance of damage due to technical limitations on the minimum hit threshold.
-- Improved AI on Item Drone and Equipment Drone. Slightly. They're still drones.
-- Item Drone and Equipment Drone now use continuous collision detection (much lower chance of flying through walls).
