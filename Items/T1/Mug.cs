@@ -209,7 +209,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(self, fireProjectileInfo);
-            if(ignoreMugs || !fireProjectileInfo.owner || (fireProjectileInfo.projectilePrefab && fireProjectileInfo.projectilePrefab.GetComponent<Deployable>())) return;
+            if(ignoreMugs || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);
