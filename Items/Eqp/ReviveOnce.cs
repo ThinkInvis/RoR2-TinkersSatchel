@@ -5,6 +5,7 @@ using System.Linq;
 using RoR2.Navigation;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ReviveOnce : Equipment<ReviveOnce> {
@@ -23,9 +24,26 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Config //////
+
+
+        [AutoConfig("Which master prefab names to spawn if there are no allies to be revived. WARNING: May have unintended results on some untested objects!",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string masterNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "EquipmentDroneMaster",
+            "Drone1Master",
+            "Drone2Master",
+            "FlameDroneMaster",
+            "DroneMissileMaster",
+            "ItemDroneMaster",
+            "BulwarkDroneMaster"
+        });
+
+
+
         ////// Other Fields/Properties //////
 
-        public readonly List<GameObject> droneMasterPrefabs = new List<GameObject>();
+        public readonly HashSet<string> droneMasterPrefabNames = new HashSet<string>();
 
 
 
@@ -38,14 +56,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-            droneMasterPrefabs.AddRange(new[] {
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/EquipmentDroneMaster"),
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/Drone1Master"),
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/Drone2Master"),
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/FlameDroneMaster"),
-                LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterMasters/DroneMissileMaster"),
-                ItemDrone.instance.itemDroneMasterPrefab}
-            );
+
+            droneMasterPrefabNames.UnionWith(masterNamesConfig.Split(',')
+                .Select(x => x.Trim()));
         }
 
         public override void Install() {
@@ -91,7 +104,10 @@ namespace ThinkInvisible.TinkersSatchel {
                     rezzerName = rezzerUser.userName;
                 NetUtil.ServerSendGlobalChatMsg($"{rezzerName} called down a clone of {rezTargetName}!");
             } else {
-                var which = rng.NextElementUniform(droneMasterPrefabs);
+                var whichName = rng.NextElementUniform(droneMasterPrefabNames.ToArray());
+                var whichIndex = MasterCatalog.FindMasterIndex(whichName);
+                var which = MasterCatalog.GetMasterPrefab(whichIndex);
+                if(!which) return false;
                 var summon = new MasterSummon {
                     masterPrefab = which,
                     position = nodePos,
