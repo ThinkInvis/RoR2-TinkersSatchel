@@ -32,6 +32,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		SkillFamily targetSkillFamily;
 
 
+
 		////// TILER2 Module Setup //////
 
 		public EngiPrimaryFlak() {
@@ -39,7 +40,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void RefreshPermanentLanguage() {
             permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_NAME", "Smart Flak");
-            permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION", "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel is evenly distributed and tracks within 75° for <style=cIsDamage>8x25% damage</style>.");
+            permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION", "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.");
             base.RefreshPermanentLanguage();
         }
 
