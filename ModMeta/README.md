@@ -12,38 +12,381 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 ## Description
 
-This is a collection of items and artifacts which sprung from me thinking "hey, what if...?," writing the idea in a file, and forgetting about it (until now).
+Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-### Current Additions
+- 30 total items/equipments:
+	- 6 tier-1,
+	- 6 tier-2,
+	- 5 tier-3,
+	- 5 equipments,
+	- 3 lunar items,
+	- 3 lunar equipments,
+	- 1 tier-1 void,
+	- 1 tier-2 void;
+- 2 interactables:
+	- 2 drones;
+- 3 skill variants:
+	- all for Engineer;
+- and 5 artifacts.
 
-#### Tier-1 Item
+Short summaries are provided below. For a full description of each item, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ContentSummary.md
 
-- Mostly-Tame Mimic: "Mimics your other items at random."
-	- Each individual stack has a small chance over time to switch which item it's mimicking.
+### Mod Content: Items & Equipments
 
-#### Tier-2 Item
+<table>
+	<thead>
+		<tr>
+			<th>Icon</th>
+			<th>Name/Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2" align="center"><h3>Tier-1 Items</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mimicIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Mostly-Tame Mimic</b><br>
+				Mimics your other items at random.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mugIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Sturdy Mug</b><br>
+				Chance to shoot extra, unpredictable projectiles.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/shootToHealIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Percussive Maintenance</b><br>
+				Hit allies to heal them.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/moustacheIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Macho Moustache</b><br>
+				The bigger the fight, the higher your damage.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/triBroochIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Triskelion Brooch</b><br>
+				Chance to combine ignite, freeze, and stun.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/motionTrackerIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Old War Lidar</b><br>
+				Deal more damage to persistent combatants.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Tier-2 Items</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goldenGearIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Armor Crystal</b><br>
+				Gain armor by hoarding money.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kleinBottleIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Unstable Klein Bottle</b><br>
+				Chance to push or pull nearby enemies on taking damage.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/deadManSwitchIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Pulse Monitor</b><br>
+				Auto-activate your equipment for free at low health.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/damageBufferIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Negative Feedback Loop</b><br>
+				Some incoming damage is dealt over time.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/pixieTubeIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Pixie Tube</b><br>
+				Drop random buffs on using skills.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/defibIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Defibrillator</b><br>
+				Your heals can crit.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Tier-3 Items</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/headsetIcon.png?raw=true" width=128></td>
+			<td>
+				<b>H3AD-53T</b><br>
+				Your Utility skill builds a stunning static charge.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/pinballIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Pinball Wizard</b><br>
+				Projectiles may bounce and home.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goFasterIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Go-Faster Stripes</b><br>
+				Your Utility skill gains more mobility.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/skeinIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Spacetime Skein</b><br>
+				Gain mass while stationary. Lose mass while moving.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/shrinkRayIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Shrink Ray</b><br>
+				Suppress a single target's non-primary skills and damage.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Equipments</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/packBoxIconOpen.png?raw=true" width=128></td>
+			<td>
+				<b>Cardboard Box</b><br>
+				Pack up and move. <small>[Cooldown: 60 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/rewindIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Causal Camera</b><br>
+				Phase briefly and rewind yourself 10 seconds. <small>[Cooldown: 90 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/recombobulatorIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Quantum Recombobulator</b><br>
+				Reroll an interactable once. <small>[Cooldown: 60 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/reviveOnceIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Command Terminal</b><br>
+				Revive an ally or summon a drone. Consumed on use. <small>[Cooldown: 10 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/lodestoneIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Lodestone</b><br>
+				Pull nearby enemies and allied item effects. <small>[Cooldown: 20 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Lunar Items</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/wranglerIcon.png?raw=true" width=128></td>
+			<td>
+				<b>RC Controller</b><br>
+				Nearby turrets and drones attack with you... <i>BUT no longer attack automatically.</i>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/bismuthFlaskIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Bismuth Tonic</b><br>
+				Gain resistance when hit by one enemy type... <i>BUT gain weakness to the others.</i>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Hydroponic Cell</b><br>
+				Half your healed health grows a plant that provides a single-use damage bonus... <i>BUT you don't receive the converted healing.</i>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Lunar Equipments</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/compassIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Silver Compass</b><br>
+				Shows you a path... <i>BUT it will be fraught with danger.</i> <small>[Cooldown*: 180 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/unstableBombIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Faulty Mortar Tube</b><br>
+				Throw a bomb that will detonate when damaged... <i>BUT it may damage survivors too.</i> <small>[Cooldown: 40 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EMPIcon.png?raw=true" width=128></td>
+			<td>
+				<b>EMP Device</b><br>
+				Disable skills on enemies... <i>BUT disable non-primary skills on survivors.</i> <small>[Cooldown: 60 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Void Items</h3><h4>(requires Survivors of the Void DLC)</h4></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidMoustacheIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Villainous Visage</b> (T1)<br>
+				Deal more damage when given time to plot. Corrupts all Macho Moustaches.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidGoldenGearIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Armor Prism</b> (T2)<br>
+				Gain massive armor by focusing your item build. Corrupts all Armor Crystals.
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-- Armor Crystal: "Gain armor by hoarding money."
+### Mod Content: Skill Variants
 
-#### Lunar Equipment
+<table>
+	<thead>
+		<tr>
+			<th>Icon</th>
+			<th>Name/Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2" align="center"><h3>Engineer</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
+			<td>
+				<b>Smart Flak</b><br>
+				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel tracks enemies for up to 8x25% damage (maximum 5x25% on a single target).
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiSecondaryChaff.png?raw=true" width=128></td>
+			<td>
+				<b>Decoy Chaff</b><br>
+				Deal 4x75% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiUtilitySpeedispenser.png?raw=true" width=128></td>
+			<td>
+				<b>Speed Dispenser</b><br>
+				Deploy a stationary decanter that stores up to 4 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting and +25% jump height. Charges last 15 seconds; restores 1 charge every 7.5 seconds.
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-- Silver Compass: "Shows you a path... but it will be fraught with danger."
-	- Pings the Teleporter and adds TWO stacks of Challenge of the Mountain, only ONE of which will count towards extra rewards.
+### Mod Content: Interactables
 
-#### Artifact
+<table>
+	<thead>
+		<tr>
+			<th>Icon</th>
+			<th>Name/Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2" align="center"><h3>Drones</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/ItemDroneIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Item Drone</b><br>
+				Give items to share them with allies near the drone.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/BulwarkDroneIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Bulwark Drone</b><br>
+				Enemies near the drone will attack it more often. Has high health and innate shield and armor.
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-- Tactics: "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor."
-- Suppression: "Players take heavily increased damage while airborne."
-- Haste: "All combatants attack 10x faster and deal 1/20x damage."
-- Danger: "Players can be killed in one hit."
-	- Removes this now-redundant functionality from Artifact of Glass/other sources of Curse.
-	- Deactivate the artifact using the mod's config file to restore original OHP behavior.
+### Mod Content: Artifacts
+
+<table>
+	<thead>
+		<tr>
+			<th>Icon</th>
+			<th>Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/tactics_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Tactics</b></td>
+			<td>All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/antiair_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Suppression</b></td>
+			<td>Players take heavily increased damage while airborne.</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/butterknife_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Haste</b></td>
+			<td>All combatants attack 10x faster and deal 1/20x damage.</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/danger_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Danger</b></td>
+			<td>Players can be killed in one hit.</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/delayitems_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Safekeeping</b></td>
+			<td>All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.</td>
+		</tr>
+	</tbody>
+</table>
 
 ## Issues/TODO
 
 - Items have no DisplayRules.
-- Armor Crystal needs a better model.
-- Jigglebones on Mimic lid (and a less half-assed model) may happen eventually.
+- Most items need some effects & model polish in general.
+	- Broken drones are missing smoke/sparks effects.
+- Some class-specific item behaviors on Go-Faster Stripes are missing or placeholders.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
@@ -51,33 +394,70 @@ This is a collection of items and artifacts which sprung from me thinking "hey, 
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
-**1.3.0**
+**1.13.2**
 
-- Implements changes from TILER2 3.0.0.
+- Balance pass.
+	- Shrink Ray no longer procs on self damage.
+		- This was unintentional, but can be considered a balance change as some base game items proc on self damage.
+	- Partially reworked Hydroponic Cell's mechanics to be simpler.
+		- While it provided some flavor, the 'nutrients' buff stage gained by taking damage was redundant, and provided a balance lever that was also redundant. This has been removed and reduced to the core purpose of requiring you to heal health (i.e. NOT overheal, barrier, etc.) to gain the item's benefit. Flavor has been relocated to the pickup text.
+- Improved descriptions of Hydroponic Cell, Engineer: Smart Flak, and Engineer: Decoy Chaff.
+- Clarified Macho Moustache config descriptions.
+- Fixed skills appearing in the loadout menu while disabled.
+- Command Terminal now exposes its list of summonable drones to config.
+- Added extra null safety to Sturdy Mug.
+	- Specifically, affected projectiles should no longer cause further errors if something causes the networked prefab list to desync in multiplayer.
 
-**1.2.2**
+**1.13.1**
 
-- Implements changes from TILER2 2.2.3.
-	- Mostly-Tame Mimic is now FakeInventory blacklisted, and will not mimic other blacklisted items. Fixes incompatibility with ClassicItems (in combination with a ClassicItems update).
-- Bumped R2API dependency to 2.5.14.
+- Balance pass.
+	- RC Controller: buffed default attack speed bonus (25% &rarr; 40%).
+	- Engineer: Speed Dispenser:
+		- Now provides a 25% jump height bonus.
+		- Now holds 4 charges (up from 3).
+		- Charges now recharge in 7.5 seconds (up from 10).
+	- Engineer: Chaff:
+		- Now deals 4x75% damage with 0.5 proc coefficient (was 1x200% damage with 1 proc coefficient).
+		- Will cleanse projectiles and taunt enemies with every hit, making it *slightly* easier to time.
+- Engineer: Chaff: Renamed to Decoy Chaff for clarity.
+- Engineer: Speed Dispenser fixes:
+	- Fixed not being set to player team.
+	- Now has its own deployable slot so mods that tweak the max shield count won't affect it.
 
-**1.2.1**
+**1.13.0** *The Skillful Update, Part Engineer*
 
-- Implements changes from TILER2 2.1.0.
-	- Mostly-Tame Mimic is now networked, and its items will now correctly appear as temporary (and not permanent) in multiplayer.
-- Bumped R2API dependency to 2.5.11.
+- ADDED SKILL VARIANTS:
+	- Engineer: Smart Flak, Chaff, Speed Dispenser!
+- Bulwark Drone now uses the same Taunt debuff added by Chaff (will now apply a damage debuff vs non-Taunters and allow attacking any Taunter).
+- Updated an older language token name format on Silver Compass (all instances of "TINKSATCH" &rarr; "TKSAT").
+- Fixed Percussive Maintenance not working if used by multiplayer clients.
+- Fixed some Mostly-Tame Mimic NREs during object creation/destruction.
+- Due to limitations on the length of Thunderstore readme pages, long descriptions and notes have been cut from this page's content summary. Added a link to a separate full version, similarly to the changelog link.
 
-**1.2.0**
+**1.12.3**
 
-- Mostly-Tame Mimic now uses TILER2.FakeInventory, causing several behavior changes:
-	- Mimics will now properly appear in inventory, logbook, stats, etc.
-	- Mimics will no longer remain as copies of an item after you lose your last real copy of that item.
-	- Display for mimicked item counts is now shared with other sources of temporary items.
-- Fixed disabling Artifact of Danger not allowing OHP while cursed.
-- Updated libraries for RoR2 1.0.
+- Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
+- Fixed missing style tags in Unstable Klein Bottle description.
 
-**1.1.2**
+**1.12.2**
 
-- Artifact of Danger no longer applies OHP to enemies while disabled.
-- Severely nerfed default config settings for Armor Crystal.
-- Now uses plugin-specific console logger.
+- Balance pass.
+	- Macho Moustache:
+		- Now has a radius of 100 m (was 10 m).
+		- Now provides a damage bonus of 1% per enemy per stack (was 5%).
+		- Now only works on enemies in combat (used a skill recently) or danger (was hurt recently).
+		- Now counts elites and champions/bosses as multiple enemies (default +2/+4).
+		- Renamed existing config options to force changes, as this is effectively a major rework to further differentiate the item from Focus Crystal.
+	- Negative Feedback Loop:
+		- No longer triggers on-hurt items.
+		- No longer applies to fall damage.
+		- Now procs its DoT once per frame (effectively continuously) by default. This config was not forced to update; default 0.2s will still be in place for already-installed copies of the mod.
+	- Percussive Maintenance:
+		- Now also heals you when you heal an ally (for 25% the amount by default).
+	- Unstable Klein Bottle:
+		- Now pulls enemies instead of pushing if procced by a melee survivor. List of melee survivors is configurable (by body name).
+	- RC Controller:
+		- Nerfed first-stack fire rate to match per-extra-stack rate (100% --> 25%).
+- Percussive Maintenance now passes through proc chain masks instead of using an empty one.
+- Phrasing tweak on Defibrillator description.
+- Fixed Pinball Wizard unintentionally affecting deployables and Rex's Special skill. Now has a configurable projectile name blacklist.

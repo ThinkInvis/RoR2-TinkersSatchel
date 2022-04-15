@@ -1,19 +1,31 @@
 ﻿using RoR2;
 using TILER2;
+using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class AntiAir : Artifact_V2<AntiAir> {
-        public override string displayName => "Artifact of Suppression";
+    public class AntiAir : Artifact<AntiAir> {
 
-        [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]
-        public float hurtMod {get; private set;} = 5f;
+        ////// Artifact Data //////
+
+        public override string displayName => "Artifact of Suppression";
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "Players take heavily increased damage while airborne.";
 
+
+
+        ////// Config //////
+
+        [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]
+        public float hurtMod { get; private set; } = 5f;
+
+
+
+        ////// TILER2 Module Setup //////
+
         public AntiAir() {
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_on.png";
-            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/antiair_off.png";
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/antiair_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/antiair_off.png");
         }
 
         public override void Install() {
@@ -26,9 +38,16 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.HealthComponent.TakeDamage -= On_HCTakeDamage;
         }
 
+
+
+        ////// Hooks //////
+
         private void On_HCTakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             if(IsActiveAndEnabled()
+                && self.body != null
+                && self.body.teamComponent != null
                 && self.body.teamComponent.teamIndex == TeamIndex.Player
+                && self.body.characterMotor != null
                 && !self.body.characterMotor.isGrounded)
                 damageInfo.damage *= hurtMod;
             orig(self, damageInfo);

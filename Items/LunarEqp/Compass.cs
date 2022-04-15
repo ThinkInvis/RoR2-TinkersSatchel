@@ -6,38 +6,53 @@ using UnityEngine.Networking;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Compass : Equipment_V2<Compass> {
+    public class Compass : Equipment<Compass> {
+
+        ////// Equipment Data //////
+
         public override string displayName => "Silver Compass";
         public override bool isLunar => true;
+        public override bool canBeRandomlyTriggered => false;
         public override float cooldown {get; protected set;} = 180f;
 
-        [AutoConfig("0: Allows unlimited uses per stage. 1: Only once per character per stage. 2: Only once per stage.", AutoConfigFlags.None, 0, 2)]
-        public int useLimitPerStage {get; private set;} = 1;
-
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>but it will be fraught with danger.</style>";
-        protected override string GetDescString(string langid = null) => 
-            "<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>." +
-            (useLimitPerStage == 2 ? " Works only once per stage." :
-            (useLimitPerStage == 1 ? " Works only once per player per stage." :
-            ""));
-        protected override string GetLoreString(string langid = null) => null;
+        protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>BUT it will be fraught with danger.</style>";
+        protected override string GetDescString(string langid = null) =>
+            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>.{(useLimitPerStage == 2 ? " Works only once per stage." : (useLimitPerStage == 1 ? " Works only once per player per stage." : ""))}";
+        protected override string GetLoreString(string langid = null) => "";
+
+
+
+        ////// Config //////
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("0: Allows unlimited uses per stage. 1: Only once per character per stage. 2: Only once per stage.", AutoConfigFlags.None, 0, 2)]
+        public int useLimitPerStage { get; private set; } = 1;
+
+
+
+        ////// TILER2 Module Setup //////
 
         public Compass() {
-            modelResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Prefabs/SilverCompass.prefab";
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/compassIcon.png";
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/SilverCompass.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/compassIcon.png");
         }
 
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE", "<style=cDeath>{0} seeks a path...</style>");
-            LanguageAPI.Add("TINKSATCH_COMPASS_USE_MESSAGE_2P", "<style=cDeath>You seek a path...</style>");
+            LanguageAPI.Add("TKSAT_COMPASS_USE_MESSAGE", "<style=cDeath>{0} seeks a path...</style>");
+            LanguageAPI.Add("TKSAT_COMPASS_USE_MESSAGE_2P", "<style=cDeath>You seek a path...</style>");
         }
         
+
+
+        ////// Hooks //////
+
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
 			if (TeleporterInteraction.instance
-                && slot.characterBody?.master?.playerCharacterMasterController
+                && slot.characterBody && slot.characterBody.master
+                && slot.characterBody.master.playerCharacterMasterController
                 && !slot.GetComponent<SilverCompassFlag>()
                 && !TeleporterInteraction.instance.GetComponent<SilverCompassFlag>()) {
 				TeleporterInteraction.instance.AddShrineStack();
@@ -47,7 +62,7 @@ namespace ThinkInvisible.TinkersSatchel {
             TeleporterInteraction.instance.shrineBonusStacks++;
 			Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage {
 				subjectAsCharacterBody = slot.characterBody,
-				baseToken = "TINKSATCH_COMPASS_USE_MESSAGE"
+				baseToken = "TKSAT_COMPASS_USE_MESSAGE"
 			});
 
             var pctrl = slot.characterBody.master.playerCharacterMasterController.GetFieldValue<PingerController>("pingerController");
@@ -65,4 +80,26 @@ namespace ThinkInvisible.TinkersSatchel {
 	}
 
     public class SilverCompassFlag : MonoBehaviour {}
+
+    public class TargetSpinnerAnim : MonoBehaviour {
+        public float rotateTime = 0.5f;
+        public float delayTime = 1f;
+        public Vector3 rotateAxis;
+
+        private float targPos = -1f;
+        private float currVel;
+        private float currPos;
+        private float stopwatch;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void Update() {
+            stopwatch -= Time.deltaTime;
+            if(stopwatch < 0f) {
+                targPos = Random.value * Mathf.PI * 2;
+                stopwatch = rotateTime + delayTime;
+            }
+            currPos = Mathf.SmoothDampAngle(currPos, targPos, ref currVel, rotateTime);
+            this.gameObject.transform.Rotate(rotateAxis, currVel);
+        }
+    }
 }

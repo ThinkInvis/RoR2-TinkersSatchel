@@ -1,20 +1,32 @@
 ﻿using R2API.Utils;
 using RoR2;
 using TILER2;
+using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Butterknife : Artifact_V2<Butterknife> {
+    public class Butterknife : Artifact<Butterknife> {
+
+        ////// Artifact Data //////
+
         public override string displayName => "Artifact of Haste";
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "All combatants attack 10x faster and deal 1/20x damage.";
 
-        private System.Reflection.MethodInfo cbDamageSetter;
-        private System.Reflection.MethodInfo cbAttackSetter;
+
+
+        ////// Other Fields/Properties //////
+
+        private readonly System.Reflection.MethodInfo cbDamageSetter;
+        private readonly System.Reflection.MethodInfo cbAttackSetter;
+
+
+
+        ////// TILER2 Module Setup //////
 
         public Butterknife() {
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/butterknife_on.png";
-            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/butterknife_off.png";
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/butterknife_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/butterknife_off.png");
             cbDamageSetter = typeof(CharacterBody).GetPropertyCached("damage").GetSetMethod(true);
             cbAttackSetter = typeof(CharacterBody).GetPropertyCached("attackSpeed").GetSetMethod(true);
         }
@@ -28,6 +40,10 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             On.RoR2.CharacterBody.RecalculateStats -= On_CBRecalcStats;
         }
+
+
+
+        ////// Hooks //////
 
         private void On_CBRecalcStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
             orig(self);

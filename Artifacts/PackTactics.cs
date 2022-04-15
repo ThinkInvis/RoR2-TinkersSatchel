@@ -9,33 +9,48 @@ using System.Collections.Generic;
 using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
-using static TILER2.StatHooks;
+using static R2API.RecalculateStatsAPI;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class PackTactics : Artifact_V2<PackTactics> {
+    public class PackTactics : Artifact<PackTactics> {
+
+        ////// Artifact Data //////
+
         public override string displayName => "Artifact of Tactics";
-
-        [AutoConfig("Combatants within this distance (in meters) of teammates will buff them if Artifact of Tactics is enabled.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float baseRadius {get; private set;} = 25f;
-
-        [AutoConfig("Extra move speed multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float speedMod {get; private set;} = 0.05f;
-
-        [AutoConfig("Extra damage multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float damageMod {get; private set;} = 0.1f;
-
-        [AutoConfig("Extra armor added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float armorMod {get; private set;} = 15f;
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetDescString(string langid = null) => "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.";
 
-        public BuffIndex tacticsBuff {get;private set;}
+
+
+        ////// Config //////
+
+        [AutoConfig("Combatants within this distance (in meters) of teammates will buff them if Artifact of Tactics is enabled.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float baseRadius { get; private set; } = 25f;
+
+        [AutoConfig("Extra move speed multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float speedMod { get; private set; } = 0.05f;
+
+        [AutoConfig("Extra damage multiplier added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float damageMod { get; private set; } = 0.1f;
+
+        [AutoConfig("Extra armor added per stack of the Tactics buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float armorMod { get; private set; } = 15f;
+
+
+
+        ////// Other Fields/Properties //////
+
+        public BuffDef tacticsBuff {get;private set;}
         public GameObject tacticsWardPrefab {get;private set;}
 
+
+
+        ////// TILER2 Module Setup //////
+        #region TILER2 Module Setup
         public PackTactics() {
-            iconResourcePath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png";
-            iconResourcePathDisabled = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_off.png";
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/tactics_on.png");
+            iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/tactics_off.png");
         }
 
         public override void SetupConfig() {
@@ -51,15 +66,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-
-            var tacticsBuffDef = new CustomBuff(new BuffDef {
-                buffColor = Color.white,
-                canStack = true,
-                isDebuff = false,
-                name = modInfo.shortIdentifier + "TacticsBuff",
-                iconPath = "@TinkersSatchel:Assets/TinkersSatchel/Textures/Icons/tactics_on.png"
-            });
-            tacticsBuff = BuffAPI.Add(tacticsBuffDef);
+            tacticsBuff = ScriptableObject.CreateInstance<BuffDef>();
+            tacticsBuff.buffColor = Color.white;
+            tacticsBuff.canStack = true;
+            tacticsBuff.isDebuff = false;
+            tacticsBuff.name = modInfo.shortIdentifier + "TacticsBuff";
+            tacticsBuff.iconSprite = iconResource;
+            ContentAddition.AddBuffDef(tacticsBuff);
 
             var tacticsPrefabPrefab = new GameObject("TacticsAuraPrefabPrefab");
             tacticsPrefabPrefab.AddComponent<NetworkIdentity>();
@@ -75,8 +88,8 @@ namespace ThinkInvisible.TinkersSatchel {
             bw.Networkradius = baseRadius;
             bw.buffDuration = 1f;
             bw.interval = 1f;
-            bw.buffType = tacticsBuff;
-            tacticsWardPrefab = tacticsPrefabPrefab.InstantiateClone("TacticsAuraPrefab");
+            bw.buffDef = tacticsBuff;
+            tacticsWardPrefab = tacticsPrefabPrefab.InstantiateClone("TacticsAuraPrefab", true);
             UnityEngine.Object.Destroy(tacticsPrefabPrefab);
         }
 
@@ -99,8 +112,14 @@ namespace ThinkInvisible.TinkersSatchel {
                 UnityEngine.Object.Destroy(w.gameObject);
             GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
         }
-        
+        #endregion
+
+
+
+        ////// Hooks //////
+
         private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
+            if(!sender) return;
             var totalBuffs = Mathf.Max(sender.GetBuffCount(tacticsBuff) - 1, 0);
             args.moveSpeedMultAdd += totalBuffs * speedMod;
             args.baseDamageAdd += totalBuffs * damageMod;
@@ -113,21 +132,30 @@ namespace ThinkInvisible.TinkersSatchel {
                 AddWard(body);
         }
 
+
+
+        ////// Non-Public Methods //////
+
         private void AddWard(CharacterBody body) {
-            var cpt = body.GetComponentInChildren<TacticsWard>()?.gameObject;
-            if(!cpt) {
-				cpt = UnityEngine.Object.Instantiate(tacticsWardPrefab);
-				cpt.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
-				cpt.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject);
+            if(!body) return;
+            var cpt = body.GetComponentInChildren<TacticsWard>();
+            if(!cpt || !cpt.gameObject) {
+				var cptObj = UnityEngine.Object.Instantiate(tacticsWardPrefab);
+				cptObj.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
+				cptObj.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject);
             }
         }
     }
 
     internal class TacticsWard : MonoBehaviour {
         internal static List<TacticsWard> instances = new List<TacticsWard>();
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         private void Awake() {
             instances.Add(this);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         private void OnDestroy() {
             instances.Remove(this);
         }
