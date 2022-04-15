@@ -167,8 +167,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 return;
             }
 
-            var cpt = self.characterBody.GetComponent<PackBoxTracker>();
-            if(!cpt) cpt = self.characterBody.gameObject.AddComponent<PackBoxTracker>();
+            if(!self.characterBody.GetComponent<PackBoxTracker>()) self.characterBody.gameObject.AddComponent<PackBoxTracker>();
 
             var res = FindNearestRerollable(self.gameObject, self.GetAimRay(), 10f, 20f, false);
             Transform tsf = null;

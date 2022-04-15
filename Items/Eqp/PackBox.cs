@@ -260,7 +260,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!pbh)
                         pbh = slot.currentTarget.rootObject.AddComponent<PackBoxHandler>();
 
-                    pbh.TryPackServer(cpt, null);
+                    pbh.TryPackServer(cpt);
 
                     return false;
                 }
@@ -519,7 +519,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 PlaceClient(pos);
         }
         
-        public bool TryPackServer(PackBoxTracker into, GameObject[] auxOverride) {
+        public bool TryPackServer(PackBoxTracker into) {
             if(!NetworkServer.active) {
                 TinkersSatchelPlugin._logger.LogError("PackBoxHandler.TryPackServer called on client");
                 return false;

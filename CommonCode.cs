@@ -109,12 +109,16 @@ namespace ThinkInvisible.TinkersSatchel {
 	[RequireComponent(typeof(BaseAI))]
 	public class TauntDebuffController : MonoBehaviour {
 		BaseAI ai;
-		Dictionary<CharacterBody, float> tauntTimers = new Dictionary<CharacterBody, float>();
+		readonly Dictionary<CharacterBody, float> tauntTimers = new Dictionary<CharacterBody, float>();
 		public bool isTaunted => tauntTimers.Count > 0;
 		public HashSet<CharacterBody> GetTaunters() { return new HashSet<CharacterBody>(tauntTimers.Keys); }
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
 			ai = GetComponent<BaseAI>();
 		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
 			if(!ai) return;
 			var keys = tauntTimers.Keys.ToList();
@@ -144,8 +148,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 		public static void ApplyTaunt(BaseAI to, CharacterBody from, float duration) {
 			if(!to) return;
-			TauntDebuffController tdc;
-			if(!to.TryGetComponent<TauntDebuffController>(out tdc))
+			if(!to.TryGetComponent<TauntDebuffController>(out var tdc))
 				tdc = to.gameObject.AddComponent<TauntDebuffController>();
 			tdc.ApplyTaunt(from, duration);
         }
@@ -171,10 +174,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
 	[RequireComponent(typeof(CharacterBody))]
 	public class ServerTimedSkillDisable : MonoBehaviour {
-		List<float> primaryDisablers = new List<float>();
-		List<float> secondaryDisablers = new List<float>();
-		List<float> utilityDisablers = new List<float>();
-		List<float> specialDisablers = new List<float>();
+		readonly List<float> primaryDisablers = new List<float>();
+		readonly List<float> secondaryDisablers = new List<float>();
+		readonly List<float> utilityDisablers = new List<float>();
+		readonly List<float> specialDisablers = new List<float>();
 		float cachedPrimaryCooldown;
 		float cachedSecondaryCooldown;
 		float cachedUtilityCooldown;
@@ -186,10 +189,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		CharacterBody body;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
 			body = GetComponent<CharacterBody>();
         }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void OnDestroy() {
 			ServerCleanse();
 		}
@@ -246,6 +251,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			specialDisablers.Clear();
         }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
 			if(!NetworkServer.active) return;
 

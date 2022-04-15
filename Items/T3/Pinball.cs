@@ -83,7 +83,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			var tspp = new GameObject("TkSatTempSetupPrefabPrefab");
 			var tsp = tspp.InstantiateClone("TkSatTempSetupPrefab", false);
 			GameObject.Destroy(tspp);
-			var efc = tsp.AddComponent<EffectComponent>();
+			tsp.AddComponent<EffectComponent>();
 			var dstroy = tsp.AddComponent<DestroyOnTimer>();
 			dstroy.duration = 1f;
 			tsp.AddComponent<RandomPinballSFXOnEnable>();
@@ -172,16 +172,16 @@ namespace ThinkInvisible.TinkersSatchel {
 						}).Where(kvp => kvp.obj != null);
 
 					if(enemies.Count() > 0) {
-						var nextTarget = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
-						var aimVec = (nextTarget.obj.transform.position - bounceEnd).normalized;
+						var (obj, rayHitInfo) = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
+						var aimVec = (obj.transform.position - bounceEnd).normalized;
 						var nhi = default(BulletAttack.BulletHit);
 						self.damage = origDamage * bounceDamageFrac;
-						self.InitBulletHitFromRaycastHit(ref nhi, bounceEnd, aimVec, ref nextTarget.rayHitInfo);
+						self.InitBulletHitFromRaycastHit(ref nhi, bounceEnd, aimVec, ref rayHitInfo);
 						self.ProcessHit(ref nhi);
 
 						if(self.tracerEffectPrefab) {
 							EffectData effectData = new EffectData {
-								origin = nextTarget.obj.transform.position,
+								origin = obj.transform.position,
 								start = bounceEnd
 							};
 							EffectManager.SpawnEffect(self.tracerEffectPrefab, effectData, true);
@@ -193,8 +193,8 @@ namespace ThinkInvisible.TinkersSatchel {
 						};
 						EffectManager.SpawnEffect(effectPrefab, pinbEffData, true);
 
-						bounceEnd = nextTarget.obj.transform.position;
-						lastBounceTarget = nextTarget.obj;
+						bounceEnd = obj.transform.position;
+						lastBounceTarget = obj;
 					} else break;
 				}
 
@@ -255,7 +255,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		float origDamagePIE;
 		float origDamagePSTI;
 		float origSpeed;
-		List<PhysicMaterial> origPhysmats = new List<PhysicMaterial>();
+		readonly List<PhysicMaterial> origPhysmats = new List<PhysicMaterial>();
 
 		GameObject lastTarget = null;
 		GameObject currTarget = null;
@@ -266,6 +266,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		ProjectileSimple ps = null;
 		ProjectileExplosion pe = null;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
 			isBouncy = true;
 			projectile = GetComponent<ProjectileController>();
@@ -297,6 +298,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			else origSpeed = projectile.rigidbody.velocity.magnitude;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
 			if(isBouncy && (
 				(pie && pie.stopwatch > pie.lifetime)
@@ -412,6 +414,7 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
 	public class RandomPinballSFXOnEnable : MonoBehaviour {
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void OnEnable() {
 			var soundSpeed = UnityEngine.Random.Range(0f, 100f);
 			for(var i = 0; i < 10; i++) //sound is VERY quiet by default

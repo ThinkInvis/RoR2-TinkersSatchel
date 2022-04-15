@@ -164,8 +164,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 var velVec = slot.characterBody.transform.position - rb.transform.position;
 
                 if(rb.useGravity && !rb.gameObject.name.Contains("TkSatPixie")) {
-                    var trajectory = MiscUtil.CalculateVelocityForFinalPosition(rb.transform.position, slot.characterBody.transform.position, 1f);
-                    velVec = trajectory.vInitial;
+                    var (vInitial, tFinal) = MiscUtil.CalculateVelocityForFinalPosition(rb.transform.position, slot.characterBody.transform.position, 1f);
+                    velVec = vInitial;
                 } else {
                     velVec.Normalize();
                     velVec *= PULL_FORCE;
@@ -192,7 +192,7 @@ namespace ThinkInvisible.TinkersSatchel {
             foreach(TeamComponent tcpt in teamMembers) {
                 var velVec = slot.characterBody.transform.position - tcpt.transform.position;
                 if(velVec.sqrMagnitude <= sqrad && tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
-                    var trajectory = MiscUtil.CalculateVelocityForFinalPosition(tcpt.transform.position, slot.characterBody.transform.position, 1f);
+                    var (vInitial, _) = MiscUtil.CalculateVelocityForFinalPosition(tcpt.transform.position, slot.characterBody.transform.position, 1f);
                     var mcpt = tcpt.body.GetComponent<IPhysMotor>();
                     tcpt.body.healthComponent.TakeDamage(new DamageInfo {
                         attacker = slot.characterBody.gameObject,
@@ -201,7 +201,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         damageColorIndex = DamageColorIndex.Default,
                         damageType = DamageType.Generic | DamageType.AOE,
                         canRejectForce = false,
-                        force = (trajectory.vInitial - ((mcpt != null) ? mcpt.velocity : Vector3.zero)) * ((mcpt != null) ? mcpt.mass : 1f),
+                        force = (vInitial - ((mcpt != null) ? mcpt.velocity : Vector3.zero)) * ((mcpt != null) ? mcpt.mass : 1f),
                         position = tcpt.body.corePosition,
                         procChainMask = default,
                         procCoefficient = 1f

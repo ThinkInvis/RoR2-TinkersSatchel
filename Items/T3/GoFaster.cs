@@ -318,9 +318,6 @@ namespace ThinkInvisible.TinkersSatchel {
 				self.characterBody.characterMotor.ApplyForce(mainSpeed * massAdjust * dir + yvelCancel * massAdjust, false, false);
 				self.fireIndex++;
 				var muzzle = (self.fireIndex % 2 == 0) ? "MuzzleLeft" : "MuzzleRight";
-				var pos = self.inputBank.aimOrigin;
-				var tsf = self.FindModelChild(muzzle);
-				if(tsf != null) pos = tsf.position;
 				EffectManager.SimpleMuzzleFlash(EntityStates.Engi.EngiMissilePainter.Fire.muzzleflashEffectPrefab, self.gameObject, muzzle, true);
 				self.PlayAnimation((self.fireIndex % 2 == 0) ? "Gesture Left Cannon, Additive" : "Gesture Right Cannon, Additive", "FireHarpoon");
 
@@ -350,14 +347,16 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(count > 0 && self.goodPlacement && self.characterBody.characterMotor) {
 				var dvec = tpos - self.characterBody.characterMotor.previousPosition;
 				self.characterBody.characterMotor.rootMotion += dvec;
-				var blinkEff = new EffectData();
-				blinkEff.rotation = Util.QuaternionSafeLookRotation(dvec.normalized);
-				blinkEff.origin = Util.GetCorePosition(self.gameObject);
-				EffectManager.SpawnEffect(EntityStates.Huntress.BlinkState.blinkPrefab, blinkEff, false);
-				var blinkEff2 = new EffectData();
-				blinkEff2.rotation = Util.QuaternionSafeLookRotation(dvec.normalized);
-				blinkEff2.origin = Util.GetCorePosition(self.gameObject) + dvec;
-				EffectManager.SpawnEffect(EntityStates.Huntress.BlinkState.blinkPrefab, blinkEff2, false);
+                var blinkEff = new EffectData {
+                    rotation = Util.QuaternionSafeLookRotation(dvec.normalized),
+                    origin = Util.GetCorePosition(self.gameObject)
+                };
+                EffectManager.SpawnEffect(EntityStates.Huntress.BlinkState.blinkPrefab, blinkEff, false);
+                var blinkEff2 = new EffectData {
+                    rotation = Util.QuaternionSafeLookRotation(dvec.normalized),
+                    origin = Util.GetCorePosition(self.gameObject) + dvec
+                };
+                EffectManager.SpawnEffect(EntityStates.Huntress.BlinkState.blinkPrefab, blinkEff2, false);
 				Util.PlaySound("Play_huntress_shift_start", self.gameObject);
 				Util.PlaySound("Play_huntress_shift_end", self.gameObject);
 			}
@@ -540,10 +539,12 @@ namespace ThinkInvisible.TinkersSatchel {
 		public bool boosting => boostStopwatch > 0f;
 		public bool retrigProtection = true;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
 			if(boosting)
 				boostStopwatch -= Time.fixedDeltaTime;
         }
+
 		public bool TryBoost() {
 			if(retrigProtection || boostsUsed >= maxBoosts) return false;
 			boostsUsed++;
@@ -560,6 +561,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float maxPitch = 90f;
 
 		LineRenderer line;
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
 			line = gameObject.AddComponent<LineRenderer>();
 			line.material = UnityEngine.Object.Instantiate(LegacyResourcesAPI.Load<Material>("materials/matBlueprintsOk"));
@@ -575,11 +578,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			};
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Start() {
 			force = GetComponent<ProjectileDamage>().force;
 			radius = GetComponent<ProjectileImpactExplosion>().blastRadius;
         }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Update() {
 			var body = LocalUserManager.GetFirstLocalUser().cachedBodyObject;
 			if(!body || (body.transform.position - transform.position).magnitude > radius) {
@@ -620,6 +625,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		bool hasProtection = false;
 		bool disableNextFrame = false;
 		bool disableN2f = false;
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void FixedUpdate() {
 			if(disableN2f) {
 				disableN2f = false;
@@ -634,6 +641,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				}
 			}
 		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void Awake() {
 			attachedBody = GetComponent<CharacterBody>();
 			attachedBody.characterMotor.onMovementHit += CharacterMotor_onMovementHit;

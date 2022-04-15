@@ -294,6 +294,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         float stopwatch = 0f;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             if(!isActiveAndEnabled) return;
             if(stopwatch < delay) {
@@ -315,7 +316,8 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
     public class PixieTubeStopwatch : MonoBehaviour {
-        float[] stopwatches = new[] { 0f, 0f, 0f, 0f, 0f };
+        readonly float[] stopwatches = new[] { 0f, 0f, 0f, 0f, 0f };
+
         public bool CheckProc(SkillSlot slot) {
             if(slot == SkillSlot.None || slot > SkillSlot.Special) return false;
             if(stopwatches[(int)slot] <= 0f) {
@@ -324,6 +326,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             return false;
         }
+
         public bool CheckProcEquipment() {
             if(stopwatches[4] <= 0f) {
                 stopwatches[4] = PixieTube.instance.perSkillCooldown;
@@ -331,6 +334,8 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             return false;
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             for(int i = 0; i < stopwatches.Length; i++) {
                 if(stopwatches[i] > 0f)
@@ -368,10 +373,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         bool GetCanPerformTargetingOps() { return NetworkServer.active && !target && stopwatch > armingDelay && teamFilter && teamFilter.teamIndex != TeamIndex.None; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             coll = GetComponent<SphereCollider>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             if(stopwatch < duration)
                 stopwatch += Time.fixedDeltaTime;
@@ -395,6 +402,7 @@ namespace ThinkInvisible.TinkersSatchel {
             parentRigidbody.velocity -= Physics.gravity * Time.fixedDeltaTime;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void OnTriggerStay(Collider other) {
             if(GetCanPerformTargetingOps()) {
                 var tgtTeam = TeamComponent.GetObjectTeam(other.gameObject);
@@ -423,6 +431,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private int flickerCount = 0;
         private int currIndex = 0;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Update() {
             stopwatch -= Time.deltaTime;
             if(stopwatch < 0f) {

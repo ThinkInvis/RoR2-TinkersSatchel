@@ -102,7 +102,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class MotionTrackerTracker : MonoBehaviour {
         const float COMBAT_TIMER = 6f;
 
-        Dictionary<GameObject, (float stopwatch, float duration)> activeCombatants = new Dictionary<GameObject, (float, float)>();
+        readonly Dictionary<GameObject, (float stopwatch, float duration)> activeCombatants = new Dictionary<GameObject, (float, float)>();
 
         public float GetCombatBonusScalar(GameObject with) {
             if(!activeCombatants.ContainsKey(with))
@@ -117,6 +117,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 activeCombatants[with] = (COMBAT_TIMER, 0f);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             var frozenCombatants = activeCombatants.ToArray();
             foreach(var kvp in frozenCombatants) {

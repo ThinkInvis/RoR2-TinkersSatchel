@@ -260,10 +260,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var persist = cm.GetComponent<ItemDroneWardPersist>();
             if(!summon || !cmBody || !persist)
                 return;
-            var cmWard = cmBody.GetComponent<ItemWard>();
-            //cmWard.radius = 50f;
             body.inventory.RemoveItem(pickupDef.itemIndex, remCount);
-            //cmWard.ServerAddItem(pickupDef.itemIndex);
             persist.index = pickupDef.itemIndex;
             persist.count = remCount;
 
@@ -285,6 +282,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class ItemDroneDropOnDeath : MonoBehaviour, IOnKilledServerReceiver {
         CharacterBody body;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             body = GetComponent<CharacterBody>();
         }
@@ -308,9 +306,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public ItemIndex index = ItemIndex.None;
         public int count = 0;
         CharacterMaster master;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             master = GetComponent<CharacterMaster>();
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             if(!NetworkServer.active || !master || index == ItemIndex.None) return;
             var body = master.GetBodyObject();

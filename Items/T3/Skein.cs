@@ -161,11 +161,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			shortNotMovingStopwatch = 0f;
         }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
 			body = GetComponent<CharacterBody>();
 			prevPos = body.transform.position;
         }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
 			if(!body || !NetworkServer.active) return;
 			float minMove = 0.1f * Time.fixedDeltaTime;

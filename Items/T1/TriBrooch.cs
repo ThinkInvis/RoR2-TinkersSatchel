@@ -288,6 +288,8 @@ namespace ThinkInvisible.TinkersSatchel {
     public class TriBroochAchievementTracker : MonoBehaviour {
         public float stunStopwatch = 0f;
         public float freezeStopwatch = 0f;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             if(stunStopwatch > 0f)
                 stunStopwatch -= Time.fixedDeltaTime;

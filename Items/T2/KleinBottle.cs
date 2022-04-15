@@ -162,8 +162,8 @@ namespace ThinkInvisible.TinkersSatchel {
                                 shouldPull &= self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
 
                             if(shouldPull) {
-                                var trajectory = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
-                                velVec = trajectory.vInitial;
+                                var (vInitial, _) = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
+                                velVec = vInitial;
                             } else {
                                 float theta;
 

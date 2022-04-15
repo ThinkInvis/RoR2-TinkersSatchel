@@ -267,9 +267,9 @@ namespace ThinkInvisible.TinkersSatchel {
                             TinkersSatchelPlugin._logger.LogError($"RewindState.ApplyTo: skillslot {thisSlot} went missing or had duplicates!");
                             continue;
                         }
-                        var ovr = stored.First();
-                        skill.rechargeStopwatch = ovr.cd;
-                        skill.stock = ovr.stock;
+                        var (_, cd, stock) = stored.First();
+                        skill.rechargeStopwatch = cd;
+                        skill.stock = stock;
                     }
                 }
 
@@ -289,14 +289,17 @@ namespace ThinkInvisible.TinkersSatchel {
         CharacterBody body;
         public bool isRewinding = false;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             body = GetComponent<CharacterBody>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void OnDisable() {
             frames.Clear();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             if(!body || isRewinding) return;
             if(EquipmentCatalog.GetEquipmentDef(body.inventory.currentEquipmentIndex) != Rewind.instance.equipmentDef) {

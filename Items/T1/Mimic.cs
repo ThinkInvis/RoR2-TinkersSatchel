@@ -282,7 +282,6 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         internal void RemoveMimics(int count, bool suppressRebuild = false) {
-            var iarrSel = GetSelection();
             var totalRemovals = Mathf.Min(count, totalMimics);
             for(int i = 0; i < totalRemovals; i++) {
                 var toRemove = Mimic.instance.rng.NextElementUniform(_mimics);
