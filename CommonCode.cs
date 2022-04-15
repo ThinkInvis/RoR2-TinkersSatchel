@@ -45,7 +45,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			tauntDebuff.canStack = false;
 			tauntDebuff.isDebuff = true;
 			tauntDebuff.name = "TKSATTaunt";
-			tauntDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texDifficultyHardIcon.png")
+			tauntDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texAttackIcon.png")
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(tauntDebuff);
 
