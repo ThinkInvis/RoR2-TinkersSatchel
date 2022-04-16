@@ -117,16 +117,15 @@ namespace ThinkInvisible.TinkersSatchel {
 	}
 
 	[RequireComponent(typeof(ProjectileTargetComponent))]
-	public class ProjectileGravitateTowardsTarget : MonoBehaviour {
-		public float pullForce;
-
-		public bool varyByDistance;
-		public float zeroForceRadius;
-		public float maxForceRadius;
+	public class ProjectileSteerTowardsTargetRB : MonoBehaviour {
+		public float targetSpeed;
+		public float rotationSpeed;
+		public float speedSpeed;
 
 		private ProjectileTargetComponent targetComponent;
 		private Rigidbody rb;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void Start() {
 			if(!NetworkServer.active) {
 				enabled = false;
@@ -136,16 +135,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			rb = GetComponent<Rigidbody>();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void FixedUpdate() {
-			if(targetComponent.target) {
-				var delta = this.targetComponent.target.transform.position - this.transform.position;
-				if(varyByDistance)
-					delta = delta.normalized * Remap(Mathf.Clamp(delta.magnitude, zeroForceRadius, maxForceRadius), zeroForceRadius, maxForceRadius, 0, pullForce);
-				else
-					delta = delta.normalized * pullForce;
-
-				rb.AddForce(delta, ForceMode.Force);
-			}
+			if(targetComponent.target)
+				rb.velocity = Vector3.RotateTowards(rb.velocity,
+					(targetComponent.target.transform.position - transform.position).normalized,
+					rotationSpeed * Mathf.PI / 180f * Time.fixedDeltaTime, speedSpeed * Time.fixedDeltaTime);
 		}
 	}
 }
