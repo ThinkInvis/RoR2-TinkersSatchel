@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_NAME", "Jink Jet");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a very short dodge in your <style=cIsUtility>aim direction</style>. Hold up to 3 charges.");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a small jet-assisted jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.");
 			base.RefreshPermanentLanguage();
 		}
 
@@ -95,8 +95,11 @@ namespace ThinkInvisible.TinkersSatchel {
 				float sprintMult = 1;
 				if(characterBody)
 					sprintMult = characterBody.sprintingSpeedMultiplier;
-				if(characterMotor)
-					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * (characterMotor.isGrounded ? 5f : 2.25f);
+				if(characterMotor) {
+					var wasGrounded = characterMotor.isGrounded;
+					characterMotor.Motor.ForceUnground();
+					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * (wasGrounded ? 3f : 2f);
+				}
 				if(isAuthority)
 					outer.SetNextStateToMain();
 			}
