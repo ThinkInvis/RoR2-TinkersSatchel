@@ -50,6 +50,9 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void Start() {
+            CommonCode.instance.RefreshPermanentLanguage();
+            CommonCode.instance.InstallLanguage();
+            CommonCode.instance.Install();
             T2Module.SetupAll_PluginStart(allModules);
         }
     }

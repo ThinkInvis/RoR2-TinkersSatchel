@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
         bool shouldDeferDrops = true;
         Vector3 lootShowerLoc = Vector3.zero;
         float lootShowerTimer = 0f;
-        List<GameObject> deferredDrops = new List<GameObject>();
+        readonly List<GameObject> deferredDrops = new List<GameObject>();
         List<Vector3> launchVelocities = new List<Vector3>();
 
 
@@ -134,8 +134,6 @@ namespace ThinkInvisible.TinkersSatchel {
                     int totalEquipments = 0;
                     int totalLunarEquipments = 0;
                     int totalOther = 0;
-                    string lunarColorHex = "";
-                    string equipmentColorHex = "";
                     foreach(var drop in deferredDrops) {
                         if(drop && drop.TryGetComponent<PickupDropletController>(out var pickup)) {
                             var pdef = PickupCatalog.GetPickupDef(pickup.pickupIndex);
@@ -146,13 +144,10 @@ namespace ThinkInvisible.TinkersSatchel {
                                     }
                                     totalItemTiers[pdef.itemTier]++;
                                 } else if(pdef.equipmentIndex != EquipmentIndex.None) {
-                                    if(pdef.isLunar) {
+                                    if(pdef.isLunar)
                                         totalLunarEquipments++;
-                                        lunarColorHex = Util.RGBToHex(pdef.baseColor);
-                                    } else {
+                                    else
                                         totalEquipments++;
-                                        equipmentColorHex = Util.RGBToHex(pdef.baseColor);
-                                    }
                                 } else totalOther++;
                             } else totalOther++;
                         } else totalOther++;
