@@ -83,7 +83,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				Util.PlaySound(EntityStates.Commando.CommandoWeapon.FirePistol2.firePistolSoundString, gameObject);
 				if(EntityStates.Commando.CommandoWeapon.FirePistol2.muzzleEffectPrefab)
 					EffectManager.SimpleMuzzleFlash(EntityStates.Commando.CommandoWeapon.FirePistol2.muzzleEffectPrefab, gameObject, targetMuzzle, false);
-				AddRecoil(-0.7f * recoilAmplitude, -1f * recoilAmplitude, -0.1f * recoilAmplitude, 0.1f * recoilAmplitude);
+				var adjustedRecoil = recoilAmplitude / attackSpeedStat;
+				AddRecoil(-0.7f * adjustedRecoil, -1f * recoilAmplitude, -0.1f * adjustedRecoil, 0.1f * adjustedRecoil);
 				if(isAuthority) {
 					new BulletAttack {
 						owner = gameObject,
@@ -141,7 +142,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			public static float force = 0f;
 			public static float baseEndLagDuration = 0.4f;
 			public static float baseDurationPerShot = 0.08f;
-			public static float recoilAmplitude = 3f;
+			public static float recoilAmplitude = 6f;
 			public static float spreadBloomValue = 0.2f;
 			public static int burstCount = 4;
 			private float duration;
