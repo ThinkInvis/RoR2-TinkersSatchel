@@ -101,7 +101,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(characterMotor) {
 					var wasGrounded = characterMotor.isGrounded;
 					characterMotor.Motor.ForceUnground();
-					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * (wasGrounded ? 4f : 2f);
+					characterMotor.velocity = Vector3.zero;
+					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * (wasGrounded ? 3f : 1.5f);
 				}
 				if(isAuthority)
 					outer.SetNextStateToMain();
