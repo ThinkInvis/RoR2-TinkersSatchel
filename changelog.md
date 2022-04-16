@@ -1,5 +1,13 @@
 # Tinker's Satchel Changelog
 
+**1.14.0** *The Skillful Update, Part Commando*
+
+- ADDED SKILL VARIANTS:
+	- Commando: Pulse, Jink Jet, and Plasma Grenade!
+- Changed Taunt debuff icon to a slightly more fitting vanilla one.
+- Fixed Taunt keyword token not resolving.
+- General behind-the-scenes cleanup and Visual Studio Intellisense message resolution.
+
 **1.13.2**
 
 - Balance pass.

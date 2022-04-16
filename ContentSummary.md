@@ -450,6 +450,30 @@
 	</thead>
 	<tbody>
 		<tr>
+			<td colspan="2" align="center"><h3>Commando</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/CommandoPrimaryPulse.png?raw=true" width=128></td>
+			<td>
+				<b>Pulse</b> (Primary)<br>
+				Rapidly shoot an enemy 4 times with high recoil. Damage per shot ramps from 75% to 150% over the course of the burst.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/CommandoUtilityJinkJet.png?raw=true" width=128></td>
+			<td>
+				<b>Jink Jet</b> (Utility)<br>
+				Perform a small jet-assisted horizontal jump in your aim direction. Hold up to 3.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/CommandoSpecialPlasmaGrenade.png?raw=true" width=128></td>
+			<td>
+				<b>Plasma Grenade</b> (Special)<br>
+				<i>Ignite</i>. Throw a sticky grenade with very-close-range homing that explodes for 500% damage. Can hold up to 2. <small>Watch your aim near low walls.</small>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Engineer</h3></td>
 		</tr>
 		<tr>

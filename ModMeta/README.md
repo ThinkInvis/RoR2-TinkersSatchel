@@ -286,26 +286,50 @@ Short summaries are provided below. For a full description of each item, see: ht
 	</thead>
 	<tbody>
 		<tr>
+			<td colspan="2" align="center"><h3>Commando</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/CommandoPrimaryPulse.png?raw=true" width=128></td>
+			<td>
+				<b>Pulse</b> (Primary)<br>
+				Rapidly shoot an enemy 4 times with high recoil. Damage per shot ramps from 75% to 150% over the course of the burst.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/CommandoUtilityJinkJet.png?raw=true" width=128></td>
+			<td>
+				<b>Jink Jet</b> (Utility)<br>
+				Perform a small jet-assisted horizontal jump in your aim direction. Hold up to 3.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/CommandoSpecialPlasmaGrenade.png?raw=true" width=128></td>
+			<td>
+				<b>Plasma Grenade</b> (Special)<br>
+				<i>Ignite</i>. Throw a sticky grenade with very-close-range homing that explodes for 500% damage. Can hold up to 2. <small>Watch your aim near low walls.</small>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Engineer</h3></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
 			<td>
-				<b>Smart Flak</b><br>
+				<b>Smart Flak</b> (Primary)<br>
 				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel tracks enemies for up to 8x25% damage (maximum 5x25% on a single target).
 			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiSecondaryChaff.png?raw=true" width=128></td>
 			<td>
-				<b>Decoy Chaff</b><br>
+				<b>Decoy Chaff</b> (Secondary)<br>
 				Deal 4x75% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
 			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiUtilitySpeedispenser.png?raw=true" width=128></td>
 			<td>
-				<b>Speed Dispenser</b><br>
+				<b>Speed Dispenser</b> (Utility)<br>
 				Deploy a stationary decanter that stores up to 4 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting and +25% jump height. Charges last 15 seconds; restores 1 charge every 7.5 seconds.
 			</td>
 		</tr>
@@ -394,6 +418,14 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.14.0** *The Skillful Update, Part Commando*
+
+- ADDED SKILL VARIANTS:
+	- Commando: Pulse, Jink Jet, and Plasma Grenade!
+- Changed Taunt debuff icon to a slightly more fitting vanilla one.
+- Fixed Taunt keyword token not resolving.
+- General behind-the-scenes cleanup and Visual Studio Intellisense message resolution.
+
 **1.13.2**
 
 - Balance pass.
@@ -438,26 +470,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
 - Fixed missing style tags in Unstable Klein Bottle description.
-
-**1.12.2**
-
-- Balance pass.
-	- Macho Moustache:
-		- Now has a radius of 100 m (was 10 m).
-		- Now provides a damage bonus of 1% per enemy per stack (was 5%).
-		- Now only works on enemies in combat (used a skill recently) or danger (was hurt recently).
-		- Now counts elites and champions/bosses as multiple enemies (default +2/+4).
-		- Renamed existing config options to force changes, as this is effectively a major rework to further differentiate the item from Focus Crystal.
-	- Negative Feedback Loop:
-		- No longer triggers on-hurt items.
-		- No longer applies to fall damage.
-		- Now procs its DoT once per frame (effectively continuously) by default. This config was not forced to update; default 0.2s will still be in place for already-installed copies of the mod.
-	- Percussive Maintenance:
-		- Now also heals you when you heal an ally (for 25% the amount by default).
-	- Unstable Klein Bottle:
-		- Now pulls enemies instead of pushing if procced by a melee survivor. List of melee survivors is configurable (by body name).
-	- RC Controller:
-		- Nerfed first-stack fire rate to match per-extra-stack rate (100% --> 25%).
-- Percussive Maintenance now passes through proc chain masks instead of using an empty one.
-- Phrasing tweak on Defibrillator description.
-- Fixed Pinball Wizard unintentionally affecting deployables and Rex's Special skill. Now has a configurable projectile name blacklist.
