@@ -109,7 +109,7 @@ namespace ThinkInvisible.TinkersSatchel {
             });
         }
 
-        void InflictBurn(int count, SetStateOnHurt ssoh, DamageReport report) {
+        void InflictBurn(int count, DamageReport report) {
             var dot = new InflictDotInfo {
                 victimObject = report.victim.gameObject,
                 attackerObject = report.attacker,
@@ -145,7 +145,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(doStun) {
                         InflictFreezeOrStun(count, self, report, true);
                     } else {
-                        InflictBurn(count, self, report);
+                        InflictBurn(count, report);
                     }
                 }
                 if(isStun) {
@@ -153,7 +153,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(doFreeze) {
                         InflictFreezeOrStun(count, self, report, false);
                     } else {
-                        InflictBurn(count, self, report);
+                        InflictBurn(count, report);
                     }
                 }
             });
@@ -171,7 +171,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(doFreeze) {
                         InflictFreezeOrStun(count, self, report, false);
                     } else {
-                        InflictBurn(count, self, report);
+                        InflictBurn(count, report);
                     }
                 });
             } else {

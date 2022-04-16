@@ -321,8 +321,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!ward) return;
             if(ward.radius != 100f)
                 ward.radius = 100f;
-            int oldCount = 0;
-            ward.itemcounts.TryGetValue(index, out oldCount);
+            ward.itemcounts.TryGetValue(index, out int oldCount);
             var ctc = Mathf.Abs(oldCount - count);
             if(oldCount < count) {
                 for(var i = 0; i < ctc; i++)
@@ -339,6 +338,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public HashSet<ItemDef> blacklistedItems = new HashSet<ItemDef>();
         PickupPickerController ppc;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]
         void Awake() {
             ppc = GetComponent<PickupPickerController>();
         }
