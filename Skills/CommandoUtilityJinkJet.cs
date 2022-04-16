@@ -83,21 +83,12 @@ namespace ThinkInvisible.TinkersSatchel {
 				base.OnEnter();
 				Util.PlaySound("Play_commando_M2_grenade_explo", gameObject);
 				var animator = GetModelAnimator();
-				ChildLocator component = animator.GetComponent<ChildLocator>();
+				var cLoc = animator.GetComponent<ChildLocator>();
 				var skillForward = GetAimRay().direction.normalized;
-				var animForward = characterDirection ? characterDirection.forward : skillForward;
-				var forwardAdjust = Vector3.Dot(skillForward, animForward);
-				var rightAdjust = Vector3.Dot(skillForward, Vector3.Cross(Vector3.up, animForward));
-				animator.SetFloat("forwardSpeed", forwardAdjust, 0.1f, Time.fixedDeltaTime);
-				animator.SetFloat("rightSpeed", rightAdjust, 0.1f, Time.fixedDeltaTime);
-				if(Mathf.Abs(forwardAdjust) > Mathf.Abs(rightAdjust))
-					PlayAnimation("Body", (forwardAdjust > 0f) ? "DodgeForward" : "DodgeBackward", "Dodge.playbackRate", duration);
-				else
-					PlayAnimation("Body", (rightAdjust > 0f) ? "DodgeRight" : "DodgeLeft", "Dodge.playbackRate", duration);
 				var je = EntityStates.Commando.DodgeState.jetEffect;
 				if(je) {
-					var tsfL = component.FindChild("LeftJet");
-					var tsfR = component.FindChild("RightJet");
+					var tsfL = cLoc.FindChild("LeftJet");
+					var tsfR = cLoc.FindChild("RightJet");
 					if(tsfL) UnityEngine.Object.Instantiate<GameObject>(je, tsfL);
 					if(tsfR) UnityEngine.Object.Instantiate<GameObject>(je, tsfR);
 				}
