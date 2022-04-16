@@ -100,9 +100,6 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(isAuthority)
 					outer.SetNextStateToMain();
 			}
-
-			[SerializeField]
-			public float duration = 0.15f;
 		}
 	}
 }
