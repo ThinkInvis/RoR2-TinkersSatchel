@@ -87,6 +87,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				var skillForward = GetAimRay().direction;
 				if(characterMotor && characterMotor.isGrounded)
 					skillForward.y = 0.5f;
+				else
+					skillForward.y *= 0.75f;
 				skillForward.Normalize();
 				var je = EntityStates.Commando.DodgeState.jetEffect;
 				if(je) {
@@ -101,7 +103,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(characterMotor) {
 					characterMotor.Motor.ForceUnground();
 					characterMotor.velocity = Vector3.zero;
-					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 1.75f;
+					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 2f;
 				}
 				if(isAuthority)
 					outer.SetNextStateToMain();
