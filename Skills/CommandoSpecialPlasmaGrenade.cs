@@ -33,7 +33,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME", "Plasma Grenade");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION", "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Can hold up to 2. <style=cStack>Watch your aim near low walls.</style>");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION", "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>");
 			base.RefreshPermanentLanguage();
 		}
 
