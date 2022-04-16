@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_NAME", "Jink Jet");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a small jet-assisted jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a small jet-assisted horizontal jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.");
 			base.RefreshPermanentLanguage();
 		}
 
