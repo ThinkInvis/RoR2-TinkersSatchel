@@ -2,12 +2,9 @@
 using UnityEngine;
 using TILER2;
 using R2API;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.AddressableAssets;
-using EntityStates;
 using RoR2.Skills;
-using RoR2.Projectile;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using UnityEngine.Events;

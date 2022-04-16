@@ -1,15 +1,9 @@
 ﻿using RoR2;
 using UnityEngine;
-using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
-using static R2API.RecalculateStatsAPI;
 using R2API;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.AddressableAssets;
 using EntityStates;
-using RoR2.Projectile;
 using RoR2.Skills;
 
 namespace ThinkInvisible.TinkersSatchel {
