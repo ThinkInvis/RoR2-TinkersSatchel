@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_NAME", "Jink Jet");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a very short dodge that <style=cIsUtility>instantly boosts you to sprint speed</style>. Hold up to 3 charges.");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a very short dodge in your <style=cIsUtility>aim direction</style>. Hold up to 3 charges.");
 			base.RefreshPermanentLanguage();
 		}
 
@@ -75,6 +75,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Hooks //////
 
 
+
 		////// Skill States //////
 
 		public class QuickDodge : BaseState {
@@ -83,12 +84,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				Util.PlaySound("Play_commando_M2_grenade_explo", gameObject);
 				var animator = GetModelAnimator();
 				ChildLocator component = animator.GetComponent<ChildLocator>();
-				var skillForward = Vector3.zero;
-				if(isAuthority && inputBank && characterDirection)
-					skillForward = (
-							((inputBank.moveVector == Vector3.zero) ? characterDirection.forward : inputBank.moveVector)
-							+ (inputBank.jump.down ? (Vector3.up / 2f) : Vector3.zero)
-						).normalized;
+				var skillForward = GetAimRay().direction.normalized;
 				var animForward = characterDirection ? characterDirection.forward : skillForward;
 				var forwardAdjust = Vector3.Dot(skillForward, animForward);
 				var rightAdjust = Vector3.Dot(skillForward, Vector3.Cross(Vector3.up, animForward));
@@ -106,12 +102,10 @@ namespace ThinkInvisible.TinkersSatchel {
 					if(tsfR) UnityEngine.Object.Instantiate<GameObject>(je, tsfR);
 				}
 				float sprintMult = 1;
-				if(characterBody) {
-					characterBody.isSprinting = true;
+				if(characterBody)
 					sprintMult = characterBody.sprintingSpeedMultiplier;
-                }
 				if(characterMotor)
-					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult;
+					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 3;
 				if(isAuthority)
 					outer.SetNextStateToMain();
 			}
