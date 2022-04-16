@@ -96,7 +96,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(characterBody)
 					sprintMult = characterBody.sprintingSpeedMultiplier;
 				if(characterMotor)
-					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 1.75f;
+					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * (characterMotor.isGrounded ? 3f : 1.75f);
 				if(isAuthority)
 					outer.SetNextStateToMain();
 			}
