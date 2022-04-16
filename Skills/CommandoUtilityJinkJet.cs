@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_NAME", "Jink Jet");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a very short dodge in your <style=cIsUtility>aim direction</style>. Hold up to 3 charges.");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a very short dodge <style=cIsUtility>opposite your aim direction</style>. Hold up to 3 charges.");
 			base.RefreshPermanentLanguage();
 		}
 
@@ -84,7 +84,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				Util.PlaySound("Play_commando_M2_grenade_explo", gameObject);
 				var animator = GetModelAnimator();
 				var cLoc = animator.GetComponent<ChildLocator>();
-				var skillForward = GetAimRay().direction.normalized;
+				var skillForward = -GetAimRay().direction.normalized;
 				var je = EntityStates.Commando.DodgeState.jetEffect;
 				if(je) {
 					var tsfL = cLoc.FindChild("LeftJet");
