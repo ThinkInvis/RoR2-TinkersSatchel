@@ -84,7 +84,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				Util.PlaySound("Play_commando_M2_grenade_explo", gameObject);
 				var animator = GetModelAnimator();
 				var cLoc = animator.GetComponent<ChildLocator>();
-				var skillForward = GetAimRay().direction.normalized;
+				var skillForward = GetAimRay().direction;
+				skillForward.y *= 0.3f;
+				skillForward.Normalize();
 				var je = EntityStates.Commando.DodgeState.jetEffect;
 				if(je) {
 					var tsfL = cLoc.FindChild("LeftJet");
