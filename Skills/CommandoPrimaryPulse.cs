@@ -142,8 +142,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			public static float force = 0f;
 			public static float baseEndLagDuration = 0.4f;
 			public static float baseDurationPerShot = 0.08f;
-			public static float recoilAmplitude = 4.5f;
-			public static float spreadBloomValue = 0.15f;
+			public static float recoilAmplitude = 4f;
+			public static float spreadBloomValue = 0.125f;
 			public static int burstCount = 4;
 			private float duration;
 			private float stopwatch;
