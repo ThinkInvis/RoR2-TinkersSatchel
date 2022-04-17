@@ -53,7 +53,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public VoidMoustache() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/VoidMoustache.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/voidMoustacheIcon.png");
-            buffIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/voidMoustacheBuff.png");
+            buffIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/voidMoustacheBuff.png");
         }
 
         public override void SetupAttributes() {
