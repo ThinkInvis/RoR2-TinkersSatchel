@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using RoR2.Projectile;
+using RoR2.Skills;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class GoFaster : Item<GoFaster> {
@@ -100,6 +101,12 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Multiplier to BuffFrac for Captain Nuke: controls launch velocity of projectile per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float captainAirstrikeAltFracStack { get; private set; } = 20f;
 
+		[AutoConfig("Multiplier to BuffFrac for all unhandled characters: controls magnitude of speed buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float unhandledFrac { get; private set; } = 0.5f;
+
+		[AutoConfig("Static value for all unhandled characters: duration of speed buff, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float unhandledDuration { get; private set; } = 5f;
+
 		//todo: IDR as overlay on character model?
 
 
@@ -107,8 +114,10 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Other Fields/Properties //////
 
 		BuffDef engiSpeedBoostBuff;
+		BuffDef genericSpeedBoostBuff;
 		GameObject captainStrikeJumperAltProjectile;
 		UnlockableDef unlockable;
+		public List<SkillDef> handledSkillDefs = new List<SkillDef>();
 
 
 
@@ -122,8 +131,17 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void SetupAttributes() {
 			base.SetupAttributes();
 
+			genericSpeedBoostBuff = ScriptableObject.CreateInstance<BuffDef>();
+			genericSpeedBoostBuff.buffColor = Color.red;
+			genericSpeedBoostBuff.canStack = true;
+			genericSpeedBoostBuff.isDebuff = false;
+			genericSpeedBoostBuff.name = modInfo.shortIdentifier + "GoFasterUnhandled";
+			genericSpeedBoostBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texMovespeedBuffIcon.tif")
+				.WaitForCompletion();
+			ContentAddition.AddBuffDef(genericSpeedBoostBuff);
+
 			engiSpeedBoostBuff = ScriptableObject.CreateInstance<BuffDef>();
-			engiSpeedBoostBuff.buffColor = Color.green;
+			engiSpeedBoostBuff.buffColor = Color.red;
 			engiSpeedBoostBuff.canStack = true;
 			engiSpeedBoostBuff.isDebuff = false;
 			engiSpeedBoostBuff.name = modInfo.shortIdentifier + "GoFasterEngi";
@@ -134,6 +152,29 @@ namespace ThinkInvisible.TinkersSatchel {
 			var tmpPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Captain/CaptainAirstrikeAltProjectile.prefab")
 				.WaitForCompletion()
 				.InstantiateClone("TkSatTempSetupPrefab", false);
+
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CommandoBody/CommandoBodyRoll"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CommandoBody/CommandoSlide"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/HuntressBody/HuntressBlink"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/HuntressBody/HuntressMiniBlink"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/Bandit2Body/ThrowSmokeBomb"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/ToolbotBody/ToolbotBodyToolbotDash"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/EngiBody/EngiBodyPlaceBubbleShield"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/EngiBody/EngiHarpoons"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/MageBody/MageBodyWall"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/MercBody/MercBodyFocusedAssault"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/MercBody/MercBodyAssaulter"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/TreebotBody/TreebotBodySonicBoom"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/TreebotBody/TreebotBodyPlantSonicBoom"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/LoaderBody/ChargeFist"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/LoaderBody/ChargeZapFist"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CrocoBody/CrocoLeap"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CrocoBody/CrocoChainableLeap"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/PrepAirstrike"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/PrepAirstrikeAlt"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CallAirstrike"));
+			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CallAirstrikeAlt"));
+
 
 			/*var ghost = tmpPrefab.GetComponent<ProjectileController>().ghostPrefab.InstantiateClone("TkSatTempSetupPrefab2", false);
 
@@ -175,6 +216,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Croco.BaseLeap.OnEnter += BaseLeap_OnEnter;
             On.RoR2.Projectile.ProjectileExplosion.DetonateServer += ProjectileExplosion_DetonateServer;
             On.EntityStates.Captain.Weapon.CallAirstrikeAlt.ModifyProjectile += CallAirstrikeAlt_ModifyProjectile;
+            On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
 		}
 
         public override void Uninstall() {
@@ -197,15 +239,29 @@ namespace ThinkInvisible.TinkersSatchel {
 			On.EntityStates.Croco.BaseLeap.OnEnter -= BaseLeap_OnEnter;
 			On.RoR2.Projectile.ProjectileExplosion.DetonateServer -= ProjectileExplosion_DetonateServer;
 			On.EntityStates.Captain.Weapon.CallAirstrikeAlt.ModifyProjectile -= CallAirstrikeAlt_ModifyProjectile;
+			On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
 		}
 
 
 
-        ////// Hooks //////
-        #region Hooks
-        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
+		////// Hooks //////
+		#region Hooks
+		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
+			orig(self, skill);
+			if(NetworkServer.active && self
+				&& self.skillLocator && self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility
+				&& !handledSkillDefs.Contains(skill.skillDef)) {
+				var count = GetCount(self);
+				if(count <= 0) return;
+				for(var i = 0; i < count; i++)
+					self.AddTimedBuff(genericSpeedBoostBuff, unhandledDuration, count);
+			}
+		}
+
+		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
 			args.moveSpeedMultAdd += sender.GetBuffCount(engiSpeedBoostBuff) * engiSharedBuffFrac * buffFrac;
+			args.moveSpeedMultAdd += sender.GetBuffCount(genericSpeedBoostBuff) * unhandledFrac * buffFrac;
 		}
 
 		private void DodgeState_RecalculateRollSpeed(On.EntityStates.Commando.DodgeState.orig_RecalculateRollSpeed orig, EntityStates.Commando.DodgeState self) {
