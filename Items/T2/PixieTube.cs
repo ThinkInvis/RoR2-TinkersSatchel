@@ -274,6 +274,11 @@ namespace ThinkInvisible.TinkersSatchel {
         private void Fire_FireMissile(On.EntityStates.Engi.EngiMissilePainter.Fire.orig_FireMissile orig, EntityStates.Engi.EngiMissilePainter.Fire self, HurtBox target, Vector3 position) {
             orig(self, target, position);
             var count = GetCount(self.characterBody);
+            if(count <= 0) return;
+            var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
+            if(!pts)
+                pts = self.characterBody.gameObject.AddComponent<PixieTubeStopwatch>();
+            if(!pts.CheckProc(SkillSlot.Utility)) return;
             for(var i = 0; i < count; i++) {
                 SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
             }
@@ -283,6 +288,11 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             if((self.inputBank.skill1.down || self.inputBank.skill4.justPressed) && self.currentPlacementInfo.ok && self.exitCountdown == 0.25f && self.exitPending) {
                 var count = GetCount(self.characterBody);
+                if(count <= 0) return;
+                var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
+                if(!pts)
+                    pts = self.characterBody.gameObject.AddComponent<PixieTubeStopwatch>();
+                if(!pts.CheckProc(SkillSlot.Special)) return;
                 for(var i = 0; i < count; i++) {
                     SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
                 }
