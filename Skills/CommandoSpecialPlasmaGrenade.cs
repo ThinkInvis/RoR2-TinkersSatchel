@@ -139,7 +139,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void FixedUpdate() {
 			if(targetComponent.target)
 				rb.velocity = Vector3.RotateTowards(rb.velocity,
-					(targetComponent.target.transform.position - transform.position).normalized,
+					(targetComponent.target.transform.position - transform.position).normalized * targetSpeed,
 					rotationSpeed * Mathf.PI / 180f * Time.fixedDeltaTime, speedSpeed * Time.fixedDeltaTime);
 		}
 	}
