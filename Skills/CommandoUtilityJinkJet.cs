@@ -86,9 +86,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				var cLoc = animator.GetComponent<ChildLocator>();
 				var skillForward = GetAimRay().direction;
 				if(characterMotor && characterMotor.isGrounded)
-					skillForward.y = 0.25f;
+					skillForward.y = 0.3f;
 				else
-					skillForward.y = Mathf.Min(skillForward.y, 0.125f);
+					skillForward.y = Mathf.Min(skillForward.y, 0.15f);
 				skillForward.Normalize();
 				var je = EntityStates.Commando.DodgeState.jetEffect;
 				if(je) {
