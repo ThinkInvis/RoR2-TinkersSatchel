@@ -25,8 +25,9 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 1 tier-2 void;
 - 2 interactables:
 	- 2 drones;
-- 3 skill variants:
-	- all for Engineer;
+- 6 skill variants:
+	- 3 for Commando
+	- and 3 for Engineer;
 - and 5 artifacts.
 
 Short summaries are provided below. For a full description of each item, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ContentSummary.md
