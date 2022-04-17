@@ -10,7 +10,7 @@ using System.Linq;
 using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class VoidGoldenGear : Item<VoidGoldenGear> {
+    public class OrderedArmor : Item<OrderedArmor> {
 
         ////// Item Data //////
 
@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public BuffDef voidGoldenGearBuff { get; private set; }
+        public BuffDef statusBuff { get; private set; }
 
         private static HashSet<int> validItemTypeCache;
 
@@ -51,22 +51,22 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// TILER2 Module Setup //////
 
-        public VoidGoldenGear() {
-            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/VoidGoldenGear.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/voidGoldenGearIcon.png");
+        public OrderedArmor() {
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/OrderedArmor.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/orderedArmorIcon.png");
         }
 
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            voidGoldenGearBuff = ScriptableObject.CreateInstance<BuffDef>();
-            voidGoldenGearBuff.buffColor = new Color(0.35f, 0.15f, 0.65f);
-            voidGoldenGearBuff.canStack = true;
-            voidGoldenGearBuff.isDebuff = false;
-            voidGoldenGearBuff.name = "TKSATVoidGoldenGear";
-            voidGoldenGearBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texBuffGenericShield.tif")
+            statusBuff = ScriptableObject.CreateInstance<BuffDef>();
+            statusBuff.buffColor = new Color(0.35f, 0.15f, 0.65f);
+            statusBuff.canStack = true;
+            statusBuff.isDebuff = false;
+            statusBuff.name = "TKSATOrderedArmor";
+            statusBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texBuffGenericShield.tif")
                 .WaitForCompletion();
-            ContentAddition.AddBuffDef(voidGoldenGearBuff);
+            ContentAddition.AddBuffDef(statusBuff);
 
             itemDef.requiredExpansion = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(x => x.nameToken == "DLC1_NAME");
 
@@ -155,9 +155,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
             var tgtBuffStacks = Mathf.FloorToInt(cpt.calculatedArmorBonus);
 
-            int currBuffStacks = cb.GetBuffCount(voidGoldenGearBuff);
+            int currBuffStacks = cb.GetBuffCount(statusBuff);
             if(tgtBuffStacks != currBuffStacks)
-                cb.SetBuffCount(voidGoldenGearBuff.buffIndex, tgtBuffStacks);
+                cb.SetBuffCount(statusBuff.buffIndex, tgtBuffStacks);
         }
     }
 

@@ -243,7 +243,7 @@ namespace ThinkInvisible.TinkersSatchel {
             int matches = 0;
             if(self.inventory.GetItemCount(RoR2Content.Items.Mushroom) > 0) matches++;
             if(self.inventory.GetItemCount(RoR2Content.Items.NearbyDamageBonus) > 0) matches++;
-            if(Moustache.instance.GetCount(self.inventory) > 0 || VoidMoustache.instance.GetCount(self.inventory) > 0) matches++;
+            if(Moustache.instance.GetCount(self.inventory) > 0 || EnterCombatDamage.instance.GetCount(self.inventory) > 0) matches++;
 
             if(self.inventory.GetItemCount(RoR2Content.Items.Thorns) > 0) matches++;
             if(KleinBottle.instance.GetCount(self.inventory) > 0) matches++;

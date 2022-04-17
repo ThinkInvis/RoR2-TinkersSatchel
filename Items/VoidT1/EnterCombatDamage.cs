@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class VoidMoustache : Item<VoidMoustache> {
+    public class EnterCombatDamage : Item<EnterCombatDamage> {
 
         ////// Item Data //////
 
@@ -42,46 +42,46 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public BuffDef voidMoustacheActiveBuff { get; private set; }
-        public BuffDef voidMoustacheChargingBuff { get; private set; }
-        public BuffDef voidMoustacheReadyBuff { get; private set; }
+        public BuffDef activeBuff { get; private set; }
+        public BuffDef chargingBuff { get; private set; }
+        public BuffDef readyBuff { get; private set; }
         public Sprite buffIconResource;
 
 
 
         ////// TILER2 Module Setup //////
-        public VoidMoustache() {
-            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/VoidMoustache.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/voidMoustacheIcon.png");
-            buffIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/voidMoustacheBuff.png");
+        public EnterCombatDamage() {
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/EnterCombatDamage.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/enterCombatDamageIcon.png");
+            buffIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/enterCombatDamageBuff.png");
         }
 
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            voidMoustacheActiveBuff = ScriptableObject.CreateInstance<BuffDef>();
-            voidMoustacheActiveBuff.buffColor = new Color(0.85f, 0.2f, 0.2f);
-            voidMoustacheActiveBuff.canStack = false;
-            voidMoustacheActiveBuff.isDebuff = false;
-            voidMoustacheActiveBuff.name = "TKSATVoidMoustacheActive";
-            voidMoustacheActiveBuff.iconSprite = buffIconResource;
-            ContentAddition.AddBuffDef(voidMoustacheActiveBuff);
+            activeBuff = ScriptableObject.CreateInstance<BuffDef>();
+            activeBuff.buffColor = new Color(0.85f, 0.2f, 0.2f);
+            activeBuff.canStack = false;
+            activeBuff.isDebuff = false;
+            activeBuff.name = "TKSATEnterCombatDamageActive";
+            activeBuff.iconSprite = buffIconResource;
+            ContentAddition.AddBuffDef(activeBuff);
 
-            voidMoustacheReadyBuff = ScriptableObject.CreateInstance<BuffDef>();
-            voidMoustacheReadyBuff.buffColor = new Color(0.85f, 0.85f, 0.2f);
-            voidMoustacheReadyBuff.canStack = false;
-            voidMoustacheReadyBuff.isDebuff = false;
-            voidMoustacheReadyBuff.name = "TKSATVoidMoustacheReady";
-            voidMoustacheReadyBuff.iconSprite = buffIconResource;
-            ContentAddition.AddBuffDef(voidMoustacheReadyBuff);
+            readyBuff = ScriptableObject.CreateInstance<BuffDef>();
+            readyBuff.buffColor = new Color(0.85f, 0.85f, 0.2f);
+            readyBuff.canStack = false;
+            readyBuff.isDebuff = false;
+            readyBuff.name = "TKSATEnterCombatDamageReady";
+            readyBuff.iconSprite = buffIconResource;
+            ContentAddition.AddBuffDef(readyBuff);
 
-            voidMoustacheChargingBuff = ScriptableObject.CreateInstance<BuffDef>();
-            voidMoustacheChargingBuff.buffColor = new Color(0.4f, 0.4f, 0.4f);
-            voidMoustacheChargingBuff.canStack = false;
-            voidMoustacheChargingBuff.isDebuff = false;
-            voidMoustacheChargingBuff.name = "TKSATVoidMoustacheCharging";
-            voidMoustacheChargingBuff.iconSprite = buffIconResource;
-            ContentAddition.AddBuffDef(voidMoustacheChargingBuff);
+            chargingBuff = ScriptableObject.CreateInstance<BuffDef>();
+            chargingBuff.buffColor = new Color(0.4f, 0.4f, 0.4f);
+            chargingBuff.canStack = false;
+            chargingBuff.isDebuff = false;
+            chargingBuff.name = "TKSATEnterCombatDamageCharging";
+            chargingBuff.iconSprite = buffIconResource;
+            ContentAddition.AddBuffDef(chargingBuff);
 
             itemDef.requiredExpansion = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(x => x.nameToken == "DLC1_NAME");
 
@@ -154,28 +154,28 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(isActive) {
                     charge = 0f;
                     isActive = false;
-                    body.SetBuffCount(VoidMoustache.instance.voidMoustacheActiveBuff.buffIndex, 0);
+                    body.SetBuffCount(EnterCombatDamage.instance.activeBuff.buffIndex, 0);
                 }
-                var count = VoidMoustache.instance.GetCount(body);
+                var count = EnterCombatDamage.instance.GetCount(body);
                 if(count <= 0) {
-                    body.SetBuffCount(VoidMoustache.instance.voidMoustacheChargingBuff.buffIndex, 0);
-                    body.SetBuffCount(VoidMoustache.instance.voidMoustacheReadyBuff.buffIndex, 0);
+                    body.SetBuffCount(EnterCombatDamage.instance.chargingBuff.buffIndex, 0);
+                    body.SetBuffCount(EnterCombatDamage.instance.readyBuff.buffIndex, 0);
                     charge = 0f;
                     return;
                 }
-                var chargeDelta = Time.fixedDeltaTime * VoidMoustache.instance.damageFracRate * (float)count;
-                var chargeMax = VoidMoustache.instance.damageFracMax * (float)count;
+                var chargeDelta = Time.fixedDeltaTime * EnterCombatDamage.instance.damageFracRate * (float)count;
+                var chargeMax = EnterCombatDamage.instance.damageFracMax * (float)count;
                 charge = Mathf.Min(charge + chargeDelta, chargeMax);
-                body.SetBuffCount(VoidMoustache.instance.voidMoustacheChargingBuff.buffIndex, (charge >= chargeMax) ? 0 : 1);
-                body.SetBuffCount(VoidMoustache.instance.voidMoustacheReadyBuff.buffIndex, (charge >= chargeMax) ? 1 : 0);
+                body.SetBuffCount(EnterCombatDamage.instance.chargingBuff.buffIndex, (charge >= chargeMax) ? 0 : 1);
+                body.SetBuffCount(EnterCombatDamage.instance.readyBuff.buffIndex, (charge >= chargeMax) ? 1 : 0);
             } else {
-                body.SetBuffCount(VoidMoustache.instance.voidMoustacheChargingBuff.buffIndex, 0);
-                body.SetBuffCount(VoidMoustache.instance.voidMoustacheReadyBuff.buffIndex, 0);
+                body.SetBuffCount(EnterCombatDamage.instance.chargingBuff.buffIndex, 0);
+                body.SetBuffCount(EnterCombatDamage.instance.readyBuff.buffIndex, 0);
                 if(!isActive && charge > 0f) {
                     isActive = true;
-                    body.AddTimedBuff(VoidMoustache.instance.voidMoustacheActiveBuff, VoidMoustache.instance.buffDuration);
+                    body.AddTimedBuff(EnterCombatDamage.instance.activeBuff, EnterCombatDamage.instance.buffDuration);
                 }
-                if(!body.HasBuff(VoidMoustache.instance.voidMoustacheActiveBuff)) {
+                if(!body.HasBuff(EnterCombatDamage.instance.activeBuff)) {
                     charge = 0f;
                     isActive = false;
                 }
