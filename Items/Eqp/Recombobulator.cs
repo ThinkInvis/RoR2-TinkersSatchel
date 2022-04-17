@@ -224,7 +224,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(filteredDeck.Count == 0)
                     return false;
 
-                var draw = mostRecentDeck.Evaluate(rng.nextNormalizedFloat);
+                var draw = filteredDeck.Evaluate(rng.nextNormalizedFloat);
 
                 var obj = DirectorCore.instance.TrySpawnObject(
                     new DirectorSpawnRequest(
