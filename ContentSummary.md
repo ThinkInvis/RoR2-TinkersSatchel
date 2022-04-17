@@ -479,7 +479,7 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiPrimaryFlak.png?raw=true" width=128></td>
 			<td>
-				<b>Smart Flak</b><br>
+				<b>Smart Flak</b> (Primary)<br>
 				Continuously fire proximity fragmentation shells. Direct hits deal 50% damage. Shrapnel tracks enemies for up to 8x25% damage (maximum 5x25% on a single target).
 			</td>
 			<td><ul>
@@ -489,7 +489,7 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiSecondaryChaff.png?raw=true" width=128></td>
 			<td>
-				<b>Decoy Chaff</b><br>
+				<b>Decoy Chaff</b> (Secondary)<br>
 				Deal 4x75% damage and clear enemy projectiles in a frontal cone. Struck enemies within line of sight of any of your turrets will be Taunted by a turret for 6 seconds.
 			</td>
 			<td><ul>
@@ -499,7 +499,7 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EngiUtilitySpeedispenser.png?raw=true" width=128></td>
 			<td>
-				<b>Speed Dispenser</b><br>
+				<b>Speed Dispenser</b> (Utility)<br>
 				Deploy a stationary decanter that stores up to 4 delicious, caffeinated, precision-brewed charges of +50% speed while sprinting and +25% jump height. Charges last 15 seconds; restores 1 charge every 7.5 seconds.
 			</td>
 			<td><ul>
