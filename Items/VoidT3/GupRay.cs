@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Linq;
+using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class GupRay : Item<GupRay> {
@@ -85,6 +87,19 @@ namespace ThinkInvisible.TinkersSatchel {
 			wasTelebossTracker.name = "TkSatInternalGupRayWasBoss";
 			wasTelebossTracker.tags = new ItemTag[] { };
 			ContentAddition.AddItemDef(wasTelebossTracker);
+
+			itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
+				.WaitForCompletion();
+
+			On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
+				var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
+				isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;
+				isp.relationships = new[] {new ItemDef.Pair {
+					itemDef1 = ShrinkRay.instance.itemDef,
+					itemDef2 = itemDef
+				}};
+				orig(providers.Concat(new[] { isp }).ToArray());
+			};
 		}
 
 		public override void Install() {

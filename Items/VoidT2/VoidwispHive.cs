@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using System.Linq;
 using RoR2.Orbs;
+using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class VoidwispHive : Item<VoidwispHive> {
@@ -124,6 +125,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
             wispPrefab = tmpPrefab.InstantiateClone("TkSatVoidWisp", true);
             GameObject.Destroy(tmpPrefab);
+
+            itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
+                .WaitForCompletion();
+
+            On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
+                var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
+                isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;
+                isp.relationships = new[] {new ItemDef.Pair {
+                    itemDef1 = PixieTube.instance.itemDef,
+                    itemDef2 = itemDef
+                }};
+                orig(providers.Concat(new[] { isp }).ToArray());
+            };
         }
 
         public override void Install() {
