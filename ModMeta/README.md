@@ -418,6 +418,29 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**1.14.1**
+
+- Balance pass.
+	- Commando: Jink Jet:
+		- Allowed slightly more vertical component to jump trajectory (0.125 --> 0.15).
+		- Increased forced vertical component used while grounded (0.25 --> 0.3).
+	- Commando: Plasma Grenade:
+		- Buffed cooldown to match Frag Grenade (8s --> 6s).
+		- Homing now has a brief arming delay (0.5s) to prevent nearby enemies from intercepting throws. Direct impacts will still stick.
+	- Macho Moustache:
+		- Nerfed default elite stacking bonus from +2 to +1.
+		- Nerfed default champion stacking bonus from +4 to +2.
+		- This item was performing too well in lategame; the unlock achievement was also far easier to trigger than intended.
+- Fixed Quantum Recombobulator not checking its valid object name list while selecting an object to recombobulate into.
+	- The barrels have been banished for good this time. Definitely.
+	- In an extreme edge case (no spawncards available at all), this could also have led to a vanishing object or an exception. Equipment should now fail to activate, as intended, in this case.
+- Fixed Commando: Plasma Grenade potentially slowing to a crawl during homing.
+- Slightly improved Commando: Plasma Grenade VFX/SFX:
+	- Fuse ray effects are slightly thinner and no longer disconnected from the model.
+	- Made sound effect tempo slower to make it more distinct from Sticky Bomb.
+- Sturdy Mug can no longer cause multiple Goobos Jr. to spawn per equipment cast.
+- Quantum Recombobulator no longer adds the Cardboard Box player data storage component on equip (had no player-facing effect other than an infinitesimal amount of performance loss).
+
 **1.14.0** *The Skillful Update, Part Commando*
 
 - ADDED SKILL VARIANTS:
@@ -465,8 +488,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed Percussive Maintenance not working if used by multiplayer clients.
 - Fixed some Mostly-Tame Mimic NREs during object creation/destruction.
 - Due to limitations on the length of Thunderstore readme pages, long descriptions and notes have been cut from this page's content summary. Added a link to a separate full version, similarly to the changelog link.
-
-**1.12.3**
-
-- Fixed Unstable Klein Bottle pull-mode force being *much* higher than intended.
-- Fixed missing style tags in Unstable Klein Bottle description.

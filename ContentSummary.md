@@ -63,7 +63,7 @@
 				<b>Macho Moustache</b><br>
 				<details>
 					<summary>The bigger the fight, the higher your damage.</summary>
-					<small>Gain 1% damage (+1% per stack, linear) per in-combat or in-danger enemy within 100 m. Elites count as 3 enemies, bosses count as 5 enemies, and elite bosses count as 7 enemies.</small>
+					<small>Gain 1% damage (+1% per stack, linear) per in-combat or in-danger enemy within 100 m. Elites count as 2 enemies, bosses count as 3 enemies, and elite bosses count as 4 enemies.</small>
 				</details>
 			</td>
 			<td><ul>
