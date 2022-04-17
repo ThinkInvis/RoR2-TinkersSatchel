@@ -82,6 +82,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.LaserTurbine.FireMainBeamState.OnExit += FireMainBeamState_OnExit;
             On.EntityStates.Mage.Weapon.BaseThrowBombState.Fire += BaseThrowBombState_Fire;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            On.RoR2.EquipmentSlot.FireGummyClone += EquipmentSlot_FireGummyClone;
         }
 
         public override void Uninstall() {
@@ -103,6 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.LaserTurbine.FireMainBeamState.OnExit -= FireMainBeamState_OnExit;
             On.EntityStates.Mage.Weapon.BaseThrowBombState.Fire -= BaseThrowBombState_Fire;
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
+            On.RoR2.EquipmentSlot.FireGummyClone -= EquipmentSlot_FireGummyClone;
         }
         #endregion
 
@@ -188,6 +190,13 @@ namespace ThinkInvisible.TinkersSatchel {
             ignoreMugs = true;
             orig(self);
             ignoreMugs = false;
+        }
+
+        private bool EquipmentSlot_FireGummyClone(On.RoR2.EquipmentSlot.orig_FireGummyClone orig, EquipmentSlot self) {
+            ignoreMugs = true;
+            var retv = orig(self);
+            ignoreMugs = false;
+            return retv;
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
