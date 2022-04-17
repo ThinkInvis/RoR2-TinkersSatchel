@@ -7,6 +7,8 @@ using static TILER2.MiscUtil;
 using System;
 using UnityEngine.Networking;
 using System.Linq;
+using UnityEngine.AddressableAssets;
+using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class EnterCombatDamage : Item<EnterCombatDamage> {
@@ -83,7 +85,8 @@ namespace ThinkInvisible.TinkersSatchel {
             chargingBuff.iconSprite = buffIconResource;
             ContentAddition.AddBuffDef(chargingBuff);
 
-            itemDef.requiredExpansion = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(x => x.nameToken == "DLC1_NAME");
+            itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
+                .WaitForCompletion();
 
             On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
                 var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();

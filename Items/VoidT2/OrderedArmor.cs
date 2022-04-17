@@ -8,6 +8,7 @@ using R2API;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.AddressableAssets;
+using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class OrderedArmor : Item<OrderedArmor> {
@@ -68,7 +69,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 .WaitForCompletion();
             ContentAddition.AddBuffDef(statusBuff);
 
-            itemDef.requiredExpansion = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(x => x.nameToken == "DLC1_NAME");
+            itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
+                .WaitForCompletion();
 
             On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
                 var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
