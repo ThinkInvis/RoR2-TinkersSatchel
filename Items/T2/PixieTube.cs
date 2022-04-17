@@ -208,6 +208,8 @@ namespace ThinkInvisible.TinkersSatchel {
             RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
             On.EntityStates.Engi.EngiMissilePainter.Fire.FireMissile -= Fire_FireMissile;
+            On.EntityStates.Engi.EngiWeapon.PlaceTurret.FixedUpdate -= PlaceTurret_FixedUpdate;
+            On.RoR2.EquipmentSlot.PerformEquipmentAction -= EquipmentSlot_PerformEquipmentAction;
         }
 
 
