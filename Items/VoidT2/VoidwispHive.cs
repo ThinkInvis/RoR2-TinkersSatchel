@@ -361,7 +361,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     genericFloat = duration
                 };
                 effectData.SetHurtBoxReference(target);
-                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/LightningOrbEffect"), effectData, true);
+                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/VoidLightningOrbEffect"), effectData, true);
             }
         }
 
