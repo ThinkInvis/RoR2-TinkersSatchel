@@ -441,7 +441,7 @@
 				<b>Voidwisp Hive</b> (T2)<br>
 				<details>
 					<summary>Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.</summary>
-					You drop a voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x10% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.
+					You drop a voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x8% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.
 				</details>
 			</td>
 		</tr>
