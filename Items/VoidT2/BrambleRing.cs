@@ -28,7 +28,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of damage to reflect. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float damageFrac { get; private set; } = 0.2f;
 
