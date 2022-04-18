@@ -55,7 +55,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Other Fields/Properties //////
 
 		public ItemDef gupDebuff { get; private set; }
-		public ItemDef wasTelebossTracker { get; private set; }
 		public bool currentSplitIsGupRay { get; private set; }
 
 
@@ -78,15 +77,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			gupDebuff.name = "TkSatInternalGupRayCounter";
 			gupDebuff.tags = new ItemTag[] { };
 			ContentAddition.AddItemDef(gupDebuff);
-
-			wasTelebossTracker = ScriptableObject.CreateInstance<ItemDef>();
-			wasTelebossTracker.tier = ItemTier.NoTier;
-			wasTelebossTracker.canRemove = false;
-			wasTelebossTracker.hidden = true;
-			wasTelebossTracker.nameToken = "TKSAT_INTERNAL_GUPRAY_WASBOSS";
-			wasTelebossTracker.name = "TkSatInternalGupRayWasBoss";
-			wasTelebossTracker.tags = new ItemTag[] { };
-			ContentAddition.AddItemDef(wasTelebossTracker);
 
 			itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
 				.WaitForCompletion();
