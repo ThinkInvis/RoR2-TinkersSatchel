@@ -337,7 +337,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(targetIsInSeekRange) {
                     var targetPos = target.position - targetVec.normalized * idealOrbitRange;
                     zipStopwatch *= zipDelayMultWithTarget;
-                    parentRigidbody.velocity = (targetPos - transform.position).normalized * UnityEngine.Random.Range(zipStrengthMin, zipStrengthMax);
+                    parentRigidbody.velocity += ((targetPos - transform.position).normalized * 0.7f + UnityEngine.Random.onUnitSphere * 0.3f) * UnityEngine.Random.Range(zipStrengthMin, zipStrengthMax);
                 } else {
                     target = null;
                     parentRigidbody.velocity += UnityEngine.Random.onUnitSphere * UnityEngine.Random.Range(zipStrengthMin, zipStrengthMax);
