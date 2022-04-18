@@ -121,13 +121,13 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(GetCount(body) > 0 && !body.GetComponent<VoidMoustacheDamageTracker>())
-                body.gameObject.AddComponent<VoidMoustacheDamageTracker>();
+            if(GetCount(body) > 0 && !body.GetComponent<EnterCombatDamageTracker>())
+                body.gameObject.AddComponent<EnterCombatDamageTracker>();
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             if(damageInfo != null && damageInfo.attacker) {
-                var vmdc = damageInfo.attacker.GetComponent<VoidMoustacheDamageTracker>();
+                var vmdc = damageInfo.attacker.GetComponent<EnterCombatDamageTracker>();
                 var body = damageInfo.attacker.GetComponent<CharacterBody>();
                 if(vmdc && body) {
                     damageInfo.damage *= 1f + vmdc.charge;
@@ -138,7 +138,7 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
     [RequireComponent(typeof(CharacterBody))]
-    public class VoidMoustacheDamageTracker : MonoBehaviour {
+    public class EnterCombatDamageTracker : MonoBehaviour {
         public float charge = 0f;
         public bool isActive = false;
 
