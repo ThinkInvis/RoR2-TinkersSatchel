@@ -125,7 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(NetworkServer.active && damageInfo != null && damageInfo.attacker) {
 				var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
 				var victimBody = victim.GetComponent<CharacterBody>();
-				if(count > 0 && damageInfo.attacker != victim && victimBody && !victimBody.isBoss && victimBody.master && victimBody.master.inventory && victimBody.master.inventory.GetItemCount(gupDebuff) < count) {
+				if(count > 0 && damageInfo.attacker != victim && victimBody && !victimBody.master.isBoss && victimBody.master && victimBody.master.inventory && victimBody.master.inventory.GetItemCount(gupDebuff) < count) {
 					var sricd = damageInfo.attacker.GetComponent<ShrinkRayICDComponent>();
 					if(!sricd)
 						sricd = damageInfo.attacker.AddComponent<ShrinkRayICDComponent>();
