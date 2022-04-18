@@ -39,6 +39,10 @@ namespace ThinkInvisible.TinkersSatchel {
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
         public string meleeBodyNamesConfig { get; private set; } = "CrocoBody, MercBody, LoaderBody, ToolbotBody";
 
+        [AutoConfig("If true, MeleeBodyNamesConfig becomes a blacklist instead of a whitelist.",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public bool invertBodyNames { get; private set; } = false;
+
 
         ////// Other Fields/Properties //////
 
@@ -160,6 +164,8 @@ namespace ThinkInvisible.TinkersSatchel {
                             bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name);
                             if(self.body.name == "ToolbotBody(Clone)")
                                 shouldPull &= self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
+
+                            if(invertBodyNames) shouldPull = !shouldPull;
 
                             if(shouldPull) {
                                 var (vInitial, _) = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
