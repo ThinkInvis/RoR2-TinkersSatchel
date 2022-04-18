@@ -22,7 +22,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Drop damaging wisp allies on using skills. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
-        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> <style=cIsDamage>voidwisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsDamage>Voidwisps</style> live for {wispDuration:N0} seconds, tracking nearby enemies and zapping them for <style=cIsDamage>{1f/damageRate:N1}x{Pct(damageAmt)} damage per second</style>. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
+        protected override string GetDescString(string langid = null) => $"You drop a <style=cIsDamage>voidwisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsDamage>Voidwisps</style> live for {wispDuration:N0} seconds, tracking nearby enemies and zapping them for <style=cIsDamage>{1f/damageRate:N1}x{Pct(damageAmt)} damage per second <style=cStack>(damage increases linearly per stack)</style></style>. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -34,8 +34,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public float wispDuration { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Damage fraction dealt by Voidwisp attacks.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageAmt { get; private set; } = 0.1f;
+        [AutoConfig("Damage fraction dealt by Voidwisp attacks per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageAmt { get; private set; } = 0.08f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Time, in seconds, between attacks.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -186,9 +186,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!pts)
                     pts = self.gameObject.AddComponent<VoidwispHiveStopwatch>();
                 if(!pts.CheckProc(self.skillLocator.FindSkillSlot(skill))) return;
-                for(var i = 0; i < count; i++) {
-                    SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, self);
-                }
+                SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, self);
             }
         }
 
@@ -201,9 +199,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!pts)
                     pts = self.characterBody.gameObject.AddComponent<VoidwispHiveStopwatch>();
                 if(pts.CheckProcEquipment()) {
-                    for(var i = 0; i < count; i++) {
-                        SpawnWisp(self.characterBody.corePosition, self.characterBody.teamComponent ? self.characterBody.teamComponent.teamIndex : TeamIndex.None, self.characterBody);
-                    }
+                     SpawnWisp(self.characterBody.corePosition, self.characterBody.teamComponent ? self.characterBody.teamComponent.teamIndex : TeamIndex.None, self.characterBody);
                 }
             }
             return retv;
@@ -217,9 +213,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!pts)
                 pts = self.characterBody.gameObject.AddComponent<PixieTubeStopwatch>();
             if(!pts.CheckProc(SkillSlot.Utility)) return;
-            for(var i = 0; i < count; i++) {
-                SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, self.characterBody);
-            }
+             SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, self.characterBody);
         }
 
         private void PlaceTurret_FixedUpdate(On.EntityStates.Engi.EngiWeapon.PlaceTurret.orig_FixedUpdate orig, EntityStates.Engi.EngiWeapon.PlaceTurret self) {
@@ -231,9 +225,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!pts)
                     pts = self.characterBody.gameObject.AddComponent<PixieTubeStopwatch>();
                 if(!pts.CheckProc(SkillSlot.Special)) return;
-                for(var i = 0; i < count; i++) {
-                    SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, self.characterBody);
-                }
+                 SpawnWisp(self.characterBody.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, self.characterBody);
             }
         }
     }
@@ -348,9 +340,14 @@ namespace ThinkInvisible.TinkersSatchel {
             if(attackStopwatch < 0f) attackStopwatch = 0f;
             if(targetIsInAttackRange && attackStopwatch <= 0f) {
                 attackStopwatch = VoidwispHive.instance.damageRate;
+                var baseDamage = 10f;
+                var count = VoidwispHive.instance.GetCount(owner);
+                if(count > 0)
+                    baseDamage = owner.damage * count;
+
                 OrbManager.instance.AddOrb(new VoidwispLightningOrb {
                     origin = transform.position,
-                    damageValue = (owner ? owner.damage : 10f) * VoidwispHive.instance.damageAmt,
+                    damageValue = baseDamage * VoidwispHive.instance.damageAmt,
                     isCrit = owner ? owner.RollCrit() : false,
                     bouncesRemaining = 0,
                     teamIndex = teamFilter.teamIndex,
