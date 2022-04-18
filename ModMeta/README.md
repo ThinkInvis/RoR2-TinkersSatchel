@@ -14,7 +14,7 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 30 total items/equipments:
+- 33 total items/equipments:
 	- 6 tier-1,
 	- 6 tier-2,
 	- 5 tier-3,
@@ -22,7 +22,8 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 3 lunar items,
 	- 3 lunar equipments,
 	- 1 tier-1 void,
-	- 1 tier-2 void;
+	- 3 tier-2 void,
+	- 1 tier-3 void;
 - 2 interactables:
 	- 2 drones;
 - 6 skill variants:
@@ -260,17 +261,38 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td colspan="2" align="center"><h3>Void Items</h3><h4>(requires Survivors of the Void DLC)</h4></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidMoustacheIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enterCombatDamageIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Villainous Visage</b> (T1)<br>
 				Deal more damage when given time to plot. Corrupts all Macho Moustaches.
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidGoldenGearIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Armor Prism</b> (T2)<br>
 				Gain massive armor by focusing your item build. Corrupts all Armor Crystals.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidwispHiveIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Voidwisp Hive</b> (T2)<br>
+				Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/brambleRingIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Bramble Ring</b> (T2)<br>
+				Return some damage to sender. Corrupts all Negative Feedback Loops.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/gupRayIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Gup Ray</b> (T3)<br>
+				Split enemies into two much weaker copies. Corrupts all Shrink Rays.
 			</td>
 		</tr>
 	</tbody>
@@ -419,6 +441,24 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.0.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 1*
+
+- ADDED ITEMS: Voidwisp Hive, Bramble Ring, Gup Ray!
+- BREAKING CHANGES:
+	- Villainous Visage internal code name has changed (VoidMoustache --> EnterCombatDamage).
+		- Component name has also changed (VoidMoustacheDamageTracker --> EnterCombatDamageTracker).
+	- Armor Prism internal code name has changed (VoidGoldenGear --> OrderedArmor).
+		- Component name has also changed (VoidGoldenGearComponent --> OrderedArmorComponent).
+	- These changes make these items much easier to address with TILER2 NetConfig commands and breaks this pattern for future items. Previously, full name e.g. 'Items.Moustache' would have to be used to resolve ambiguity with the void variant name.
+- Go-Faster Stripes now gives a +50% speed buff for 3 seconds when an unhandled utility skill is used.
+	- Other mods can indicate that they have handling for a utility skill set up by adding their SkillDefs to `GoFaster.instance.handledSkillDefs`.
+- All Void items now have the expansion icon overlay on their item icons.
+- All Void items now have required expansion correctly specified and should no longer appear in logbook while unavailable.
+- Fixed missing buff icons on Villainous Visage.
+- Fixed a minor punctuation typo in Villainous Visage pickup text.
+- Fixed a missing hook removal during Pixie Tube uninstall that could cause Engineer skills to multiproc unintentionally.
+- Pixie Tube handling for Engineer skills now respects the item's internal cooldown.
+
 **1.14.1**
 
 - Balance pass.
@@ -479,13 +519,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Engineer: Speed Dispenser fixes:
 	- Fixed not being set to player team.
 	- Now has its own deployable slot so mods that tweak the max shield count won't affect it.
-
-**1.13.0** *The Skillful Update, Part Engineer*
-
-- ADDED SKILL VARIANTS:
-	- Engineer: Smart Flak, Chaff, Speed Dispenser!
-- Bulwark Drone now uses the same Taunt debuff added by Chaff (will now apply a damage debuff vs non-Taunters and allow attacking any Taunter).
-- Updated an older language token name format on Silver Compass (all instances of "TINKSATCH" &rarr; "TKSAT").
-- Fixed Percussive Maintenance not working if used by multiplayer clients.
-- Fixed some Mostly-Tame Mimic NREs during object creation/destruction.
-- Due to limitations on the length of Thunderstore readme pages, long descriptions and notes have been cut from this page's content summary. Added a link to a separate full version, similarly to the changelog link.

@@ -1,5 +1,23 @@
 # Tinker's Satchel Changelog
 
+**2.0.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 1*
+
+- ADDED ITEMS: Voidwisp Hive, Bramble Ring, Gup Ray!
+- BREAKING CHANGES:
+	- Villainous Visage internal code name has changed (VoidMoustache --> EnterCombatDamage).
+		- Component name has also changed (VoidMoustacheDamageTracker --> EnterCombatDamageTracker).
+	- Armor Prism internal code name has changed (VoidGoldenGear --> OrderedArmor).
+		- Component name has also changed (VoidGoldenGearComponent --> OrderedArmorComponent).
+	- These changes make these items much easier to address with TILER2 NetConfig commands and breaks this pattern for future items. Previously, full name e.g. 'Items.Moustache' would have to be used to resolve ambiguity with the void variant name.
+- Go-Faster Stripes now gives a +50% speed buff for 3 seconds when an unhandled utility skill is used.
+	- Other mods can indicate that they have handling for a utility skill set up by adding their SkillDefs to `GoFaster.instance.handledSkillDefs`.
+- All Void items now have the expansion icon overlay on their item icons.
+- All Void items now have required expansion correctly specified and should no longer appear in logbook while unavailable.
+- Fixed missing buff icons on Villainous Visage.
+- Fixed a minor punctuation typo in Villainous Visage pickup text.
+- Fixed a missing hook removal during Pixie Tube uninstall that could cause Engineer skills to multiproc unintentionally.
+- Pixie Tube handling for Engineer skills now respects the item's internal cooldown.
+
 **1.14.1**
 - Balance pass.
 	- Commando: Jink Jet:

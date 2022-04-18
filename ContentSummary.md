@@ -411,7 +411,7 @@
 			<td colspan="3" align="center"><h3>Void Items</h3><h4>&emsp;&emsp;(requires Survivors of the Void DLC)</h4></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidMoustacheIcon.png?raw=true" width=256></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enterCombatDamageIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Villainous Visage</b> (T1)<br>
 				<details>
@@ -424,7 +424,7 @@
 			</ul></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidGoldenGearIcon.png?raw=true" width=256></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Armor Prism</b> (T2)<br>
 				<details>
@@ -434,6 +434,36 @@
 			</td>
 			<td><ul>
 			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidwispHiveIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Voidwisp Hive</b> (T2)<br>
+				<details>
+					<summary>Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.</summary>
+					You drop 1 (+1 per stack) voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x10% damage per second. Corrupts all Pixie Tubes.
+				</details>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/brambleRingIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Bramble Ring</b> (T2)<br>
+				<details>
+					<summary>Return some damage to sender. Corrupts all Negative Feedback Loops.</summary>
+					20% of damage taken (+20% per stack, hyperbolic) is also taken by the inflictor. Corrupts all Negative Feedback Loops.
+				</details>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/gupRayIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Gup Ray</b> (T3)<br>
+				<details>
+					<summary>Split enemies into two much weaker copies. Corrupts all Shrink Rays.</summary>
+					Once every 5 seconds, hitting a non-final-boss enemy splits them into 2 copies with 25% health and damage. Enemies can be split 1 time per stack. Corrupts all Shrink Rays.
+				</details>
+			</td>
 		</tr>
 	</tbody>
 </table>
