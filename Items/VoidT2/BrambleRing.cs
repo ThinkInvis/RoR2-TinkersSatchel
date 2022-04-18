@@ -32,6 +32,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Amount of damage to reflect. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float damageFrac { get; private set; } = 0.2f;
 
+        [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+        public float vsPlayerScaling { get; private set; } = 0.25f;
+
 
 
         ////// Other Fields/Properties //////
@@ -86,7 +89,8 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!self || !damageInfo.attacker || damageInfo.HasModdedDamageType(damageType) || !damageInfo.attacker.TryGetComponent<HealthComponent>(out var attackerHC)) return;
             var count = GetCount(self.body);
             if(count > 0) {
-                var frac = Mathf.Clamp01(1f - 1f / (1f + damageFrac * (float)count));
+                var attackerTeam = TeamComponent.GetObjectTeam(damageInfo.attacker);
+                var frac = Mathf.Clamp01(1f - 1f / (1f + damageFrac * ((attackerTeam == TeamIndex.Player) ? vsPlayerScaling: 1f) * (float)count));
                 var di = new DamageInfo {
                     attacker = self.gameObject,
                     canRejectForce = true,
