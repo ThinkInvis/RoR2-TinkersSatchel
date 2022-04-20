@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Lodestone";
         public override bool isLunar => false;
-        public override bool canBeRandomlyTriggered => true;
+        public override bool canBeRandomlyTriggered { get; protected set; } = true;
         public override float cooldown { get; protected set; } = 20f;
 
         protected override string GetNameString(string langid = null) => displayName;

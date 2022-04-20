@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Command Terminal";
         public override bool isLunar => false;
-        public override bool canBeRandomlyTriggered => false;
+        public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override float cooldown { get; protected set; } = 10f;
 
         protected override string GetNameString(string langid = null) => displayName;
