@@ -30,11 +30,13 @@ namespace ThinkInvisible.TinkersSatchel {
             Unlimited, NTimesPerCharacter, NTimesPerStage
         }
 
+        [AutoConfigRoOChoice()]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How to limit uses of Silver Compass.", AutoConfigFlags.None, 0, 2)]
         public UseLimitType useLimitType { get; private set; } = UseLimitType.NTimesPerCharacter;
 
         [AutoConfig("Number of limited uses if UseLimitType is not Unlimited.", AutoConfigFlags.None, 0, 2)]
+        [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
         public int useLimitCount { get; private set; } = 1;
 
 
