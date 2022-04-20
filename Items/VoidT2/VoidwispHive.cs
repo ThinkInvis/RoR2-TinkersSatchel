@@ -29,22 +29,27 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config ///////
 
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Lifetime of Voidwisp Hive wisps.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float wispDuration { get; private set; } = 10f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Damage fraction dealt by Voidwisp attacks per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageAmt { get; private set; } = 0.08f;
 
+        [AutoConfigRoOSlider("{0:N2} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Time, in seconds, between attacks.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageRate { get; private set; } = 0.5f;
 
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Internal cooldown on each non-primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float perSkillCooldown { get; private set; } = 3f;
 
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Internal cooldown on primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float primaryCooldown { get; private set; } = 6f;

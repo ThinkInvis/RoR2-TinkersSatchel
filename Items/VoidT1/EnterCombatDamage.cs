@@ -27,15 +27,18 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config ///////
-
+        
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Fractional damage bonus per second per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFracRate { get; private set; } = 0.03f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Maximum fractional damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFracMax { get; private set; } = 0.15f;
 
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Duration of the damage buff once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float buffDuration { get; private set; } = 2f;

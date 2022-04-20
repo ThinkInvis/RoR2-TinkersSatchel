@@ -24,10 +24,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Range of all equipment effects.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float range { get; private set; } = 100f;
 
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration of skill disable.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float duration { get; private set; } = 10f;

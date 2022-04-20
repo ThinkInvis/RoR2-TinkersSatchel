@@ -31,20 +31,24 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Config //////
 
+		[AutoConfigRoOIntSlider("{0:N0}", 2, 20)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Number of copies to spawn per split.",
 			AutoConfigFlags.None, 2, int.MaxValue)]
 		public int splitCount { get; private set; } = 2;
 
+		[AutoConfigRoOSlider("{0:P0}", float.Epsilon, 1f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
 		[AutoConfig("Damage/health multiplier per stack (exponential).",
 			AutoConfigFlags.None, float.Epsilon, 1f)]
 		public float statMult { get; private set; } = 0.25f;
 
+		[AutoConfigRoOSlider("{0:P0}", float.Epsilon, 1f)]
 		[AutoConfig("Visual scale multiplier per stack (exponential).",
 			AutoConfigFlags.DeferUntilNextStage, float.Epsilon, 1f)]
 		public float scaleMult { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Internal cooldown of applying the effect. Does not stack.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]

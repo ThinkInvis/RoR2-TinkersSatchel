@@ -23,10 +23,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOSlider("{0:N2}°", 0f, 180f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum degrees of spread to add to extra projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, 360f)]
+        [AutoConfig("Maximum degrees of spread to add to extra projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
         public float spreadConeHalfAngleDegr { get; private set; } = 17.5f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Extra projectile chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float procChance { get; private set; } = 0.1f;

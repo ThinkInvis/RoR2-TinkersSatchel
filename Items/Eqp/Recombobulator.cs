@@ -28,7 +28,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-
+        
+        [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for recombobulation (comma-delimited, leading/trailing whitespace will be ignored). Items not in this list will also not be selected as the new object. WARNING: May have unintended results on some untested objects!",
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {

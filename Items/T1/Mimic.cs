@@ -25,32 +25,41 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
         #region Config
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time between batches of re-mimics.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float decayRate { get; private set; } = 3f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance for each individual Mimic to re-mimic per proc.", AutoConfigFlags.None, 0f, 1f)]
         public float decayChance { get; private set; } = 0.15f;
 
+        [AutoConfigRoOIntSlider("{0:N0}", 0, 1000)]
         [AutoConfig("No more than this many Mimics (per player) will change at the same time. Used to be for performance reasons which appear to no longer be in play; now kept for posterity.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int lagLimit { get; private set; } = 50;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer Tier 1 items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableT1 { get; private set; } = 0.8f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer Tier 2 items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableT2 { get; private set; } = 0.2f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer Tier 3 items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableT3 { get; private set; } = 0.1f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer Boss Tier items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableTB { get; private set; } = 0.05f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer Lunar Tier items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableTL { get; private set; } = 0.05f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer all other items.", AutoConfigFlags.None, 0f, 1f)]
         public float chanceTableTX { get; private set; } = 0f;
 

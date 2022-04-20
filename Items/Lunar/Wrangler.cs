@@ -25,15 +25,18 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-        
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Extra fire rate applied at 1 stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float baseExtraSpeed { get; private set; } = 0.4f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Extra fire rate applied per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float stackExtraSpeed { get; private set; } = 0.4f;
 
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Range (m) to search for AI to override.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;

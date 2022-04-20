@@ -29,81 +29,106 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Config //////
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Controls general power of this item (multiplies all other Frac configs). newSpeed ~ baseSpeed * (1 + buffFrac * specificFrac * stack count).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float buffFrac { get; private set; } = 1f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Commando dodge: multiplies movement speed during dodge.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float commandoDodgeFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Commando slide: multiplies movement speed during slide.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float commandoSlideFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for both Huntress blink variants: divides time spent in blink animation.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float huntressBlinkTimeFac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Huntress blink: multiplies distance travelled.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float huntressBlinkRangeFac { get; private set; } = 0.25f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Huntress mini-blink: multiplies distance travelled.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float huntressBlink2RangeFac { get; private set; } = 0.35f;
 
+		[AutoConfigRoOSlider("{0:N0} N s", 0f, 300f)]
 		[AutoConfig("Multiplier to BuffFrac for Bandit smokebomb: controls launch force.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float banditCloakSpeedFrac { get; private set; } = 40f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for MUL-T dash: multiplies move speed during reactivation boosts.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float toolbotReacBoostFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOIntSlider("{0:N0}", 0, 30)]
 		[AutoConfig("MUL-T dash: directly specify number of reactivations per cast. Stacks.", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
 		public int toolbotReacBoostCount { get; private set; } = 3;
 
+		[AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
 		[AutoConfig("MUL-T dash: directly specify duration of each boost. Does not stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float toolbotReacTime { get; private set; } = 1f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Engineer shield: shield provides a stacking, 5-second speed buff at a rate increased by item stacks.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float engiSharedBuffFrac { get; private set; } = 0.35f;
 
+		[AutoConfigRoOSlider("{0:N0} N s", 0f, 300f)]
 		[AutoConfig("Multiplier to BuffFrac for Engineer missiles: controls launch force per consumed missile.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float engiBoostFrac { get; private set; } = 50f;
 
 		/*[AutoConfig("Multiplier to BuffFrac for Artificer wall: NYI. Current effect is teleport to top of wall, which cannot be meaningfully boosted.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float artiSpeedPadFrac { get; private set; } = 20f;*/
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Mercenary Blinding Assault: multiplies movement speed during dash.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float mercDashFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Mercenary Focused Assault: multiplies movement speed during dash.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float mercDash2Frac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for REX DIRECTIVE: Disperse: multiplies launch force.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float treebotSonicBoomFrac { get; private set; } = 1f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for REX Bramble Volley: multiplies launch force.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float treebotSonicBoom2Frac { get; private set; } = 1f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Loader Charged Gauntlet: multiplies lunge velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float loaderChargeFistFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Loader Thunder Gauntlet: multiplies lunge velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float loaderChargeFist2Frac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Acrid Caustic Leap: multiplies jump velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float crocoLeapFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Acrid Frenzied Leap: multiplies jump velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float crocoLeap2Frac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:N0} N s", 0f, 30000f)]
 		[AutoConfig("Multiplier to BuffFrac for Captain Airstrike: controls launch force of projectile (NOT adjusted for mass!).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float captainAirstrikeFrac { get; private set; } = 6000f;
 
+		[AutoConfigRoOSlider("{0:N0} N s", 0f, 300f)]
 		[AutoConfig("Multiplier to BuffFrac for Captain Nuke: controls launch velocity of projectile at 1 stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float captainAirstrikeAltFracBase { get; private set; } = 80f;
 
+		[AutoConfigRoOSlider("{0:N0} N s", 0f, 300f)]
 		[AutoConfig("Multiplier to BuffFrac for Captain Nuke: controls launch velocity of projectile per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float captainAirstrikeAltFracStack { get; private set; } = 20f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for all unhandled characters: controls magnitude of speed buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float unhandledFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
 		[AutoConfig("Static value for all unhandled characters: duration of speed buff, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float unhandledDuration { get; private set; } = 5f;
 

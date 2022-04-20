@@ -29,14 +29,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration of the phasing effect, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float phaseDuration { get; private set; } = 2f;
 
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float rewindDuration { get; private set; } = 10f;
 
+        [AutoConfigRoOSlider("{0:N2} s", 0.05f, 10f)]
         [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.PreventNetMismatch, 0.05f, float.MaxValue)]
         public float frameInterval { get; private set; } = 0.5f;
 

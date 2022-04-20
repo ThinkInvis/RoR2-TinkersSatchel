@@ -26,19 +26,23 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-        
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Fraction of healing to absorb.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Fraction of healing to absorb.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float healingRatio { get; private set; } = 0.5f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Extra multiplier on incoming damage buffer before converting into outgoing bonus damage.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float extraConversionMalus { get; private set; } = 0.5f;
 
+        [AutoConfigRoOSlider("x{0:N0}", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum amount of outgoing bonus damage to store as a fraction of base damage.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float maxStoredDamageRatio { get; private set; } = 99f;
 
+        [AutoConfigRoOSlider("{0:P1}", 0f, 50f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Minimum fraction of damage stat required to proc on hit.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float triggerBigHitFrac { get; private set; } = 4f;

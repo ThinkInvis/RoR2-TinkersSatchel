@@ -22,22 +22,27 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config ///////
-
+        ///
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Enemy scan range, in meters.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float maxRange { get; private set; } = 100f;
 
+        [AutoConfigRoOSlider("{0:P2}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Fractional damage bonus per enemy per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float stackingDamageFrac { get; private set; } = 0.01f;
 
+        [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Enemy count to add per elite in range (also separately counted as normal enemies; total count is this + 1).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float eliteBonus { get; private set; } = 1f;
 
+        [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Enemy count to add per champion/boss in range (also separately counted as normal enemies and as elites).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float champBonus { get; private set; } = 2f;
+
 
 
         ////// Other Fields/Properties //////

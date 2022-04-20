@@ -25,10 +25,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config ///////
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Multiplicative internal cooldown reduction per stack past the first.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float cdrStack { get; private set; } = 0.15f;
 
+        [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, also applies equipment cooldown reduction from other sources to the ICD. If false, only cdrStack is applied.", AutoConfigFlags.PreventNetMismatch)]
         public bool externalCdr { get; private set; } = false;
 

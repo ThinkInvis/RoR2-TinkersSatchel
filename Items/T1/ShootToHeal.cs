@@ -28,11 +28,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Healing amount, in flat HP, per stack.",
             AutoConfigFlags.None, 0f, float.MaxValue)]
         public float healAmount { get; private set; } = 2f;
 
+        [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Self-healing amount on healing an ally, in flat HP, per stack.",
             AutoConfigFlags.None, 0f, float.MaxValue)]

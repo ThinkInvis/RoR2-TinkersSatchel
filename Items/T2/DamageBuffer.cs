@@ -28,14 +28,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config ///////
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of damage to absorb per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float bufferFrac { get; private set; } = 0.2f;
 
+        [AutoConfigRoOSlider("{0:N1}", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time over which each damage instance is delayed, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float bufferDuration { get; private set; } = 5f;
 
+        [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Tick interval of the damage buffer, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float bufferRate { get; private set; } = 0f;

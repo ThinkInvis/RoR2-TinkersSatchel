@@ -31,26 +31,31 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Config //////
 
+		[AutoConfigRoOIntSlider("{0:N0}", 0, 20)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Number of extra projectile bounces at first stack.",
 			AutoConfigFlags.None, 0, int.MaxValue)]
 		public int baseBounces { get; private set; } = 3;
 
+		[AutoConfigRoOIntSlider("{0:N0}", 0, 20)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Number of extra projectile bounces per additional stack.",
 			AutoConfigFlags.None, 0, int.MaxValue)]
 		public int stackBounces { get; private set; } = 2;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Fraction of original attack damage for bounced projectiles.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float bounceDamageFrac { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Percent chance to proc.",
 			AutoConfigFlags.None, 0f, 100f)]
 		public float bounceChance { get; private set; } = 15f;
 
+		[AutoConfigRoOString()]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Extra projectile names to blacklist (comma-delimited, leading/trailing whitespace will be ignored).",
 			AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]

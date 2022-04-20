@@ -28,11 +28,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of damage to reflect. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
         public float damageFrac { get; private set; } = 0.2f;
 
-        [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 4f)]
+        [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float vsPlayerScaling { get; private set; } = 0.25f;
 
 

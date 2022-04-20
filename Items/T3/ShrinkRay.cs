@@ -26,11 +26,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Config //////
 
+		[AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Effect duration per stack.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float duration { get; private set; } = 3f;
 
+		[AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Internal cooldown of applying the effect. Does not stack.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]

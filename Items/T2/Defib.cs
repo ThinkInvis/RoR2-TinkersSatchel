@@ -28,11 +28,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-        
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Multiplier for extra healing at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float critFracBase { get; private set; } = 0.5f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Multiplier for extra healing per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float critFracStack { get; private set; } = 0.25f;

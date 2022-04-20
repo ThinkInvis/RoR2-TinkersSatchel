@@ -28,6 +28,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for packing (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {

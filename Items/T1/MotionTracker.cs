@@ -24,11 +24,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-
+        ///
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.15f;
 
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 300f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time in combat required to reach maximum damage bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageTime { get; private set; } = 15f;

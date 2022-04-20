@@ -26,19 +26,23 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-        
+
+        [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Percent chance for Unstable Klein Bottle to proc; stacks multiplicatively.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
         public float procChance { get; private set; } = 8f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
 
+        [AutoConfigRoOString()]
         [AutoConfig("Which survivor body names count as melee and proc pull instead of push (comma-delimited, leading/trailing whitespace will be ignored). MUL-T has special hardcoded handling for detecting Power-Saw, but will never count as melee if not in this list.",
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
         public string meleeBodyNamesConfig { get; private set; } = "CrocoBody, MercBody, LoaderBody, ToolbotBody";
 
+        [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, MeleeBodyNamesConfig becomes a blacklist instead of a whitelist.",
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
         public bool invertBodyNames { get; private set; } = false;

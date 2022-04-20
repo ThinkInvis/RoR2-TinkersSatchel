@@ -26,26 +26,31 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Config //////
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Fraction of base damage dealt by H3AD-53T procs with a single item copy.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float baseDamagePct { get; private set; } = 4f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Fraction of base damage dealt by H3AD-53T procs per additional item copy.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float stackDamagePct { get; private set; } = 1.5f;
 
+		[AutoConfigRoOSlider("{0:N0} s", 0f, 30f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Stun time (in seconds) dealt by H3AD-53T procs.",
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float stunDuration { get; private set; } = 5f;
 
+		[AutoConfigRoOIntSlider("{0:N0}", 0, 20)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Procs added on Utility skill cast with a single item copy.",
 			AutoConfigFlags.None, 1, int.MaxValue)]
 		public int procCount { get; private set; } = 5;
 
+		[AutoConfigRoOIntSlider("{0:N0}", 0, 20)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Procs added on Utility skill cast per additional item copy.",
 			AutoConfigFlags.None, 1, int.MaxValue)]
