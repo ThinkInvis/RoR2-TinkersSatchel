@@ -74,7 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			base.SetupAttributes();
 
 			gupDebuff = ScriptableObject.CreateInstance<ItemDef>();
-			gupDebuff.tier = ItemTier.NoTier;
+			gupDebuff.deprecatedTier = ItemTier.NoTier;
 			gupDebuff.canRemove = false;
 			gupDebuff.hidden = true;
 			gupDebuff.nameToken = "TKSAT_INTERNAL_GUPRAY_COUNTER";
