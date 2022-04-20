@@ -78,6 +78,9 @@ namespace ThinkInvisible.TinkersSatchel {
 			gupDebuff.canRemove = false;
 			gupDebuff.hidden = true;
 			gupDebuff.nameToken = "TKSAT_INTERNAL_GUPRAY_COUNTER";
+			gupDebuff.loreToken = "";
+			gupDebuff.descriptionToken = "";
+			gupDebuff.pickupToken = "";
 			gupDebuff.name = "TkSatInternalGupRayCounter";
 			gupDebuff.tags = new ItemTag[] { };
 			ContentAddition.AddItemDef(gupDebuff);
