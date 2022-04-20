@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ClassicItems">
+      <HintPath>..\ClassicItems\Build\ClassicItems\ClassicItems.dll</HintPath>
+    </Reference>
     <Reference Include="MMHOOK_RoR2">
       <HintPath>lib\MMHOOK_RoR2.dll</HintPath>
     </Reference>
