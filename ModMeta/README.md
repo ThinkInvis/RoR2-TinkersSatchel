@@ -441,6 +441,20 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.1.0**
+
+- Implemented Risk Of Options support on ALL items/equipments, via new AutoConfig attributes in TILER2 7.
+- Possible fix for characters and projectiles not appearing for network clients.
+- Added an alternate mode for Commando: Pulse that removes its recoil in exchange for needing to land consecutive hits to ramp up damage bonus.
+- Added a config option to Unstable Klein Bottle to invert its melee character whitelist.
+- Bramble Ring now deals less damage to players (-75% by default).
+- Bramble Ring no longer unnecessarily recalculates stats when its DamageFrac config is changed.
+- Silver Compass now uses an enum for its use limit config, and exposes an additional config for use count (no longer strictly limited to 1).
+- Fixed Villainous Visage ArmorAmtBase config unintentionally being an int instead of a float.
+- Made all Lunar Equipments unselectable by Artifact of Enigma.
+- Updated for latest Risk of Rain 2 version.
+- Updated TILER2 dependency to 7.0.1.
+
 **2.0.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 1*
 
 - ADDED ITEMS: Voidwisp Hive, Bramble Ring, Gup Ray!
@@ -503,19 +517,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Command Terminal now exposes its list of summonable drones to config.
 - Added extra null safety to Sturdy Mug.
 	- Specifically, affected projectiles should no longer cause further errors if something causes the networked prefab list to desync in multiplayer.
-
-**1.13.1**
-
-- Balance pass.
-	- RC Controller: buffed default attack speed bonus (25% &rarr; 40%).
-	- Engineer: Speed Dispenser:
-		- Now provides a 25% jump height bonus.
-		- Now holds 4 charges (up from 3).
-		- Charges now recharge in 7.5 seconds (up from 10).
-	- Engineer: Chaff:
-		- Now deals 4x75% damage with 0.5 proc coefficient (was 1x200% damage with 1 proc coefficient).
-		- Will cleanse projectiles and taunt enemies with every hit, making it *slightly* easier to time.
-- Engineer: Chaff: Renamed to Decoy Chaff for clarity.
-- Engineer: Speed Dispenser fixes:
-	- Fixed not being set to player team.
-	- Now has its own deployable slot so mods that tweak the max shield count won't affect it.

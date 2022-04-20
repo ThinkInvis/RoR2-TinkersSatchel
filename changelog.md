@@ -1,5 +1,19 @@
 # Tinker's Satchel Changelog
 
+**2.1.0**
+
+- Implemented Risk Of Options support on ALL items/equipments, via new AutoConfig attributes in TILER2 7.
+- Possible fix for characters and projectiles not appearing for network clients.
+- Added an alternate mode for Commando: Pulse that removes its recoil in exchange for needing to land consecutive hits to ramp up damage bonus.
+- Added a config option to Unstable Klein Bottle to invert its melee character whitelist.
+- Bramble Ring now deals less damage to players (-75% by default).
+- Bramble Ring no longer unnecessarily recalculates stats when its DamageFrac config is changed.
+- Silver Compass now uses an enum for its use limit config, and exposes an additional config for use count (no longer strictly limited to 1).
+- Fixed Villainous Visage ArmorAmtBase config unintentionally being an int instead of a float.
+- Made all Lunar Equipments unselectable by Artifact of Enigma.
+- Updated for latest Risk of Rain 2 version.
+- Updated TILER2 dependency to 7.0.1.
+
 **2.0.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 1*
 
 - ADDED ITEMS: Voidwisp Hive, Bramble Ring, Gup Ray!
