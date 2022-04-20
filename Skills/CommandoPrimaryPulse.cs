@@ -15,6 +15,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+		////// Config //////
+		
+		[AutoConfigRoOCheckbox()]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+		[AutoConfig("If true, skill will have no recoil and use an alternate mechanic: high-end damage will start at +0 compared to low-end, and ramp up while attacking the same enemy without missing.", AutoConfigFlags.PreventNetMismatch)]
+		public bool altModeFocusFire { get; private set; } = false;
+
 		////// Other Fields/Properties //////
 
 		public SkillDef skillDef { get; private set; }
@@ -30,7 +37,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_NAME", "Pulse");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION", "Rapidly shoot an enemy 4 times with high recoil. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75% to 150%</style> over the course of the burst.");
+			if(altModeFocusFire)
+				permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION", "Rapidly shoot an enemy 4 times. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75%</style> to a maximum of <style=cIsDamage>150%</style> over the course of the burst, increasing over the course of 20 hits to the same target without missing.");
+			else
+				permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION", "Rapidly shoot an enemy 4 times with high recoil. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75% to 150%</style> over the course of the burst.");
 			base.RefreshPermanentLanguage();
 		}
 
@@ -78,6 +88,34 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Skill States //////
 
 		public class Fire : BaseSkillState {
+			private void FireBulletAltMode(string targetMuzzle, int shotIndex) {
+				var aim = GetAimRay();
+				Util.PlaySound(EntityStates.Commando.CommandoWeapon.FirePistol2.firePistolSoundString, gameObject);
+				if(EntityStates.Commando.CommandoWeapon.FirePistol2.muzzleEffectPrefab)
+					EffectManager.SimpleMuzzleFlash(EntityStates.Commando.CommandoWeapon.FirePistol2.muzzleEffectPrefab, gameObject, targetMuzzle, false);
+				if(isAuthority) {
+					if(!gameObject.TryGetComponent<CommandoPrimaryPulseAltModeTracker>(out var tracker)) tracker = gameObject.AddComponent<CommandoPrimaryPulseAltModeTracker>();
+					float adjustedFinalDamageCoefficient = Mathf.Lerp(initialDamageCoefficient, finalDamageCoefficient, (float)tracker.consecutiveHitCount / 20f);
+					new BulletAttack {
+						owner = gameObject,
+						weapon = gameObject,
+						origin = aim.origin,
+						aimVector = aim.direction,
+						minSpread = 0f,
+						maxSpread = characterBody.spreadBloomAngle,
+						damage = Mathf.Lerp(initialDamageCoefficient, adjustedFinalDamageCoefficient, (float)shotIndex / ((float)burstCount - 1f)) * damageStat,
+						force = force,
+						tracerEffectPrefab = EntityStates.Commando.CommandoWeapon.FirePistol2.tracerEffectPrefab,
+						muzzleName = targetMuzzle,
+						hitEffectPrefab = EntityStates.Commando.CommandoWeapon.FirePistol2.hitEffectPrefab,
+						isCrit = Util.CheckRoll(critStat, characterBody.master),
+						radius = 0.1f,
+						smartCollision = true,
+						hitCallback = AltModeHitCallback
+					}.Fire();
+				}
+			}
+
 			private void FireBullet(string targetMuzzle, int shotIndex) {
 				var aim = GetAimRay();
 				Util.PlaySound(EntityStates.Commando.CommandoWeapon.FirePistol2.firePistolSoundString, gameObject);
@@ -106,6 +144,18 @@ namespace ThinkInvisible.TinkersSatchel {
 				characterBody.AddSpreadBloom(spreadBloomValue);
 			}
 
+			public static bool AltModeHitCallback(BulletAttack atk, ref BulletAttack.BulletHit hitInfo) {
+				var retv = BulletAttack.DefaultHitCallbackImplementation(atk, ref hitInfo);
+				if(!atk.owner) return false;
+				if(!atk.owner.TryGetComponent<CommandoPrimaryPulseAltModeTracker>(out var tracker)) tracker = atk.owner.AddComponent<CommandoPrimaryPulseAltModeTracker>();
+				if(hitInfo.hitHurtBox && hitInfo.hitHurtBox.healthComponent) {
+					tracker.OnHit(hitInfo.hitHurtBox.healthComponent.gameObject);
+                } else {
+					tracker.OnHit(null);
+                }
+				return retv;
+            }
+
 			public override void OnEnter() {
 				base.OnEnter();
 				duration = (baseDurationPerShot * burstCount + baseEndLagDuration) / attackSpeedStat;
@@ -120,10 +170,16 @@ namespace ThinkInvisible.TinkersSatchel {
 				while(stopwatch <= 0f && shotsFired < burstCount) {
 					if(shotsFired % 2 == 0) {
 						PlayAnimation("Gesture Additive, Left", "FirePistol, Left");
-						FireBullet("MuzzleLeft", shotsFired);
+						if(CommandoPrimaryPulse.instance.altModeFocusFire)
+							FireBulletAltMode("MuzzleLeft", shotsFired);
+						else
+							FireBullet("MuzzleLeft", shotsFired);
 					} else {
 						PlayAnimation("Gesture Additive, Right", "FirePistol, Right");
-						FireBullet("MuzzleRight", shotsFired);
+						if(CommandoPrimaryPulse.instance.altModeFocusFire)
+							FireBulletAltMode("MuzzleRight", shotsFired);
+						else
+							FireBullet("MuzzleRight", shotsFired);
 					}
 					shotsFired++;
 					stopwatch += baseDurationPerShot / attackSpeedStat;
@@ -150,4 +206,17 @@ namespace ThinkInvisible.TinkersSatchel {
 			private int shotsFired;
 		}
 	}
+
+	public class CommandoPrimaryPulseAltModeTracker : MonoBehaviour {
+		GameObject lastHitTarget = null;
+		public int consecutiveHitCount { get; private set; } = 1;
+
+		public void OnHit(GameObject hit) {
+			if(lastHitTarget == hit)
+				consecutiveHitCount++;
+			else
+				consecutiveHitCount = 1;
+			lastHitTarget = hit;
+        }
+    }
 }
