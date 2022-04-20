@@ -4,6 +4,7 @@ using TILER2;
 using R2API.Utils;
 using UnityEngine.Networking;
 using R2API;
+using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Compass : Equipment<Compass> {
@@ -18,16 +19,23 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>BUT it will be fraught with danger.</style>";
         protected override string GetDescString(string langid = null) =>
-            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>.{(useLimitPerStage == 2 ? " Works only once per stage." : (useLimitPerStage == 1 ? " Works only once per player per stage." : ""))}";
+            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>.{(useLimitType == UseLimitType.NTimesPerStage ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per stage." : (useLimitType == UseLimitType.NTimesPerCharacter ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per player per stage." : ""))}";
         protected override string GetLoreString(string langid = null) => "";
 
 
 
         ////// Config //////
 
+        public enum UseLimitType {
+            Unlimited, NTimesPerCharacter, NTimesPerStage
+        }
+
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("0: Allows unlimited uses per stage. 1: Only once per character per stage. 2: Only once per stage.", AutoConfigFlags.None, 0, 2)]
-        public int useLimitPerStage { get; private set; } = 1;
+        [AutoConfig("How to limit uses of Silver Compass.", AutoConfigFlags.None, 0, 2)]
+        public UseLimitType useLimitType { get; private set; } = UseLimitType.NTimesPerCharacter;
+
+        [AutoConfig("Number of limited uses if UseLimitType is not Unlimited.", AutoConfigFlags.None, 0, 2)]
+        public int useLimitCount { get; private set; } = 1;
 
 
 
@@ -52,14 +60,28 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
 			if (TeleporterInteraction.instance
                 && slot.characterBody && slot.characterBody.master
-                && slot.characterBody.master.playerCharacterMasterController
-                && !slot.GetComponent<SilverCompassFlag>()
-                && !TeleporterInteraction.instance.GetComponent<SilverCompassFlag>()) {
-				TeleporterInteraction.instance.AddShrineStack();
-                if(useLimitPerStage == 2) TeleporterInteraction.instance.gameObject.AddComponent<SilverCompassFlag>();
-                else if(useLimitPerStage == 1) slot.gameObject.AddComponent<SilverCompassFlag>();
+                && slot.characterBody.master.playerCharacterMasterController) {
+                if(useLimitType == UseLimitType.NTimesPerStage) {
+                    if(!TeleporterInteraction.instance.gameObject.TryGetComponent<SilverCompassFlag>(out var teleFlag))
+                        teleFlag = TeleporterInteraction.instance.gameObject.AddComponent<SilverCompassFlag>();
+
+                    if(teleFlag.timesUsed > useLimitCount) return false;
+
+                    teleFlag.timesUsed++;
+
+                } else if(useLimitType == UseLimitType.NTimesPerCharacter) {
+                    if(!slot.gameObject.TryGetComponent<SilverCompassFlag>(out var slotFlag))
+                        slotFlag = slot.gameObject.AddComponent<SilverCompassFlag>();
+
+                    if(slotFlag.timesUsed > useLimitCount) return false;
+
+                    slotFlag.timesUsed++;
+                }
             } else return false;
+
+            TeleporterInteraction.instance.AddShrineStack();
             TeleporterInteraction.instance.shrineBonusStacks++;
+
 			Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage {
 				subjectAsCharacterBody = slot.characterBody,
 				baseToken = "TKSAT_COMPASS_USE_MESSAGE"
@@ -79,7 +101,9 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 	}
 
-    public class SilverCompassFlag : MonoBehaviour {}
+    public class SilverCompassFlag : MonoBehaviour {
+        public int timesUsed = 0;
+    }
 
     public class TargetSpinnerAnim : MonoBehaviour {
         public float rotateTime = 0.5f;
