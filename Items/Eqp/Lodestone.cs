@@ -118,6 +118,11 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_LODESTONE_ACHIEVEMENT_DESCRIPTION", "Item Set: Close-range. Have 6 or more (of 15) at once.");
 
             equipmentDef.unlockableDef = unlockable;
+
+            if(Compat_ClassicItems.enabled) {
+                LanguageAPI.Add("TKSAT_LODESTONE_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Double range and damage.</style>");
+                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_LODESTONE_CI_EMBRYO_APPEND", () => "TKSAT.Lodestone");
+            }
         }
 
         public override void Install() {
@@ -148,14 +153,19 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void PullObjects(EquipmentSlot slot) {
-            var rbObjectsInRange = Physics.OverlapSphere(slot.characterBody.corePosition, objectRange, Physics.AllLayers, QueryTriggerInteraction.Collide)
+            float range = objectRange;
+
+            if(Compat_ClassicItems.enabled)
+                range *= 1f + (float)Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
+
+            var rbObjectsInRange = Physics.OverlapSphere(slot.characterBody.corePosition, range, Physics.AllLayers, QueryTriggerInteraction.Collide)
                 .Select(x => x.gameObject)
                 .Where(x => validObjectNamesRB.Contains(x.name))
                 .Select(x => x.GetComponent<Rigidbody>())
                 .Where(x => x);
             var nonRbObjectsInRange = GameObject.FindObjectsOfType<GameObject>() //TODO: add colliders to all of these prefabs
                 .Where(x => validObjectNamesNoRB.Contains(x.name)
-                    && Vector3.Distance(x.transform.position, slot.characterBody.corePosition) < objectRange);
+                    && Vector3.Distance(x.transform.position, slot.characterBody.corePosition) < range);
 
             foreach(var rb in rbObjectsInRange) {
                 var sticky = rb.gameObject.GetComponent<RoR2.Projectile.ProjectileStickOnImpact>();
@@ -182,6 +192,15 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void PullEnemies(EquipmentSlot slot) {
+            float range = enemyRange;
+            float damage = slot.characterBody.damage * baseDamageFrac;
+
+            if(Compat_ClassicItems.enabled) {
+                var fac = 1f + (float)Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
+                range *= fac;
+                damage *= fac;
+            }
+
             var teamMembers = new List<TeamComponent>();
             bool isFF = FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off;
             var scan = ((TeamIndex[])Enum.GetValues(typeof(TeamIndex)));
@@ -191,7 +210,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     teamMembers.AddRange(TeamComponent.GetTeamMembers(ind));
             }
             teamMembers.Remove(slot.characterBody.teamComponent);
-            float sqrad = enemyRange * enemyRange;
+            float sqrad = range * range;
             foreach(TeamComponent tcpt in teamMembers) {
                 var velVec = slot.characterBody.transform.position - tcpt.transform.position;
                 if(velVec.sqrMagnitude <= sqrad && tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
@@ -200,7 +219,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     tcpt.body.healthComponent.TakeDamage(new DamageInfo {
                         attacker = slot.characterBody.gameObject,
                         crit = slot.characterBody.RollCrit(),
-                        damage = slot.characterBody.damage * baseDamageFrac,
+                        damage = damage,
                         damageColorIndex = DamageColorIndex.Default,
                         damageType = DamageType.Generic | DamageType.AOE,
                         canRejectForce = false,

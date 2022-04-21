@@ -92,6 +92,11 @@ namespace ThinkInvisible.TinkersSatchel {
             LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION", "Recycle a rare or boss item.");
 
             equipmentDef.unlockableDef = unlockable;
+
+            if(Compat_ClassicItems.enabled) {
+                LanguageAPI.Add("TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Roll twice and choose the rarer result.</style>");
+                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND", () => "TKSAT.QuantumRecombobulator");
+            }
         }
 
         public override void SetupConfig() {
@@ -226,6 +231,15 @@ namespace ThinkInvisible.TinkersSatchel {
                     return false;
 
                 var draw = filteredDeck.Evaluate(rng.nextNormalizedFloat);
+
+                if(Compat_ClassicItems.enabled) {
+                    var rerolls = Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
+                    for(var i = 0; i < rerolls; i++) {
+                        var draw2 = filteredDeck.Evaluate(rng.nextNormalizedFloat);
+                        if(draw2.selectionWeight < draw.selectionWeight)
+                            draw = draw2;
+                    }
+                }
 
                 var obj = DirectorCore.instance.TrySpawnObject(
                     new DirectorSpawnRequest(

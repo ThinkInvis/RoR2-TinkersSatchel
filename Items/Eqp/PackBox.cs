@@ -127,6 +127,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPack>();
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPlace>();
+
+            if(Compat_ClassicItems.enabled) {
+                LanguageAPI.Add("TKSAT_PACKBOX_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: 50% chance to not consume stock on place.</style>");
+                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_PACKBOX_CI_EMBRYO_APPEND", () => "TKSAT.CardboardBox");
+            }
         }
 
         public override void SetupConfig() {
@@ -272,7 +277,12 @@ namespace ThinkInvisible.TinkersSatchel {
                     return false;
                 }
                 if(TryGetBoxablePlacePos(slot.GetAimRay(), out Vector3 placeLoc, out _)) {
-                    return pbh.TryPlaceServer(cpt, placeLoc);
+                    var didPlace = pbh.TryPlaceServer(cpt, placeLoc);
+                    if(Compat_ClassicItems.enabled) {
+                        if(didPlace && Util.CheckRoll(Mathf.Pow(0.5f, Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef)) * 100f))
+                            return false;
+                    }
+                    return didPlace;
                 } else return false;
             }
 

@@ -20,8 +20,11 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Other Fields/Properties //////
 
 		public SkillDef skillDef { get; private set; }
+		public SkillDef scepterSkillDef { get; private set; }
 		public GameObject projectilePrefab { get; private set; }
+		public GameObject scepterProjectilePrefab { get; private set; }
 		bool setupSucceeded = false;
+		bool scepSetupSucceeded = false;
 		SkillFamily targetSkillFamily;
 
 
@@ -34,6 +37,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void RefreshPermanentLanguage() {
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME", "Plasma Grenade");
 			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION", "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME_SCEP", "Big F【??』ing Grenade");
+			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION_SCEP", "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>\n<color=#d299ff>SCEPTER: Double blast radius and damage.</color>");
 			base.RefreshPermanentLanguage();
 		}
 
@@ -42,8 +47,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			//load custom assets
 			skillDef = TinkersSatchelPlugin.resources.LoadAsset<SkillDef>("Assets/TinkersSatchel/SkillDefs/CommandoSpecialPlasmaGrenade.asset");
+			scepterSkillDef = TinkersSatchelPlugin.resources.LoadAsset<SkillDef>("Assets/TinkersSatchel/SkillDefs/CIScepter/CommandoSpecialPlasmaGrenadeScep.asset");
 			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeProjectile.prefab");
 			var ghostPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeGhost.prefab");
+			scepterProjectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeProjectileScep.prefab");
+			var scepterGhostPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeGhostScep.prefab");
 
 			//load vanilla assets
 			targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Commando/CommandoBodySpecialFamily.asset")
@@ -63,8 +71,23 @@ namespace ThinkInvisible.TinkersSatchel {
 			var pRen2 = projectilePrefab.transform.Find("FuseVFX").gameObject.GetComponent<ParticleSystemRenderer>();
 			pRen2.material = fuseParticleMaterial;
 
+			var scepterExplosionPrefabTmp = explosionPrefab.InstantiateClone("TkSatTempSetupPrefab", false);
+
+			scepterExplosionPrefabTmp.transform.localScale *= 2f;
+
+			var scepterExplosionPrefab = scepterExplosionPrefabTmp.InstantiateClone("TkSatPlasmaGrenadeScepterExplosion", false);
+
+			pRen = scepterGhostPrefab.transform.Find("RadialGlow").gameObject.GetComponent<ParticleSystemRenderer>();
+			pRen.material = detParticleMaterial;
+			expl = scepterProjectilePrefab.GetComponent<ProjectileExplosion>();
+			expl.explosionEffect = scepterExplosionPrefab;
+			pRen2 = scepterProjectilePrefab.transform.Find("FuseVFX").gameObject.GetComponent<ParticleSystemRenderer>();
+			pRen2.material = fuseParticleMaterial;
+
 			//R2API catalog reg
-			skillDef.activationState = ContentAddition.AddEntityState<Fire>(out bool entStateDidSucceed);
+			var astate = ContentAddition.AddEntityState<Fire>(out bool entStateDidSucceed);
+			skillDef.activationState = astate;
+			scepterSkillDef.activationState = astate;
 
 			if(!entStateDidSucceed) {
 				TinkersSatchelPlugin._logger.LogError("EntityState setup failed on CommandoSpecialPlasmaGrenade! Skill will not appear nor function.");
@@ -74,7 +97,19 @@ namespace ThinkInvisible.TinkersSatchel {
 				setupSucceeded = true;
 			}
 
+			ContentAddition.AddEffect(scepterExplosionPrefab);
 			ContentAddition.AddProjectile(projectilePrefab);
+			ContentAddition.AddProjectile(scepterProjectilePrefab);
+
+			if(Compat_ClassicItems.enabled) {
+				if(!ContentAddition.AddSkillDef(scepterSkillDef)) {
+					scepSetupSucceeded = false;
+				} else {
+					scepSetupSucceeded = Compat_ClassicItems.RegisterScepterSkill(scepterSkillDef, "CommandoBody", SkillSlot.Special, skillDef);
+				}
+				if(!scepSetupSucceeded)
+					TinkersSatchelPlugin._logger.LogError("ClassicItems Scepter support failed for CommandoSpecialPlasmaGrenade! Ancient Scepter will not work on this skill.");
+			}
 		}
 
 		public override void Install() {
@@ -100,9 +135,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public class Fire : EntityStates.Commando.CommandoWeapon.ThrowGrenade {
             public override void OnEnter() {
-				projectilePrefab = CommandoSpecialPlasmaGrenade.instance.projectilePrefab;
-				damageCoefficient = 5f;
-				force = 700f;
+				bool isScepter = skillLocator && skillLocator.FindSkillByDef(CommandoSpecialPlasmaGrenade.instance.scepterSkillDef) != null;
+				if(isScepter) {
+					projectilePrefab = CommandoSpecialPlasmaGrenade.instance.scepterProjectilePrefab;
+					damageCoefficient = 10f;
+					force = 1200f;
+				} else {
+					projectilePrefab = CommandoSpecialPlasmaGrenade.instance.projectilePrefab;
+					damageCoefficient = 5f;
+					force = 700f;
+				}
 				minSpread = 0;
 				maxSpread = 0;
 				baseDuration = 0.5f;

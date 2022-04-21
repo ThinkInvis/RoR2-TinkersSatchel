@@ -28,6 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
             return ClassicItems.Scepter.instance.RegisterScepterSkill(replacingDef, targetBodyName, targetSlot, targetVariant);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static bool RegisterScepterSkill(SkillDef replacingDef, string targetBodyName, SkillSlot targetSlot, SkillDef targetVariantDef) {
+            return ClassicItems.Scepter.instance.RegisterScepterSkill(replacingDef, targetBodyName, targetSlot, targetVariantDef);
+        }
+
         private static bool? _enabled;
         public static bool enabled {
             get {
