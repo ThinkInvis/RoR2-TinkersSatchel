@@ -15,6 +15,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+		////// Config //////
+
+		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
+		[AutoConfig("Multiplier to GoFaster BuffFrac for this skill: multiplies launch speed.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float goFasterBuffFrac { get; private set; } = 0.5f;
+
+
+
 		////// Other Fields/Properties //////
 
 		public SkillDef skillDef { get; private set; }
@@ -103,7 +111,10 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(characterMotor) {
 					characterMotor.Motor.ForceUnground();
 					characterMotor.velocity = Vector3.zero;
-					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 2.35f;
+					float boost = 1f;
+					if(GoFaster.instance.enabled)
+						boost += (float)GoFaster.instance.GetCount(characterBody) * GoFaster.instance.buffFrac * CommandoUtilityJinkJet.instance.goFasterBuffFrac;
+					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 2.35f * boost;
 				}
 				if(isAuthority)
 					outer.SetNextStateToMain();
