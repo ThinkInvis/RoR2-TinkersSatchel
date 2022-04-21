@@ -9,12 +9,12 @@ namespace ThinkInvisible.TinkersSatchel {
     ///</summary>
     public static class Compat_ClassicItems {
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static int CheckProc(CharacterBody body, EquipmentDef eqp) {
+        public static int CheckEmbryoProc(CharacterBody body, EquipmentDef eqp) {
             return ClassicItems.Embryo.CheckLastEmbryoProc(body, eqp);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static int CheckProc(EquipmentSlot slot, EquipmentDef eqp) {
+        public static int CheckEmbryoProc(EquipmentSlot slot, EquipmentDef eqp) {
             return ClassicItems.Embryo.CheckLastEmbryoProc(slot, eqp);
         }
 
