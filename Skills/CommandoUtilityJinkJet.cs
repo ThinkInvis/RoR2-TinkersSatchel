@@ -62,6 +62,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			} else {
 				setupSucceeded = true;
 			}
+
+			GoFaster.instance.handledSkillDefs.Add(skillDef);
 		}
 
 		public override void Install() {
