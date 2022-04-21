@@ -1,6 +1,16 @@
 # Tinker's Satchel Changelog
 
-**2.1.0**
+**2.2.0** *The Classic Update*
+
+- Implemented Classic Items Embryo/Scepter integration for all relevant equipments/skills added by this mod.
+	- Affected equipments: Lodestone, Cardboard Box, Quantum Recombobulator, Command Terminal, Causal Camera.
+	- Affected skills: Commando: Plasma Grenade.
+- Commando: Jink Jet now has Go-Faster Stripes support.
+- Go-Faster Stripes now displays a red stripe overlay over the utility skill in UI.
+- Fixed a broken config (ArmorAmtBase) on Villainous Visage.
+- Added soft dependency on Classic Items to ensure correct load order.
+
+**2.1.0** *The Non-Optional Options Update*
 
 - Implemented Risk Of Options support on ALL items/equipments, via new AutoConfig attributes in TILER2 7.
 - Possible fix for characters and projectiles not appearing for network clients.

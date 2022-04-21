@@ -441,7 +441,17 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
-**2.1.0**
+**2.2.0** *The Classic Update*
+
+- Implemented Classic Items Embryo/Scepter integration for all relevant equipments/skills added by this mod.
+	- Affected equipments: Lodestone, Cardboard Box, Quantum Recombobulator, Command Terminal, Causal Camera.
+	- Affected skills: Commando: Plasma Grenade.
+- Commando: Jink Jet now has Go-Faster Stripes support.
+- Go-Faster Stripes now displays a red stripe overlay over the utility skill in UI.
+- Fixed a broken config (ArmorAmtBase) on Villainous Visage.
+- Added soft dependency on Classic Items to ensure correct load order.
+
+**2.1.0** *The Non-Optional Options Update*
 
 - Implemented Risk Of Options support on ALL items/equipments, via new AutoConfig attributes in TILER2 7.
 - Possible fix for characters and projectiles not appearing for network clients.
@@ -503,17 +513,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Changed Taunt debuff icon to a slightly more fitting vanilla one.
 - Fixed Taunt keyword token not resolving.
 - General behind-the-scenes cleanup and Visual Studio Intellisense message resolution.
-
-**1.13.2**
-
-- Balance pass.
-	- Shrink Ray no longer procs on self damage.
-		- This was unintentional, but can be considered a balance change as some base game items proc on self damage.
-	- Partially reworked Hydroponic Cell's mechanics to be simpler.
-		- While it provided some flavor, the 'nutrients' buff stage gained by taking damage was redundant, and provided a balance lever that was also redundant. This has been removed and reduced to the core purpose of requiring you to heal health (i.e. NOT overheal, barrier, etc.) to gain the item's benefit. Flavor has been relocated to the pickup text.
-- Improved descriptions of Hydroponic Cell, Engineer: Smart Flak, and Engineer: Decoy Chaff.
-- Clarified Macho Moustache config descriptions.
-- Fixed skills appearing in the loadout menu while disabled.
-- Command Terminal now exposes its list of summonable drones to config.
-- Added extra null safety to Sturdy Mug.
-	- Specifically, affected projectiles should no longer cause further errors if something causes the networked prefab list to desync in multiplayer.

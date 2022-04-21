@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(PrefabAPI), nameof(RecalculateStatsAPI), nameof(UnlockableAPI), nameof(DirectorAPI), nameof(DeployableAPI), nameof(DamageAPI))]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
-        public const string ModVer = "2.1.0";
+        public const string ModVer = "2.2.0";
         public const string ModName = "TinkersSatchel";
         public const string ModGuid = "com.ThinkInvisible.TinkersSatchel";
 
