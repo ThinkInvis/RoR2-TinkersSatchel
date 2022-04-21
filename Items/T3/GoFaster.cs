@@ -284,6 +284,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					overlay = new GameObject("GoFasterStripesPanel");
 					var rtsf = overlay.AddComponent<RectTransform>();
 					rtsf.SetParent(self.transform, false);
+					rtsf.SetSiblingIndex(2);
 					rtsf.anchorMin = Vector2.zero;
 					rtsf.pivot = Vector2.one / 2f;
 					rtsf.anchorMax = Vector2.one;
