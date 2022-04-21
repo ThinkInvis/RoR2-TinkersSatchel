@@ -166,9 +166,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void BodySplitter_PerformInternal(ILContext il) {
 			ILCursor c = new ILCursor(il);
 
-			int locSpawnedBody;
 			if(c.TryGotoNext(MoveType.Before,
-				x => x.MatchLdloc(out locSpawnedBody),
+				x => x.MatchLdloc(out _),
 				x => x.MatchLdloc(out _),
 				x => x.MatchCallOrCallvirt<BodySplitter>(nameof(BodySplitter.AddBodyVelocity)))) {
 				c.Index++;
