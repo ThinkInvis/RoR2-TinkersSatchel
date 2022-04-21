@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static void RegisterHook(EquipmentDef equipment, string descAppendToken = null, Func<string> configDisplayNameDelegate = null, Action installHooksDelegate = null, Action uninstallHooksDelegate = null, Action<CharacterBody> addComponentsDelegate = null, Action setupAttributesDelegate = null, Action setupConfigDelegate = null) {
+        public static void RegisterEmbryoHook(EquipmentDef equipment, string descAppendToken = null, Func<string> configDisplayNameDelegate = null, Action installHooksDelegate = null, Action uninstallHooksDelegate = null, Action<CharacterBody> addComponentsDelegate = null, Action setupAttributesDelegate = null, Action setupConfigDelegate = null) {
             ClassicItems.Embryo.RegisterHook(equipment, descAppendToken, configDisplayNameDelegate, installHooksDelegate, uninstallHooksDelegate, addComponentsDelegate, setupAttributesDelegate, setupConfigDelegate);
         }
 
