@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:N0}", 0f, 5000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Armor given at minimum item type variety (1).", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
+        [AutoConfig("Armor given at minimum item type variety (1).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float armorAmtBase { get; private set; } = 500f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
