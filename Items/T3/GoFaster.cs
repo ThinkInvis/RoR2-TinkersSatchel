@@ -142,6 +142,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		BuffDef genericSpeedBoostBuff;
 		GameObject captainStrikeJumperAltProjectile;
 		UnlockableDef unlockable;
+		Sprite skillIconOverlay;
 		public List<SkillDef> handledSkillDefs = new List<SkillDef>();
 
 
@@ -200,6 +201,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CallAirstrike"));
 			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CallAirstrikeAlt"));
 
+			skillIconOverlay = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/SkillIcons/GoFasterStripesOverlay.png");
 
 			/*var ghost = tmpPrefab.GetComponent<ProjectileController>().ghostPrefab.InstantiateClone("TkSatTempSetupPrefab2", false);
 
@@ -242,6 +244,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Projectile.ProjectileExplosion.DetonateServer += ProjectileExplosion_DetonateServer;
             On.EntityStates.Captain.Weapon.CallAirstrikeAlt.ModifyProjectile += CallAirstrikeAlt_ModifyProjectile;
             On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
+            On.RoR2.UI.SkillIcon.Update += SkillIcon_Update;
 		}
 
         public override void Uninstall() {
@@ -265,12 +268,46 @@ namespace ThinkInvisible.TinkersSatchel {
 			On.RoR2.Projectile.ProjectileExplosion.DetonateServer -= ProjectileExplosion_DetonateServer;
 			On.EntityStates.Captain.Weapon.CallAirstrikeAlt.ModifyProjectile -= CallAirstrikeAlt_ModifyProjectile;
 			On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
+			On.RoR2.UI.SkillIcon.Update -= SkillIcon_Update;
 		}
 
 
 
 		////// Hooks //////
 		#region Hooks
+		private void SkillIcon_Update(On.RoR2.UI.SkillIcon.orig_Update orig, RoR2.UI.SkillIcon self) {
+			orig(self);
+			if(self.targetSkillSlot == SkillSlot.Utility && self.playerCharacterMasterController) {
+				var overlayTsf = self.transform.Find("GoFasterStripesPanel");
+				GameObject overlay;
+				if(overlayTsf == null) {
+					overlay = new GameObject("GoFasterStripesPanel");
+					var rtsf = overlay.AddComponent<RectTransform>();
+					rtsf.SetParent(self.transform, false);
+					rtsf.anchorMin = Vector2.zero;
+					rtsf.pivot = Vector2.one / 2f;
+					rtsf.anchorMax = Vector2.one;
+					rtsf.localPosition = new Vector3(-18f, 18f, 0f);
+					rtsf.localScale = Vector3.one * 1.1f;
+					rtsf.offsetMin = Vector2.zero;
+					rtsf.offsetMax = Vector2.zero;
+					overlay.layer = 5;
+
+					var canvas = overlay.AddComponent<Canvas>();
+					var spren = overlay.AddComponent<UnityEngine.UI.Image>();
+					spren.sprite = skillIconOverlay;
+					spren.maskable = true;
+					spren.raycastTarget = false;
+					spren.color = Color.white;
+				} else overlay = overlayTsf.gameObject;
+
+				var hasItem = GetCount(self.playerCharacterMasterController.body) > 0;
+
+				if(overlay.activeSelf != hasItem)
+					overlay.SetActive(hasItem);
+			}
+		}
+
 		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
 			orig(self, skill);
 			if(NetworkServer.active && self
