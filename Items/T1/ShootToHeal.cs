@@ -57,10 +57,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatShootToHealAchievement>();
-            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_NAME", "One-Man Band");
-            LanguageAPI.Add("TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION", "Item Set: Musical instruments. Have ALL 3 at once.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/shootToHealIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "One-Man Band");
+            LanguageAPI.Add(achiDescToken, "Item Set: Musical instruments. Have ALL 3 at once.");
             itemDef.unlockableDef = unlockable;
 
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgHealTargetAndSelf>();
@@ -198,22 +203,8 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    public class TkSatShootToHealAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_SHOOTTOHEAL_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_SHOOTTOHEAL_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => ShootToHeal.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/shootToHealIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_ShootToHeal", "TkSat_ShootToHealUnlockable", "")]
+    public class TkSatShootToHealAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;

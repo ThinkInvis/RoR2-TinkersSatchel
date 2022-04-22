@@ -216,10 +216,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			GameObject.Destroy(tmpPrefab);
 
-			unlockable = UnlockableAPI.AddUnlockable<TkSatGoFasterAchievement>();
-			LanguageAPI.Add("TKSAT_GOFASTER_ACHIEVEMENT_NAME", "Faster Than Recommended");
-			LanguageAPI.Add("TKSAT_GOFASTER_ACHIEVEMENT_DESCRIPTION", "Trimp.");
-
+			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+			unlockable.cachedName = $"TkSat_{name}Unlockable";
+			unlockable.sortScore = 200;
+			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/goFasterIcon.png");
+			ContentAddition.AddUnlockableDef(unlockable);
+			LanguageAPI.Add(achiNameToken, "Faster Than Recommended");
+			LanguageAPI.Add(achiDescToken, "Trimp.");
 			itemDef.unlockableDef = unlockable;
 		}
 
@@ -616,22 +621,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		#endregion
 	}
 
-	public class TkSatGoFasterAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-		public string AchievementIdentifier => "TKSAT_GOFASTER_ACHIEVEMENT_ID";
-		public string UnlockableIdentifier => "TKSAT_GOFASTER_UNLOCKABLE_ID";
-		public string PrerequisiteUnlockableIdentifier => "";
-		public string AchievementNameToken => "TKSAT_GOFASTER_ACHIEVEMENT_NAME";
-		public string AchievementDescToken => "TKSAT_GOFASTER_ACHIEVEMENT_DESCRIPTION";
-		public string UnlockableNameToken => GoFaster.instance.nameToken;
-
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/goFasterIcon.png");
-
-		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+	[RegisterAchievement("TkSat_GoFaster", "TkSat_GoFasterUnlockable", "")]
+	public class TkSatGoFasterAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();
             On.RoR2.CharacterMotor.OnLanded += CharacterMotor_OnLanded;

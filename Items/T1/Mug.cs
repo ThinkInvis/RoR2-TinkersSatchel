@@ -54,10 +54,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatMugAchievement>();
-            LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_NAME", "...So I Fired Again");
-            LanguageAPI.Add("TKSAT_MUG_ACHIEVEMENT_DESCRIPTION", "Miss 1,000 TOTAL projectile attacks.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/mugIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "...So I Fired Again");
+            LanguageAPI.Add(achiDescToken, "Miss 1,000 TOTAL projectile attacks.");
             itemDef.unlockableDef = unlockable;
 
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
@@ -239,22 +244,8 @@ namespace ThinkInvisible.TinkersSatchel {
         #endregion
     }
 
-    public class TkSatMugAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_MUG_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_MUG_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_MUG_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_MUG_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => Mug.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/mugIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_Mug", "TkSat_MugUnlockable", "")]
+    public class TkSatMugAchievement : RoR2.Achievements.BaseAchievement {
         bool bulletAttackDidHit = false;
 
         public override float ProgressForAchievement() {

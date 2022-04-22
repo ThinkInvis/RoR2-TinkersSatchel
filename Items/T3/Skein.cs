@@ -81,10 +81,15 @@ namespace ThinkInvisible.TinkersSatchel {
 			resistBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/skeinResistBuffIcon.png");
 			ContentAddition.AddBuffDef(resistBuff);
 
-			unlockable = UnlockableAPI.AddUnlockable<TkSatSkeinAchievement>();
-			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_NAME", "Phenomenal Cosmic Power");
-			LanguageAPI.Add("TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION", "Complete all 4 Item Set achievements from Tinker's Satchel.");
-
+			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+			unlockable.cachedName = $"TkSat_{name}Unlockable";
+			unlockable.sortScore = 200;
+			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/skeinIcon.png");
+			ContentAddition.AddUnlockableDef(unlockable);
+			LanguageAPI.Add(achiNameToken, "Phenomenal Cosmic Power");
+			LanguageAPI.Add(achiDescToken, "Complete all 4 Item Set achievements from Tinker's Satchel.");
 			itemDef.unlockableDef = unlockable;
 		}
 
@@ -206,22 +211,8 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-	public class TkSatSkeinAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-		public string AchievementIdentifier => "TKSAT_SKEIN_ACHIEVEMENT_ID";
-		public string UnlockableIdentifier => "TKSAT_SKEIN_UNLOCKABLE_ID";
-		public string PrerequisiteUnlockableIdentifier => "";
-		public string AchievementNameToken => "TKSAT_SKEIN_ACHIEVEMENT_NAME";
-		public string AchievementDescToken => "TKSAT_SKEIN_ACHIEVEMENT_DESCRIPTION";
-		public string UnlockableNameToken => Skein.instance.nameToken;
-
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/skeinIcon.png");
-
-		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+	[RegisterAchievement("TkSat_Skein", "TkSat_SkeinUnlockable", "")]
+	public class TkSatSkeinAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();
             On.RoR2.RoR2Application.Update += RoR2Application_Update;

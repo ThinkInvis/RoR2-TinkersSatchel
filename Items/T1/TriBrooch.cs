@@ -55,6 +55,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         bool isInternalIgnite = false;
+        UnlockableDef unlockable;
 
 
 
@@ -67,10 +68,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var unlockable = UnlockableAPI.AddUnlockable<TkSatTriBroochAchievement>();
-            LanguageAPI.Add("TKSAT_TRIBROOCH_ACHIEVEMENT_NAME", "Rasputin");
-            LanguageAPI.Add("TKSAT_TRIBROOCH_ACHIEVEMENT_DESCRIPTION", "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/triBroochIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Rasputin");
+            LanguageAPI.Add(achiDescToken, "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.");
             itemDef.unlockableDef = unlockable;
         }
 
@@ -226,22 +232,8 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    public class TkSatTriBroochAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_TRIBROOCH_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_TRIBROOCH_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_TRIBROOCH_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_TRIBROOCH_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => TriBrooch.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/triBroochIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_TriBrooch", "TkSat_TriBroochUnlockable", "")]
+    public class TkSatTriBroochAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.SetStateOnHurt.SetStunInternal += SetStateOnHurt_SetStunInternal;

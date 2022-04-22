@@ -53,10 +53,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatMotionTrackerAchievement>();
-            LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_NAME", "Why Won't You Die?!");
-            LanguageAPI.Add("TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION", "Fully charge a Teleporter without killing the boss or dying.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/motionTrackerIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Why Won't You Die?!");
+            LanguageAPI.Add(achiDescToken, "Fully charge a Teleporter without killing the boss or dying.");
             itemDef.unlockableDef = unlockable;
         }
 
@@ -132,22 +137,8 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    public class TkSatMotionTrackerAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_MOTIONTRACKER_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_MOTIONTRACKER_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => MotionTracker.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/motionTrackerIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_MotionTracker", "TkSat_MotionTrackerUnlockable", "")]
+    public class TkSatMotionTrackerAchievement : RoR2.Achievements.BaseAchievement {
         static bool qualifies = false;
 
         public override void OnInstall() {

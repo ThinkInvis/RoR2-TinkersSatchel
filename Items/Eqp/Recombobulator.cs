@@ -87,10 +87,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatRecombobulatorAchievement>();
-            LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_NAME", "Risktaker");
-            LanguageAPI.Add("TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION", "Recycle a rare or boss item.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/recombobulatorIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Risktaker");
+            LanguageAPI.Add(achiDescToken, "Recycle a rare or boss item.");
             equipmentDef.unlockableDef = unlockable;
 
             if(Compat_ClassicItems.enabled) {
@@ -275,22 +280,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class RecombobulatorFlag : MonoBehaviour {}
 
-    public class TkSatRecombobulatorAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_RECOMBOBULATOR_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_RECOMBOBULATOR_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_RECOMBOBULATOR_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_RECOMBOBULATOR_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => Recombobulator.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/recombobulatorIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_Recombobulator", "TkSat_RecombobulatorUnlockable", "")]
+    public class TkSatRecombobulatorAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
 

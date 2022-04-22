@@ -100,10 +100,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
             ContentAddition.AddProjectile(blackHolePrefab);
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatKleinBottleAchievement>();
-            LanguageAPI.Add("TKSAT_KLEINBOTTLE_ACHIEVEMENT_NAME", "Can't Touch This");
-            LanguageAPI.Add("TKSAT_KLEINBOTTLE_ACHIEVEMENT_DESCRIPTION", "Block, or take 1 or less points of damage from, 3 attacks in a row.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/kleinBottleIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Can't Touch This");
+            LanguageAPI.Add(achiDescToken, "Block, or take 1 or less points of damage from, 3 attacks in a row.");
             itemDef.unlockableDef = unlockable;
         }
 
@@ -223,22 +228,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public float LastTimestamp = 0f;
     }
 
-    public class TkSatKleinBottleAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_KLEINBOTTLE_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_KLEINBOTTLE_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_KLEINBOTTLE_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_KLEINBOTTLE_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => KleinBottle.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/kleinBottleIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_KleinBottle", "TkSat_KleinBottleUnlockable", "")]
+    public class TkSatKleinBottleAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;

@@ -39,6 +39,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         public BuffDef deadManSwitchBuff { get; private set; }
+        UnlockableDef unlockable;
 
 
 
@@ -51,10 +52,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var unlockable = UnlockableAPI.AddUnlockable<TkSatDeadManSwitchAchievement>();
-            LanguageAPI.Add("TKSAT_DEADMANSWITCH_ACHIEVEMENT_NAME", "Nine Lives");
-            LanguageAPI.Add("TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION", "Survive falling to low health 9 times in the same run (must return to above 50% health each time).");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/deadManSwitchIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Nine Lives");
+            LanguageAPI.Add(achiDescToken, "Survive falling to low health 9 times in the same run (must return to above 50% health each time).");
             itemDef.unlockableDef = unlockable;
 
             deadManSwitchBuff = ScriptableObject.CreateInstance<BuffDef>();
@@ -119,22 +125,8 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    public class TkSatDeadManSwitchAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_DEADMANSWITCH_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_DEADMANSWITCH_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => DeadManSwitch.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/deadManSwitchIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_DeadManSwitch", "TkSat_DeadManSwitchUnlockable", "")]
+    public class TkSatDeadManSwitchAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.HealthComponent.FixedUpdate += HealthComponent_FixedUpdate;

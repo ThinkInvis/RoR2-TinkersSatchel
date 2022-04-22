@@ -89,10 +89,15 @@ namespace ThinkInvisible.TinkersSatchel {
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(headsetBuff);
 
-			unlockable = UnlockableAPI.AddUnlockable<TkSatHeadsetAchievement>();
-			LanguageAPI.Add("TKSAT_HEADSET_ACHIEVEMENT_NAME", "You Broke It");
-			LanguageAPI.Add("TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION", "Kill a boss with a maximum damage H3AD-5T v2 explosion.");
-
+			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+			unlockable.cachedName = $"TkSat_{name}Unlockable";
+			unlockable.sortScore = 200;
+			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/headsetIcon.png");
+			ContentAddition.AddUnlockableDef(unlockable);
+			LanguageAPI.Add(achiNameToken, "You Broke It");
+			LanguageAPI.Add(achiDescToken, "Kill a boss with a maximum damage H3AD-5T v2 explosion.");
 			itemDef.unlockableDef = unlockable;
 		}
 
@@ -204,22 +209,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float lastHit = 0f;
     }
 
-	public class TkSatHeadsetAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-		public string AchievementIdentifier => "TKSAT_HEADSET_ACHIEVEMENT_ID";
-		public string UnlockableIdentifier => "TKSAT_HEADSET_UNLOCKABLE_ID";
-		public string PrerequisiteUnlockableIdentifier => "";
-		public string AchievementNameToken => "TKSAT_HEADSET_ACHIEVEMENT_NAME";
-		public string AchievementDescToken => "TKSAT_HEADSET_ACHIEVEMENT_DESCRIPTION";
-		public string UnlockableNameToken => Headset.instance.nameToken;
-
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/headsetIcon.png");
-
-		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+	[RegisterAchievement("TkSat_Headset", "TkSat_HeadsetUnlockable", "")]
+	public class TkSatHeadsetAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();
             On.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += HeadstompersFall_DoStompExplosionAuthority;

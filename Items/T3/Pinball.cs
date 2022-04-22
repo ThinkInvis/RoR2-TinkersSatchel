@@ -100,10 +100,15 @@ namespace ThinkInvisible.TinkersSatchel {
 			GameObject.Destroy(tsp);
 			ContentAddition.AddEffect(effectPrefab);
 
-			unlockable = UnlockableAPI.AddUnlockable<TkSatPinballAchievement>();
-			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_NAME", "Woe, Explosions Be Upon Ye");
-			LanguageAPI.Add("TKSAT_PINBALL_ACHIEVEMENT_DESCRIPTION", "Item Set: Damage-on-kill. Have 3 or more (of 6) at once.");
-
+			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+			unlockable.cachedName = $"TkSat_{name}Unlockable";
+			unlockable.sortScore = 200;
+			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/pinballIcon.png");
+			ContentAddition.AddUnlockableDef(unlockable);
+			LanguageAPI.Add(achiNameToken, "Woe, Explosions Be Upon Ye");
+			LanguageAPI.Add(achiDescToken, "Item Set: Damage-on-kill. Have 3 or more (of 6) at once.");
 			itemDef.unlockableDef = unlockable;
 		}
 
@@ -427,22 +432,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
     }
 
-	public class TkSatPinballAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-		public string AchievementIdentifier => "TKSAT_PINBALL_ACHIEVEMENT_ID";
-		public string UnlockableIdentifier => "TKSAT_PINBALL_UNLOCKABLE_ID";
-		public string PrerequisiteUnlockableIdentifier => "";
-		public string AchievementNameToken => "TKSAT_PINBALL_ACHIEVEMENT_NAME";
-		public string AchievementDescToken => "TKSAT_PINBALL_ACHIEVEMENT_DESCRIPTION";
-		public string UnlockableNameToken => Pinball.instance.nameToken;
-
-		public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/pinballIcon.png");
-
-		public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-		public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-			Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+	[RegisterAchievement("TkSat_Pinball", "TkSat_PinballUnlockable", "")]
+	public class TkSatPinballAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();
 			On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;

@@ -59,10 +59,15 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatDefibAchievement>();
-            LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_NAME", "Medic!");
-            LanguageAPI.Add("TKSAT_DEFIB_ACHIEVEMENT_DESCRIPTION", "Item Set: Shareable healing. Have 4 or more (of 7) at once.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/defibIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Medic!");
+            LanguageAPI.Add(achiDescToken, "Item Set: Shareable healing. Have 4 or more (of 7) at once.");
             itemDef.unlockableDef = unlockable;
         }
 
@@ -387,22 +392,8 @@ namespace ThinkInvisible.TinkersSatchel {
         //calc player to find crit chance from randomly weighted by count on Lepton Daisy
     }
 
-    public class TkSatDefibAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_DEFIB_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_DEFIB_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_DEFIB_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_DEFIB_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => Defib.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/defibIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    [RegisterAchievement("TkSat_Defib", "TkSat_DefibUnlockable", "")]
+    public class TkSatDefibAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
