@@ -123,12 +123,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
 				var victimBody = victim.GetComponent<CharacterBody>();
 				if(count > 0 && damageInfo.attacker != victim && victimBody
-					&& victim.name != "BrotherBody(Clone)"
-					&& victim.name != "VoidMegaCrabBody(Clone)"
-					&& victim.name != "ScavLunar1Body(Clone)"
-					&& victim.name != "ScavLunar2Body(Clone)"
-					&& victim.name != "ScavLunar3Body(Clone)"
-					&& victim.name != "ScavLunar4Body(Clone)"
+					&& !victimBody.gameObject.name.Contains("Brother")
+					&& !victimBody.gameObject.name.Contains("VoidMegaCrab")
+					&& !victimBody.gameObject.name.Contains("ScavLunar")
 					&& victimBody.master && victimBody.master.inventory && victimBody.master.inventory.GetItemCount(gupDebuff) < count) {
 					var sricd = damageInfo.attacker.GetComponent<ShrinkRayICDComponent>();
 					if(!sricd)
