@@ -69,10 +69,15 @@ namespace ThinkInvisible.TinkersSatchel {
             moustacheBuff.iconSprite = iconResource;
             ContentAddition.AddBuffDef(moustacheBuff);
 
-            unlockable = UnlockableAPI.AddUnlockable<TkSatMoustacheAchievement>();
-            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_NAME", "Big Brawl");
-            LanguageAPI.Add("TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION", "Participate in a very busy fight.");
-
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/moustacheIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "Big Brawl");
+            LanguageAPI.Add(achiDescToken, "Participate in a very busy fight.");
             itemDef.unlockableDef = unlockable;
         }
 
@@ -143,6 +148,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
+    [RegisterAchievement("TkSat_Moustache", "TkSat_MoustacheUnlockable", "")]
     public class TkSatMoustacheAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
         public string AchievementIdentifier => "TKSAT_MOUSTACHE_ACHIEVEMENT_ID";
         public string UnlockableIdentifier => "TKSAT_MOUSTACHE_UNLOCKABLE_ID";
