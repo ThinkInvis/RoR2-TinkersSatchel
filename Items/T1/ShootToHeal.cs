@@ -65,7 +65,7 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/shootToHealIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
             LanguageAPI.Add(achiNameToken, "One-Man Band");
-            LanguageAPI.Add(achiDescToken, "Item Set: Musical instruments. Have ALL 3 at once.");
+            LanguageAPI.Add(achiDescToken, "Item Set: Musical instruments. Have 3 or more (of 5) at once.");
             itemDef.unlockableDef = unlockable;
 
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgHealTargetAndSelf>();
@@ -217,11 +217,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
             orig(self);
-            if(this.localUser.cachedMaster == self
-                && self.inventory.GetItemCount(RoR2Content.Items.ChainLightning) > 0
-                && self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse) > 0
-                && (self.inventory.currentEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex
-                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex))
+            if(this.localUser.cachedMaster != self) return;
+            int count = 0;
+            if(self.inventory.GetItemCount(RoR2Content.Items.ChainLightning) > 0 || self.inventory.GetItemCount(DLC1Content.Items.ChainLightningVoid) > 0) count++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse) > 0) count++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.ShockNearby) > 0) count++;
+            if((self.inventory.currentEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex
+                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex)) count++;
+            if(self.inventory.GetItemCount(RoR2Content.Items.Behemoth) > 0) count++;
+            if(count >= 3)
                 Grant();
         }
     }
