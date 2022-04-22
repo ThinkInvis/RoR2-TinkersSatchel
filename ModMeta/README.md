@@ -441,6 +441,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.2.1**
+
+- Fixed achievements/unlockables (now uses new vanilla system instead of R2API.UnlockableAPI).
+
 **2.2.0** *The Classic Update*
 
 - Implemented Classic Items Embryo/Scepter integration for all relevant equipments/skills added by this mod.
@@ -505,11 +509,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Made sound effect tempo slower to make it more distinct from Sticky Bomb.
 - Sturdy Mug can no longer cause multiple Goobos Jr. to spawn per equipment cast.
 - Quantum Recombobulator no longer adds the Cardboard Box player data storage component on equip (had no player-facing effect other than an infinitesimal amount of performance loss).
-
-**1.14.0** *The Skillful Update, Part Commando*
-
-- ADDED SKILL VARIANTS:
-	- Commando: Pulse, Jink Jet, and Plasma Grenade!
-- Changed Taunt debuff icon to a slightly more fitting vanilla one.
-- Fixed Taunt keyword token not resolving.
-- General behind-the-scenes cleanup and Visual Studio Intellisense message resolution.

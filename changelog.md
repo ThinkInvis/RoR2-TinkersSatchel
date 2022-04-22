@@ -1,5 +1,9 @@
 # Tinker's Satchel Changelog
 
+**2.2.1**
+
+- Fixed achievements/unlockables (now uses new vanilla system instead of R2API.UnlockableAPI).
+
 **2.2.0** *The Classic Update*
 
 - Implemented Classic Items Embryo/Scepter integration for all relevant equipments/skills added by this mod.
