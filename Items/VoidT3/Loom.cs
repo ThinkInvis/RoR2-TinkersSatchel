@@ -102,8 +102,12 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
 			orig(self, skill);
 			var count = GetCount(self);
-			if(count > 0 && skill && skill.isCombatSkill && (skill.baseRechargeInterval > 0f || self.skillLocator.FindSkillSlot(skill) == SkillSlot.Primary))
-				self.AddTimedBuff(loomBuff, window, count * maxStacks);
+			if(count > 0 && skill && skill.isCombatSkill && (skill.baseRechargeInterval > 0f || self.skillLocator.FindSkillSlot(skill) == SkillSlot.Primary)) {
+				int oldCount = self.GetBuffCount(loomBuff);
+				self.SetBuffCount(loomBuff.buffIndex, 0);
+				for(var i = 0; i < System.Math.Min(oldCount + 1, count * maxStacks); i++)
+					self.AddTimedBuff(loomBuff, window, count * maxStacks);
+			}
 		}
 
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
