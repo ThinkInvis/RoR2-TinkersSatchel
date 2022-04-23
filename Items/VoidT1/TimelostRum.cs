@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
-using R2API;
 using System.Collections.Generic;
 using RoR2.Projectile;
 using UnityEngine.AddressableAssets;
