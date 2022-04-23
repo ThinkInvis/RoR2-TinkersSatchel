@@ -1,5 +1,12 @@
 # Tinker's Satchel Changelog
 
+**2.2.2**
+
+- Slightly expanded the definition of "musical instrument" for the Percussive Maintenance achievement.
+- Increased null safety of Pulse Monitor achievement check.
+- Artifact of Safekeeping should no longer bug out if another mod destroys a tracked item droplet.
+- Fixed Gup Ray unintentionally working on the SotV final boss.
+
 **2.2.1**
 
 - Fixed achievements/unlockables (now uses new vanilla system instead of R2API.UnlockableAPI).

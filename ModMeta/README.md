@@ -441,6 +441,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.2.2**
+
+- Slightly expanded the definition of "musical instrument" for the Percussive Maintenance achievement.
+- Increased null safety of Pulse Monitor achievement check.
+- Artifact of Safekeeping should no longer bug out if another mod destroys a tracked item droplet.
+- Fixed Gup Ray unintentionally working on the SotV final boss.
+
 **2.2.1**
 
 - Fixed achievements/unlockables (now uses new vanilla system instead of R2API.UnlockableAPI).
@@ -486,26 +493,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed a minor punctuation typo in Villainous Visage pickup text.
 - Fixed a missing hook removal during Pixie Tube uninstall that could cause Engineer skills to multiproc unintentionally.
 - Pixie Tube handling for Engineer skills now respects the item's internal cooldown.
-
-**1.14.1**
-
-- Balance pass.
-	- Commando: Jink Jet:
-		- Allowed slightly more vertical component to jump trajectory (0.125 --> 0.15).
-		- Increased forced vertical component used while grounded (0.25 --> 0.3).
-	- Commando: Plasma Grenade:
-		- Buffed cooldown to match Frag Grenade (8s --> 6s).
-		- Homing now has a brief arming delay (0.5s) to prevent nearby enemies from intercepting throws. Direct impacts will still stick.
-	- Macho Moustache:
-		- Nerfed default elite stacking bonus from +2 to +1.
-		- Nerfed default champion stacking bonus from +4 to +2.
-		- This item was performing too well in lategame; the unlock achievement was also far easier to trigger than intended.
-- Fixed Quantum Recombobulator not checking its valid object name list while selecting an object to recombobulate into.
-	- The barrels have been banished for good this time. Definitely.
-	- In an extreme edge case (no spawncards available at all), this could also have led to a vanishing object or an exception. Equipment should now fail to activate, as intended, in this case.
-- Fixed Commando: Plasma Grenade potentially slowing to a crawl during homing.
-- Slightly improved Commando: Plasma Grenade VFX/SFX:
-	- Fuse ray effects are slightly thinner and no longer disconnected from the model.
-	- Made sound effect tempo slower to make it more distinct from Sticky Bomb.
-- Sturdy Mug can no longer cause multiple Goobos Jr. to spawn per equipment cast.
-- Quantum Recombobulator no longer adds the Cardboard Box player data storage component on equip (had no player-facing effect other than an infinitesimal amount of performance loss).
