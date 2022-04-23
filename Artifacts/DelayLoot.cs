@@ -80,12 +80,18 @@ namespace ThinkInvisible.TinkersSatchel {
             if(NetworkServer.active && IsActiveAndEnabled() && !shouldDeferDrops && deferredDrops.Count > 0) {
                 lootShowerTimer -= Time.fixedDeltaTime;
                 if(lootShowerTimer <= 0f) {
+                    if(!deferredDrops[0]) {
+                        deferredDrops.RemoveAt(0);
+                        return;
+                    }
                     var tgtNode = launchVelocities[0];
                     launchVelocities.RemoveAt(0);
                     launchVelocities.Add(tgtNode);
                     var rbody = deferredDrops[0].GetComponent<Rigidbody>();
-                    rbody.velocity = tgtNode;
-                    rbody.drag = 0f;
+                    if(rbody) {
+                        rbody.velocity = tgtNode;
+                        rbody.drag = 0f;
+                    }
                     deferredDrops[0].GetComponent<ConstantForce>().enabled = false;
                     deferredDrops[0].transform.position = lootShowerLoc;
                     deferredDrops[0].SetActive(true);
