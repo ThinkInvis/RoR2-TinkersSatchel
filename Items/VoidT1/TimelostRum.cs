@@ -132,6 +132,7 @@ namespace ThinkInvisible.TinkersSatchel {
         #region Hooks
         private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
             orig(self);
+            ignoreMugs = true;
             for(var i = delayedBulletAttacks.Count - 1; i >= 0; i--) {
                 if(delayedBulletAttacks[i].bi == null) {
                     delayedBulletAttacks.RemoveAt(i);
@@ -149,6 +150,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     delayedProjectiles.RemoveAt(i);
                 }
             }
+            ignoreMugs = false;
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
