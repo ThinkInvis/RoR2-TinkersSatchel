@@ -19,8 +19,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to shoot temporal echoes of projectiles.";
-        protected override string GetDescString(string langid = null) => $"All projectile attacks gain a <style=cIsDamage>{Pct(procChance)} <style=cStack>(+{Pct(procChance)} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{delayTime} s of delay</style>.";
+        protected override string GetPickupString(string langid = null) => "Chance to shoot temporal echoes of projectiles. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.";
+        protected override string GetDescString(string langid = null) => $"All projectile attacks gain a <style=cIsDamage>{Pct(procChance)} <style=cStack>(+{Pct(procChance)} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{delayTime} s of delay</style>. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.";
         protected override string GetLoreString(string langid = null) => "What's left of the label reads: \"『?ROC??K」 and 【S?TO?NE』!\"";
 
 
