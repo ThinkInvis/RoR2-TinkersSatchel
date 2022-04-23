@@ -54,7 +54,7 @@
 			</td>
 			<td><ul>
 				<li>Double healing of and lower tier than Leeching Seed, due to the opportunity cost of dealing damage to enemies, needing to see and hit your probably-juking-very-hard teammates, etc.</li>
-				<li><details><summary>Unlock (spoilers!):</summary>Have Ukulele, War Horn, and Gorag's Opus all at once.</details></li>
+				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Ukulele/Polylute, War Horn, Gorag's Opus, Unstable Tesla Coil, and Brilliant Behemoth at once.</details></li>
 			</ul></td>
 		</tr>
 		<tr>

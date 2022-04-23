@@ -124,7 +124,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				var victimBody = victim.GetComponent<CharacterBody>();
 				if(count > 0 && damageInfo.attacker != victim && victimBody
 					&& !victimBody.gameObject.name.Contains("Brother")
-					&& !victimBody.gameObject.name.Contains("VoidMegaCrab")
+					&& !victimBody.gameObject.name.Contains("VoidRaidCrab")
 					&& !victimBody.gameObject.name.Contains("ScavLunar")
 					&& victimBody.master && victimBody.master.inventory && victimBody.master.inventory.GetItemCount(gupDebuff) < count) {
 					var sricd = damageInfo.attacker.GetComponent<ShrinkRayICDComponent>();
