@@ -385,7 +385,7 @@ namespace ThinkInvisible.TinkersSatchel {
         void OnTriggerStay(Collider other) {
             if(GetCanPerformTargetingOps()) {
                 var tgtb = other.GetComponentInParent<CharacterBody>();
-                if(tgtb && tgtb.healthComponent && tgtb.healthComponent.alive && tgtb.teamComponent && tgtb.teamComponent.teamIndex != teamFilter.teamIndex) {
+                if(tgtb && tgtb.healthComponent && tgtb.healthComponent.alive && tgtb.teamComponent && tgtb.teamComponent.teamIndex != teamFilter.teamIndex && tgtb.teamComponent.teamIndex != TeamIndex.Neutral) {
                     target = other.gameObject.transform;
                     tgtBody = tgtb;
                 }
