@@ -166,7 +166,6 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Private Methods //////
 
         void SpawnWisp(Vector3 pos, TeamIndex team, CharacterBody ownerBody) {
-            Debug.Log($"spawning with teamindex {team}, owner {(ownerBody ? ownerBody.gameObject.name : "NULL")}");
             var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 15f);
             var orb = Object.Instantiate(wispPrefab, pos, UnityEngine.Random.rotation);
             orb.GetComponent<TeamFilter>().teamIndex = team;
