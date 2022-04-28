@@ -8,6 +8,8 @@ using Path = System.IO.Path;
 using TILER2;
 using static TILER2.MiscUtil;
 using System.Linq;
+using UnityEngine.AddressableAssets;
+using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     [BepInPlugin(ModGuid, ModName, ModVer)]
@@ -35,6 +37,13 @@ namespace ThinkInvisible.TinkersSatchel {
             using(var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TinkersSatchel.tinkerssatchel_assets")) {
                 resources = AssetBundle.LoadFromStream(stream);
             }
+
+            try {
+                UnstubShaders();
+            } catch(Exception ex) {
+                _logger.LogError($"Shader unstub failed: {ex} {ex.Message}");
+            }
+
             cfgFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
             var modInfo = new T2Module.ModInfo {
@@ -48,6 +57,14 @@ namespace ThinkInvisible.TinkersSatchel {
             var earlyLoad = new[] { CommonCode.instance };
             T2Module.SetupAll_PluginAwake(earlyLoad);
             T2Module.SetupAll_PluginAwake(allModules.Except(earlyLoad));
+        }
+
+        private void UnstubShaders() {
+            var materials = resources.LoadAllAssets<Material>();
+            foreach(Material material in materials)
+                if(material.shader.name.StartsWith("STUB_"))
+                    material.shader = Addressables.LoadAssetAsync<Shader>(material.shader.name.Substring(5))
+                        .WaitForCompletion();
         }
 
         private void Start() {
