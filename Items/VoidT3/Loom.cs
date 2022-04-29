@@ -104,6 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			var count = GetCount(self);
 			if(count > 0 && skill && skill.isCombatSkill && (skill.baseRechargeInterval > 0f || self.skillLocator.FindSkillSlot(skill) == SkillSlot.Primary)) {
 				int oldCount = self.GetBuffCount(loomBuff);
+				self.ClearTimedBuffs(loomBuff.buffIndex);
 				self.SetBuffCount(loomBuff.buffIndex, 0);
 				for(var i = 0; i < System.Math.Min(oldCount + 1, count * maxStacks); i++)
 					self.AddTimedBuff(loomBuff, window, count * maxStacks);
