@@ -149,22 +149,7 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
     [RegisterAchievement("TkSat_Moustache", "TkSat_MoustacheUnlockable", "")]
-    public class TkSatMoustacheAchievement : RoR2.Achievements.BaseAchievement, IModdedUnlockableDataProvider {
-        public string AchievementIdentifier => "TKSAT_MOUSTACHE_ACHIEVEMENT_ID";
-        public string UnlockableIdentifier => "TKSAT_MOUSTACHE_UNLOCKABLE_ID";
-        public string PrerequisiteUnlockableIdentifier => "";
-        public string AchievementNameToken => "TKSAT_MOUSTACHE_ACHIEVEMENT_NAME";
-        public string AchievementDescToken => "TKSAT_MOUSTACHE_ACHIEVEMENT_DESCRIPTION";
-        public string UnlockableNameToken => Moustache.instance.nameToken;
-
-        public Sprite Sprite => TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/moustacheIcon.png");
-
-        public System.Func<string> GetHowToUnlock => () => Language.GetStringFormatted("UNLOCK_VIA_ACHIEVEMENT_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
-        public System.Func<string> GetUnlocked => () => Language.GetStringFormatted("UNLOCKED_FORMAT", new[] {
-            Language.GetString(AchievementNameToken), Language.GetString(AchievementDescToken)});
-
+    public class TkSatMoustacheAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;

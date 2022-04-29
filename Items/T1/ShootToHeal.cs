@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Hit allies to heal them.";
-        protected override string GetDescString(string langid = null) => $"Hitting an ally with a direct attack heals them for <style=cIsHealing>{healAmount:N1} health <style=cStack>(+{healAmount:N1} per stack)</style></style> and you for {Pct(healAmount / returnHealingAmount)} as much.";
+        protected override string GetDescString(string langid = null) => $"Hitting an ally with a direct attack heals them for <style=cIsHealing>{healAmount:N1} health <style=cStack>(+{healAmount:N1} per stack)</style></style> and you for {Pct(returnHealingAmount / healAmount)} as much.";
         protected override string GetLoreString(string langid = null) => "";
 
 

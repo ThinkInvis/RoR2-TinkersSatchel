@@ -1,5 +1,16 @@
 # Tinker's Satchel Changelog
 
+**2.2.3**
+
+- VFX pass:
+	- Updated ALL item models to use HG shaders instead of default Unity shaders.
+	- Updated most item icons with ingame renders + a much more vanilla-faithful outline generator.
+		- Cardboard Box "in use" alternate icon has not yet been updated.
+- Voidwisp Hive no longer targets neutral team.
+- Removed an unneeded debug log from Voidwisp Hive.
+- Removed some old UnlockableAPI code from Macho Moustache. Should have no user-facing effect.
+- Updated R2API dependency to 4.3.21.
+
 **2.2.2**
 
 - Slightly expanded the definition of "musical instrument" for the Percussive Maintenance achievement.

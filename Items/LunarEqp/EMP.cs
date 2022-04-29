@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Disable skills on enemies... <style=cDeath>BUT disable non-primary skills on survivors.</style>";
         protected override string GetDescString(string langid = null) =>
-            $"For {duration:N0} seconds, <style=cIsUtility>all skills</style> on enemies and <style=cIsUtility>non-primary skills</style> on survivors within {range:N0} m will be <color=#FF7F7F>disabled</style>. Also clears <style=cIsDamage>enemy projectiles</style> when used.";
+            $"For {duration:N0} seconds, <style=cIsUtility>all skills</style> on enemies and <style=cIsUtility>non-primary skills</style> on survivors within {range:N0} m will be <color=#FF7F7F>disabled</color>. Also clears <style=cIsDamage>enemy projectiles</style> when used.";
         protected override string GetLoreString(string langid = null) => "";
 
 
