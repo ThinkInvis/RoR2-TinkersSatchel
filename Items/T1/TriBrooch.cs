@@ -55,7 +55,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         bool isInternalIgnite = false;
-        UnlockableDef unlockable;
+        public static UnlockableDef unlockable { get; private set; }
 
 
 
