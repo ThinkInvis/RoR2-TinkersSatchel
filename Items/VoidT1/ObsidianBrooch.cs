@@ -90,9 +90,9 @@ namespace ThinkInvisible.TinkersSatchel {
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             orig(self, damageInfo);
 
-            if(damageInfo == null || !damageInfo.attacker) return;
+            if(damageInfo == null || !damageInfo.attacker || (damageInfo.damageType & DamageType.DoT) != 0) return;
 
-            var dc = self.GetComponent<DotController>();
+            var dc = DotController.FindDotController(self.gameObject);
             if(!dc || dc.dotStackList.Count <= 0) return;
 
             var body = damageInfo.attacker.GetComponent<CharacterBody>();
@@ -106,7 +106,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!hc || !hc.alive || hc == self) return false;
                     var dvec = (obj.transform.position - self.transform.position);
                     var ddist = dvec.magnitude;
-                    if(ddist < range) return false;
+                    if(ddist > range) return false;
                     return true;
                 })
                 .ToArray();
