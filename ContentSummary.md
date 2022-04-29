@@ -458,7 +458,7 @@
 				</details>
 			</td>
 			<td><ul>
-				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Sturdy Mug.</details></li>
+				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Triskelion Brooch.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -482,6 +482,8 @@
 					<small>You drop a voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x8% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.</small>
 				</details>
 			</td>
+			<td><ul>
+			</ul></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/brambleRingIcon.png?raw=true" width=128></td>
@@ -492,6 +494,8 @@
 					<small>20% of damage taken (+20% per stack, hyperbolic) is also taken by the inflictor. Corrupts all Negative Feedback Loops.</small>
 				</details>
 			</td>
+			<td><ul>
+			</ul></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/gupRayIcon.png?raw=true" width=128></td>
@@ -502,6 +506,8 @@
 					<small>Once every 5 seconds, hitting a non-final-boss enemy splits them into 2 copies with 25% health and damage. Enemies can be split 1 time per stack. Corrupts all Shrink Rays.</small>
 				</details>
 			</td>
+			<td><ul>
+			</ul></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/loomIcon.png?raw=true" width=128></td>
@@ -512,6 +518,9 @@
 					<small>Each combat skill use gives you -5% attack speed and +12.5% damage for 3 seconds (+3 s per stack), up to 10 times (+10 per stack). Corrupts all Spacetime Skeins.</small>
 				</details>
 			</td>
+			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Spacetime Skein.</details></li>
+			</ul></td>
 		</tr>
 	</tbody>
 </table>
