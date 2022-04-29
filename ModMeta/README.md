@@ -14,16 +14,16 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 33 total items/equipments:
+- 36 total items/equipments:
 	- 6 tier-1,
 	- 6 tier-2,
-	- 5 tier-3,
+	- 6 tier-3,
 	- 5 equipments,
 	- 3 lunar items,
 	- 3 lunar equipments,
-	- 1 tier-1 void,
+	- 2 tier-1 void,
 	- 3 tier-2 void,
-	- 1 tier-3 void;
+	- 2 tier-3 void;
 - 2 interactables:
 	- 2 drones;
 - 6 skill variants:
@@ -172,6 +172,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kintsugiIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Kintsugi</b><br>
+				Your broken/consumed/scrapped items increase all your stats.
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Equipments</h3></td>
 		</tr>
 		<tr>
@@ -268,6 +275,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timeLostRumIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Timelost Rum</b> (T1)<br>
+				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
+			</td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Armor Prism</b> (T2)<br>
@@ -293,6 +307,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Gup Ray</b> (T3)<br>
 				Split enemies into two much weaker copies. Corrupts all Shrink Rays.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/loomIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Unraveling Loom</b> (T3)<br>
+				All your attacks become progressively slower and more powerful. Corrupts all Spacetime Skeins.
 			</td>
 		</tr>
 	</tbody>
@@ -430,9 +451,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 ## Issues/TODO
 
-- Items have no DisplayRules.
+- Items and characters have no DisplayRules.
 - Most items need some effects & model polish in general.
 	- Broken drones are missing smoke/sparks effects.
+	- Cardboard Box alternate icon has not been updated to vanilla style like other icons as of v2.2.3.
 - Some class-specific item behaviors on Go-Faster Stripes are missing or placeholders.
 - Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
@@ -440,6 +462,17 @@ Short summaries are provided below. For a full description of each item, see: ht
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
+**2.2.3**
+
+- VFX pass:
+	- Updated ALL item models to use HG shaders instead of default Unity shaders.
+	- Updated most item icons with ingame renders + a much more vanilla-faithful outline generator.
+		- Cardboard Box "in use" alternate icon has not yet been updated.
+- Voidwisp Hive no longer targets neutral team.
+- Removed an unneeded debug log from Voidwisp Hive.
+- Removed some old UnlockableAPI code from Macho Moustache. Should have no user-facing effect.
+- Updated R2API dependency to 4.3.21.
 
 **2.2.2**
 
@@ -475,21 +508,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Made all Lunar Equipments unselectable by Artifact of Enigma.
 - Updated for latest Risk of Rain 2 version.
 - Updated TILER2 dependency to 7.0.1.
-
-**2.0.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 1*
-
-- ADDED ITEMS: Voidwisp Hive, Bramble Ring, Gup Ray!
-- BREAKING CHANGES:
-	- Villainous Visage internal code name has changed (VoidMoustache --> EnterCombatDamage).
-		- Component name has also changed (VoidMoustacheDamageTracker --> EnterCombatDamageTracker).
-	- Armor Prism internal code name has changed (VoidGoldenGear --> OrderedArmor).
-		- Component name has also changed (VoidGoldenGearComponent --> OrderedArmorComponent).
-	- These changes make these items much easier to address with TILER2 NetConfig commands and breaks this pattern for future items. Previously, full name e.g. 'Items.Moustache' would have to be used to resolve ambiguity with the void variant name.
-- Go-Faster Stripes now gives a +50% speed buff for 3 seconds when an unhandled utility skill is used.
-	- Other mods can indicate that they have handling for a utility skill set up by adding their SkillDefs to `GoFaster.instance.handledSkillDefs`.
-- All Void items now have the expansion icon overlay on their item icons.
-- All Void items now have required expansion correctly specified and should no longer appear in logbook while unavailable.
-- Fixed missing buff icons on Villainous Visage.
-- Fixed a minor punctuation typo in Villainous Visage pickup text.
-- Fixed a missing hook removal during Pixie Tube uninstall that could cause Engineer skills to multiproc unintentionally.
-- Pixie Tube handling for Engineer skills now respects the item's internal cooldown.
