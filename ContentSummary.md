@@ -262,6 +262,18 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kintsugiIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Kintsugi</b><br>
+				<details>
+					<summary>Your broken/consumed/scrapped items increase all your stats.</summary>
+					<small>Each of your broken, consumed, or scrapped items increases ALL stats based on its tier (stacks linearly): 1% for Common items, 3% for Uncommon items, and 5% for Rare/Boss items.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Equipments</h3></td>
 		</tr>
 		<tr>
@@ -424,6 +436,32 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timelostRumIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Timelost Rum</b> (T1)<br>
+				<details>
+				<summary>Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.</summary>
+				<small>All projectile attacks gain a 10% (+10% per stack) chance to fire an extra copy with 0.5 s of delay. Corrupts all Sturdy Mugs.</small>
+				</details>
+			</td>
+			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Sturdy Mug.</details></li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/obsidianBroochIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Obsidian Brooch</b> (T1)<br>
+				<details>
+				<summary>Chance to spread DoTs on hit. Corrupts all Triskelion Brooches.</summary>
+				<small>Whenever you hit an enemy, 9% chance (rolls once per stack) to mirror one of their damage-over-time effects to another random enemy within 50 m. Corrupts all Triskelion Brooches.</small>
+				</details>
+			</td>
+			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Sturdy Mug.</details></li>
+			</ul></td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Armor Prism</b> (T2)<br>
@@ -441,7 +479,7 @@
 				<b>Voidwisp Hive</b> (T2)<br>
 				<details>
 					<summary>Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.</summary>
-					You drop a voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x8% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.
+					<small>You drop a voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x8% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.</small>
 				</details>
 			</td>
 		</tr>
@@ -451,7 +489,7 @@
 				<b>Bramble Ring</b> (T2)<br>
 				<details>
 					<summary>Return some damage to sender. Corrupts all Negative Feedback Loops.</summary>
-					20% of damage taken (+20% per stack, hyperbolic) is also taken by the inflictor. Corrupts all Negative Feedback Loops.
+					<small>20% of damage taken (+20% per stack, hyperbolic) is also taken by the inflictor. Corrupts all Negative Feedback Loops.</small>
 				</details>
 			</td>
 		</tr>
@@ -461,7 +499,17 @@
 				<b>Gup Ray</b> (T3)<br>
 				<details>
 					<summary>Split enemies into two much weaker copies. Corrupts all Shrink Rays.</summary>
-					Once every 5 seconds, hitting a non-final-boss enemy splits them into 2 copies with 25% health and damage. Enemies can be split 1 time per stack. Corrupts all Shrink Rays.
+					<small>Once every 5 seconds, hitting a non-final-boss enemy splits them into 2 copies with 25% health and damage. Enemies can be split 1 time per stack. Corrupts all Shrink Rays.</small>
+				</details>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/loomIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Unraveling Loom</b> (T3)<br>
+				<details>
+					<summary>All your attacks become progressively slower and more powerful. Corrupts all Spacetime Skeins.</summary>
+					<small>Each combat skill use gives you -5% attack speed and +12.5% damage for 3 seconds (+3 s per stack), up to 10 times (+10 per stack). Corrupts all Spacetime Skeins.</small>
 				</details>
 			</td>
 		</tr>

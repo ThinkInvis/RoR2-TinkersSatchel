@@ -14,14 +14,14 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 36 total items/equipments:
+- 37 items/equipments:
 	- 6 tier-1,
 	- 6 tier-2,
 	- 6 tier-3,
 	- 5 equipments,
 	- 3 lunar items,
 	- 3 lunar equipments,
-	- 2 tier-1 void,
+	- 3 tier-1 void,
 	- 3 tier-2 void,
 	- 2 tier-3 void;
 - 2 interactables:
@@ -275,9 +275,16 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timeLostRumIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timelostRumIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Timelost Rum</b> (T1)<br>
+				Chance to spread DoTs on hit. Corrupts all Triskelion Brooches.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/obsidianBroochIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Obsidian Brooch</b> (T1)<br>
 				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
 			</td>
 		</tr>
@@ -463,6 +470,12 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.3.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 2*
+
+- ADDED ITEMS: Kintsugi, Timelost Rum, Unraveling Loom, Obsidian Brooch!
+	- Adding the first 3 of these to the readme early was totally an intentional teaser and *not* a Git mishap at all I swear <_< >_>
+- Slightly improved shader on Voidwisp Hive (now uses fresnel emission). Still needs some tweaking.
+
 **2.2.3**
 
 - VFX pass:
@@ -494,17 +507,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Go-Faster Stripes now displays a red stripe overlay over the utility skill in UI.
 - Fixed a broken config (ArmorAmtBase) on Villainous Visage.
 - Added soft dependency on Classic Items to ensure correct load order.
-
-**2.1.0** *The Non-Optional Options Update*
-
-- Implemented Risk Of Options support on ALL items/equipments, via new AutoConfig attributes in TILER2 7.
-- Possible fix for characters and projectiles not appearing for network clients.
-- Added an alternate mode for Commando: Pulse that removes its recoil in exchange for needing to land consecutive hits to ramp up damage bonus.
-- Added a config option to Unstable Klein Bottle to invert its melee character whitelist.
-- Bramble Ring now deals less damage to players (-75% by default).
-- Bramble Ring no longer unnecessarily recalculates stats when its DamageFrac config is changed.
-- Silver Compass now uses an enum for its use limit config, and exposes an additional config for use count (no longer strictly limited to 1).
-- Fixed Villainous Visage ArmorAmtBase config unintentionally being an int instead of a float.
-- Made all Lunar Equipments unselectable by Artifact of Enigma.
-- Updated for latest Risk of Rain 2 version.
-- Updated TILER2 dependency to 7.0.1.

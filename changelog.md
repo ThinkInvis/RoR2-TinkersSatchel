@@ -1,5 +1,11 @@
 # Tinker's Satchel Changelog
 
+**2.3.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 2*
+
+- ADDED ITEMS: Kintsugi, Timelost Rum, Unraveling Loom, Obsidian Brooch!
+	- Adding the first 3 of these to the readme early was totally an intentional teaser and *not* a Git mishap at all I swear <_< >_>
+- Slightly improved shader on Voidwisp Hive (now uses fresnel emission). Still needs some tweaking.
+
 **2.2.3**
 
 - VFX pass:
