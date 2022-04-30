@@ -231,7 +231,8 @@
 					<li>Bandit: Explosive-jump with the blast from your smokebomb.</li>
 					<li>Artificer: teleports to wall location (placeholder, intended effect is launch ramp or icy ground).</li>
 					<li>Captain: small airstrike causes a no-damage blast jump; nuke launch becomes more controllable and displays a trajectory preview. Both grant fall damage prevention until your next collision with terrain.</li>
-					<li>DLC characters: WIP! No item effect yet.</li>
+					<li>DLC characters: WIP! Uses generic placeholder effect.</li>
+					<li>Modded characters: If unsupported by the mod in question, uses generic placeholder effect: grants a buff of +50% move speed for 3 seconds whenever Utility skill is cast.</li>
 				</ul></details></li>
 				<li><details><summary>Unlock (spoilers!):</summary>Trimp -- jump or fall onto a ramp fast enough that you get launched upwards. Running off a ramp won't work.</details></li>
 			</ul></td>
