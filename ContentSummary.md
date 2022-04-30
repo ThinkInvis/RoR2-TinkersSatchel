@@ -118,7 +118,7 @@
 				<b>Unstable Klein Bottle</b><br>
 				<details>
 					<summary>Chance to push or pull nearby enemies on taking damage.</summary>
-					<small>8.0% (+8.0% per stack, mult.) chance to push away or pull (pulls on melee survivors) enemies within 20 m after taking damage. Has an internal cooldown of 0.5 s.</small>
+					<small>After taking damage, 8.0% (+8.0% per stack, mult.) chance to push or pull (pulls on melee survivors) enemies within 20 m for 50% damage. Has an internal cooldown of 0.5 s.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -172,7 +172,7 @@
 				<b>Defibrillator</b><br>
 				<details>
 					<summary>Your heals can crit.</summary>
-					<small>Your crit chance applies to all healing that you cause, for +50% (+25% per stack) HP healed.</small>
+					<small>Your crit chance applies to all healing that you cause, for +50% (+25% per stack) HP healed when a crit occurs.</small>
 				</details>
 			</td>
 			<td><ul>

@@ -22,7 +22,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Your heals can crit.";
-        protected override string GetDescString(string langid = null) => $"Your <style=cIsDamage>crit chance</style> applies to all <style=cIsHealing>healing</style> that you cause, for <style=cIsHealth>+{Pct(critFracBase)} <style=cStack>(+{Pct(critFracStack)} per stack)</style> HP healed</style>.";
+        protected override string GetDescString(string langid = null) => $"Your <style=cIsDamage>crit chance</style> applies to all <style=cIsHealing>healing</style> that you cause, for <style=cIsHealth>+{Pct(critFracBase)} <style=cStack>(+{Pct(critFracStack)} per stack)</style> HP healed</style> when a crit occurs.";
         protected override string GetLoreString(string langid = null) => "";
 
 
