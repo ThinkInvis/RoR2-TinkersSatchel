@@ -278,14 +278,14 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timelostRumIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Timelost Rum</b> (T1)<br>
-				Chance to spread DoTs on hit. Corrupts all Triskelion Brooches.
+				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
 			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/obsidianBroochIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Obsidian Brooch</b> (T1)<br>
-				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
+				Chance to spread DoTs on hit. Corrupts all Triskelion Brooches.
 			</td>
 		</tr>
 		<tr>
