@@ -173,10 +173,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
                 var pickup = prefab.transform.Find("PickupTrigger").gameObject;
                 pickup.GetComponent<HealthPickup>().enabled = false;
-                var bpkp = pickup.AddComponent<BuffPickup>();
+                var bpkp = pickup.AddComponent<EffectlessBuffPickup>();
                 bpkp.buffDef = bufftypes[i];
                 bpkp.teamFilter = prefab.GetComponent<TeamFilter>();
-                bpkp.pickupEffect = pickup.GetComponent<HealthPickup>().pickupEffect;
                 bpkp.buffDuration = buffDuration;
                 bpkp.baseObject = prefabs[i];
 
@@ -467,5 +466,21 @@ namespace ThinkInvisible.TinkersSatchel {
                 targets[currIndex].SetActive(!targets[currIndex].activeSelf);
             }
         }
+    }
+
+    public class EffectlessBuffPickup : MonoBehaviour {
+        private void OnTriggerStay(Collider other) {
+            if(!NetworkServer.active) return;
+            if(TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex) {
+                var tgtBody = other.GetComponent<CharacterBody>();
+                if(!tgtBody) return;
+                tgtBody.AddTimedBuff(buffDef.buffIndex, buffDuration);
+                UnityEngine.Object.Destroy(baseObject);
+            }
+        }
+        public GameObject baseObject;
+        public TeamFilter teamFilter;
+        public BuffDef buffDef;
+        public float buffDuration;
     }
 }
