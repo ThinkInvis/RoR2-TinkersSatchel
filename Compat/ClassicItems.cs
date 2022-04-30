@@ -24,11 +24,6 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static bool RegisterScepterSkill(SkillDef replacingDef, string targetBodyName, SkillSlot targetSlot, int targetVariant) {
-            return ClassicItems.Scepter.instance.RegisterScepterSkill(replacingDef, targetBodyName, targetSlot, targetVariant);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         public static bool RegisterScepterSkill(SkillDef replacingDef, string targetBodyName, SkillSlot targetSlot, SkillDef targetVariantDef) {
             return ClassicItems.Scepter.instance.RegisterScepterSkill(replacingDef, targetBodyName, targetSlot, targetVariantDef);
         }
