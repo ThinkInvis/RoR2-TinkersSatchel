@@ -54,28 +54,27 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             IL.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
-            On.RoR2.OverlapAttack.ctor += OverlapAttack_ctor;
         }
 
 
         public override void Uninstall() {
             base.Uninstall();
+            IL.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
         }
 
 
 
         ////// Hooks //////
 
-        private void OverlapAttack_ctor(On.RoR2.OverlapAttack.orig_ctor orig, OverlapAttack self) {
-            orig(self);
-            if(self.attacker) {
-                var count = GetCount(self.attacker.GetComponent<CharacterBody>());
-                self.damage *= 1f + count * damageAmount;
-            }
-        }
-
         private void OverlapAttack_Fire(ILContext il) {
             var c = new ILCursor(il);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<OverlapAttack>>((self) => {
+                if(self.attacker) {
+                    var count = GetCount(self.attacker.GetComponent<CharacterBody>());
+                    self.damage *= 1f + count * damageAmount;
+                }
+            });
             if(c.TryGotoNext(MoveType.After,
                 x => x.MatchCallOrCallvirt<Transform>("get_lossyScale"))) {
                 c.Emit(OpCodes.Ldarg_0);
@@ -86,6 +85,17 @@ namespace ThinkInvisible.TinkersSatchel {
                 });
             } else {
                 TinkersSatchelPlugin._logger.LogError("ExtendoArms: failed to apply IL hook (OverlapAttack_Fire), target instructions not found. Item will not apply a hitbox scale bonus.");
+            }
+            c.Index = 0;
+            while(c.TryGotoNext(MoveType.Before, x => x.MatchRet())) {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Action<OverlapAttack>>((self) => {
+                    if(self.attacker) {
+                        var count = GetCount(self.attacker.GetComponent<CharacterBody>());
+                        self.damage /= 1f + count * damageAmount;
+                    }
+                });
+                c.Index++;
             }
         }
     }
