@@ -10,6 +10,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="BepInEx.Core" Version="[5.4.19]" />
+    <PackageReference Include="MMHOOK.RoR2" Version="2022.4.19" />
     <PackageReference Include="R2API" Version="4.3.21" />
     <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.3.1-r.0" />
     <PackageReference Include="UnityEngine.Modules" Version="[2019.4.26]" />
@@ -26,9 +27,6 @@
   <ItemGroup>
     <Reference Include="ClassicItems">
       <HintPath>..\ClassicItems\Build\ClassicItems\ClassicItems.dll</HintPath>
-    </Reference>
-    <Reference Include="MMHOOK_RoR2">
-      <HintPath>lib\MMHOOK_RoR2.dll</HintPath>
     </Reference>
     <Reference Include="TILER2">
       <HintPath>..\TILER2\bin\Release\netstandard2.0\TILER2.dll</HintPath>
