@@ -98,6 +98,19 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extendoArmsIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Extendo-Arms</b><br>
+				<details>
+					<summary>Melee attacks reach farther and deal slightly more damage.</summary>
+					<small>All your melee attacks gain 8% range (+8% per stack) and 5% damage (+5% per stack).</small>
+				</details>
+			</td>
+			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Fully charge a Teleporter without dying or killing the boss.</details></li>
+			</ul></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Tier-2 Items</h3></td>
 		</tr>
 		<tr>

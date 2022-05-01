@@ -14,8 +14,8 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 37 items/equipments:
-	- 6 tier-1,
+- 38 items/equipments:
+	- 7 tier-1,
 	- 6 tier-2,
 	- 6 tier-3,
 	- 5 equipments,
@@ -86,6 +86,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Old War Lidar</b><br>
 				Deal more damage to persistent combatants.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extendoArmsIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Extendo-Arms</b><br>
+				Melee attacks reach farther and deal slightly more damage.
 			</td>
 		</tr>
 		<tr>
@@ -470,6 +477,14 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.3.1** *The Time for Crab Mini-Update*
+
+- ADDED ITEM: Extendo-Arms!
+- Removed inadvertent color grading on all item icons.
+- Improved/fixed descriptions of Macho Moustache, Defibrillator, and Unstable Klein Bottle.
+- Removed compatibility for a deprecated+removed Classic Items Ancient Scepter method.
+- Fixed console warning spam caused by Pixie Tube pickups.
+
 **2.3.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 2*
 
 - ADDED ITEMS: Kintsugi, Timelost Rum, Unraveling Loom, Obsidian Brooch!
@@ -497,13 +512,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **2.2.1**
 
 - Fixed achievements/unlockables (now uses new vanilla system instead of R2API.UnlockableAPI).
-
-**2.2.0** *The Classic Update*
-
-- Implemented Classic Items Embryo/Scepter integration for all relevant equipments/skills added by this mod.
-	- Affected equipments: Lodestone, Cardboard Box, Quantum Recombobulator, Command Terminal, Causal Camera.
-	- Affected skills: Commando: Plasma Grenade.
-- Commando: Jink Jet now has Go-Faster Stripes support.
-- Go-Faster Stripes now displays a red stripe overlay over the utility skill in UI.
-- Fixed a broken config (ArmorAmtBase) on Villainous Visage.
-- Added soft dependency on Classic Items to ensure correct load order.

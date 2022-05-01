@@ -1,5 +1,13 @@
 # Tinker's Satchel Changelog
 
+**2.3.1** *The Time for Crab Mini-Update*
+
+- ADDED ITEM: Extendo-Arms!
+- Removed inadvertent color grading on all item icons.
+- Improved/fixed descriptions of Macho Moustache, Defibrillator, and Unstable Klein Bottle.
+- Removed compatibility for a deprecated+removed Classic Items Ancient Scepter method.
+- Fixed console warning spam caused by Pixie Tube pickups.
+
 **2.3.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 2*
 
 - ADDED ITEMS: Kintsugi, Timelost Rum, Unraveling Loom, Obsidian Brooch!
