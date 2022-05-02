@@ -36,6 +36,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Time in combat required to reach maximum damage bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageTime { get; private set; } = 15f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, indicator VFX will be disabled.")]
+        public bool disableVFX { get; private set; } = false;
+
 
 
         ////// Other Fields/Properties //////
@@ -131,16 +135,21 @@ namespace ThinkInvisible.TinkersSatchel {
             if(activeCombatants.ContainsKey(with))
                 activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
             else {
-                var ind = new Indicator(gameObject, MotionTracker.vfxPrefab);
-                ind.targetTransform = with.transform;
-                ind.active = true;
-                activeCombatants[with] = (COMBAT_TIMER, 0f, ind);
+                Indicator ind = null;
 
-                if(with.TryGetComponent<CharacterBody>(out var tgtBody))
-                    ind.visualizerInstance.transform.position = tgtBody.corePosition;
-                var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
-                anim.SetFloat("Speed", 1f / MotionTracker.instance.damageTime);
-                anim.PlayInFixedTime("ZeroIn");
+                if(!MotionTracker.instance.disableVFX) {
+                    ind = new Indicator(gameObject, MotionTracker.vfxPrefab);
+                    ind.targetTransform = with.transform;
+                    ind.active = true;
+
+                    if(with.TryGetComponent<CharacterBody>(out var tgtBody))
+                        ind.visualizerInstance.transform.position = tgtBody.corePosition;
+                    var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
+                    anim.SetFloat("Speed", 1f / MotionTracker.instance.damageTime);
+                    anim.PlayInFixedTime("ZeroIn");
+                }
+
+                activeCombatants[with] = (COMBAT_TIMER, 0f, ind);
             }
         }
 
@@ -151,7 +160,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 var nsw = kvp.Value.stopwatch - Time.fixedDeltaTime;
                 if(nsw <= 0f || !kvp.Key) {
                     activeCombatants.Remove(kvp.Key);
-                    kvp.Value.indicator.active = false;
+                    if(kvp.Value.indicator != null)
+                        kvp.Value.indicator.active = false;
                 } else
                     activeCombatants[kvp.Key] = (nsw, kvp.Value.duration + Time.fixedDeltaTime, kvp.Value.indicator);
             }
