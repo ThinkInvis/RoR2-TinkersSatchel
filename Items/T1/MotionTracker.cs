@@ -74,6 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Uninstall() {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
 
 
