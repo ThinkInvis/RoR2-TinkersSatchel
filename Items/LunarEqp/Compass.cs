@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>BUT it will be fraught with danger.</style>";
         protected override string GetDescString(string langid = null) =>
-            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage, <style=cDeath>one of which will not provide extra item drops</style>.{(useLimitType == UseLimitType.NTimesPerStage ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per stage." : (useLimitType == UseLimitType.NTimesPerCharacter ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per player per stage." : ""))}";
+            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage{(applyPunishStack ? ", <style=cDeath>one of which will not provide extra item drops</style>" : "")}.{(useLimitType == UseLimitType.NTimesPerStage ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per stage." : (useLimitType == UseLimitType.NTimesPerCharacter ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per player per stage." : ""))}";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -39,6 +39,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
         [AutoConfig("Number of limited uses if UseLimitType is not Unlimited.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int useLimitCount { get; private set; } = 1;
+
+        [AutoConfig("If true, an extra stack of Shrine of the Mountain which has no reward will be applied.", AutoConfigFlags.None)]
+        public bool applyPunishStack { get; private set; } = false;
 
 
 
@@ -83,7 +86,8 @@ namespace ThinkInvisible.TinkersSatchel {
             } else return false;
 
             TeleporterInteraction.instance.AddShrineStack();
-            TeleporterInteraction.instance.shrineBonusStacks++;
+            if(applyPunishStack)
+                TeleporterInteraction.instance.shrineBonusStacks++;
 
 			Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage {
 				subjectAsCharacterBody = slot.characterBody,
