@@ -6,6 +6,7 @@ using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using System.Linq;
 using R2API;
+using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MotionTracker : Item<MotionTracker> {
@@ -40,6 +41,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
         
         internal static UnlockableDef unlockable;
+        internal static GameObject vfxPrefab;
 
 
 
@@ -48,10 +50,17 @@ namespace ThinkInvisible.TinkersSatchel {
         public MotionTracker() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/MotionTracker.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/motionTrackerIcon.png");
+            vfxPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/MotionTrackerIndicator.prefab");
         }
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            var partMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matCritImpactHeavy.mat")
+                .WaitForCompletion();
+
+            vfxPrefab.transform.Find("Background/IndParticleR").GetComponent<ParticleSystemRenderer>().material = partMtl;
+            vfxPrefab.transform.Find("Background/IndParticleL").GetComponent<ParticleSystemRenderer>().material = partMtl;
 
             var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
             var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
@@ -110,7 +119,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class MotionTrackerTracker : MonoBehaviour {
         const float COMBAT_TIMER = 6f;
 
-        readonly Dictionary<GameObject, (float stopwatch, float duration)> activeCombatants = new Dictionary<GameObject, (float, float)>();
+        readonly Dictionary<GameObject, (float stopwatch, float duration, Indicator indicator)> activeCombatants = new Dictionary<GameObject, (float, float, Indicator)>();
 
         public float GetCombatBonusScalar(GameObject with) {
             if(!activeCombatants.ContainsKey(with))
@@ -120,9 +129,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public void SetInCombat(GameObject with) {
             if(activeCombatants.ContainsKey(with))
-                activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration);
-            else
-                activeCombatants[with] = (COMBAT_TIMER, 0f);
+                activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
+            else {
+                var ind = new Indicator(gameObject, MotionTracker.vfxPrefab);
+                ind.targetTransform = with.transform;
+                ind.active = true;
+                activeCombatants[with] = (COMBAT_TIMER, 0f, ind);
+
+                if(with.TryGetComponent<CharacterBody>(out var tgtBody))
+                    ind.visualizerInstance.transform.position = tgtBody.corePosition;
+                var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
+                anim.SetFloat("Speed", 1f / MotionTracker.instance.damageTime);
+                anim.PlayInFixedTime("ZeroIn");
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
@@ -130,10 +149,11 @@ namespace ThinkInvisible.TinkersSatchel {
             var frozenCombatants = activeCombatants.ToArray();
             foreach(var kvp in frozenCombatants) {
                 var nsw = kvp.Value.stopwatch - Time.fixedDeltaTime;
-                if(nsw <= 0f)
+                if(nsw <= 0f || !kvp.Key) {
                     activeCombatants.Remove(kvp.Key);
-                else
-                    activeCombatants[kvp.Key] = (nsw, kvp.Value.duration + Time.fixedDeltaTime);
+                    kvp.Value.indicator.active = false;
+                } else
+                    activeCombatants[kvp.Key] = (nsw, kvp.Value.duration + Time.fixedDeltaTime, kvp.Value.indicator);
             }
         }
     }
