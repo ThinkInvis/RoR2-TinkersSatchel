@@ -102,12 +102,11 @@
 			<td>
 				<b>Extendo-Arms</b><br>
 				<details>
-					<summary>Melee attacks reach farther and deal slightly more damage.</summary>
-					<small>All your melee attacks gain 8% range (+8% per stack) and 5% damage (+5% per stack).</small>
+					<summary>Close-range attacks reach farther and deal slightly more damage.</summary>
+					<small>All your melee attacks, as well as AoEs centered within 5.0 meters of you, gain 12.5% range (+12.5% per stack) and 6.25% damage (+6.25% per stack).</small>
 				</details>
 			</td>
 			<td><ul>
-				<li><details><summary>Unlock (spoilers!):</summary>Fully charge a Teleporter without dying or killing the boss.</details></li>
 			</ul></td>
 		</tr>
 		<tr>

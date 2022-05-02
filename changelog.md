@@ -1,5 +1,17 @@
 # Tinker's Satchel Changelog
 
+**2.3.2**
+
+- Balance pass:
+	- Extendo-Arms now works on PBAoE attacks (any blast attack within 5 m, range configurable).
+	- Buffed default Extendo-Arms stats (damage 5% --> 6.25%, range 8% --> 12.5%).
+	- Quantum Recombobulator can no longer be used on fallen drones.
+	- Silver Compass no longer applies an extra, no-item-drop stack of Challenge of the Mountain (restorable with config).
+		- This was a balance point from back when the teleporter was much harder to find.
+- Old-War Lidar now has an in-UI state indicator per enemy (can be disabled in config).
+- Fixed Command Terminal using the cooldown of the next equipment to be picked up.
+- Fixed a missing unhook on Old-War Lidar.
+
 **2.3.1** *The Time for Crab Mini-Update*
 
 - ADDED ITEM: Extendo-Arms!

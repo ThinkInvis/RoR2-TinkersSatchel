@@ -92,7 +92,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extendoArmsIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Extendo-Arms</b><br>
-				Melee attacks reach farther and deal slightly more damage.
+				Close-range attacks reach farther and deal slightly more damage.
 			</td>
 		</tr>
 		<tr>
@@ -477,6 +477,18 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
+**2.3.2**
+
+- Balance pass:
+	- Extendo-Arms now works on PBAoE attacks (any blast attack within 5 m, range configurable).
+	- Buffed default Extendo-Arms stats (damage 5% --> 6.25%, range 8% --> 12.5%).
+	- Quantum Recombobulator can no longer be used on fallen drones.
+	- Silver Compass no longer applies an extra, no-item-drop stack of Challenge of the Mountain (restorable with config).
+		- This was a balance point from back when the teleporter was much harder to find.
+- Old-War Lidar now has an in-UI state indicator per enemy (can be disabled in config).
+- Fixed Command Terminal using the cooldown of the next equipment to be picked up.
+- Fixed a missing unhook on Old-War Lidar.
+
 **2.3.1** *The Time for Crab Mini-Update*
 
 - ADDED ITEM: Extendo-Arms!
@@ -508,7 +520,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Increased null safety of Pulse Monitor achievement check.
 - Artifact of Safekeeping should no longer bug out if another mod destroys a tracked item droplet.
 - Fixed Gup Ray unintentionally working on the SotV final boss.
-
-**2.2.1**
-
-- Fixed achievements/unlockables (now uses new vanilla system instead of R2API.UnlockableAPI).
