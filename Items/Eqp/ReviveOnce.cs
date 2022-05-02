@@ -172,7 +172,7 @@ namespace ThinkInvisible.TinkersSatchel {
             NetworkServer.Spawn(podObj);
             objBody.SetBodyStateToPreferredInitialState();
 
-            slot.inventory.SetEquipmentIndex(EquipmentIndex.None);
+            slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown, 0), (uint)slot.inventory.activeEquipmentSlot);
             return true;
         }
     }
