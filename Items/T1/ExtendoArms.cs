@@ -31,12 +31,12 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Hitbox scale increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float resizeAmount { get; private set; } = 0.08f;
+        public float resizeAmount { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Melee attack damage increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageAmount { get; private set; } = 0.05f;
+        public float damageAmount { get; private set; } = 0.0625f;
 
 
 
