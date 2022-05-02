@@ -76,7 +76,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
 				isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;
 				isp.relationships = new[] {new ItemDef.Pair {
-					itemDef1 = Moustache.instance.itemDef,
+					itemDef1 = Skein.instance.itemDef,
 					itemDef2 = itemDef
 				}};
 				orig(providers.Concat(new[] { isp }).ToArray());
