@@ -40,6 +40,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Number of limited uses if UseLimitType is not Unlimited.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int useLimitCount { get; private set; } = 1;
 
+        [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, an extra stack of Shrine of the Mountain which has no reward will be applied.", AutoConfigFlags.None)]
         public bool applyPunishStack { get; private set; } = false;
 
