@@ -116,6 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping;
+            IL.EntityStates.Drone.DeathState.OnImpactServer += DeathState_OnImpactServer;
         }
 
         public override void Uninstall() {
@@ -124,11 +125,28 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
             On.RoR2.ScrapperController.BeginScrapping -= ScrapperController_BeginScrapping;
+            IL.EntityStates.Drone.DeathState.OnImpactServer -= DeathState_OnImpactServer;
         }
 
 
 
         ////// Private Methods //////
+
+        private void DeathState_OnImpactServer(ILContext il) {
+            var c = new ILCursor(il);
+            if(c.TryGotoNext(MoveType.Before,
+                x => x.MatchCallOrCallvirt(
+                    typeof(GameObject)
+                    .GetMethod(nameof(GameObject.GetComponent), new Type[] { })
+                    .MakeGenericMethod(typeof(PurchaseInteraction)))
+                )) {
+                c.Emit(OpCodes.Dup);
+                c.EmitDelegate<Action<GameObject>>(obj => {
+                    Debug.Log($"Adding RecombobulatorFlag to {obj}");
+                    obj.AddComponent<RecombobulatorFlag>();
+                });
+            }
+        }
 
         private GameObject FindNearestRerollable(GameObject senderObj, Ray aim, float maxAngle, float maxDistance, bool requireLoS) {
             aim = CameraRigController.ModifyAimRayIfApplicable(aim, senderObj, out float camAdjust);
