@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Melee and PBAoE attacks reach farther and deal slightly more damage.";
-        protected override string GetDescString(string langid = null) => $"All your melee attacks, as well as AoEs within {pbaoeRange:N1} meters of your location, gain <style=cIsUtility>{Pct(resizeAmount)} range <style=cStack>(+{Pct(resizeAmount)} per stack)</style></style> and <style=cIsDamage>{Pct(damageAmount)} damage <style=cStack>(+{Pct(damageAmount)} per stack)</style></style>.";
+        protected override string GetDescString(string langid = null) => $"All your melee attacks, as well as AoEs centered within {pbaoeRange:N1} meters of you, gain <style=cIsUtility>{Pct(resizeAmount)} range <style=cStack>(+{Pct(resizeAmount)} per stack)</style></style> and <style=cIsDamage>{Pct(damageAmount)} damage <style=cStack>(+{Pct(damageAmount)} per stack)</style></style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
