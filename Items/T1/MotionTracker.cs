@@ -126,12 +126,13 @@ namespace ThinkInvisible.TinkersSatchel {
         readonly Dictionary<GameObject, (float stopwatch, float duration, Indicator indicator)> activeCombatants = new Dictionary<GameObject, (float, float, Indicator)>();
 
         public float GetCombatBonusScalar(GameObject with) {
-            if(!activeCombatants.ContainsKey(with))
+            if(!with || !activeCombatants.ContainsKey(with))
                 return 0f;
             return Mathf.Clamp01(activeCombatants[with].duration / MotionTracker.instance.damageTime) * MotionTracker.instance.damageFrac;
         }
 
         public void SetInCombat(GameObject with) {
+            if(!with) return;
             if(activeCombatants.ContainsKey(with))
                 activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
             else {
