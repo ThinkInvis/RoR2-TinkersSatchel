@@ -72,7 +72,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!TeleporterInteraction.instance.gameObject.TryGetComponent<SilverCompassFlag>(out var teleFlag))
                         teleFlag = TeleporterInteraction.instance.gameObject.AddComponent<SilverCompassFlag>();
 
-                    if(teleFlag.timesUsed > useLimitCount) return false;
+                    if(teleFlag.timesUsed >= useLimitCount) return false;
 
                     teleFlag.timesUsed++;
 
@@ -80,7 +80,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!slot.gameObject.TryGetComponent<SilverCompassFlag>(out var slotFlag))
                         slotFlag = slot.gameObject.AddComponent<SilverCompassFlag>();
 
-                    if(slotFlag.timesUsed > useLimitCount) return false;
+                    if(slotFlag.timesUsed >= useLimitCount) return false;
 
                     slotFlag.timesUsed++;
                 }
