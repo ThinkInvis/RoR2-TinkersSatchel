@@ -1,4 +1,12 @@
-# Tinker's Satchel Changelog
+﻿# Tinker's Satchel Changelog
+
+(🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+
+**2.3.3**
+
+- Improved stability of recently added Old-War Lidar VFX.
+- Fixed Unraveling Loom corrupting Macho Moustache instead of Spacetime Skein.
+- 🌧︎ Fixed Silver Compass allowing 1 extra application above the configured limit.
 
 **2.3.2**
 

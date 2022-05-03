@@ -1,4 +1,4 @@
-# Tinker's Satchel
+﻿# Tinker's Satchel
 
 ## SUPPORT DISCLAIMER
 
@@ -476,6 +476,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+(🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+
+**2.3.3**
+
+- Improved stability of recently added Old-War Lidar VFX.
+- Fixed Unraveling Loom corrupting Macho Moustache instead of Spacetime Skein.
+- 🌧︎ Fixed Silver Compass allowing 1 extra application above the configured limit.
 
 **2.3.2**
 
@@ -513,10 +520,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Removed an unneeded debug log from Voidwisp Hive.
 - Removed some old UnlockableAPI code from Macho Moustache. Should have no user-facing effect.
 - Updated R2API dependency to 4.3.21.
-
-**2.2.2**
-
-- Slightly expanded the definition of "musical instrument" for the Percussive Maintenance achievement.
-- Increased null safety of Pulse Monitor achievement check.
-- Artifact of Safekeeping should no longer bug out if another mod destroys a tracked item droplet.
-- Fixed Gup Ray unintentionally working on the SotV final boss.
