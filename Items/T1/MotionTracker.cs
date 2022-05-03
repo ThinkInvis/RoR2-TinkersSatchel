@@ -136,22 +136,27 @@ namespace ThinkInvisible.TinkersSatchel {
             if(activeCombatants.ContainsKey(with))
                 activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
             else {
-                Indicator ind = null;
+                activeCombatants[with] = (COMBAT_TIMER, 0f, TryAddIndicator(with));
+            }
+        }
 
-                if(!MotionTracker.instance.disableVFX) {
-                    ind = new Indicator(gameObject, MotionTracker.vfxPrefab);
-                    ind.targetTransform = with.transform;
-                    ind.active = true;
+        public Indicator TryAddIndicator(GameObject with) {
+            Indicator ind = null;
+            if(with && !MotionTracker.instance.disableVFX) {
+                ind = new Indicator(gameObject, MotionTracker.vfxPrefab) {
+                    targetTransform = with.transform,
+                    active = true
+                };
 
+                if(ind.visualizerInstance) {
                     if(with.TryGetComponent<CharacterBody>(out var tgtBody))
                         ind.visualizerInstance.transform.position = tgtBody.corePosition;
                     var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
                     anim.SetFloat("Speed", 1f / MotionTracker.instance.damageTime);
                     anim.PlayInFixedTime("ZeroIn");
                 }
-
-                activeCombatants[with] = (COMBAT_TIMER, 0f, ind);
             }
+            return ind;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
