@@ -42,7 +42,6 @@ namespace ThinkInvisible.TinkersSatchel {
         /////// Other Fields/Properties //////
 
         public bool ignoreMugs = false;
-        public bool proccing = false;
         public List<(BulletAttack bi, float timestamp, float delay)> delayedBulletAttacks = new List<(BulletAttack, float, float)>();
         public List<(FireProjectileInfo fpi, float timestamp, float delay)> delayedProjectiles = new List<(FireProjectileInfo, float, float)>();
 
@@ -135,7 +134,6 @@ namespace ThinkInvisible.TinkersSatchel {
         private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
             orig(self);
             ignoreMugs = true;
-            proccing = true;
             for(var i = delayedBulletAttacks.Count - 1; i >= 0; i--) {
                 if(delayedBulletAttacks[i].bi == null) {
                     delayedBulletAttacks.RemoveAt(i);
@@ -153,7 +151,6 @@ namespace ThinkInvisible.TinkersSatchel {
                     delayedProjectiles.RemoveAt(i);
                 }
             }
-            proccing = false;
             ignoreMugs = false;
         }
 
@@ -171,7 +168,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void BulletAttack_FireSingle(On.RoR2.BulletAttack.orig_FireSingle orig, BulletAttack self, Vector3 normal, int muzzleIndex) {
-            if(proccing)
+            if(ignoreMugs)
                 self.weapon = null; //force tracer effect to happen in worldspace. BulletAttack.Fire sets weapon to owner if null, even if you set it to null on purpose >:(
             orig(self, normal, muzzleIndex);
         }
