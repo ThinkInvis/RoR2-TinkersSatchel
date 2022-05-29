@@ -120,7 +120,12 @@ namespace ThinkInvisible.TinkersSatchel {
                     rezzerName = rezzerUser.userName;
                 NetUtil.ServerSendGlobalChatMsg($"{rezzerName} called down a clone of {rezTargetName}!");
             } else {
-                var whichName = rng.NextElementUniform(droneMasterPrefabNames.ToArray());
+                var validNames = new HashSet<string>(droneMasterPrefabNames);
+                if(!ItemDrone.instance.enabled)
+                    validNames.Remove("ItemDroneMaster");
+                if(!BulwarkDrone.instance.enabled)
+                    validNames.Remove("BulwarkDroneMaster");
+                var whichName = rng.NextElementUniform(validNames.ToArray());
                 var whichIndex = MasterCatalog.FindMasterIndex(whichName);
                 var which = MasterCatalog.GetMasterPrefab(whichIndex);
                 if(!which) return false;
