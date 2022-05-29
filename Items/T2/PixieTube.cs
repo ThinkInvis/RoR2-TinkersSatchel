@@ -469,6 +469,7 @@ namespace ThinkInvisible.TinkersSatchel {
     }
 
     public class EffectlessBuffPickup : MonoBehaviour {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void OnTriggerStay(Collider other) {
             if(!NetworkServer.active) return;
             if(TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex) {

@@ -123,8 +123,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
 			var multCount = GetCount(sender);
-			var baseCount = GetConsumedItemCountByTier(sender.inventory);
-			var totalBonus = multCount * (baseCount.t1 * tier1Bonus + baseCount.t2 * tier2Bonus + baseCount.t3plus * tier3Bonus);
+			var (t1, t2, t3plus) = GetConsumedItemCountByTier(sender.inventory);
+			var totalBonus = multCount * (t1 * tier1Bonus + t2 * tier2Bonus + t3plus * tier3Bonus);
 			args.attackSpeedMultAdd += totalBonus;
 			args.damageMultAdd += totalBonus;
 			args.moveSpeedMultAdd += totalBonus;

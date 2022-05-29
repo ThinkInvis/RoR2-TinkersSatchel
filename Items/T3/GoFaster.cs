@@ -299,7 +299,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					rtsf.offsetMax = Vector2.zero;
 					overlay.layer = 5;
 
-					var canvas = overlay.AddComponent<Canvas>();
+					overlay.AddComponent<Canvas>();
 					var spren = overlay.AddComponent<UnityEngine.UI.Image>();
 					spren.sprite = skillIconOverlay;
 					spren.maskable = true;
