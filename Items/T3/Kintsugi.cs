@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Kintsugi : Item<Kintsugi> {
@@ -37,14 +38,20 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Stat bonus per T3/Boss item per stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+		[AutoConfig("Stat bonus per any other item (e.g. T3, Boss) per stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
 		public float tier3Bonus { get; private set; } = 0.05f;
+
+		[AutoConfigRoOString()]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
+		[AutoConfig("Items to count towards Kintsugi, as a comma-delimited list of name tokens (will be automatically trimmed).", AutoConfigFlags.PreventNetMismatch)]
+		public string validItemNameTokens { get; private set; } = "ITEM_SCRAPWHITE_NAME, ITEM_SCRAPGREEN_NAME, ITEM_SCRAPRED_NAME, ITEM_SCRAPYELLOW_NAME, ITEM_REGENERATINGSCRAP_NAME, ITEM_REGENERATINGSCRAPCONSUMED_NAME, ITEM_HEALINGPOTIONCONSUMED_NAME, ITEM_FRAGILEDAMAGEBONUSCONSUMED_NAME, ITEM_EXTRALIFEVOIDCONSUMED_NAME, ITEM_EXTRALIFECONSUMED_NAME";
 
 
 
 		////// Other Fields/Properties //////
-		
+
 		internal static UnlockableDef unlockable;
+		private readonly HashSet<ItemDef> validItems = new HashSet<ItemDef>();
 
 
 
@@ -70,7 +77,22 @@ namespace ThinkInvisible.TinkersSatchel {
 			itemDef.unlockableDef = unlockable;
 		}
 
-		public override void Install() {
+        public override void SetupConfig() {
+            base.SetupConfig();
+
+			this.ConfigEntryChanged += (nv, args) => {
+				if(args.target.boundProperty.Name == nameof(validItemNameTokens)) {
+					UpdateValidItems();
+                }
+			};
+        }
+
+        public override void SetupCatalogReady() {
+            base.SetupCatalogReady();
+			UpdateValidItems();
+        }
+
+        public override void Install() {
 			base.Install();
 			RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
 		}
@@ -84,37 +106,41 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Public API //////
 
+		public static bool GetIsItemValid(ItemDef item) {
+			return Kintsugi.instance.validItems.Contains(item);
+        }
+
 		public static int GetConsumedItemCount(Inventory inventory) {
 			if(!inventory) return 0;
 			int count = 0;
-			count += inventory.GetItemCount(RoR2Content.Items.ExtraLifeConsumed);
-			count += inventory.GetItemCount(DLC1Content.Items.ExtraLifeVoidConsumed);
-			count += inventory.GetItemCount(DLC1Content.Items.FragileDamageBonusConsumed);
-			count += inventory.GetItemCount(DLC1Content.Items.HealingPotionConsumed);
-			count += inventory.GetItemCount(DLC1Content.Items.RegeneratingScrapConsumed);
-			count += inventory.GetItemCount(RoR2Content.Items.ScrapWhite);
-			count += inventory.GetItemCount(RoR2Content.Items.ScrapGreen);
-			count += inventory.GetItemCount(RoR2Content.Items.ScrapRed);
-			count += inventory.GetItemCount(RoR2Content.Items.ScrapYellow);
+			foreach(var idef in Kintsugi.instance.validItems) {
+				count += inventory.GetItemCount(idef);
+            }
 			return count;
 		}
 
-		public static (int t1, int t2, int t3plus) GetConsumedItemCountByTier(Inventory inventory) {
-			if(!inventory) return (0, 0, 0);
-			int count1 = 0;
-			int count2 = 0;
-			int count3 = 0;
-			count3 += inventory.GetItemCount(RoR2Content.Items.ExtraLifeConsumed);
-			count3 += inventory.GetItemCount(DLC1Content.Items.ExtraLifeVoidConsumed);
-			count1 += inventory.GetItemCount(DLC1Content.Items.FragileDamageBonusConsumed);
-			count1 += inventory.GetItemCount(DLC1Content.Items.HealingPotionConsumed);
-			count2 += inventory.GetItemCount(DLC1Content.Items.RegeneratingScrapConsumed);
-			count1 += inventory.GetItemCount(RoR2Content.Items.ScrapWhite);
-			count2 += inventory.GetItemCount(RoR2Content.Items.ScrapGreen);
-			count3 += inventory.GetItemCount(RoR2Content.Items.ScrapRed);
-			count3 += inventory.GetItemCount(RoR2Content.Items.ScrapYellow);
-			return (count1, count2, count3);
+		public static Dictionary<ItemTier, int> GetConsumedItemCountByTier(Inventory inventory) {
+			var retv = new Dictionary<ItemTier, int>();
+			foreach(var idef in Kintsugi.instance.validItems) {
+				var c = inventory.GetItemCount(idef);
+				if(retv.ContainsKey(idef.tier))
+					retv[idef.tier] += c;
+				else
+					retv.Add(idef.tier, c);
+			}
+			return retv;
 		}
+
+
+
+		////// Private API //////
+
+		private void UpdateValidItems() {
+			if(!ItemCatalog.availability.available) return;
+			var nameTokens = validItemNameTokens.Split(',').Select(x => x.Trim());
+			validItems.Clear();
+			validItems.UnionWith(ItemCatalog.allItemDefs.Where(idef => nameTokens.Contains(idef.nameToken)));
+        }
 
 
 
@@ -123,8 +149,23 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
 			var multCount = GetCount(sender);
-			var (t1, t2, t3plus) = GetConsumedItemCountByTier(sender.inventory);
-			var totalBonus = multCount * (t1 * tier1Bonus + t2 * tier2Bonus + t3plus * tier3Bonus);
+			var consumedItems = GetConsumedItemCountByTier(sender.inventory);
+			float totalBonus = 0;
+			foreach(var (k, v) in consumedItems.Select(x => (x.Key, x.Value))) {
+				switch(k) {
+					case ItemTier.Tier1:
+					case ItemTier.VoidTier1:
+						totalBonus += tier1Bonus * v;
+						break;
+					case ItemTier.Tier2:
+					case ItemTier.VoidTier2:
+						totalBonus += tier2Bonus * v;
+						break;
+					default:
+						totalBonus += tier3Bonus * v;
+						break;
+				}
+            }
 			args.attackSpeedMultAdd += totalBonus;
 			args.damageMultAdd += totalBonus;
 			args.moveSpeedMultAdd += totalBonus;
