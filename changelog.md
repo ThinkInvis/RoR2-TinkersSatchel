@@ -2,6 +2,29 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.0.0**
+
+- BREAKING CHANGES:
+	- Kintsugi valid items are now configurable as a list of item name tokens.
+		- REMOVED `public static (int t1, int t2, int t3plus) GetConsumedItemCountByTier(Inventory inventory)`.
+		- Added `public static Dictionary<ItemTier, int> GetConsumedItemCountByTier(Inventory inventory)`.
+		- Added `public string validItemNameTokens {get; private set;}` config property.
+		- Added `public static bool GetIsItemValid(ItemDef item)` public API method.
+	- Sturdy Mug and Timelost Rum now use ints instead of bools to track ignore state.
+		- Fixes hitscan projectiles repeatedly firing forever under some circumstances (e.g. when fired at Newt).
+		- REMOVED `public bool ignoreMugs = false;` from both classes.
+		- Added `public int ignoreStack = 0;` to both classes.
+- Balance pass:
+	- H3AD-53T now counts as a melee attack for purposes of Extendo-Arms.
+	- Causal Camera now has a configurable minimum time (default 3s), to make Gesture stacking while you have one less existentially hazardous.
+- Command Terminal will no longer summon Item Drone or Bulwark Drone if they are disabled.
+- If Command Terminal is allowed to work with Bottled Chaos in config (disabled by default), it will no longer remove other equipments when triggered by Bottled Chaos.
+- Timelost Rum now properly spawns projectiles at a muzzle point, instead of at the owner's core position (could lead to self-collision if stationary).
+- Improved an error message on Defibrillator to match newer, similar systems in Sturdy Mug and Timelost Rum.
+- Added some calculation shortcuts to Extendo-Arms public API (`public static float GetRangeMultiplier(CharacterBody body)`, `public static float GetDamageMultiplier(CharacterBody body)`).
+- Addressed some compiler messages and removed a duplicate state flag from Timelost Rum (reduced code complexity; should have minimal user-facing effect).
+- Updated libraries for latest Risk of Rain 2 patch.
+
 **2.3.3**
 
 - Improved stability of recently added Old-War Lidar VFX.

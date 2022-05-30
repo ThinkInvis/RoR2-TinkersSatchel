@@ -206,6 +206,7 @@
 			</td>
 			<td><ul>
 				<li>Grants or refreshes charges of a buff. Running into or phasing through an enemy spends a charge to deal damage and stun.</li>
+				<li>Counts as melee for purposes of Extendo-Arms.</li>
 				<li><details><summary>Unlock (spoilers!):</summary>Kill a boss with a maximum damage H3AD-5T v2 explosion.</details></li>
 			</ul></td>
 		</tr>
@@ -307,7 +308,7 @@
 				<b>Causal Camera</b><br>
 				<details>
 					<summary>Phase briefly and rewind yourself 10 seconds. <small>[Cooldown: 90 s]</small></summary>
-					<small>Phase out of existence for 2.0 seconds. Rewind your position, health, and skill cooldowns <small>(except equipment)</small> to their states from up to 10.0 seconds ago.</small>
+					<small>Phase out of existence for 2.0 seconds. Rewind your position, health, and skill cooldowns <small>(except equipment)</small> to their states from up to 10.0 seconds ago. Cannot use with less than 3.0 seconds saved.</small>
 				</details>
 			</td>
 			<td><ul>
