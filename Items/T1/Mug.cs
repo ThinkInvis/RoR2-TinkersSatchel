@@ -37,7 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         /////// Other Fields/Properties //////
 
-        public bool ignoreMugs = false;
+        public int ignoreStack = 0;
 
         internal UnlockableDef unlockable;
         internal RoR2.Stats.StatDef whiffsStatDef;
@@ -72,6 +72,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
 
             //main tracking
+            On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
 
@@ -95,6 +96,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Uninstall() {
             base.Uninstall();
 
+            On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
 
@@ -119,96 +121,104 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
         #region Hooks
+        private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
+            orig(self);
+            if(ignoreStack > 0) {
+                TinkersSatchelPlugin._logger.LogError("Mug: ignoreStack was not empty on new frame, clearing. May be a cascading effect of another error, or a mod may be misusing ignoreStack.");
+                ignoreStack = 0;
+            }
+        }
+
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self, damageInfo, victim);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void BaseThrowBombState_Fire(On.EntityStates.Mage.Weapon.BaseThrowBombState.orig_Fire orig, EntityStates.Mage.Weapon.BaseThrowBombState self) {
             var doIgnore = self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary || self is EntityStates.Mage.Weapon.ThrowIcebomb;
-            if(doIgnore) ignoreMugs = true;
+            if(doIgnore) ignoreStack++;
             orig(self);
-            if(doIgnore) ignoreMugs = false;
+            if(doIgnore) ignoreStack--;
         }
 
         private void FireMainBeamState_OnExit(On.EntityStates.LaserTurbine.FireMainBeamState.orig_OnExit orig, EntityStates.LaserTurbine.FireMainBeamState self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self, damageReport);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void FireFlower2_OnEnter(On.EntityStates.FireFlower2.orig_OnEnter orig, EntityStates.FireFlower2 self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void AimFlower_FireProjectile(On.EntityStates.Treebot.Weapon.AimFlower.orig_FireProjectile orig, EntityStates.Treebot.Weapon.AimFlower self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void TreebotFireFruitSeed_OnEnter(On.EntityStates.Treebot.TreebotFireFruitSeed.orig_OnEnter orig, EntityStates.Treebot.TreebotFireFruitSeed self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void PrepWall_OnExit(On.EntityStates.Mage.Weapon.PrepWall.orig_OnExit orig, EntityStates.Mage.Weapon.PrepWall self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void CreatePounder_OnExit(On.EntityStates.Treebot.Weapon.CreatePounder.orig_OnExit orig, EntityStates.Treebot.Weapon.CreatePounder self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void ArrowRain_DoFireArrowRain(On.EntityStates.Huntress.ArrowRain.orig_DoFireArrowRain orig, EntityStates.Huntress.ArrowRain self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void MissileUtils_FireMissile_MyKingdomForAStruct(On.RoR2.MissileUtils.orig_FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool orig, Vector3 position, CharacterBody attackerBody, ProcChainMask procChainMask, GameObject victim, float missileDamage, bool isCrit, GameObject projectilePrefab, DamageColorIndex damageColorIndex, Vector3 initialDirection, float force, bool addMissileProc) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(position, attackerBody, procChainMask, victim, missileDamage, isCrit, projectilePrefab, damageColorIndex, initialDirection, force, addMissileProc);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private void AimThrowableBase_FireProjectile(On.EntityStates.AimThrowableBase.orig_FireProjectile orig, EntityStates.AimThrowableBase self) {
             var doIgnore = self is EntityStates.Treebot.Weapon.AimMortar2 || self is EntityStates.Captain.Weapon.CallAirstrikeBase;
-            if(doIgnore) ignoreMugs = true;
+            if(doIgnore) ignoreStack++;
             orig(self);
-            if(doIgnore) ignoreMugs = false;
+            if(doIgnore) ignoreStack--;
         }
 
         private void FireMortar2_Fire(On.EntityStates.Treebot.Weapon.FireMortar2.orig_Fire orig, EntityStates.Treebot.Weapon.FireMortar2 self) {
-            ignoreMugs = true;
+            ignoreStack++;
             orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
         }
 
         private bool EquipmentSlot_FireGummyClone(On.RoR2.EquipmentSlot.orig_FireGummyClone orig, EquipmentSlot self) {
-            ignoreMugs = true;
+            ignoreStack++;
             var retv = orig(self);
-            ignoreMugs = false;
+            ignoreStack--;
             return retv;
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
             orig(self);
-            if(ignoreMugs || !self.owner) return;
+            if(ignoreStack > 0 || !self.owner) return;
             var cpt = self.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);
@@ -225,7 +235,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(self, fireProjectileInfo);
-            if(ignoreMugs || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
+            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);
