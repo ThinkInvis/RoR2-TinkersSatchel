@@ -22,7 +22,7 @@ namespace ThinkInvisible.TinkersSatchel {
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Phase briefly and rewind yourself 10 seconds.";
         protected override string GetDescString(string langid = null) =>
-            $"Phase out of existence for <style=cIsUtility>{phaseDuration:N1} seconds</style>. <style=cIsUtility>Rewind</style> your <style=cIsUtility>position</style>, <style=cIsHealth>health</style>, and <style=cIsUtility>skill cooldowns <style=cStack>(except equipment)</style></style> to their states from up to <style=cIsUtility>{rewindDuration:N1} seconds ago</style>.";
+            $"Phase out of existence for <style=cIsUtility>{phaseDuration:N1} seconds</style>. <style=cIsUtility>Rewind</style> your <style=cIsUtility>position</style>, <style=cIsHealth>health</style>, and <style=cIsUtility>skill cooldowns <style=cStack>(except equipment)</style></style> to their states from up to <style=cIsUtility>{rewindDuration:N1} seconds ago</style>. <style=cStack>Cannot use with less than {icd:N1} seconds saved.</style>";
         protected override string GetLoreString(string langid = null) => $"Order: TIL-1.8c Temporal Imaging Lens Prototype\r\nTracking Number: 88***********\r\nEstimated Delivery: {rewindDuration:N0} seconds from now\r\nShipping Method:  Closed Timelike Curve\r\nShipping Address: Petrichor V\r\nShipping Details: \r\n\r\nFixed the problem with the slow-moving anomalies (< 0.01c) coming up blurry in photos. Hopefully we'll get better results on those now.\r\n\r\nDO NOT SHAKE -- I had to sacrifice some stasis field integrity. Already called UES logistics twice to correct the manifest when their equipment auto-detected localized time travel.\r\n";
 
 
@@ -38,6 +38,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float rewindDuration { get; private set; } = 10f;
+
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Minimum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float icd { get; private set; } = 3f;
 
         [AutoConfigRoOSlider("{0:N2} s", 0.05f, 10f)]
         [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.PreventNetMismatch, 0.05f, float.MaxValue)]
@@ -115,7 +120,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!slot || !slot.characterBody)
                 return false;
             var cpt = slot.characterBody.GetComponent<RewindComponent>();
-            if(!cpt || cpt.frames.Count == 0)
+            if(!cpt || cpt.frames.Count < Mathf.CeilToInt(icd / frameInterval))
                 return false;
             var esm = EntityStateMachine.FindByCustomName(slot.characterBody.gameObject, "Body");
             if(esm == null || esm.state is RewindState) {
