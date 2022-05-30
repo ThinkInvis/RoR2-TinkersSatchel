@@ -172,7 +172,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
             orig(self);
             if(healingSourceStack.Count != 0) {
-                TinkersSatchelPlugin._logger.LogError("Defib: HealingSourceStack was not empty on new frame (very bad!), clearing");
+                TinkersSatchelPlugin._logger.LogError("Defib: HealingSourceStack was not empty on new frame, clearing. May be a cascading effect of another error, or a mod may be misusing HealingSourceStack.");
                 healingSourceStack.Clear();
             }
         }
