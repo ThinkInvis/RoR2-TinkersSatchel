@@ -121,6 +121,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public static Dictionary<ItemTier, int> GetConsumedItemCountByTier(Inventory inventory) {
 			var retv = new Dictionary<ItemTier, int>();
+			if(!inventory) return retv;
 			foreach(var idef in Kintsugi.instance.validItems) {
 				var c = inventory.GetItemCount(idef);
 				if(retv.ContainsKey(idef.tier))
