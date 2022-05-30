@@ -167,8 +167,26 @@ namespace ThinkInvisible.TinkersSatchel {
             if(count <= 0) return;
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            var offsetOrigin = self.origin;
+            if(self.weapon && self.weapon.TryGetComponent<ModelLocator>(out var mloc) && mloc.modelTransform && mloc.modelTransform.TryGetComponent<ChildLocator>(out var cloc)) {
+                var muzzle = cloc.FindChild(self.muzzleName);
+                if(muzzle)
+                    offsetOrigin = muzzle.position;
+            }
             for(var i = 1; i <= procCount; i++)
-                delayedBulletAttacks.Add((self, Time.fixedTime, i * delayTime));
+                delayedBulletAttacks.Add((new BulletAttack {
+                    aimVector = self.aimVector, bulletCount = self.bulletCount, damage = self.damage,
+                    damageColorIndex = self.damageColorIndex, damageType = self.damageType, falloffModel = self.falloffModel,
+                    filterCallback = self.filterCallback, force = self.force, hitCallback = self.hitCallback,
+                    HitEffectNormal = self.HitEffectNormal, hitEffectPrefab = self.hitEffectPrefab, hitMask = self.hitMask,
+                    isCrit = self.isCrit, maxDistance = self.maxDistance, maxSpread = self.maxSpread,
+                    minSpread = self.minSpread, modifyOutgoingDamageCallback = self.modifyOutgoingDamageCallback, muzzleName = self.muzzleName,
+                    origin = offsetOrigin, owner = self.owner, procChainMask = self.procChainMask,
+                    procCoefficient = self.procCoefficient, queryTriggerInteraction = self.queryTriggerInteraction, radius = self.radius,
+                    smartCollision = self.smartCollision, sniper = self.sniper, spreadPitchScale = self.spreadPitchScale,
+                    spreadYawScale = self.spreadYawScale, stopperMask = self.stopperMask, tracerEffectPrefab = self.tracerEffectPrefab,
+                    weapon = null
+                }, Time.fixedTime, i * delayTime));
         }
 
         private void BulletAttack_FireSingle(On.RoR2.BulletAttack.orig_FireSingle orig, BulletAttack self, Vector3 normal, int muzzleIndex) {
