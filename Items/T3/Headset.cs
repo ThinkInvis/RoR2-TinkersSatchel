@@ -149,17 +149,19 @@ namespace ThinkInvisible.TinkersSatchel {
 				var p1 = cpt.previousPos;
 				var p2 = self.transform.position;
 
+				var extendedRadius = HITBOX_RADIUS * ExtendoArms.GetRangeMultiplier(self);
+
 				Collider[] res;
 				if(p1 == p2)
-					res = Physics.OverlapSphere(p1, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
+					res = Physics.OverlapSphere(p1, extendedRadius, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
 				else
-					res = Physics.OverlapCapsule(p1, p2, HITBOX_RADIUS, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
+					res = Physics.OverlapCapsule(p1, p2, extendedRadius, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Ignore);
 
 				var damageInfo = new DamageInfo {
 					attacker = self.gameObject,
 					inflictor = self.gameObject,
 					crit = false,
-					damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
+					damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)) * ExtendoArms.GetDamageMultiplier(self),
 					damageColorIndex = DamageColorIndex.Item,
 					damageType = DamageType.Generic,
 					force = Vector3.zero,
