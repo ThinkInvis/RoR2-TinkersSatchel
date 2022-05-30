@@ -67,6 +67,22 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Public API //////
+
+        public static float GetRangeMultiplier(CharacterBody body) {
+            if(!ExtendoArms.instance.enabled || !body) return 1f;
+            var count = ExtendoArms.instance.GetCount(body.inventory);
+            return 1f + count * ExtendoArms.instance.resizeAmount;
+        }
+
+        public static float GetDamageMultiplier(CharacterBody body) {
+            if(!ExtendoArms.instance.enabled || !body) return 1f;
+            var count = ExtendoArms.instance.GetCount(body.inventory);
+            return 1f + count * ExtendoArms.instance.damageAmount;
+        }
+
+
+
         ////// Hooks //////
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self) {
