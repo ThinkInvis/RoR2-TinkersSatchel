@@ -205,7 +205,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void TeleporterInteraction_UpdateMonstersClear(On.RoR2.TeleporterInteraction.orig_UpdateMonstersClear orig, TeleporterInteraction self) {
             orig(self);
-            if(self && !self.monstersCleared && self.holdoutZoneController && self.holdoutZoneController.charge >= 1f && qualifies)
+            if(localUser.cachedMaster && !localUser.cachedMaster.IsDeadAndOutOfLivesServer() && self && !self.monstersCleared && self.holdoutZoneController && self.holdoutZoneController.charge >= 1f && qualifies)
                 Grant();
         }
     }
