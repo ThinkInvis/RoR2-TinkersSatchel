@@ -5,6 +5,7 @@ using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
+using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Kintsugi : Item<Kintsugi> {
@@ -19,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		protected override string GetPickupString(string langid = null) =>
 			"Your broken/consumed/scrapped items increase all your stats.";
 		protected override string GetDescString(string langid = null) =>
-			$"Each of your broken, consumed, or scrapped items increases <style=cIsUtility>ALL stats</style> based on its tier <style=cStack>(stacks linearly)</style>: 1% for Common items, 3% for Uncommon items, and 5% for Rare/Boss items.";
+			$"Each of your broken, consumed, or scrapped items increases <style=cIsUtility>ALL stats</style> based on its tier <style=cStack>(stacks linearly)</style>: {Pct(tier1Bonus)}% for Common items, {Pct(tier2Bonus)}% for Uncommon items, and {Pct(tier3Bonus)}% for Rare/Boss items.";
 		protected override string GetLoreString(string langid = null) => "";
 
 
