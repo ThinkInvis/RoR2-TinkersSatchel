@@ -42,7 +42,12 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Minimum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float icd { get; private set; } = 3f;
+        public float minDuration { get; private set; } = 2f;
+
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Time after use before beginning to record again, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float icd { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N2} s", 0.05f, 10f)]
         [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.PreventNetMismatch, 0.05f, float.MaxValue)]
@@ -120,7 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!slot || !slot.characterBody)
                 return false;
             var cpt = slot.characterBody.GetComponent<RewindComponent>();
-            if(!cpt || cpt.frames.Count < Mathf.CeilToInt(icd / frameInterval))
+            if(!cpt || cpt.frames.Count < Mathf.CeilToInt(minDuration / frameInterval))
                 return false;
             var esm = EntityStateMachine.FindByCustomName(slot.characterBody.gameObject, "Body");
             if(esm == null || esm.state is RewindState) {
@@ -213,6 +218,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.OnExit();
             cpt.frames.Clear();
             cpt.isRewinding = false;
+            cpt.icd = Rewind.instance.icd;
         }
     }
 
@@ -303,6 +309,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public List<RewindFrame> frames = new List<RewindFrame>();
 
         float stopwatch = 0f;
+        public float icd = 0f;
         CharacterBody body;
         public bool isRewinding = false;
 
@@ -324,6 +331,10 @@ namespace ThinkInvisible.TinkersSatchel {
                     frames.Clear();
                     body.SetBuffCount(Rewind.instance.rewindBuff.buffIndex, 0);
                 }
+                return;
+            }
+            if(icd > 0f) {
+                icd -= Time.fixedDeltaTime;
                 return;
             }
             stopwatch -= Time.fixedDeltaTime;
