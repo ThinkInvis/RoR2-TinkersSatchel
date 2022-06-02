@@ -478,6 +478,12 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.0.1**
+
+- Fixed Kintsugi always acting as if all characters have 1 stack of it.
+- Fixed Kintsugi description not reflecting configs.
+- Attempted to fix dead players being able to earn the Old War Lidar achievement in multiplayer.
+
 **3.0.0**
 
 - BREAKING CHANGES:
@@ -526,9 +532,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Improved/fixed descriptions of Macho Moustache, Defibrillator, and Unstable Klein Bottle.
 - Removed compatibility for a deprecated+removed Classic Items Ancient Scepter method.
 - Fixed console warning spam caused by Pixie Tube pickups.
-
-**2.3.0** *The I Finally Got My Hands on the DLC for Testing Update, Part 2*
-
-- ADDED ITEMS: Kintsugi, Timelost Rum, Unraveling Loom, Obsidian Brooch!
-	- Adding the first 3 of these to the readme early was totally an intentional teaser and *not* a Git mishap at all I swear <_< >_>
-- Slightly improved shader on Voidwisp Hive (now uses fresnel emission). Still needs some tweaking.

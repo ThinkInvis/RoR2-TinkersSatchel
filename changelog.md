@@ -2,6 +2,12 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.0.1**
+
+- Fixed Kintsugi always acting as if all characters have 1 stack of it.
+- Fixed Kintsugi description not reflecting configs.
+- Attempted to fix dead players being able to earn the Old War Lidar achievement in multiplayer.
+
 **3.0.0**
 
 - BREAKING CHANGES:
