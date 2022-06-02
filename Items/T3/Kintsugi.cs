@@ -166,7 +166,8 @@ namespace ThinkInvisible.TinkersSatchel {
 						totalBonus += tier3Bonus * v;
 						break;
 				}
-            }
+			}
+			totalBonus *= multCount;
 			args.attackSpeedMultAdd += totalBonus;
 			args.damageMultAdd += totalBonus;
 			args.moveSpeedMultAdd += totalBonus;
