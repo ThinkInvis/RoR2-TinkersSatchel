@@ -245,7 +245,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, RoR2.UI.EquipmentIcon self) {
             orig(self);
-            if(self.iconImage && self.currentDisplayData.equipmentDef == instance.equipmentDef && self.targetEquipmentSlot && self.targetEquipmentSlot.characterBody) {
+            if(self && self.iconImage && self.currentDisplayData.equipmentDef == instance.equipmentDef && self.targetEquipmentSlot && self.targetEquipmentSlot.characterBody) {
                 var cpt = self.targetEquipmentSlot.characterBody.GetComponent<PackBoxTracker>();
                 if(cpt && cpt.packedObject)
                     self.iconImage.texture = instance.secondaryIconResource.texture;
