@@ -635,7 +635,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void CharacterMotor_OnLanded(On.RoR2.CharacterMotor.orig_OnLanded orig, CharacterMotor self) {
 			orig(self);
-			if(self.lastVelocity.magnitude > 30f && self.velocity.magnitude > 30f
+			if(localUser.cachedBody && localUser.cachedBody == self.body
+				&& self.lastVelocity.magnitude > 30f && self.velocity.magnitude > 30f
 				&& self.lastVelocity.y < 5f
 				&& (self.velocity.y / self.velocity.magnitude) > 0.25f)
 				Grant();
