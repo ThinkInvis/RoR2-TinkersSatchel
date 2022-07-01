@@ -490,10 +490,10 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidwispHiveIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Voidwisp Hive</b> (T2)<br>
+				<b>Magic Beehive</b> (T2)<br>
 				<details>
-					<summary>Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.</summary>
-					<small>You drop a voidwisp when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Voidwisps live for 10 seconds, tracking nearby enemies and zapping them for 2.0x8% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.</small>
+					<summary>Drop short-lived damaging allies on using skills. Corrupts all Pixie Tubes.</summary>
+					<small>You drop a void bee when you use any skill (3 s individual cooldown on each skill, 6 s on primary skill). Void bees live for 10 seconds, tracking nearby enemies and zapping them for 2.0x8% damage per second (damage increases linearly per stack). Corrupts all Pixie Tubes.</small>
 				</details>
 			</td>
 			<td><ul>
