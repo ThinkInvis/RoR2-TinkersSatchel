@@ -104,6 +104,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 			return retv;
 		}
+
+		internal static void RetrieveDefaultMaterials(ItemDisplay disp) {
+			for(var i = 0; i < disp.rendererInfos.Length; i++) {
+				var ri = disp.rendererInfos[i];
+				ri.defaultMaterial = ri.renderer.material;
+			}
+		}
 	}
 
 	[RequireComponent(typeof(BaseAI))]
