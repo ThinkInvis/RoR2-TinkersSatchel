@@ -25,7 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-        ///
+        
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
