@@ -65,10 +65,10 @@ namespace ThinkInvisible.TinkersSatchel {
             displayRules.Add("Bandit2Body", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
-                childName = "Stomach",
-                localPos = new Vector3(0.22045F, -0.06626F, 0.11193F),
-                localAngles = new Vector3(359.0299F, 357.3219F, 25.2928F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                childName = "ClavicleL",
+                localPos = new Vector3(0.00602F, 0.02158F, -0.05845F),
+                localAngles = new Vector3(326.667F, 46.21878F, 309.2319F),
+                localScale = new Vector3(0.2F, 0.2F, 0.2F)
             });
             displayRules.Add("CaptainBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
