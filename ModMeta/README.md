@@ -465,7 +465,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 ## Issues/TODO
 
-- Items and characters have no DisplayRules.
+- Items and equipments only display on survivors; drones and enemies are NYI.
 - Most items need some effects & model polish in general.
 	- Broken drones are missing smoke/sparks effects.
 	- Cardboard Box alternate icon has not been updated to vanilla style like other icons as of v2.2.3.
@@ -477,6 +477,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+
+**3.1.0** *The Displayed Update*
+
+- Added ItemDisplayRules for all vanilla Survivors to most items and equipments!
+	- No IDRs yet on: Armor Crystal and Armor Prism (are pending a reflavor), Pulse Monitor (needs a modified display model), Go-Faster Stripes (will be a shader overlay), Causal Camera and Mostly-Tame Mimic (will be a follower).
+	- Some other items will also receive a better modified display model in the future (Defibrillator, Villainous Visage, Command Terminal).
+- Renamed Voidwisp Hive to Magic Beehive to better differentiate it from Voidsent Wisp.
 
 **3.0.1**
 
@@ -524,11 +531,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Old-War Lidar now has an in-UI state indicator per enemy (can be disabled in config).
 - Fixed Command Terminal using the cooldown of the next equipment to be picked up.
 - Fixed a missing unhook on Old-War Lidar.
-
-**2.3.1** *The Time for Crab Mini-Update*
-
-- ADDED ITEM: Extendo-Arms!
-- Removed inadvertent color grading on all item icons.
-- Improved/fixed descriptions of Macho Moustache, Defibrillator, and Unstable Klein Bottle.
-- Removed compatibility for a deprecated+removed Classic Items Ancient Scepter method.
-- Fixed console warning spam caused by Pixie Tube pickups.

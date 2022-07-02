@@ -22,7 +22,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config ///////
-        ///
+        
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Enemy scan range, in meters.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -79,10 +79,10 @@ namespace ThinkInvisible.TinkersSatchel {
             displayRules.Add("CaptainBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
-                childName = "Stomach",
-                localPos = new Vector3(0.38728F, 0.00965F, -0.06446F),
-                localAngles = new Vector3(31.87035F, 332.9695F, 3.18838F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                childName = "Head",
+                localPos = new Vector3(0.00546F, -0.01886F, 0.16446F),
+                localAngles = new Vector3(24.81351F, 237.1489F, 301.2852F),
+                localScale = new Vector3(0.2F, 0.2F, 0.2F)
             });
             displayRules.Add("CommandoBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,

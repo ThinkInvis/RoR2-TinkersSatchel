@@ -117,10 +117,10 @@ namespace ThinkInvisible.TinkersSatchel {
             displayRules.Add("CaptainBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
-                childName = "Stomach",
-                localPos = new Vector3(0.38728F, 0.00965F, -0.06446F),
-                localAngles = new Vector3(31.87035F, 332.9695F, 3.18838F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                childName = "Chest",
+                localPos = new Vector3(-0.0031F, 0.17327F, -0.32618F),
+                localAngles = new Vector3(356.7084F, 180.0849F, 3.30317F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
             });
             displayRules.Add("CommandoBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,

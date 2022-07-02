@@ -72,8 +72,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 followerPrefab = idrPrefab,
                 childName = "Stomach",
                 localPos = new Vector3(0.38728F, 0.00965F, -0.06446F),
-                localAngles = new Vector3(31.87035F, 332.9695F, 3.18838F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                localAngles = new Vector3(333.5912F, 202.3656F, 70.59932F),
+                localScale = new Vector3(0.2F, 0.2F, 0.2F)
             });
             displayRules.Add("CommandoBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
