@@ -56,11 +56,12 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
         
         public BuffDef goldenGearBuff { get; private set; }
+        internal static UnlockableDef unlockable;
 
 
 
         ////// TILER2 Module Setup //////
-        
+
         public GoldenGear() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/GoldenGear.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/goldenGearIcon.png");
@@ -77,6 +78,18 @@ namespace ThinkInvisible.TinkersSatchel {
             goldenGearBuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texBuffGenericShield.tif")
                 .WaitForCompletion();
             ContentAddition.AddBuffDef(goldenGearBuff);
+
+
+            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
+            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/goldenGearIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            LanguageAPI.Add(achiNameToken, "What Did It Cost?");
+            LanguageAPI.Add(achiDescToken, "Purchase the final item from a Shrine of Chance after failing it at least 4 times in total.");
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {
@@ -169,5 +182,56 @@ namespace ThinkInvisible.TinkersSatchel {
         public int cachedIcnt = 0;
         public float cachedDiff = 0f;
         public float calculatedArmorBonus = 0;
+    }
+
+
+    public class ShrineFailTracker : MonoBehaviour {
+        public int failCount = 0;
+    }
+
+    [RegisterAchievement("TkSat_GoldenGear", "TkSat_GoldenGearUnlockable", null, typeof(TkSatGoldenGearServerAchievement))]
+    public class TkSatGoldenGearAchievement : RoR2.Achievements.BaseAchievement {
+        public override void OnInstall() {
+            base.OnInstall();
+            base.SetServerTracked(true);
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+        }
+
+        private class TkSatGoldenGearServerAchievement : RoR2.Achievements.BaseServerAchievement {
+            public override void OnInstall() {
+                base.OnInstall();
+
+                On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack;
+            }
+
+            public override void OnUninstall() {
+                base.OnUninstall();
+
+                On.RoR2.ShrineChanceBehavior.AddShrineStack -= ShrineChanceBehavior_AddShrineStack;
+            }
+
+            private void ShrineChanceBehavior_AddShrineStack(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, ShrineChanceBehavior self, Interactor activator) {
+                var spc0 = self.successfulPurchaseCount;
+                orig(self, activator);
+                var spc1 = self.successfulPurchaseCount;
+
+                var sft = self.gameObject.GetComponent<ShrineFailTracker>();
+                if(!sft)
+                    sft = self.gameObject.AddComponent<ShrineFailTracker>();
+
+                var wasFail = spc0 == spc1;
+
+                if(wasFail) {
+                    sft.failCount++;
+                } else if(sft.failCount >= 4) {
+                    var currBody = serverAchievementTracker.networkUser.GetCurrentBody();
+                    if(currBody && currBody.GetComponent<Interactor>() == activator)
+                        Grant();
+                }
+            }
+        }
     }
 }
