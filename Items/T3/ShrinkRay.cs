@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "Shrink Ray";
 		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) => "Suppress a single target's non-primary skills and damage.";

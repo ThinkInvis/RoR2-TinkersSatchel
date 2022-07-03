@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public override string displayName => "Old War Lidar";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Deal more damage to persistent combatants.";
@@ -123,7 +123,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class MotionTrackerTracker : MonoBehaviour {
         const float COMBAT_TIMER = 6f;
 
-        readonly Dictionary<GameObject, (float stopwatch, float duration, Indicator indicator)> activeCombatants = new Dictionary<GameObject, (float, float, Indicator)>();
+        readonly Dictionary<GameObject, (float stopwatch, float duration, Indicator indicator)> activeCombatants = new();
 
         public float GetCombatBonusScalar(GameObject with) {
             if(!with || !activeCombatants.ContainsKey(with))

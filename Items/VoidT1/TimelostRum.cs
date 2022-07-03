@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Timelost Rum";
         public override ItemTier itemTier => ItemTier.VoidTier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to shoot temporal echoes of projectiles. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.";
@@ -42,8 +42,8 @@ namespace ThinkInvisible.TinkersSatchel {
         /////// Other Fields/Properties //////
 
         public int ignoreStack = 0;
-        public List<(BulletAttack bi, float timestamp, float delay)> delayedBulletAttacks = new List<(BulletAttack, float, float)>();
-        public List<(FireProjectileInfo fpi, float timestamp, float delay)> delayedProjectiles = new List<(FireProjectileInfo, float, float)>();
+        public List<(BulletAttack bi, float timestamp, float delay)> delayedBulletAttacks = new();
+        public List<(FireProjectileInfo fpi, float timestamp, float delay)> delayedProjectiles = new();
 
 
         ////// TILER2 Module Setup //////

@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Hydroponic Cell";
         public override ItemTier itemTier => ItemTier.Lunar;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
         public override bool itemIsAIBlacklisted { get; protected set; } = false;
 
         protected override string GetNameString(string langid = null) => displayName;
@@ -121,7 +121,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealthComponent_Heal(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             int amtArgIndex = -1;
             int num2LocIndex = -1;
             if(c.TryGotoNext(MoveType.Before,

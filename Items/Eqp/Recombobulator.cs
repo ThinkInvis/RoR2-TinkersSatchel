@@ -244,7 +244,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
                 var pos = slot.currentTarget.rootObject.transform.position;
 
-                WeightedSelection<DirectorCard> filteredDeck = new WeightedSelection<DirectorCard>(8);
+                WeightedSelection<DirectorCard> filteredDeck = new(8);
                 for(var i = 0; i < mostRecentDeck.Count; i++) {
                     var card = mostRecentDeck.GetChoice(i);
                     if(card.value != null && card.value.IsAvailable() && (validObjectNames.Contains(card.value.spawnCard.prefab.name) || validObjectNames.Contains(card.value.spawnCard.prefab.name + "(Clone)")))
@@ -313,7 +313,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void EquipmentSlot_FireRecycle(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             if(c.TryGotoNext(MoveType.Before, x => x.MatchCallOrCallvirt<GenericPickupController>("set_NetworkpickupIndex"))) {
                 c.Emit(OpCodes.Dup);

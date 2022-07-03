@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Armor Prism";
         public override ItemTier itemTier => ItemTier.VoidTier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Gain massive armor by focusing your item build. <style=cIsVoid>Corrupts all Armor Crystals</style>.";

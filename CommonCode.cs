@@ -109,7 +109,7 @@ namespace ThinkInvisible.TinkersSatchel {
 	[RequireComponent(typeof(BaseAI))]
 	public class TauntDebuffController : MonoBehaviour {
 		BaseAI ai;
-		readonly Dictionary<CharacterBody, float> tauntTimers = new Dictionary<CharacterBody, float>();
+		readonly Dictionary<CharacterBody, float> tauntTimers = new();
 		public bool isTaunted => tauntTimers.Count > 0;
 		public HashSet<CharacterBody> GetTaunters() { return new HashSet<CharacterBody>(tauntTimers.Keys); }
 
@@ -174,10 +174,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
 	[RequireComponent(typeof(CharacterBody))]
 	public class ServerTimedSkillDisable : MonoBehaviour {
-		readonly List<float> primaryDisablers = new List<float>();
-		readonly List<float> secondaryDisablers = new List<float>();
-		readonly List<float> utilityDisablers = new List<float>();
-		readonly List<float> specialDisablers = new List<float>();
+		readonly List<float> primaryDisablers = new();
+		readonly List<float> secondaryDisablers = new();
+		readonly List<float> utilityDisablers = new();
+		readonly List<float> specialDisablers = new();
 		float cachedPrimaryCooldown;
 		float cachedSecondaryCooldown;
 		float cachedUtilityCooldown;
@@ -382,7 +382,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		void Update() {
 			this.gameObject.transform.Rotate(rotateAxis, rotateSpeed);
 			Vector3 rb = Vector3.one * Random.Range(wobbleBaseMin, wobbleBaseMax);
-			Vector3 rx = new Vector3(
+			Vector3 rx = new(
 				Random.Range(-wobbleEccentricity / 2, wobbleEccentricity / 2),
 				Random.Range(-wobbleEccentricity / 2, wobbleEccentricity / 2),
 				Random.Range(-wobbleEccentricity / 2, wobbleEccentricity / 2)

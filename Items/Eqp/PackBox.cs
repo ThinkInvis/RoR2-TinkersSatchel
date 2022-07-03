@@ -440,7 +440,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class PackBoxHandler : MonoBehaviour {
         public bool isBoxed = false;
         public bool queuedDeactivate = false;
-        public Dictionary<GameObject, Vector3> auxiliaryPackedObjects = new Dictionary<GameObject, Vector3>();
+        public Dictionary<GameObject, Vector3> auxiliaryPackedObjects = new();
 
         public void CollectAuxiliary(GameObject[] auxOverride) {
             auxiliaryPackedObjects.Clear();

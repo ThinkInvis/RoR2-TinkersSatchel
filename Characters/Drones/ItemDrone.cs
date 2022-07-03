@@ -335,7 +335,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(PickupPickerController))]
     public class PickupPickerControllerFilteredSelector : MonoBehaviour {
-        public HashSet<ItemDef> blacklistedItems = new HashSet<ItemDef>();
+        public HashSet<ItemDef> blacklistedItems = new();
         PickupPickerController ppc;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]

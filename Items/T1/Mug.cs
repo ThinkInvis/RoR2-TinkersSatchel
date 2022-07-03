@@ -12,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Sturdy Mug";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to shoot extra, unpredictable projectiles.";

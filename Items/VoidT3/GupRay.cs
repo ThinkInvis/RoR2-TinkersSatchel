@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "Gup Ray";
 		public override ItemTier itemTier => ItemTier.VoidTier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) => "Split enemies into two much weaker copies. <style=cIsVoid>Corrupts all Shrink Rays</style>.";
@@ -161,7 +161,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		private void BodySplitter_PerformInternal(ILContext il) {
-			ILCursor c = new ILCursor(il);
+			ILCursor c = new(il);
 
 			if(c.TryGotoNext(MoveType.Before,
 				x => x.MatchLdloc(out _),

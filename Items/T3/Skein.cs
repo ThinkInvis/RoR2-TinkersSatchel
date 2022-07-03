@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "Spacetime Skein";
 		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.Damage });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.Damage });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) =>

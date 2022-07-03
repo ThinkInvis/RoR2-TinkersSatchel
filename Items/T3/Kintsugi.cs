@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "Kintsugi";
 		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.Damage });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.Damage });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) =>
@@ -52,7 +52,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Other Fields/Properties //////
 
 		internal static UnlockableDef unlockable;
-		private readonly HashSet<ItemDef> validItems = new HashSet<ItemDef>();
+		private readonly HashSet<ItemDef> validItems = new();
 
 
 

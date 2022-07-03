@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "Pinball Wizard";
 		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) =>
@@ -190,14 +190,14 @@ namespace ThinkInvisible.TinkersSatchel {
 						self.ProcessHit(ref nhi);
 
 						if(self.tracerEffectPrefab) {
-							EffectData effectData = new EffectData {
+							EffectData effectData = new() {
 								origin = obj.transform.position,
 								start = bounceEnd
 							};
 							EffectManager.SpawnEffect(self.tracerEffectPrefab, effectData, true);
 						}
 
-						EffectData pinbEffData = new EffectData {
+						EffectData pinbEffData = new() {
 							origin = bounceEnd,
 							start = bounceEnd
 						};
@@ -265,7 +265,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		float origDamagePIE;
 		float origDamagePSTI;
 		float origSpeed;
-		readonly List<PhysicMaterial> origPhysmats = new List<PhysicMaterial>();
+		readonly List<PhysicMaterial> origPhysmats = new();
 
 		GameObject lastTarget = null;
 		GameObject currTarget = null;
@@ -352,7 +352,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 
 			if(NetworkServer.active) {
-				EffectData pinbEffData = new EffectData {
+				EffectData pinbEffData = new() {
 					origin = gameObject.transform.position,
 					start = gameObject.transform.position
 				};

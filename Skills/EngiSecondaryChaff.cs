@@ -131,7 +131,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			public void FireCone(Ray aim) {
 				var hits = Physics.OverlapSphere(aim.origin, coneRange, LayerIndex.entityPrecise.mask)
 					.Where(x => Vector3.Angle(aim.direction, x.ClosestPoint(aim.origin) - aim.origin) < coneHalfAngleDegrees);
-				HashSet<HealthComponent> hitHCs = new HashSet<HealthComponent>();
+				HashSet<HealthComponent> hitHCs = new();
 				foreach(var hit in hits) {
 					if(hit && hit.TryGetComponent<HurtBox>(out var hb) && hb.healthComponent && !hitHCs.Contains(hb.healthComponent)) {
 						hitHCs.Add(hb.healthComponent);

@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Pulse Monitor";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.EquipmentRelated, ItemTag.Utility, ItemTag.LowHealth });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.EquipmentRelated, ItemTag.Utility, ItemTag.LowHealth });
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string GetNameString(string langid = null) => displayName;
