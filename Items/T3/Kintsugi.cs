@@ -154,20 +154,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			var consumedItems = GetConsumedItemCountByTier(sender.inventory);
 			float totalBonus = 0;
 			foreach(var (k, v) in consumedItems.Select(x => (x.Key, x.Value))) {
-				switch(k) {
-					case ItemTier.Tier1:
-					case ItemTier.VoidTier1:
-						totalBonus += tier1Bonus * v;
-						break;
-					case ItemTier.Tier2:
-					case ItemTier.VoidTier2:
-						totalBonus += tier2Bonus * v;
-						break;
-					default:
-						totalBonus += tier3Bonus * v;
-						break;
-				}
-			}
+                totalBonus += k switch {
+                    ItemTier.Tier1 or ItemTier.VoidTier1 => tier1Bonus * v,
+                    ItemTier.Tier2 or ItemTier.VoidTier2 => tier2Bonus * v,
+                    _ => tier3Bonus * v,
+                };
+            }
 			totalBonus *= multCount;
 			args.attackSpeedMultAdd += totalBonus;
 			args.damageMultAdd += totalBonus;
