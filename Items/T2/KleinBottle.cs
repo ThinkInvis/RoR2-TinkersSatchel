@@ -100,8 +100,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Stomach",
-                localPos = new Vector3(0.23353F, -0.00868F, -0.08696F),
-                localAngles = new Vector3(27.00084F, 326.5775F, 4.93487F),
+                localPos = new Vector3(-0.12711F, 0.00711F, 0.21108F),
+                localAngles = new Vector3(8.32233F, 215.3281F, 68.41956F),
                 localScale = new Vector3(0.3F, 0.3F, 0.3F)
             });
             displayRules.Add("CrocoBody", new ItemDisplayRule {
