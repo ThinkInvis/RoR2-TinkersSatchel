@@ -122,6 +122,7 @@
 				</details>
 			</td>
 			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Purchase the final item from a Shrine of Chance which has failed 4 or more times across all players.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
