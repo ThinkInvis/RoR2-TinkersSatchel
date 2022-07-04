@@ -23,32 +23,32 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupConfig();
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "ItemsOn",
+                category = "Enable...",
+                name = "Items",
                 description = "Enable All Items/Equipment",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allModules.Where(m => m is Item or Equipment), true));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "ItemsOff",
+                category = "Disable...",
+                name = "Items",
                 description = "Disable All Items/Equipment",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allModules.Where(m => m is Item or Equipment), false));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "ArtisOn",
+                category = "Enable...",
+                name = "Artifacts",
                 description = "Enable All Artifacts",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allModules.Where(m => m is Artifact), true));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "ArtisOff",
+                category = "Disable...",
+                name = "Artifacts",
                 description = "Disable All Artifacts",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
@@ -63,16 +63,16 @@ namespace ThinkInvisible.TinkersSatchel {
                 EngiUtilitySpeedispenser.instance
             };
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "SkillsOn",
+                category = "Enable...",
+                name = "Skills",
                 description = "Enable All Skills",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allSkills, true));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "SkillsOff",
+                category = "Disable...",
+                name = "Skills",
                 description = "Disable All Skills",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
@@ -83,16 +83,16 @@ namespace ThinkInvisible.TinkersSatchel {
                 ItemDrone.instance
             };
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "DronesOn",
+                category = "Enable...",
+                name = "Drones",
                 description = "Enable All Drones",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allDrones, true));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
-                category = "Presets",
-                name = "DronesOff",
+                category = "Disable...",
+                name = "Drones",
                 description = "Disable All Drones",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
