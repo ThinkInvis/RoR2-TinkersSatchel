@@ -478,6 +478,23 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.1.0**
+
+- Added a TinkersSatchelPresets config super-category to the Risk of Options menu.
+	- Contains buttons that enable/disable entire types of content, such as all items, in the main Tinker's Satchel config.
+	- Listed as a separate "mod" to keep it out of the clutter and extreme category count of the main config.
+- Skills may now be enabled/disabled while the game is running.
+- Fixed a rare error during language reloads.
+- Added an unlock achievement to Armor Crystal.
+- Fixed Go-Faster Stripes unintentionally unlocking when ANY character performs the required action.
+- Causal Camera's ICD config is now a true ICD, preventing any recording of new save states until some time has passed. The old "minimum duration of rewind" behavior has been migrated to its own config entry, minDuration.
+- Renamed Voidwisp Hive to Magic Beehive to better differentiate it from Voidsent Wisp.
+- Slightly increased null safety in Cardboard Box icon override.
+- Updated dependencies.
+- General project cleanup.
+	- Addressed or suppressed almost all compiler warnings/messages.
+	- Updated lang version to C#9 and implemented some of its features.
+
 **3.0.1**
 
 - Fixed Kintsugi always acting as if all characters have 1 stack of it.
@@ -524,11 +541,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Old-War Lidar now has an in-UI state indicator per enemy (can be disabled in config).
 - Fixed Command Terminal using the cooldown of the next equipment to be picked up.
 - Fixed a missing unhook on Old-War Lidar.
-
-**2.3.1** *The Time for Crab Mini-Update*
-
-- ADDED ITEM: Extendo-Arms!
-- Removed inadvertent color grading on all item icons.
-- Improved/fixed descriptions of Macho Moustache, Defibrillator, and Unstable Klein Bottle.
-- Removed compatibility for a deprecated+removed Classic Items Ancient Scepter method.
-- Fixed console warning spam caused by Pixie Tube pickups.
