@@ -36,11 +36,11 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		public override void RefreshPermanentLanguage() {
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_NAME", "Pulse");
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_PRIMARY_PULSE_NAME"] = "Pulse";
 			if(altModeFocusFire)
-				permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION", "Rapidly shoot an enemy 4 times. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75%</style> to a maximum of <style=cIsDamage>150%</style> over the course of the burst, increasing over the course of 20 hits to the same target without missing.");
+				permanentGenericLanguageTokens["TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION"] = "Rapidly shoot an enemy 4 times. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75%</style> to a maximum of <style=cIsDamage>150%</style> over the course of the burst, increasing over the course of 20 hits to the same target without missing.";
 			else
-				permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION", "Rapidly shoot an enemy 4 times with high recoil. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75% to 150%</style> over the course of the burst.");
+				permanentGenericLanguageTokens["TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION"] = "Rapidly shoot an enemy 4 times with high recoil. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75% to 150%</style> over the course of the burst.";
 			base.RefreshPermanentLanguage();
 		}
 
