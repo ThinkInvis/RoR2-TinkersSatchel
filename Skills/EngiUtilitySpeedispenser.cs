@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Module Data //////
 
-        public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferForever | AutoConfigFlags.PreventNetMismatch;
+        public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame | AutoConfigFlags.PreventNetMismatch;
 
 
 
