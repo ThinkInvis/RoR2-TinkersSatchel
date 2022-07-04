@@ -50,9 +50,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 category = "Presets",
                 name = "ArtisOff",
                 description = "Disable All Artifacts",
-            }, "Set", () => SetEnabled(allModules.Where(m => m is Artifact), true));
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
+            }, "Set", () => SetEnabled(allModules.Where(m => m is Artifact), false));
 
             HashSet<T2Module> allSkills = new() {
                 CommandoPrimaryPulse.instance,
