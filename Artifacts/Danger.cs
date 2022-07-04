@@ -47,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void IL_CBRecalcStats(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             bool ILFound = c.TryGotoNext(
                 x=>x.MatchCallOrCallvirt<CharacterBody>("set_hasOneShotProtection"));
             if(ILFound) {

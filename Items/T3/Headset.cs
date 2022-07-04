@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "H3AD-53T";
 		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) => "Your Utility skill builds a stunning static charge.";

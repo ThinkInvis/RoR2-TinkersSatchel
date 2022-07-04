@@ -25,7 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private static ConfigFile cfgFile;
         
-        internal static FilingDictionary<T2Module> allModules = new FilingDictionary<T2Module>();
+        internal static FilingDictionary<T2Module> allModules = new();
         
         internal static BepInEx.Logging.ManualLogSource _logger;
 

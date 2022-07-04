@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public override string displayName => "Unstable Klein Bottle";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Utility});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to push or pull nearby enemies on taking damage.";

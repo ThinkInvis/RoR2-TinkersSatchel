@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Negative Feedback Loop";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Some incoming damage is dealt over time.";
@@ -195,7 +195,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void HealthComponent_TakeDamage(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             int locIndex = 0;
             if(c.TryGotoNext(
@@ -230,7 +230,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealthComponent_Heal(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             int locIndex = 0;
             if(c.TryGotoNext(MoveType.Before,
@@ -260,7 +260,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [RequireComponent(typeof(HealthComponent))]
     public class DelayedDamageBufferComponent : MonoBehaviour {
         HealthComponent hc;
-        public List<(float curr, float max)> bufferDamage = new List<(float, float)>();
+        public List<(float curr, float max)> bufferDamage = new();
         float stopwatch = 0f;
         public bool isApplying { get; private set; } = false;
 

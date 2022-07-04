@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public override string displayName => "Bismuth Tonic";
         public override ItemTier itemTier => ItemTier.Lunar;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Gain resistance when hit by one enemy type... <color=#FF7F7F>BUT gain weakness to the others.</color>";

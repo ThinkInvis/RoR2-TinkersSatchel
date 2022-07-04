@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29905.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinkersSatchel", "TinkersSatchel.csproj", "{158B841A-989E-4C5C-A62F-37F233F7BE02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinkersSatchel", "TinkersSatchel.csproj", "{158B841A-989E-4C5C-A62F-37F233F7BE02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A84D8CA-0603-4A7F-A8C6-285800965407}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

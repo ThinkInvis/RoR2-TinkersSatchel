@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Bramble Ring";
         public override ItemTier itemTier => ItemTier.VoidTier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Damage});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Return some damage to sender. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.";

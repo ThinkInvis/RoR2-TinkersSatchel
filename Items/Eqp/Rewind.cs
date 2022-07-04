@@ -306,7 +306,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public List<RewindFrame> frames = new List<RewindFrame>();
+        public List<RewindFrame> frames = new();
 
         float stopwatch = 0f;
         public float icd = 0f;

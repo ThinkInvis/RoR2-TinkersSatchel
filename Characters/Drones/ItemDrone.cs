@@ -13,10 +13,10 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Language //////
 
         public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens.Add("TKSAT_ITEMDRONE_NAME", "Item Drone");
-            permanentGenericLanguageTokens.Add("TKSAT_ITEMDRONE_BODY_NAME", "Item Drone");
-            permanentGenericLanguageTokens.Add("TKSAT_ITEMDRONE_POPUP_TEXT", "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>");
-            permanentGenericLanguageTokens.Add("TKSAT_ITEMDRONE_CONTEXT", "Give Item");
+            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_NAME"] = "Item Drone";
+            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_BODY_NAME"] = "Item Drone";
+            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_POPUP_TEXT"] = "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>";
+            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_CONTEXT"] = "Give Item";
             base.RefreshPermanentLanguage();
         }
 
@@ -335,7 +335,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(PickupPickerController))]
     public class PickupPickerControllerFilteredSelector : MonoBehaviour {
-        public HashSet<ItemDef> blacklistedItems = new HashSet<ItemDef>();
+        public HashSet<ItemDef> blacklistedItems = new();
         PickupPickerController ppc;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]

@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Module Data //////
 
-		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferForever | AutoConfigFlags.PreventNetMismatch;
+		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame | AutoConfigFlags.PreventNetMismatch;
 
 
 
@@ -35,10 +35,10 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		public override void RefreshPermanentLanguage() {
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME", "Plasma Grenade");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION", "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME_SCEP", "Big F【??』ing Grenade");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION_SCEP", "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>\n<color=#d299ff>SCEPTER: Double blast radius and damage.</color>");
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME"] = "Plasma Grenade";
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION"] = "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>";
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME_SCEP"] = "Big F【??』ing Grenade";
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION_SCEP"] = "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>\n<color=#d299ff>SCEPTER: Double blast radius and damage.</color>";
 			base.RefreshPermanentLanguage();
 		}
 

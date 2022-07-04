@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Obsidian Brooch";
         public override ItemTier itemTier => ItemTier.VoidTier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage, ItemTag.Utility });
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to spread DoTs on hit. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.";

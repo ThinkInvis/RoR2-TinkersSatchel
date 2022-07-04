@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Triskelion Brooch";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to combine ignite, freeze, and stun.";
@@ -257,7 +257,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void SetStateOnHurt_OnTakeDamageServer(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldarg_1);

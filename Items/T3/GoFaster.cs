@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override string displayName => "Go-Faster Stripes";
 		public override ItemTier itemTier => ItemTier.Tier3;
-		public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
+		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) =>
@@ -143,7 +143,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		GameObject captainStrikeJumperAltProjectile;
 		UnlockableDef unlockable;
 		Sprite skillIconOverlay;
-		public List<SkillDef> handledSkillDefs = new List<SkillDef>();
+		public List<SkillDef> handledSkillDefs = new();
 
 
 
@@ -680,7 +680,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			//GameObject.Destroy(lineRenMtlSnagFrom);
 			line.material.SetColor("_TintColor", new Color(16f, 0.02f, 0.02f, 9f));
 			line.positionCount = 100;
-			List<Keyframe> kfmArr = new List<Keyframe>();
+			List<Keyframe> kfmArr = new();
 			for(int i = 0; i < line.positionCount; i++) {
 				kfmArr.Add(new Keyframe(i / 100f, (1f - MiscUtil.Wrap(i / 5f, 0f, 1f)) * 0.875f));
 			}

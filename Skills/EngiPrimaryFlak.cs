@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Module Data //////
 
-        public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferForever | AutoConfigFlags.PreventNetMismatch;
+        public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame | AutoConfigFlags.PreventNetMismatch;
 
 
 
@@ -36,8 +36,8 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_NAME", "Smart Flak");
-            permanentGenericLanguageTokens.Add("TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION", "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.");
+            permanentGenericLanguageTokens["TKSAT_ENGI_PRIMARY_FLAK_NAME"] = "Smart Flak";
+            permanentGenericLanguageTokens["TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION"] = "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.";
             base.RefreshPermanentLanguage();
         }
 

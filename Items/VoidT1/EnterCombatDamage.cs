@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Villainous Visage";
         public override ItemTier itemTier => ItemTier.VoidTier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Deal more damage when given time to plot. <style=cIsVoid>Corrupts all Macho Moustaches</style>.";

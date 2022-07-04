@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Mostly-Tame Mimic";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Utility});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Utility});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Mimics your other items at random.";
@@ -74,7 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public readonly ItemIndex mimicRecalcDummy;
 
         //todo: expose this, blacklist scrap, key
-        internal HashSet<ItemDef> mimicBlacklist = new HashSet<ItemDef>();
+        internal HashSet<ItemDef> mimicBlacklist = new();
 
 
 

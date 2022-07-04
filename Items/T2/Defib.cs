@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public override string displayName => "Defibrillator";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Your heals can crit.";
@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public Stack<CharacterBody> healingSourceStack = new Stack<CharacterBody>();
+        public Stack<CharacterBody> healingSourceStack = new();
         Color origColorValue;
         internal static UnlockableDef unlockable;
         public GameObject idrPrefab { get; private set; }

@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public override string displayName => "Armor Crystal";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] {ItemTag.Healing});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Gain armor by hoarding money.";

@@ -43,8 +43,8 @@ namespace ThinkInvisible.TinkersSatchel {
         bool shouldDeferDrops = true;
         Vector3 lootShowerLoc = Vector3.zero;
         float lootShowerTimer = 0f;
-        readonly List<GameObject> deferredDrops = new List<GameObject>();
-        List<Vector3> launchVelocities = new List<Vector3>();
+        readonly List<GameObject> deferredDrops = new();
+        List<Vector3> launchVelocities = new();
 
 
 
@@ -136,7 +136,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
 
                 if(announceDrop == AnnounceDropMode.ItemTierCounts) {
-                    Dictionary<ItemTier, int> totalItemTiers = new Dictionary<ItemTier, int>();
+                    Dictionary<ItemTier, int> totalItemTiers = new();
                     int totalEquipments = 0;
                     int totalLunarEquipments = 0;
                     int totalOther = 0;
@@ -158,7 +158,7 @@ namespace ThinkInvisible.TinkersSatchel {
                             } else totalOther++;
                         } else totalOther++;
                     }
-                    List<string> displays = new List<string>();
+                    List<string> displays = new();
                     if(totalItemTiers.ContainsKey(ItemTier.Tier1)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier1Item)}>{totalItemTiers[ItemTier.Tier1]} tier-1 item{NPlur(totalItemTiers[ItemTier.Tier1])}</color>");
                     if(totalItemTiers.ContainsKey(ItemTier.Tier2)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier2Item)}>{totalItemTiers[ItemTier.Tier2]} tier-2 item{NPlur(totalItemTiers[ItemTier.Tier2])}</color>");
                     if(totalItemTiers.ContainsKey(ItemTier.Tier3)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier3Item)}>{totalItemTiers[ItemTier.Tier3]} tier-3 item{NPlur(totalItemTiers[ItemTier.Tier3])}</color>");
@@ -190,7 +190,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             if(c.TryGotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<NetworkServer>(nameof(NetworkServer.Spawn)))) {
                 c.Emit(OpCodes.Dup);

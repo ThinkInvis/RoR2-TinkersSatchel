@@ -11,9 +11,9 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Language //////
 
         public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens.Add("TKSAT_BULWARKDRONE_NAME", "Bulwark Drone");
-            permanentGenericLanguageTokens.Add("TKSAT_BULWARKDRONE_BODY_NAME", "Bulwark Drone");
-            permanentGenericLanguageTokens.Add("TKSAT_BULWARKDRONE_CONTEXT", "Repair Bulwark Drone");
+            permanentGenericLanguageTokens["TKSAT_BULWARKDRONE_NAME"] = "Bulwark Drone";
+            permanentGenericLanguageTokens["TKSAT_BULWARKDRONE_BODY_NAME"] = "Bulwark Drone";
+            permanentGenericLanguageTokens["TKSAT_BULWARKDRONE_CONTEXT"] = "Repair Bulwark Drone";
             base.RefreshPermanentLanguage();
         }
 

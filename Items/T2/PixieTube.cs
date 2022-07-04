@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override string displayName => "Pixie Tube";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage, ItemTag.Utility });
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Drop random buffs on using skills.";
@@ -425,7 +425,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class ActivateAfterDelay : MonoBehaviour {
         public float delay;
-        public List<GameObject> targets = new List<GameObject>();
+        public List<GameObject> targets = new();
 
         float stopwatch = 0f;
 

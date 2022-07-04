@@ -11,7 +11,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Module Data //////
 
-		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferForever | AutoConfigFlags.PreventNetMismatch;
+		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame | AutoConfigFlags.PreventNetMismatch;
 
 
 
@@ -37,8 +37,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		public override void RefreshPermanentLanguage() {
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_NAME", "Jink Jet");
-			permanentGenericLanguageTokens.Add("TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION", "Perform a small jet-assisted horizontal jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.");
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_UTILITY_JINKJET_NAME"] = "Jink Jet";
+			permanentGenericLanguageTokens["TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION"] = "Perform a small jet-assisted horizontal jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.";
 			base.RefreshPermanentLanguage();
 		}
 

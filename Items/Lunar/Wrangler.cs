@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         public override string displayName => "RC Controller";
         public override ItemTier itemTier => ItemTier.Lunar;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string GetNameString(string langid = null) => displayName;

@@ -44,7 +44,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public readonly HashSet<string> droneMasterPrefabNames = new HashSet<string>();
+        public readonly HashSet<string> droneMasterPrefabNames = new();
         public GameObject idrPrefab { get; private set; }
 
 
