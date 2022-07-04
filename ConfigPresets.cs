@@ -25,18 +25,34 @@ namespace ThinkInvisible.TinkersSatchel {
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
                 category = "Enable...",
                 name = "Items",
-                description = "Enable All Items/Equipment",
+                description = "Enable All Items",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
-            }, "Set", () => SetEnabled(allModules.Where(m => m is Item or Equipment), true));
+            }, "Set", () => SetEnabled(allModules.Where(m => m is Item), true));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
                 category = "Disable...",
                 name = "Items",
-                description = "Disable All Items/Equipment",
+                description = "Disable All Items",
                 modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
                 modName = TinkersSatchelPlugin.ModName + "Presets"
-            }, "Set", () => SetEnabled(allModules.Where(m => m is Item or Equipment), false));
+            }, "Set", () => SetEnabled(allModules.Where(m => m is Item), false));
+
+            Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
+                category = "Enable...",
+                name = "Equipment",
+                description = "Enable All Equipment",
+                modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
+                modName = TinkersSatchelPlugin.ModName + "Presets"
+            }, "Set", () => SetEnabled(allModules.Where(m => m is Equipment), true));
+
+            Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
+                category = "Disable...",
+                name = "Equipment",
+                description = "Disable All Equipment",
+                modGuid = TinkersSatchelPlugin.ModGuid + "Presets",
+                modName = TinkersSatchelPlugin.ModName + "Presets"
+            }, "Set", () => SetEnabled(allModules.Where(m => m is Equipment), false));
 
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
                 category = "Enable...",
