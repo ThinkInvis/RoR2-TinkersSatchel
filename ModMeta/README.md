@@ -305,8 +305,8 @@ Short summaries are provided below. For a full description of each item, see: ht
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidwispHiveIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Magic Beehive</b> (T2)<br>
-				Drop short-lived damaging allies on using skills. Corrupts all Pixie Tubes.
+				<b>Voidwisp Hive</b> (T2)<br>
+				Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.
 			</td>
 		</tr>
 		<tr>
