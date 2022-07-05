@@ -16,13 +16,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Magic Beehive";
+        public override string displayName => "Voidwisp Hive";
         public override ItemTier itemTier => ItemTier.VoidTier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Drop short-lived damaging allies on using skills. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
-        protected override string GetDescString(string langid = null) => $"You drop a <style=cIsDamage>void bee</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsDamage>Void bees</style> live for {wispDuration:N0} seconds, tracking nearby enemies and zapping them for <style=cIsDamage>{1f/damageRate:N1}x{Pct(damageAmt)} damage per second <style=cStack>(damage increases linearly per stack)</style></style>. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
+        protected override string GetPickupString(string langid = null) => "Drop damaging wisp allies on using skills. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
+        protected override string GetDescString(string langid = null) => $"You drop a <style=cIsDamage>voidwisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsDamage>Voidwisps</style> live for {wispDuration:N0} seconds, tracking nearby enemies and zapping them for <style=cIsDamage>{1f/damageRate:N1}x{Pct(damageAmt)} damage per second <style=cStack>(damage increases linearly per stack)</style></style>. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -31,12 +31,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lifetime of Magic Beehive wisps.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        [AutoConfig("Lifetime of Voidwisp Hive wisps.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float wispDuration { get; private set; } = 10f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Damage fraction dealt by void bee attacks per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage fraction dealt by Voidwisp attacks per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageAmt { get; private set; } = 0.08f;
 
         [AutoConfigRoOSlider("{0:N2} s", 0f, 10f)]
