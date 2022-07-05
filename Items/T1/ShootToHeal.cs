@@ -105,12 +105,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("HuntressBody", new ItemDisplayRule {
-                childName = "Stomach",
-                localPos = new Vector3(0.17437F, -0.01902F, 0.11239F),
-                localAngles = new Vector3(14.62809F, 338.0782F, 18.2589F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F),
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
-                followerPrefab = idrPrefab
+                followerPrefab = idrPrefab,
+                childName = "LowerArmR",
+                localPos = new Vector3(0.04393F, -0.04636F, 0.01517F),
+                localAngles = new Vector3(39.93605F, 179.8943F, 198.899F),
+                localScale = new Vector3(0.3F, 0.3F, 0.3F)
             });
             displayRules.Add("LoaderBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
