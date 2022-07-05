@@ -132,9 +132,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "MechBase",
-                localPos = new Vector3(0.28481F, -0.22564F, -0.12889F),
-                localAngles = new Vector3(0.98176F, 51.91312F, 23.00177F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                localPos = new Vector3(0.2564F, -0.07702F, -0.11248F),
+                localAngles = new Vector3(42.98969F, 110.4701F, 5.24458F),
+                localScale = new Vector3(0.15F, 0.15F, 0.15F)
             });
             displayRules.Add("MageBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
