@@ -22,6 +22,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupConfig() {
             base.SetupConfig();
 
+            if(!Compat_RiskOfOptions.enabled) return;
+
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
                 category = "Enable...",
                 name = "Items",
