@@ -13,9 +13,4 @@ Installation of TILER2 is also required: https://thunderstore.io/package/ThinkIn
 
 ## Building
 
-Building Tinker's Satchel locally will require setup of the postbuild event:
-- The middle 3 xcopy calls need to either be updated with the path to your copy of RoR2, or removed entirely if you don't want copies of the mod moved for testing.
-- Installation of Weaver (postbuild variant) is left as an exercise for the user. https://github.com/risk-of-thunder/R2Wiki/wiki/Networking-with-Weaver:-The-Unity-Way
-- WARNING: Weaver is currently bypassed by the build event, as there is no network code that needs it.
-
-You may also need to change the reference path to TILER2, which is expected to be built in a parallel solution folder.
+Building Tinker's Satchel locally will expect TILER2 and ClassicItems to be built in parallel solution folders. If this is not the case, you will need to specify the reference path to these DLLs manually.
