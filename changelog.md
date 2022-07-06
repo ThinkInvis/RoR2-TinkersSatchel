@@ -2,6 +2,11 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.1.1**
+
+- Added a first pass of ItemDisplayRules for many items to all vanilla Survivors.
+- Fixed an accidental hard dependency on Risk of Options in the 3.1.0 presets feature.
+
 **3.1.0**
 
 - Added a TinkersSatchelPresets config super-category to the Risk of Options menu.
@@ -12,7 +17,6 @@
 - Added an unlock achievement to Armor Crystal.
 - Fixed Go-Faster Stripes unintentionally unlocking when ANY character performs the required action.
 - Causal Camera's ICD config is now a true ICD, preventing any recording of new save states until some time has passed. The old "minimum duration of rewind" behavior has been migrated to its own config entry, minDuration.
-- Renamed Voidwisp Hive to Magic Beehive to better differentiate it from Voidsent Wisp.
 - Slightly increased null safety in Cardboard Box icon override.
 - Updated dependencies.
 - General project cleanup.

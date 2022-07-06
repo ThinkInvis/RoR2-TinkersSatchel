@@ -465,7 +465,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 ## Issues/TODO
 
-- Items and characters have no DisplayRules.
+- ItemDisplayRule incompleteness:
+	- A few TkSat items have absent or incomplete ItemDisplayRules.
+	- Non-Survivor vanilla characters have no display rules for TkSat items.
+	- TkSat drones have no ItemDisplayRules for important vanilla items (Spare Drone Parts).
 - Most items need some effects & model polish in general.
 	- Broken drones are missing smoke/sparks effects.
 	- Cardboard Box alternate icon has not been updated to vanilla style like other icons as of v2.2.3.
@@ -478,6 +481,11 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.1.1**
+
+- Added a first pass of ItemDisplayRules for many items to all vanilla Survivors.
+- Fixed an accidental hard dependency on Risk of Options in the 3.1.0 presets feature.
+
 **3.1.0**
 
 - Added a TinkersSatchelPresets config super-category to the Risk of Options menu.
@@ -488,7 +496,6 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Added an unlock achievement to Armor Crystal.
 - Fixed Go-Faster Stripes unintentionally unlocking when ANY character performs the required action.
 - Causal Camera's ICD config is now a true ICD, preventing any recording of new save states until some time has passed. The old "minimum duration of rewind" behavior has been migrated to its own config entry, minDuration.
-- Renamed Voidwisp Hive to Magic Beehive to better differentiate it from Voidsent Wisp.
 - Slightly increased null safety in Cardboard Box icon override.
 - Updated dependencies.
 - General project cleanup.
@@ -529,15 +536,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Improved stability of recently added Old-War Lidar VFX.
 - Fixed Unraveling Loom corrupting Macho Moustache instead of Spacetime Skein.
 - 🌧︎ Fixed Silver Compass allowing 1 extra application above the configured limit.
-
-**2.3.2**
-
-- Balance pass:
-	- Extendo-Arms now works on PBAoE attacks (any blast attack within 5 m, range configurable).
-	- Buffed default Extendo-Arms stats (damage 5% --> 6.25%, range 8% --> 12.5%).
-	- Quantum Recombobulator can no longer be used on fallen drones.
-	- Silver Compass no longer applies an extra, no-item-drop stack of Challenge of the Mountain (restorable with config).
-		- This was a balance point from back when the teleporter was much harder to find.
-- Old-War Lidar now has an in-UI state indicator per enemy (can be disabled in config).
-- Fixed Command Terminal using the cooldown of the next equipment to be picked up.
-- Fixed a missing unhook on Old-War Lidar.
