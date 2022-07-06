@@ -126,8 +126,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Pelvis",
-                localPos = new Vector3(0.16876F, -0.10376F, 0.02998F),
-                localAngles = new Vector3(357.5521F, 355.006F, 105.9485F),
+                localPos = new Vector3(-0.19571F, 0.00296F, -0.04417F),
+                localAngles = new Vector3(343.5008F, 180.7469F, 174.5094F),
                 localScale = new Vector3(0.25F, 0.25F, 0.25F)
             });
             displayRules.Add("MercBody", new ItemDisplayRule {
