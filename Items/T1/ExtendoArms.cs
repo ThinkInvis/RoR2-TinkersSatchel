@@ -161,9 +161,9 @@ namespace ThinkInvisible.TinkersSatchel {
             displayRules.Add("TreebotBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
-                childName = "PlatformBase",
-                localPos = new Vector3(0.75783F, -0.10773F, 0.00385F),
-                localAngles = new Vector3(308.2326F, 10.8672F, 329.0782F),
+                childName = "WeaponPlatformEnd",
+                localPos = new Vector3(-0.00078F, -0.09947F, 0.1032F),
+                localAngles = new Vector3(277.5991F, 92.14574F, 260.9365F),
                 localScale = new Vector3(1F, 1F, 1F)
             });
             displayRules.Add("RailgunnerBody", new ItemDisplayRule {

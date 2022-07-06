@@ -157,8 +157,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
 				followerPrefab = idrPrefab,
 				childName = "PlatformBase",
-				localPos = new Vector3(0.75783F, -0.10773F, 0.00385F),
-				localAngles = new Vector3(308.2326F, 10.8672F, 329.0782F),
+				localPos = new Vector3(0.72213F, 0.23556F, 0.26992F),
+				localAngles = new Vector3(339.7497F, 310.3758F, 56.41169F),
 				localScale = new Vector3(1F, 1F, 1F)
 			});
 			displayRules.Add("RailgunnerBody", new ItemDisplayRule {

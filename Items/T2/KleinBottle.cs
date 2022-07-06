@@ -164,7 +164,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "PlatformBase",
-                localPos = new Vector3(0.75783F, -0.10773F, 0.00385F),
+                localPos = new Vector3(-0.801F, 0.21188F, 0.38861F),
                 localAngles = new Vector3(308.2326F, 10.8672F, 329.0782F),
                 localScale = new Vector3(1F, 1F, 1F)
             });
