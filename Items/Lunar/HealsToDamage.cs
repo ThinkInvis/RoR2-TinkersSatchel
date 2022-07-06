@@ -163,10 +163,10 @@ namespace ThinkInvisible.TinkersSatchel {
             displayRules.Add("RailgunnerBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
-                childName = "Backpack",
-                localPos = new Vector3(0.28636F, -0.3815F, -0.06912F),
-                localAngles = new Vector3(352.4358F, 63.85439F, 6.83272F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                childName = "Neck",
+                localPos = new Vector3(0.02508F, 0.05103F, -0.06036F),
+                localAngles = new Vector3(30.09493F, 9.06698F, 266.63F),
+                localScale = new Vector3(0.1F, 0.1F, 0.1F)
             });
             displayRules.Add("VoidSurvivorBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
