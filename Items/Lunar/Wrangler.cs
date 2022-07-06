@@ -152,9 +152,9 @@ namespace ThinkInvisible.TinkersSatchel {
             displayRules.Add("ToolbotBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
-                childName = "Chest",
-                localPos = new Vector3(2.33895F, -0.34548F, 0.80107F),
-                localAngles = new Vector3(311.4177F, 7.89006F, 354.1869F),
+                childName = "LowerArmL",
+                localPos = new Vector3(-0.81568F, 2.08945F, 0.1021F),
+                localAngles = new Vector3(21.27103F, 10.38826F, 33.45565F),
                 localScale = new Vector3(3F, 3F, 3F)
             });
             displayRules.Add("TreebotBody", new ItemDisplayRule {
