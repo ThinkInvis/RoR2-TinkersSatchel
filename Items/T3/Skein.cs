@@ -229,8 +229,15 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Hooks //////
 		
 		private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-			if(GetCount(body) > 0 && !body.GetComponent<SkeinTracker>())
+			var hasItem = GetCount(body) > 0;
+			var component = body.GetComponent<SkeinTracker>();
+			if(hasItem && !component)
 				body.gameObject.AddComponent<SkeinTracker>();
+			else if(!hasItem && component) {
+				GameObject.Destroy(component);
+				body.SetBuffCount(Skein.instance.speedBuff.buffIndex, 0);
+				body.SetBuffCount(Skein.instance.resistBuff.buffIndex, 0);
+			}
 		}
 
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
