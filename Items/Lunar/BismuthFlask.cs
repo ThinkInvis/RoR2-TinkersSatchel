@@ -6,7 +6,6 @@ using static TILER2.MiscUtil;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
-    //todo: aim assist with tracking (may need to build velocity table for turret projectiles?), make drones follow aim
     public class BismuthFlask : Item<BismuthFlask> {
 
         ////// Item Data //////
@@ -16,8 +15,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Gain resistance when hit by one enemy type... <color=#FF7F7F>BUT gain weakness to the others.</color>";
-        protected override string GetDescString(string langid = null) => $"On being hit by one <style=cIsDamage>type of enemy</style>: take <style=cIsHealing>{Pct(resistAmount, 1)} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{Pct(weakAmount, 1)} more damage</style> from all other types. Wears off after {duration:N0} seconds.";
+        protected override string GetPickupString(string langid = null) => "Gain resistance when hit by one enemy tier... <color=#FF7F7F>BUT gain weakness to the others.</color>";
+        protected override string GetDescString(string langid = null) => $"On being hit by one <style=cIsDamage>tier of enemy</style> (Normal, Elite, or Boss): take <style=cIsHealing>{Pct(resistAmount, 1)} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{Pct(weakAmount, 1)} more damage</style> from all other types. Wears off after {duration:N0} seconds.";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -208,7 +207,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
                 var cpt = self.body.gameObject.GetComponent<DamageSourceResistanceTracker>();
                 if(!cpt) cpt = self.body.gameObject.AddComponent<DamageSourceResistanceTracker>();
-                damageInfo.damage = cpt.ModifyDamage(damageInfo.damage, atkb.bodyIndex);
+                damageInfo.damage = cpt.ModifyDamage(damageInfo.damage, atkb);
             }
             orig(self, damageInfo);
         }
@@ -216,7 +215,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterBody))]
     public class DamageSourceResistanceTracker  : MonoBehaviour {
-        BodyIndex lastHitBodyIndex = BodyIndex.None;
+        enum DamageSource {
+            None, Normal, Elite, Boss
+        }
+        DamageSource lastSource = DamageSource.None;
         float stopwatch = 0f;
 
         CharacterBody body;
@@ -230,23 +232,28 @@ namespace ThinkInvisible.TinkersSatchel {
         void FixedUpdate() {
             if(stopwatch > 0f) {
                 stopwatch -= Time.fixedDeltaTime;
-            } else lastHitBodyIndex = BodyIndex.None;
+            } else lastSource = DamageSource.None;
         }
 
-        public float ModifyDamage(float damage, BodyIndex sourceBodyIndex) {
+        public float ModifyDamage(float damage, CharacterBody sourceBody) {
             var count = BismuthFlask.instance.GetCount(body);
-            if(count <= 0 || sourceBodyIndex == BodyIndex.None) {
-                lastHitBodyIndex = BodyIndex.None;
+            if(count <= 0 || !sourceBody) {
+                lastSource = DamageSource.None;
                 return damage;
             }
-            if(lastHitBodyIndex != BodyIndex.None) {
-                if(lastHitBodyIndex == sourceBodyIndex) {
+            var currentSource = DamageSource.Normal;
+            if(sourceBody.isChampion || sourceBody.isBoss)
+                currentSource = DamageSource.Boss;
+            else if(sourceBody.isElite)
+                currentSource = DamageSource.Elite;
+            if(lastSource != DamageSource.None) {
+                if(lastSource == currentSource) {
                     damage /= 1f + BismuthFlask.instance.resistAmount * count;
                 } else {
                     damage *= 1f + BismuthFlask.instance.weakAmount * count;
                 }
             }
-            lastHitBodyIndex = sourceBodyIndex;
+            lastSource = currentSource;
             stopwatch = BismuthFlask.instance.duration;
             body.AddTimedBuff(BismuthFlask.instance.bismuthFlaskBuff, stopwatch);
             return damage;
