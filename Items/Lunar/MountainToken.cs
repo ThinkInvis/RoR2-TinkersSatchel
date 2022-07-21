@@ -82,11 +82,15 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<int, BossGroup, int>>((origRewards, bg) => {
                     int extraRewardsSingular = 0;
-                    foreach(var pcmc in PlayerCharacterMasterController.instances) {
-                        extraRewardsSingular += GetCount(pcmc.body);
+                    foreach(var nu in NetworkUser.readOnlyInstancesList) {
+                        if(!nu.isParticipating) continue;
+                        var body = nu.GetCurrentBody();
+                        extraRewardsSingular += GetCount(body);
                     }
                     return origRewards + extraRewardsSingular;
                 });
+                c.Emit(OpCodes.Dup);
+                c.Emit(OpCodes.Stloc, locRewardCount);
             } else {
                 TinkersSatchelPlugin._logger.LogError("MountainToken: Failed to apply IL hook (BossGroup_DropRewards), item will not provide extra teleporter rewards");
             }
