@@ -6,7 +6,6 @@ using static TILER2.MiscUtil;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
-    //todo: aim assist with tracking (may need to build velocity table for turret projectiles?), make drones follow aim
     public class BismuthFlask : Item<BismuthFlask> {
 
         ////// Item Data //////
