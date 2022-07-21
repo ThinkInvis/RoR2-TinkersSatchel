@@ -28,6 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, AI with nothing better to do will attempt to shoot teammates if they have this item, either of them are injured, and Artifact of Chaos is not enabled.",
+            AutoConfigFlags.PreventNetMismatch)]
+        public bool aiOverride { get; private set; } = true;
+
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Healing amount, in flat HP, per stack.",
@@ -194,6 +199,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Projectile.ProjectileController.OnCollisionEnter += ProjectileController_OnCollisionEnter;
             On.RoR2.Projectile.ProjectileController.OnTriggerEnter += ProjectileController_OnTriggerEnter;
             IL.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
+            On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs += BaseAI_UpdateBodyInputs;
         }
 
         public override void Uninstall() {
@@ -202,11 +208,31 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Projectile.ProjectileController.OnCollisionEnter -= ProjectileController_OnCollisionEnter;
             On.RoR2.Projectile.ProjectileController.OnTriggerEnter -= ProjectileController_OnTriggerEnter;
             IL.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
+            On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs -= BaseAI_UpdateBodyInputs;
         }
 
 
 
         ////// Hooks //////
+
+        private void BaseAI_UpdateBodyInputs(On.RoR2.CharacterAI.BaseAI.orig_UpdateBodyInputs orig, RoR2.CharacterAI.BaseAI self) {
+            orig(self);
+            if(!aiOverride) return;
+            if(GetCount(self.master) > 0
+                && RunArtifactManager.instance && !RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.friendlyFireArtifactDef)
+                && self.hasAimTarget && self.hasAimConfirmation && TeamComponent.GetObjectTeam(self.skillDriverEvaluation.aimTarget.gameObject) == self.master.teamIndex
+                && self.bodyInputBank
+                && (
+                    (self.skillDriverEvaluation.aimTarget.gameObject.TryGetComponent<HealthComponent>(out var otherHC) && otherHC.health < otherHC.fullHealth)
+                    || (self.bodyHealthComponent && self.bodyHealthComponent.health < self.bodyHealthComponent.fullHealth)
+                )) {
+                self.bodyInputBank.skill1.PushState(true);
+                self.bodyInputBank.skill2.PushState(true);
+                self.bodyInputBank.skill3.PushState(true);
+                self.bodyInputBank.skill4.PushState(true);
+            }
+        }
+
         private void OverlapAttack_Fire(ILContext il) {
             var c = new ILCursor(il);
 
