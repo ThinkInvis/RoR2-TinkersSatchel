@@ -178,6 +178,10 @@ namespace ThinkInvisible.TinkersSatchel {
             //AI summons (bugged)
             ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/BeetleGland"));
             ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RoboBallBuddy"));
+            ppcf.blacklistedItems.Add(Addressables.LoadAssetAsync<ItemDef>("RoR2/DLC1/MinorConstructOnKill/MinorConstructOnKill.asset")
+                .WaitForCompletion());
+            ppcf.blacklistedItems.Add(Addressables.LoadAssetAsync<ItemDef>("RoR2/Base/TitanGoldDuringTP/TitanGoldDuringTP.asset")
+                .WaitForCompletion());
         }
 
         void ModifyInteractablePrefabWithVanillaAssets() {
