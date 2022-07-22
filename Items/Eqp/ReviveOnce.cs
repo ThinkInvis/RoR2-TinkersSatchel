@@ -274,12 +274,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!summon) return false;
                 obj = summon.GetBodyObject();
                 if(!obj) return false;
-                if(obj.name == "EquipmentDroneBody(Clone)") {
-                    var droneInv = obj.GetComponent<Inventory>();
-                    if(droneInv) {
-                        var randomEqp = rng.NextElementUniform(RoR2.Artifacts.EnigmaArtifactManager.validEquipment); 
-                        droneInv.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
-                    }
+                if(obj.name == "EquipmentDroneBody(Clone)" && obj.TryGetComponent<CharacterBody>(out var droneBody) && droneBody.master) {
+                    var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(Run.instance.availableEquipmentDropList)).equipmentIndex;
+                    droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
                 } else if(which == ItemDrone.instance.itemDroneMasterPrefab) {
                     var wardPersist = summon.GetComponent<ItemDroneWardPersist>();
 
