@@ -29,7 +29,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOString()]
         [AutoConfig("Which master prefab names to spawn if there are no allies to be revived. WARNING: May have unintended results on some untested objects!",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+            AutoConfigFlags.PreventNetMismatch)]
         public string masterNamesConfig { get; private set; } = String.Join(", ", new[] {
             "EquipmentDroneMaster",
             "Drone1Master",
@@ -171,11 +171,19 @@ namespace ThinkInvisible.TinkersSatchel {
             #endregion
         }
 
+        public override void SetupConfig() {
+            base.SetupConfig();
+
+            ConfigEntryChanged += (sender, args) => {
+                if(args.target.boundProperty.Name == nameof(masterNamesConfig))
+                    UpdateDroneMasterPrefabNames();
+            };
+        }
+
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            droneMasterPrefabNames.UnionWith(masterNamesConfig.Split(',')
-                .Select(x => x.Trim()));
+            UpdateDroneMasterPrefabNames();
 
             if(Compat_ClassicItems.enabled) {
                 LanguageAPI.Add("TKSAT_REVIVEONCE_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Activates twice simultaneously.</style>");
@@ -189,6 +197,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Uninstall() {
             base.Uninstall();
+        }
+
+
+
+        ////// Private Methods //////
+
+        void UpdateDroneMasterPrefabNames() {
+            droneMasterPrefabNames.Clear();
+            droneMasterPrefabNames.UnionWith(masterNamesConfig.Split(',')
+                .Select(x => x.Trim()));
         }
 
 
