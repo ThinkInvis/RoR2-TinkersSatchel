@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Mimics your other items at random.";
-        protected override string GetDescString(string langid = null) => "Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style>. <style=cIsUtility>Every " + decayRate.ToString("N0") + " seconds</style>, the mimic has a <style=cIsUtility>" + Pct(decayChance, 1) + " chance to switch to a new item</style>.";
+        protected override string GetDescString(string langid = null) => $"Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style> from a weighted selection of {1f - chanceTableSpikiness:P0} of your item types of each tier. <style=cIsUtility>Every {scrambleRate:N0} seconds</style>, all mimics will <style=cIsUtility>scramble</style> to a new selection.";
         protected override string GetLoreString(string langid = null) => "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....";
 
 
@@ -28,16 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time between batches of re-mimics.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float decayRate { get; private set; } = 3f;
+        public float scrambleRate { get; private set; } = 15f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance for each individual Mimic to re-mimic per proc.", AutoConfigFlags.None, 0f, 1f)]
-        public float decayChance { get; private set; } = 0.15f;
-
-        [AutoConfigRoOIntSlider("{0:N0}", 0, 1000)]
-        [AutoConfig("No more than this many Mimics (per player) will change at the same time. Used to be for performance reasons which appear to no longer be in play; now kept for posterity.", AutoConfigFlags.None, 0, int.MaxValue)]
-        public int lagLimit { get; private set; } = 50;
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
+        [AutoConfig("Linear scalar on chosen item types per tier. At 1, only one item per tier will ever be chosen; at 0, all items will remain valid.", AutoConfigFlags.None, 0f, 1f)]
+        public float chanceTableSpikiness { get; private set; } = 0.8f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfig("Relative weight for a Mimic to prefer Tier 1 items.", AutoConfigFlags.None, 0f, 1f)]
@@ -143,32 +138,30 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void On_InvGiveItemByIndex(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
             orig(self, itemIndex, count);
-            if(count <= 0 || !self || !NetworkServer.active) return;
-            var minv = self.gameObject.GetComponent<MimicInventory>();
-            if(minv || itemIndex == itemDef.itemIndex) {
-                if(!minv) {
-                    minv = self.gameObject.AddComponent<MimicInventory>();
-                    if(!minv) return; //happens if object is being destroyed this frame
-                    minv.LocateOrCreateComponentsServer();
-                }
-                minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
-            }
-        }
-
-        private void On_InvRemoveItemByIndex(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
-            orig(self, itemIndex, count);
-            if(count <= 0 || !self || !NetworkServer.active) return;
+            if(count <= 0 || itemIndex != catalogIndex || !self || !NetworkServer.active) return;
             var minv = self.gameObject.GetComponent<MimicInventory>();
             if(!minv) {
                 minv = self.gameObject.AddComponent<MimicInventory>();
                 if(!minv) return; //happens if object is being destroyed this frame
                 minv.LocateOrCreateComponentsServer();
             }
-            if(itemIndex != catalogIndex) {
-                if(minv.fakeInv.GetRealItemCount(itemIndex) == 0)
-                    minv.Redistribute(itemIndex);
-            } else {
-                minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
+            minv.totalMimics = minv.fakeInv.GetRealItemCount(catalogIndex);
+        }
+
+        private void On_InvRemoveItemByIndex(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count) {
+            orig(self, itemIndex, count);
+            if(count <= 0 || !self || !NetworkServer.active) return;
+            var minv = self.gameObject.GetComponent<MimicInventory>();
+            if(minv) {
+                if(itemIndex != catalogIndex) {
+                    if(minv.fakeInv.GetRealItemCount(itemIndex) == 0)
+                        minv.Shuffle();
+                } else {
+                    var newCount = minv.fakeInv.GetRealItemCount(catalogIndex);
+                    minv.totalMimics = newCount;
+                    if(newCount == 0) //lost last stack
+                        GameObject.Destroy(minv);
+                }
             }
         }
 	}
@@ -183,6 +176,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         private Inventory inventory;
         internal FakeInventory fakeInv;
+        WeightedSelection<ItemIndex[]> currentSelection = null;
 
         public int totalMimics {get => _mimics.Count; internal set {
                 if(value < 0) {
@@ -221,94 +215,69 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!NetworkServer.active) return;
             stopwatch -= Time.fixedDeltaTime;
             if(stopwatch <= 0f) {
-                stopwatch = Mimic.instance.decayRate;
+                stopwatch = Mimic.instance.scrambleRate;
                 Shuffle();
             }
         }
 
-        private void Shuffle() {
-            var iarrSel = GetSelection();
-            if(iarrSel.Count <= 1) return;
-            //int countToShuffle = Mathf.Min(count, Mathf.FloorToInt(Mimic.instance.mimicRng.nextNormalizedFloat * count * Mimic.instance.decayChance * 2f));)
-            int totalToChange = 0;
-            for(int i = 0; i < totalMimics; i++) {
-                if(Mimic.instance.rng.nextNormalizedFloat > Mimic.instance.decayChance) continue;
-                totalToChange++;
-                if(totalToChange >= Mimic.instance.lagLimit) break;
-            }
-
-            RemoveMimics(totalToChange, true);
-            AddMimics(totalToChange, true);
-            RebuildDict();
+        internal void Shuffle() {
+            BuildSelection();
+            totalMimics = 0;
+            totalMimics = fakeInv.GetRealItemCount(Mimic.instance.catalogIndex);
         }
 
-        private WeightedSelection<ItemIndex[]> GetSelection(params ItemIndex[] ignore) {
+        private void BuildSelection() {
             var stacks = inventory.itemStacks.Select((val, ind) =>
                 new KeyValuePair<ItemDef, int>(ItemCatalog.GetItemDef((ItemIndex)ind), fakeInv.GetRealItemCount((ItemIndex)ind)))
                 .Where((x) => {
                     return x.Value > 0
                         && !x.Key.hidden
                         && x.Key.tier != ItemTier.NoTier
-                        && !ignore.Contains(x.Key.itemIndex)
                         && !FakeInventory.blacklist.Contains(x.Key)
                         && !Mimic.instance.mimicBlacklist.Contains(x.Key);
-                }).Select(x => x.Key).GroupBy(x => x.tier)
-                .ToDictionary(x => x.Key, x => x.Select(y => y.itemIndex).ToArray());
-
+                })
+                .Select(x => x.Key)
+                .GroupBy(x => x.tier)
+                .ToDictionary(x => x.Key, x => x
+                    .OrderBy(n => Mimic.instance.rng.nextNormalizedFloat)
+                    .Take(Mathf.Max(Mathf.CeilToInt(x.Count() * (1f - Mimic.instance.chanceTableSpikiness)),1))
+                    .Select(y => y.itemIndex)
+                    .ToArray());
             var retv = new WeightedSelection<ItemIndex[]>();
             foreach(var kvp in stacks) {
                 if(kvp.Value.Length == 0) continue;
-
-                var weight = Mimic.instance.chanceTableTX;
-                if(kvp.Key == ItemTier.Tier1 || kvp.Key == ItemTier.VoidTier1)
-                    weight = Mimic.instance.chanceTableT1;
-                if(kvp.Key == ItemTier.Tier2 || kvp.Key == ItemTier.VoidTier2)
-                    weight = Mimic.instance.chanceTableT2;
-                if(kvp.Key == ItemTier.Tier3 || kvp.Key == ItemTier.VoidTier3)
-                    weight = Mimic.instance.chanceTableT3;
-                if(kvp.Key == ItemTier.Boss || kvp.Key == ItemTier.VoidBoss)
-                    weight = Mimic.instance.chanceTableTB;
-                if(kvp.Key == ItemTier.Lunar)
-                    weight = Mimic.instance.chanceTableTL;
-
+                var weight = kvp.Key switch {
+                    ItemTier.Tier1 or ItemTier.VoidTier1 => Mimic.instance.chanceTableT1,
+                    ItemTier.Tier2 or ItemTier.VoidTier2 => Mimic.instance.chanceTableT2,
+                    ItemTier.Tier3 or ItemTier.VoidTier3 => Mimic.instance.chanceTableT3,
+                    ItemTier.Boss or ItemTier.VoidBoss => Mimic.instance.chanceTableTB,
+                    ItemTier.Lunar => Mimic.instance.chanceTableTL,
+                    _ => Mimic.instance.chanceTableTX
+                };
                 retv.AddChoice(kvp.Value, weight);
             }
-            return retv;
+            currentSelection = retv;
         }
 
-        internal void AddMimics(int count, bool suppressRebuild = false, params ItemIndex[] ignore) {
-            var iarrSel = GetSelection(ignore);
-            if(iarrSel.Count < 1) return;
+        internal void AddMimics(int count) {
+            if(currentSelection == null) BuildSelection();
+            if(currentSelection.Count == 0) return;
             for(int i = 0; i < count; i++) {
-                var toAdd = Mimic.instance.rng.NextElementUniform(iarrSel.Evaluate(Mimic.instance.rng.nextNormalizedFloat));
+                var toAdd = Mimic.instance.rng.NextElementUniform(currentSelection.Evaluate(Mimic.instance.rng.nextNormalizedFloat));
                 _mimics.Add(toAdd);
-
                 fakeInv.GiveItem(toAdd);
             }
-
-            if(!suppressRebuild)
-                RebuildDict();
+            RebuildDict();
         }
 
-        internal void RemoveMimics(int count, bool suppressRebuild = false) {
+        internal void RemoveMimics(int count) {
             var totalRemovals = Mathf.Min(count, totalMimics);
             for(int i = 0; i < totalRemovals; i++) {
                 var toRemove = Mimic.instance.rng.NextElementUniform(_mimics);
                 _mimics.Remove(toRemove);
-
                 fakeInv.RemoveItem(toRemove);
             }
-
-            if(!suppressRebuild)
-                RebuildDict();
-        }
-
-        internal void Redistribute(ItemIndex ind) {
-            var moved = _mimics.Count(x => x == ind);
-            if(moved == 0) return;
-            fakeInv.RemoveItem(ind, fakeInv.GetItemCount(ind));
-            _mimics.RemoveAll(x => x == ind);
-            AddMimics(moved, false, ind);
+            RebuildDict();
         }
 
         private void RebuildDict() {

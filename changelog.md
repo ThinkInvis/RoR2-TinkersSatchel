@@ -2,6 +2,26 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.2.0**
+
+- Balance pass:
+	- Minor rework to Mostly-Tame Mimic. MTM was always meant to provide unpredictable power boosts, but the execution was unclear and the item's moment-to-moment effects were sometimes hard to notice. The following changes are meant to focus on this role more strongly; providing a much spikier item distribution with more clearly defined points of change over time, as well as giving the player more time to identify and take advantage of boosted items:
+		- Now scrambles all-at-once instead of gradually over time (15% --> 100% chance per mimic), using a much longer interval (3s --> 15s). Renamed the DecayRate config option to ScrambleRate, and removed the DecayChance config option.
+		- Now only selects a small fraction of all available items per tier (100% --> 20% of item types per tier, rounded up). Added the ChanceTableSpikiness config option to support this feature.
+		- No longer redistributes mimics as soon as the last stack of a mimicked item is lost, in order to avoid abuse of by-tier selection alongside e.g. a conveniently-placed scrapper/printer or an item drop mod. Will instead remove those mimics and wait for the next scramble.
+		- Removed the obsolete LagLimit config option.
+	- Bismuth Tonic now applies to entire tiers of enemy (Normal, Elite, or Boss) instead of individual enemy types.
+- AI with Percussive Maintenance and nothing better to do will now attack allies to recover health of either party, except when Artifact of Chaos is enabled. Exposed as the AiOverride config option.
+- Command Terminal fixes:
+	- No longer spawns Equipment Drones with no equipment.
+	- Now respects sources of cooldown reduction (e.g. Fuel Cell) when setting cooldown on use.
+	- Downgraded MasterNamesConfig deferral severity (can now be changed at any time; was while-game-closed only).
+- Blacklisted additional potentially bugged summon items (Defense Nucleus and Halcyon Seed) from Item Drone.
+- Added the Equipment Drone Labels tweak module, which applies the Item Drone naming scheme to vanilla Equipment Drones.
+- Slightly clarified Shrink Ray's pickup text.
+- Fixed Spacetime Skein buffs erroneously appearing until the next stage after all stacks are lost.
+- Updated BepInExPack dependency to 5.4.1905.
+
 **3.1.1**
 
 - Added a first pass of ItemDisplayRules for many items to all vanilla Survivors.

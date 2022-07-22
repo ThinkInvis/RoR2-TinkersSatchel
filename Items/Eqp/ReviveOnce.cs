@@ -29,7 +29,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOString()]
         [AutoConfig("Which master prefab names to spawn if there are no allies to be revived. WARNING: May have unintended results on some untested objects!",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+            AutoConfigFlags.PreventNetMismatch)]
         public string masterNamesConfig { get; private set; } = String.Join(", ", new[] {
             "EquipmentDroneMaster",
             "Drone1Master",
@@ -171,11 +171,19 @@ namespace ThinkInvisible.TinkersSatchel {
             #endregion
         }
 
+        public override void SetupConfig() {
+            base.SetupConfig();
+
+            ConfigEntryChanged += (sender, args) => {
+                if(args.target.boundProperty.Name == nameof(masterNamesConfig))
+                    UpdateDroneMasterPrefabNames();
+            };
+        }
+
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            droneMasterPrefabNames.UnionWith(masterNamesConfig.Split(',')
-                .Select(x => x.Trim()));
+            UpdateDroneMasterPrefabNames();
 
             if(Compat_ClassicItems.enabled) {
                 LanguageAPI.Add("TKSAT_REVIVEONCE_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Activates twice simultaneously.</style>");
@@ -189,6 +197,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Uninstall() {
             base.Uninstall();
+        }
+
+
+
+        ////// Private Methods //////
+
+        void UpdateDroneMasterPrefabNames() {
+            droneMasterPrefabNames.Clear();
+            droneMasterPrefabNames.UnionWith(masterNamesConfig.Split(',')
+                .Select(x => x.Trim()));
         }
 
 
@@ -256,12 +274,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!summon) return false;
                 obj = summon.GetBodyObject();
                 if(!obj) return false;
-                if(obj.name == "EquipmentDroneBody(Clone)") {
-                    var droneInv = obj.GetComponent<Inventory>();
-                    if(droneInv) {
-                        var randomEqp = rng.NextElementUniform(RoR2.Artifacts.EnigmaArtifactManager.validEquipment); 
-                        droneInv.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
-                    }
+                if(obj.name == "EquipmentDroneBody(Clone)" && obj.TryGetComponent<CharacterBody>(out var droneBody) && droneBody.master) {
+                    var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(Run.instance.availableEquipmentDropList)).equipmentIndex;
+                    droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
                 } else if(which == ItemDrone.instance.itemDroneMasterPrefab) {
                     var wardPersist = summon.GetComponent<ItemDroneWardPersist>();
 
@@ -294,7 +309,7 @@ namespace ThinkInvisible.TinkersSatchel {
             objBody.SetBodyStateToPreferredInitialState();
 
             if(slot.equipmentIndex == this.equipmentDef.equipmentIndex) {
-                slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown, 0), (uint)slot.inventory.activeEquipmentSlot);
+                slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown * slot.inventory.CalculateEquipmentCooldownScale(), 0), (uint)slot.inventory.activeEquipmentSlot);
             }
             return true;
         }
