@@ -20,7 +20,7 @@
 				<b>Mostly-Tame Mimic</b><br>
 				<details>
 					<summary>Mimics your other items at random.</summary>
-					<small>Picks one of your other items to mimic (each stack is tracked separately). Every 3 seconds, the mimic has a 15% chance to switch to a new item.</small>
+					<small>Picks one of your other items to mimic (each stack is tracked separately) from a weighted selection of 20% of your item types of each tier. Every 15 seconds, all mimics will scramble to a new selection.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -54,6 +54,7 @@
 			</td>
 			<td><ul>
 				<li>Double healing of and lower tier than Leeching Seed, due to the opportunity cost of dealing damage to enemies, needing to see and hit your probably-juking-very-hard teammates, etc.</li>
+				<li>AI allies may attempt to use this item if there is a valid heal target and no enemies in range, and only if Artifact of Chaos is not on.</li>
 				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Ukulele/Polylute, War Horn, Gorag's Opus, Unstable Tesla Coil, and Brilliant Behemoth at once.</details></li>
 			</ul></td>
 		</tr>
@@ -706,6 +707,23 @@
 				<li>Provides a config option to control the level of detail of chat announcements when an item is taken.</li>
 				<li>Provides a config option to control the level of detail of chat announcements when the boss is killed.</li>
 			</ul></td>
+		</tr>
+	</tbody>
+</table>
+
+### Other Content
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><b>Equipment Drone Labels</b></td>
+			<td>If enabled, this module will apply the same naming scheme that Item Drones have ("Item Drone (colored name of item)") to vanilla Equipment Drones ("Equipment Drone (colored name of equipment)").</td>
 		</tr>
 	</tbody>
 </table>
