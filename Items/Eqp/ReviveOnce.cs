@@ -294,7 +294,7 @@ namespace ThinkInvisible.TinkersSatchel {
             objBody.SetBodyStateToPreferredInitialState();
 
             if(slot.equipmentIndex == this.equipmentDef.equipmentIndex) {
-                slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown, 0), (uint)slot.inventory.activeEquipmentSlot);
+                slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown * slot.inventory.CalculateEquipmentCooldownScale(), 0), (uint)slot.inventory.activeEquipmentSlot);
             }
             return true;
         }
