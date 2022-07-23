@@ -147,7 +147,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/fudgeDiceIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Fudge Dice</b><br>
-				Your heals can crit.
+				Periodically guarantee luck.
 			</td>
 		</tr>
 		<tr>
