@@ -2,6 +2,7 @@
 using UnityEngine;
 using TILER2;
 using System.Linq;
+using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MonkeysPaw : Equipment<MonkeysPaw> {
@@ -38,6 +39,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
+        public GameObject idrPrefab { get; private set; }
+
 
 
         ////// TILER2 Module Setup //////
@@ -45,6 +48,124 @@ namespace ThinkInvisible.TinkersSatchel {
         public MonkeysPaw() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/MonkeysPaw.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/monkeysPawIcon.png");
+            idrPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Display/MonkeysPaw.prefab");
+        }
+
+        public override void SetupModifyEquipmentDef() {
+            base.SetupModifyEquipmentDef();
+
+            modelResource.transform.Find("MonkeysPaw").gameObject.GetComponent<MeshRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Lemurian/matLemurian.mat").WaitForCompletion();
+            idrPrefab.transform.Find("MonkeysPaw").gameObject.GetComponent<MeshRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Lemurian/matLemurian.mat").WaitForCompletion();
+            CommonCode.RetrieveDefaultMaterials(idrPrefab.GetComponent<ItemDisplay>());
+
+            #region ItemDisplayRule Definitions
+
+            /// Survivors ///
+            displayRules.Add("Bandit2Body", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.04417F, 0.19067F, -0.24033F),
+                localAngles = new Vector3(337.4471F, 55.56866F, 354.1383F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            displayRules.Add("CaptainBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.00054F, 0.27487F, -0.29389F),
+                localAngles = new Vector3(320.018F, 64.74491F, 342.704F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            displayRules.Add("CommandoBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.01826F, 0.41296F, -0.21866F),
+                localAngles = new Vector3(6.28242F, 43.10916F, 36.10896F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            displayRules.Add("CrocoBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "SpineChest3",
+                localPos = new Vector3(-0.08684F, 0.67153F, -1.08192F),
+                localAngles = new Vector3(44.63957F, 264.7216F, 107.5511F),
+                localScale = new Vector3(3F, 3F, 3F)
+            });
+            displayRules.Add("EngiBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.01093F, 0.05395F, -0.36182F),
+                localAngles = new Vector3(314.4274F, 93.80039F, 295.7014F),
+                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+            });
+            displayRules.Add("HuntressBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.15785F, 0.13082F, -0.11723F),
+                localAngles = new Vector3(322.6137F, 19.11888F, 332.5494F),
+                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+            });
+            displayRules.Add("LoaderBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "MechBase",
+                localPos = new Vector3(0.0131F, -0.01474F, -0.22271F),
+                localAngles = new Vector3(328.3462F, 59.25051F, 349.7125F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            displayRules.Add("MageBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(-0.00568F, 0.22235F, -0.35905F),
+                localAngles = new Vector3(334.1837F, 59.43953F, 3.43586F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            displayRules.Add("MercBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.00072F, 0.34057F, -0.30971F),
+                localAngles = new Vector3(345.0132F, 50.15996F, 12.58943F),
+                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+            });
+            displayRules.Add("ToolbotBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.1298F, 1.52182F, -2.26367F),
+                localAngles = new Vector3(320.2272F, 71.04354F, 329.5704F),
+                localScale = new Vector3(3F, 3F, 3F)
+            });
+            displayRules.Add("TreebotBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "PlatformBase",
+                localPos = new Vector3(1.01798F, 0.30345F, -0.23827F),
+                localAngles = new Vector3(320.4994F, 321.4309F, 4.27371F),
+                localScale = new Vector3(1F, 1F, 1F)
+            });
+            displayRules.Add("RailgunnerBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Backpack",
+                localPos = new Vector3(0.12059F, 0.06472F, -0.16892F),
+                localAngles = new Vector3(321.9678F, 54.92611F, 353.519F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            displayRules.Add("VoidSurvivorBody", new ItemDisplayRule {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = idrPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.00089F, 0.05696F, -0.30533F),
+                localAngles = new Vector3(318.8723F, 56.99937F, 349.1709F),
+                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+            });
+            #endregion
         }
 
         public override void RefreshPermanentLanguage() {
