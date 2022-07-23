@@ -60,7 +60,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupModifyItemDef();
 
             modelResource.transform.Find("ExtraEquipment").gameObject.GetComponent<MeshRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Scav/matScavBackpack.mat").WaitForCompletion();
-            modelResource.transform.Find("ExtraEquipment").gameObject.GetComponent<MeshRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Scav/matScavBackpack.mat").WaitForCompletion();
+            idrPrefab.transform.Find("ExtraEquipment").gameObject.GetComponent<MeshRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Scav/matScavBackpack.mat").WaitForCompletion();
             CommonCode.RetrieveDefaultMaterials(idrPrefab.GetComponent<ItemDisplay>());
 
             #region ItemDisplayRule Definitions
