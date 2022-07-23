@@ -53,7 +53,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public ReviveOnce() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/ReviveOnce.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/reviveOnceIcon.png"); idrPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Display/ReviveOnce.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/reviveOnceIcon.png");
+            idrPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Display/ReviveOnce.prefab");
         }
 
         public override void SetupModifyEquipmentDef() {

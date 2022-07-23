@@ -1,6 +1,7 @@
 ﻿using R2API;
 using RoR2;
 using RoR2.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TILER2;
@@ -10,6 +11,7 @@ using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ItemDrone : T2Module<ItemDrone> {
+
         ////// Language //////
 
         public override void RefreshPermanentLanguage() {
@@ -22,6 +24,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
         
+        [AutoConfigRoOString()]
+        [AutoConfig("Items to prevent giving to Item Drones, as a comma-delimited list of internal names (will be automatically trimmed).", AutoConfigFlags.PreventNetMismatch)]
+        public string itemNameBlacklist { get; private set; } = "ScrapWhite, ScrapGreen, ScrapRed, ScrapYellow, ScrapWhiteSuppressed, ScrapGreenSuppressed, ScrapRedSuppressed, RegeneratingScrap, RegeneratingScrapConsumed, ExtraLifeConsumed, ExtraLifeVoidConsumed, FragileDamageBonusConsumed, HealingPotionConsumed, BeetleGland, RoboBallBuddy, MinorConstructOnKill, TitanGoldDuringTP";
+
+        [AutoConfigRoOString()]
+        [AutoConfig("Item tiers to prevent giving to Item Drones, as a comma-delimited list of internal names (will be automatically trimmed).", AutoConfigFlags.PreventNetMismatch)]
+        public string itemTierNameBlacklist { get; private set; } = "LunarTierDef, VoidTier1Def, VoidTier2Def, VoidTier3Def, VoidBossDef";
+
 
 
         ////// Other Fields/Properties //////
@@ -33,6 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public DirectorCard itemDroneDirectorCard;
         public GameObject itemDronePanelPrefab;
         public DirectorAPI.DirectorCardHolder itemDroneDCH;
+        public HashSet<ItemDef> blacklistedItems = new();
 
 
 
@@ -56,13 +67,25 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddNetworkedObject(itemDroneInteractablePrefab);
 
             SetupSpawnCard();
+
+            ItemTierCatalog.availability.CallWhenAvailable(() => ItemCatalog.availability.CallWhenAvailable(this.SetupCatalogReady));
         }
 
         public override void SetupBehavior() {
             base.SetupBehavior();
         }
+
         public override void SetupConfig() {
             base.SetupConfig();
+            ConfigEntryChanged += (nv, args) => {
+                if(args.target.boundProperty.Name == nameof(itemTierNameBlacklist) || args.target.boundProperty.Name == nameof(itemNameBlacklist)) {
+                    UpdateValidItems();
+                }
+            };
+        }
+
+        public void SetupCatalogReady() {
+            UpdateValidItems();
         }
 
         public override void Install() {
@@ -86,6 +109,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Private Methods //////
+
+        void UpdateValidItems() {
+            if(!ItemCatalog.availability.available || !ItemTierCatalog.availability.available) return;
+            var names = itemNameBlacklist.Split(',').Select(x => x.Trim());
+            var tierNames = itemTierNameBlacklist.Split(',').Select(x => x.Trim());
+            blacklistedItems.Clear();
+            blacklistedItems.UnionWith(ItemCatalog.allItemDefs.Where(idef => {
+                if(names.Contains(idef.name)) return true;
+                var itd = ItemTierCatalog.GetItemTierDef(idef.tier);
+                if(itd && tierNames.Contains(itd.name)) return true;
+                return false;
+            }));
+        }
 
         void LoadBodyPrefab() {
             ////body////
@@ -157,31 +193,6 @@ namespace ThinkInvisible.TinkersSatchel {
             var ppc = itemDroneInteractablePrefab.GetComponent<PickupPickerController>();
             ppc.available = true;
             ppc.panelPrefab = itemDronePanelPrefab;
-
-            var ppcf = itemDroneInteractablePrefab.GetComponent<PickupPickerControllerFilteredSelector>();
-
-            //scrap
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhite"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreen"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapRed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapYellow"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapRedSuppressed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapGreenSuppressed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ScrapWhiteSuppressed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrap"));
-            //consumed items
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RegeneratingScrapConsumed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeConsumed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/ExtraLifeVoidConsumed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/FragileDamageBonusConsumed"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/HealingPotionConsumed"));
-            //AI summons (bugged)
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/BeetleGland"));
-            ppcf.blacklistedItems.Add(LegacyResourcesAPI.Load<ItemDef>("ItemDefs/RoboBallBuddy"));
-            ppcf.blacklistedItems.Add(Addressables.LoadAssetAsync<ItemDef>("RoR2/DLC1/MinorConstructOnKill/MinorConstructOnKill.asset")
-                .WaitForCompletion());
-            ppcf.blacklistedItems.Add(Addressables.LoadAssetAsync<ItemDef>("RoR2/Base/TitanGoldDuringTP/TitanGoldDuringTP.asset")
-                .WaitForCompletion());
         }
 
         void ModifyInteractablePrefabWithVanillaAssets() {
@@ -339,6 +350,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(PickupPickerController))]
     public class PickupPickerControllerFilteredSelector : MonoBehaviour {
+        [Obsolete()]
         public HashSet<ItemDef> blacklistedItems = new();
         PickupPickerController ppc;
 
@@ -356,7 +368,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var iind = body.inventory.itemAcquisitionOrder[i];
                 var idef = ItemCatalog.GetItemDef(iind);
                 var pind = PickupCatalog.FindPickupIndex(iind);
-                if(idef && pind != PickupIndex.none && idef.canRemove && !idef.hidden && !blacklistedItems.Contains(idef)) {
+                if(idef && pind != PickupIndex.none && idef.canRemove && !idef.hidden && idef.tier != ItemTier.NoTier && !ItemDrone.instance.blacklistedItems.Contains(idef)) {
                     opts.Add(new PickupPickerController.Option {
                         available = true,
                         pickupIndex = pind
