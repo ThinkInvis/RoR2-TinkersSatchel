@@ -27,7 +27,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Number of extra equipment interactables to spawn per player per stage.", AutoConfigFlags.None, 0, int.MaxValue)]
-        public int extraEquipmentSpawnCount { get; private set; } = 2;
+        public int extraEquipmentSpawnCount { get; private set; } = 3;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfig("Chance for an extra equipment interactable to be a multishop instead of a barrel.", AutoConfigFlags.None, 0f, 1f)]
