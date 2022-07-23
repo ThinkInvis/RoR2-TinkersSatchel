@@ -5,11 +5,10 @@ using TILER2;
 using static TILER2.MiscUtil;
 using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class ExtraEquipment : Item<ExtraEquipment> {
-
-		public const int MAX_STACKS = 200; //total equipment slots are limited to byte.maxvalue (255)
 
 		////// Item Data //////
 
@@ -179,41 +178,40 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void Install() {
 			base.Install();
-			CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem += ChestBehavior_RollItem;
 		}
 
         public override void Uninstall() {
 			base.Uninstall();
-			CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
-			On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
+            On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
+            On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
 		}
 
 
 
-		////// Hooks //////
+        ////// Hooks //////
 
-		private void ChestBehavior_RollItem(On.RoR2.ChestBehavior.orig_RollItem orig, ChestBehavior self) {
+        private void ChestBehavior_RollItem(On.RoR2.ChestBehavior.orig_RollItem orig, ChestBehavior self) {
 			orig(self);
 			if(self.gameObject.name == "ScavBackpack(Clone)" && rng.nextNormalizedFloat < dropChance) {
 				self.dropPickup = pickupIndex;
 			}
-		}
+        }
 
-		private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(!body.master) return;
-			var hasItem = GetCount(body) > 0;
-			var component = body.master.gameObject.GetComponent<ExtraEquipmentTracker>();
-			if(hasItem && !component)
-				component = body.master.gameObject.AddComponent<ExtraEquipmentTracker>();
-			if(component)
-				component.CheckCount();
-		}
+        private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+            var hasItem = GetCount(self) > 0;
+            var component = self.gameObject.GetComponent<ExtraEquipmentStash>();
+            if(hasItem && !component)
+                component = self.gameObject.AddComponent<ExtraEquipmentStash>();
+            if(component)
+                component.CheckCount();
+        }
 	}
 
 	[RequireComponent(typeof(CharacterMaster))]
-	public class ExtraEquipmentTracker : MonoBehaviour {
-		int trackedExtraSlotCount = 0;
+	public class ExtraEquipmentStash : MonoBehaviour {
+        Queue<EquipmentState> stashedEquipment = new();
 
 		float stationaryStopwatch = 0f;
 		float shuffleStopwatch = 0f;
@@ -245,7 +243,8 @@ namespace ThinkInvisible.TinkersSatchel {
 					shuffleStopwatch += Time.fixedDeltaTime;
 					if(shuffleStopwatch >= ExtraEquipment.instance.cyclePeriod) {
 						shuffleStopwatch = 0f;
-						master.inventory.SetActiveEquipmentSlot((byte)((master.inventory.activeEquipmentSlot + 1) % Mathf.Min(256, master.inventory.GetEquipmentSlotCount())));
+                        stashedEquipment.Enqueue(master.inventory.currentEquipmentState);
+                        master.inventory.SetEquipment(stashedEquipment.Dequeue(), master.inventory.activeEquipmentSlot);
 					}
 				}
 			} else if(!isStopped) {
@@ -258,22 +257,30 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
 		public void CheckCount() {
-			var count = Mathf.Min(ExtraEquipment.instance.GetCount(master), ExtraEquipment.MAX_STACKS);
+			var count = ExtraEquipment.instance.GetCount(master);
 
-			if(count == 0) {
-				HG.ArrayUtils.ArrayRemoveAtAndResize(ref master.inventory.equipmentStateSlots, master.inventory.GetEquipmentSlotCount() - trackedExtraSlotCount, trackedExtraSlotCount);
+            if(count > stashedEquipment.Count) {
+                stashedEquipment.Enqueue(EquipmentState.empty);
+            } else if(count < stashedEquipment.Count) {
+                var removedEquipment = stashedEquipment.Dequeue();
+                if(removedEquipment.equipmentIndex != EquipmentIndex.None && master.hasBody) {
+                    var mb = master.GetBody();
+                    var ipb = mb.inputBank;
+                    var obj = GameObject.Instantiate(GenericPickupController.pickupPrefab, ipb ? ipb.aimOrigin : mb.aimOrigin, Quaternion.identity);
+                    var gpcComponent = obj.GetComponent<GenericPickupController>();
+                    if(gpcComponent) {
+                        var pi = PickupCatalog.FindPickupIndex(removedEquipment.equipmentIndex);
+                        gpcComponent.NetworkpickupIndex = pi;
+                    }
+
+                    var rbdy = obj.GetComponent<Rigidbody>();
+                    rbdy.velocity = (ipb ? ipb.aimDirection : mb.transform.forward) * -10f;
+                    NetworkServer.Spawn(obj);
+                }
+            }
+
+			if(count == 0)
 				Destroy(this);
-			} else if(count > trackedExtraSlotCount) {
-				while(trackedExtraSlotCount != count) {
-					HG.ArrayUtils.ArrayAppend(ref master.inventory.equipmentStateSlots, new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now, 0));
-					trackedExtraSlotCount++;
-				}
-			} else if(count < trackedExtraSlotCount) {
-				while(trackedExtraSlotCount != count) {
-					HG.ArrayUtils.ArrayRemoveAtAndResize(ref master.inventory.equipmentStateSlots, master.inventory.GetEquipmentSlotCount() - 1);
-					trackedExtraSlotCount--;
-				}
-			}
 		}
     }
 }
