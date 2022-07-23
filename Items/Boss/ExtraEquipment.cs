@@ -201,16 +201,17 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
+            if(!body.master) return;
 			var hasItem = GetCount(body) > 0;
-			var component = body.GetComponent<ExtraEquipmentTracker>();
+			var component = body.master.gameObject.GetComponent<ExtraEquipmentTracker>();
 			if(hasItem && !component)
-				component = body.gameObject.AddComponent<ExtraEquipmentTracker>();
+				component = body.master.gameObject.AddComponent<ExtraEquipmentTracker>();
 			if(component)
 				component.CheckCount();
 		}
 	}
 
-	[RequireComponent(typeof(CharacterBody))]
+	[RequireComponent(typeof(CharacterMaster))]
 	public class ExtraEquipmentTracker : MonoBehaviour {
 		int trackedExtraSlotCount = 0;
 
@@ -220,19 +221,21 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		Vector3 prevPos;
 
-		CharacterBody body;
+		CharacterMaster master;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
-			body = GetComponent<CharacterBody>();
-			prevPos = body.transform.position;
+			master = GetComponent<CharacterMaster>();
+            if(master.hasBody)
+                prevPos = master.GetBodyObject().transform.position;
+            else prevPos = Vector3.zero;
         }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
-			if(!body || !NetworkServer.active) return;
+			if(!master || !master.hasBody || !NetworkServer.active) return;
 			float minMove = 0.1f * Time.fixedDeltaTime;
-			if((body.transform.position - prevPos).sqrMagnitude <= minMove * minMove) {
+			if((master.GetBodyObject().transform.position - prevPos).sqrMagnitude <= minMove * minMove) {
 				if(!isStopped) {
 					stationaryStopwatch += Time.fixedDeltaTime;
 					if(stationaryStopwatch > ExtraEquipment.instance.moveGracePeriod)
@@ -241,7 +244,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					shuffleStopwatch += Time.fixedDeltaTime;
 					if(shuffleStopwatch >= ExtraEquipment.instance.cyclePeriod) {
 						shuffleStopwatch = 0f;
-						body.inventory.SetActiveEquipmentSlot((byte)((body.inventory.activeEquipmentSlot + 1) % Mathf.Min(256, body.inventory.GetEquipmentSlotCount())));
+						master.inventory.SetActiveEquipmentSlot((byte)((master.inventory.activeEquipmentSlot + 1) % Mathf.Min(256, master.inventory.GetEquipmentSlotCount())));
 					}
 				}
 			} else if(!isStopped) {
@@ -250,23 +253,23 @@ namespace ThinkInvisible.TinkersSatchel {
 				shuffleStopwatch = 0f;
 			}
 
-			prevPos = body.transform.position;
+			prevPos = master.transform.position;
         }
 
 		public void CheckCount() {
-			var count = Mathf.Min(ExtraEquipment.instance.GetCount(body), ExtraEquipment.MAX_STACKS);
+			var count = Mathf.Min(ExtraEquipment.instance.GetCount(master), ExtraEquipment.MAX_STACKS);
 
 			if(count == 0) {
-				HG.ArrayUtils.ArrayRemoveAtAndResize(ref body.inventory.equipmentStateSlots, body.inventory.GetEquipmentSlotCount() - trackedExtraSlotCount, trackedExtraSlotCount);
+				HG.ArrayUtils.ArrayRemoveAtAndResize(ref master.inventory.equipmentStateSlots, master.inventory.GetEquipmentSlotCount() - trackedExtraSlotCount, trackedExtraSlotCount);
 				Destroy(this);
 			} else if(count > trackedExtraSlotCount) {
 				while(trackedExtraSlotCount != count) {
-					HG.ArrayUtils.ArrayAppend(ref body.inventory.equipmentStateSlots, new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now, 0));
+					HG.ArrayUtils.ArrayAppend(ref master.inventory.equipmentStateSlots, new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now, 0));
 					trackedExtraSlotCount++;
 				}
 			} else if(count < trackedExtraSlotCount) {
 				while(trackedExtraSlotCount != count) {
-					HG.ArrayUtils.ArrayRemoveAtAndResize(ref body.inventory.equipmentStateSlots, body.inventory.GetEquipmentSlotCount() - 1);
+					HG.ArrayUtils.ArrayRemoveAtAndResize(ref master.inventory.equipmentStateSlots, master.inventory.GetEquipmentSlotCount() - 1);
 					trackedExtraSlotCount--;
 				}
 			}
