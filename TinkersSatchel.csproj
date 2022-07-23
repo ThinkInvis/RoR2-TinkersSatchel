@@ -29,6 +29,9 @@
     <Reference Include="ClassicItems">
       <HintPath>..\ClassicItems\Build\ClassicItems\ClassicItems.dll</HintPath>
     </Reference>
+    <Reference Include="Dronemeld">
+      <HintPath>..\Dronemeld\Build\Dronemeld\Dronemeld.dll</HintPath>
+    </Reference>
     <Reference Include="TILER2">
       <HintPath>..\TILER2\bin\Release\netstandard2.0\TILER2.dll</HintPath>
       <Private>false</Private>
