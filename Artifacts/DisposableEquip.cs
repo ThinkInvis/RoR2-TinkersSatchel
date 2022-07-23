@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override string displayName => "Artifact of Reconfiguration";
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => $"Start with {rucksackCount} Scavenger's Rucksacks. All equipments have no cooldown and are consumed on use. Spawns {extraEquipmentSpawnCount} extra equipment barrels/multishops per player per stage.";
+        protected override string GetDescString(string langid = null) => $"Start with 3 equipment slots. Equipment is more common, and is consumed instead of going on cooldown.";
 
 
 
