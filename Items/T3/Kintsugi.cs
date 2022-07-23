@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		protected override string GetPickupString(string langid = null) =>
 			"Your broken/consumed/scrapped items increase all your stats.";
 		protected override string GetDescString(string langid = null) =>
-			$"Each of your broken, consumed, or scrapped items increases <style=cIsUtility>ALL stats</style> based on its tier <style=cStack>(stacks linearly)</style>: {Pct(tier1Bonus)}% for Common items, {Pct(tier2Bonus)}% for Uncommon items, and {Pct(tier3Bonus)}% for Rare/Boss items.";
+			$"Each of your broken, consumed, or scrapped items increases <style=cIsUtility>ALL stats</style> based on its tier <style=cStack>(stacks linearly)</style>: {tier1Bonus:0%} for Common items, {tier2Bonus:0%} for Uncommon items, and {tier3Bonus:0%} for Rare/Boss items.";
 		protected override string GetLoreString(string langid = null) => "";
 
 
