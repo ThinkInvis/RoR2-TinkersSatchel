@@ -13,12 +13,14 @@
 	- Artifacts:
 		- Artifact of Reconfiguration: Start with 2 Scavenger's Rucksacks. All equipment has no cooldown and is consumed on use. Spawns a lot of extra equipment every stage.
 - Balance pass:
-	- Bulwark Drone was severely overperforming in an attempt to justify its high cost and lack of attacks, especially when multiple were obtained. Its taunt mechanic was also unintentionally inconsistent.
-		- Bulwark Drones now spawn with one stack of Razorwire. <small>Those shields are pointy!</small>
-		- Reduced taunt chance of Bulwark Drones per enemy (50% --> 25%).
-		- Reduced base stats of Bulwark Drones (health 400 --> 275, shield 60 --> 25, health regen 5 --> 2, armor 20 --> 0).
-		- Reduced base cost of Bulwark Drones ($80 --> $60).
-		- Bulwark Drone now selects a consistent fraction of valid targets to taunt, instead of rolling a chance for each target.
+	- Bulwark Drone:
+		- Bulwark Drone was severely overperforming in an attempt to justify its high cost and lack of attacks, especially when multiple were obtained. Its taunt mechanic was also unintentionally inconsistent.
+		- Now spawns with one stack of Razorwire. <small>Those shields are pointy!</small>
+		- Reduced taunt chance per enemy (50% --> 25%).
+		- Now selects a consistent fraction of valid targets to taunt, instead of rolling a chance for each target.
+		- Reduced base stats (health 400 --> 275, shield 60 --> 25, health regen 5 --> 2, armor 20 --> 0, move speed 20 --> 15).
+		- Increased hitbox size.
+		- Reduced base cost ($80 --> $60).
 	- Item Drone can no longer accept Lunar nor Void items by default. <small>You are now <i>slightly</i> safer from your friends.</small>
 - Item Drone item blacklist is now configurable and also includes a tier blacklist.
 - Made Bulwark Drone compatible with the Dronemeld mod.
