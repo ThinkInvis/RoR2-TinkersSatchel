@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		[AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
 		[AutoConfig("Time required to register a movement stop, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float moveGracePeriod { get; private set; } = 1f;
+		public float moveGracePeriod { get; private set; } = 3f;
 
 		[AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
 		[AutoConfig("Cycle time of extra slots, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
