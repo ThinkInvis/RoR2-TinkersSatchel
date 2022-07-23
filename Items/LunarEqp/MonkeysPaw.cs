@@ -15,9 +15,9 @@ namespace ThinkInvisible.TinkersSatchel {
         public override float cooldown {get; protected set;} = 120f;
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Clone an item to every ally... <style=cDeath>BUT enemies also receive one per ally.</style>";
+        protected override string GetPickupString(string langid = null) => "Clone an item to every ally... <style=cDeath>BUT living enemies also receive one per ally.</style>";
         protected override string GetDescString(string langid = null) =>
-            $"Use on an item drop to consume it and give <style=cDeath>ALL characters</style> a copy of it; enemies gain multiple equal to ally count.";
+            $"Use on an item drop to consume it and give <style=cDeath>ALL characters</style> a copy of it; living enemies gain multiple equal to ally count.";
         protected override string GetLoreString(string langid = null) => "";
 
 
