@@ -115,7 +115,12 @@ namespace ThinkInvisible.TinkersSatchel {
             var names = itemNameBlacklist.Split(',').Select(x => x.Trim());
             var tierNames = itemTierNameBlacklist.Split(',').Select(x => x.Trim());
             blacklistedItems.Clear();
-            blacklistedItems.UnionWith(ItemCatalog.allItemDefs.Where(idef => names.Contains(idef.name) || tierNames.Contains(ItemTierCatalog.GetItemTierDef(idef.tier).name)));
+            blacklistedItems.UnionWith(ItemCatalog.allItemDefs.Where(idef => {
+                if(names.Contains(idef.name)) return true;
+                var itd = ItemTierCatalog.GetItemTierDef(idef.tier);
+                if(itd && tierNames.Contains(itd.name)) return true;
+                return false;
+            }));
         }
 
         void LoadBodyPrefab() {
