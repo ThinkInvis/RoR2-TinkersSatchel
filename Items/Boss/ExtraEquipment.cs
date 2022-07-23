@@ -70,105 +70,105 @@ namespace ThinkInvisible.TinkersSatchel {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.04417F, 0.19067F, -0.24033F),
-                localAngles = new Vector3(337.4471F, 55.56866F, 354.1383F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(-0.00847F, 0.10446F, -0.27956F),
+                localAngles = new Vector3(60.38528F, 48.27337F, 17.60868F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("CaptainBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.00054F, 0.27487F, -0.29389F),
-                localAngles = new Vector3(320.018F, 64.74491F, 342.704F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(-0.04166F, 0.1823F, -0.19643F),
+                localAngles = new Vector3(45.86486F, 221.4702F, 357.8421F),
+                localScale = new Vector3(0.6F, 0.6F, 0.6F)
             });
             displayRules.Add("CommandoBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.01826F, 0.41296F, -0.21866F),
-                localAngles = new Vector3(6.28242F, 43.10916F, 36.10896F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(-0.06297F, 0.27883F, -0.28509F),
+                localAngles = new Vector3(54.64636F, 52.7043F, 22.65946F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("CrocoBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "SpineChest3",
-                localPos = new Vector3(-0.08684F, 0.67153F, -1.08192F),
-                localAngles = new Vector3(44.63957F, 264.7216F, 107.5511F),
-                localScale = new Vector3(3F, 3F, 3F)
+                localPos = new Vector3(0.38739F, 2.46798F, -0.85095F),
+                localAngles = new Vector3(3.14693F, 333.734F, 145.2841F),
+                localScale = new Vector3(4F, 4F, 4F)
             });
             displayRules.Add("EngiBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.01093F, 0.05395F, -0.36182F),
-                localAngles = new Vector3(314.4274F, 93.80039F, 295.7014F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                localPos = new Vector3(-0.01913F, 0.25145F, -0.43333F),
+                localAngles = new Vector3(51.93349F, 44.28279F, 10.0549F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("HuntressBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.15785F, 0.13082F, -0.11723F),
-                localAngles = new Vector3(322.6137F, 19.11888F, 332.5494F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                localPos = new Vector3(0.18717F, 0.02162F, -0.18228F),
+                localAngles = new Vector3(45.99033F, 343.6589F, 354.9082F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("LoaderBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "MechBase",
-                localPos = new Vector3(0.0131F, -0.01474F, -0.22271F),
-                localAngles = new Vector3(328.3462F, 59.25051F, 349.7125F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(-0.00788F, 0.04801F, -0.31238F),
+                localAngles = new Vector3(44.86855F, 36.96589F, 358.149F),
+                localScale = new Vector3(0.6F, 0.6F, 0.6F)
             });
             displayRules.Add("MageBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(-0.00568F, 0.22235F, -0.35905F),
-                localAngles = new Vector3(334.1837F, 59.43953F, 3.43586F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(-0.05218F, 0.14768F, -0.49051F),
+                localAngles = new Vector3(58.85672F, 64.97396F, 21.87442F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("MercBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.00072F, 0.34057F, -0.30971F),
-                localAngles = new Vector3(345.0132F, 50.15996F, 12.58943F),
-                localScale = new Vector3(0.3F, 0.3F, 0.3F)
+                localPos = new Vector3(-0.02525F, 0.03155F, -0.34501F),
+                localAngles = new Vector3(43.24475F, 39.96407F, 3.55216F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             displayRules.Add("ToolbotBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.1298F, 1.52182F, -2.26367F),
-                localAngles = new Vector3(320.2272F, 71.04354F, 329.5704F),
-                localScale = new Vector3(3F, 3F, 3F)
+                localPos = new Vector3(0.31665F, 1.52193F, -3.21407F),
+                localAngles = new Vector3(319.1342F, 51.2494F, 78.68367F),
+                localScale = new Vector3(4F, 4F, 4F)
             });
             displayRules.Add("TreebotBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "PlatformBase",
-                localPos = new Vector3(1.01798F, 0.30345F, -0.23827F),
-                localAngles = new Vector3(320.4994F, 321.4309F, 4.27371F),
+                localPos = new Vector3(0.00002F, 1.01277F, -0.13806F),
+                localAngles = new Vector3(34.70179F, 75.86031F, 135.5334F),
                 localScale = new Vector3(1F, 1F, 1F)
             });
             displayRules.Add("RailgunnerBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Backpack",
-                localPos = new Vector3(0.12059F, 0.06472F, -0.16892F),
-                localAngles = new Vector3(321.9678F, 54.92611F, 353.519F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(-0.05628F, -0.01992F, -0.0987F),
+                localAngles = new Vector3(55.49288F, 36.24144F, 4.64347F),
+                localScale = new Vector3(0.85F, 0.85F, 0.85F)
             });
             displayRules.Add("VoidSurvivorBody", new ItemDisplayRule {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = idrPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.00089F, 0.05696F, -0.30533F),
-                localAngles = new Vector3(318.8723F, 56.99937F, 349.1709F),
-                localScale = new Vector3(0.4F, 0.4F, 0.4F)
+                localPos = new Vector3(0.01085F, 0.00473F, -0.31864F),
+                localAngles = new Vector3(31.0059F, 44.92817F, 358.0923F),
+                localScale = new Vector3(0.5F, 0.5F, 0.5F)
             });
             #endregion
         }
