@@ -195,6 +195,17 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/fudgeDiceIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Fudge Dice</b><br>
+				<details>
+					<summary>Periodically guarantee luck.</summary>
+					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is guaranteed to have a favorable outcome.</small>
+				</details>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Tier-3 Items</h3></td>
 		</tr>
 		<tr>
@@ -287,6 +298,22 @@
 				</details>
 			</td>
 			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
+			<td colspan="3" align="center"><h3>Boss Items</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extraEquipmentIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Scavenger's Rucksack</b><br>
+				<details>
+					<summary>Hold an extra Equipment. Stand still to rummage through the rucksack.</summary>
+					<small>Gain 1 extra Equipment slot (+1 per stack). Standing still for more than 2 seconds causes you to cycle through Equipment slots once per 1 second.</small>
+				</details>
+			</td>
+			<td><ul>
+				<li>Has a 5% chance (configurable) to replace a drop from a Scavenger backpack.</li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -396,6 +423,18 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mountainTokenIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Celestial Gambit</b><br>
+				<details>
+					<summary>Gain an extra item reward from teleporters... <i>BUT the teleporter zone weakens you.</i></summary>
+					<small>The teleporter boss drops 1 extra item when killed (+1 per stack). As long as you remain in the teleporter zone, you receive 50% less healing and health regen (+50% per stack, hyperbolic) and become unable to jump.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Lunar Equipments</h3></td>
 		</tr>
 		<tr>
@@ -418,6 +457,18 @@
 				<details>
 				<summary>Throw a bomb that will detonate when damaged... <i>BUT it may damage survivors too.</i> <small>[Cooldown: 40 s]</small></summary>
 				<small>Throw a live mortar shell that will embed in the ground. After taking any damage, or after 10 seconds, the shell explodes for 8000% damage to ALL characters in range.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/monkeysPawIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Lemurian's Claw</b><br>
+				<details>
+				<summary>Clone an item to every ally... <i>BUT living enemies also receive one per ally.</i> <small>[Cooldown: 120 s]</small></summary>
+				<small>Use on an item drop to consume it and give ALL characters a copy of it; living enemies gain multiple equal to ally count.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -636,6 +687,7 @@
 			</td>
 			<td><ul>
 				<li>Will drop contained items on death.</li>
+				<li>By default, cannot accept Void nor Lunar items, as well as a select few others.</li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -643,8 +695,8 @@
 			<td>
 				<b>Bulwark Drone</b><br>
 				<details>
-					<summary>Enemies near the drone will attack it more often. Has high health and innate shield and armor.</summary>
-					<small>Found slightly more commonly than Equipment Drones, a Bulwark Drone is purchased with money (2x as much as a Gunner Drone). Bulwark Drones have very high health, as well as an innate regenerating shield and damage-resisting armor. An activated Bulwark Drone will follow you (or, if dead, another ally) closely; every 5 seconds, every enemy within 100 meters of the Bulwark Drone will have a 50% chance to be Taunted by it for the duration.</small>
+					<summary>Enemies near the drone will attack it more often. Has high health and innate shield.</summary>
+					<small>Found slightly more commonly than Equipment Drones, a Bulwark Drone is purchased with money (1.5x as much as a Gunner Drone). Bulwark Drones have high health, an innate regenerating shield, and spawn with one stack of Razorwire. An activated Bulwark Drone will follow you (or, if dead, another ally) closely; every 5 seconds, 25% of enemies within 100 meters of the Bulwark Drone will be Taunted by it for the duration.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -706,6 +758,15 @@
 			<td><ul>
 				<li>Provides a config option to control the level of detail of chat announcements when an item is taken.</li>
 				<li>Provides a config option to control the level of detail of chat announcements when the boss is killed.</li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/DisposableEquip_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Reconfiguration</b></td>
+			<td>Start with 3 equipment slots. Equipment is more common, and is consumed instead of going on cooldown.</td>
+			<td><ul>
+				<li>Provides a config option to control the number of extra equipment slots (provided as a Scavenger's Rucksack item on spawn).</li>
+				<li>Provides a config option to control how many extra equipment interactables spawn per player per stage.</li>
 			</ul></td>
 		</tr>
 	</tbody>

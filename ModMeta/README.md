@@ -14,13 +14,14 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 38 items/equipments:
+- 42 items/equipments:
 	- 7 tier-1,
-	- 6 tier-2,
+	- 7 tier-2,
 	- 6 tier-3,
+	- 1 boss item,
 	- 5 equipments,
-	- 3 lunar items,
-	- 3 lunar equipments,
+	- 4 lunar items,
+	- 4 lunar equipments,
 	- 3 tier-1 void,
 	- 3 tier-2 void,
 	- 2 tier-3 void;
@@ -29,7 +30,9 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 - 6 skill variants:
 	- 3 for Commando
 	- and 3 for Engineer;
-- and 5 artifacts.
+- 6 artifacts;
+- and 1 other feature:
+	- a UI tweak.
 
 Short summaries are provided below. For a full description of each item, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ContentSummary.md
 
@@ -141,6 +144,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/fudgeDiceIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Fudge Dice</b><br>
+				Your heals can crit.
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Tier-3 Items</h3></td>
 		</tr>
 		<tr>
@@ -183,6 +193,16 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Kintsugi</b><br>
 				Your broken/consumed/scrapped items increase all your stats.
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><h3>Boss Items</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extraEquipmentIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Scavenger's Rucksack</b><br>
+				Hold an extra Equipment. Stand still to rummage through the rucksack.
 			</td>
 		</tr>
 		<tr>
@@ -248,6 +268,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mountainTokenIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Celestial Gambit</b><br>
+				Gain an extra item reward from teleporters... <i>BUT the teleporter zone weakens you.</i>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Lunar Equipments</h3></td>
 		</tr>
 		<tr>
@@ -269,6 +296,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>EMP Device</b><br>
 				Disable skills on enemies... <i>BUT disable non-primary skills on survivors.</i> <small>[Cooldown: 60 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/monkeysPawIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Lemurian's Claw</b><br>
+				Clone an item to every ally... <i>BUT living enemies also receive one per ally.</i>
 			</td>
 		</tr>
 		<tr>
@@ -460,6 +494,11 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><b>Artifact of Safekeeping</b></td>
 			<td>All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.</td>
 		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/DisposableEquip_on.png?raw=true" width=128></td>
+			<td><b>Artifact of Reconfiguration</b></td>
+			<td>Start with 3 equipment slots. Equipment is more common, and is consumed instead of going on cooldown.</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -497,6 +536,30 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+
+**3.3.0**
+
+- New content:
+	- Items:
+		- Fudge Dice (T2): Every 20 seconds, automatically succeed on a random roll.
+		- Celestial Gambit (Lunar): Gain an extra item from the teleporter... BUT the teleporter zone weakens you (50% reduced healing per stack, no jumping). <small>Strawb!!</small>
+		- Lemurian's Claw (Lunar Equipment): Give a target item drop to ALL characters. Enemies receive multiple, 1 per ally.
+		- Scavenger's Rucksack (Boss): Hold one extra equipment. Stand still to cycle through equipment slots. Rarely replaces Scavenger backpack drops.
+	- Artifacts:
+		- Artifact of Reconfiguration: Start with 2 Scavenger's Rucksacks. All equipment has no cooldown and is consumed on use. Spawns a lot of extra equipment every stage.
+- Balance pass:
+	- Bulwark Drone was severely overperforming in an attempt to justify its high cost and lack of attacks, especially when multiple were obtained. Its taunt mechanic was also unintentionally inconsistent.
+		- Bulwark Drones now spawn with one stack of Razorwire. <small>Those shields are pointy!</small>
+		- Reduced taunt chance of Bulwark Drones per enemy (50% --> 25%).
+		- Reduced base stats of Bulwark Drones (health 400 --> 275, shield 60 --> 25, health regen 5 --> 2, armor 20 --> 0).
+		- Reduced base cost of Bulwark Drones ($80 --> $60).
+		- Bulwark Drone now selects a consistent fraction of valid targets to taunt, instead of rolling a chance for each target.
+	- Item Drone can no longer accept Lunar nor Void items by default. <small>You are now <i>slightly</i> safer from your friends.</small>
+- Item Drone item blacklist is now configurable and also includes a tier blacklist.
+- Made Bulwark Drone compatible with the Dronemeld mod.
+- Kintsugi:
+	- Fixed double percentage signs in description.
+	- Fixed missing unlockable icon.
 
 **3.2.0**
 
@@ -544,26 +607,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed Kintsugi always acting as if all characters have 1 stack of it.
 - Fixed Kintsugi description not reflecting configs.
 - Attempted to fix dead players being able to earn the Old War Lidar achievement in multiplayer.
-
-**3.0.0**
-
-- BREAKING CHANGES:
-	- Kintsugi valid items are now configurable as a list of item name tokens.
-		- REMOVED `public static (int t1, int t2, int t3plus) GetConsumedItemCountByTier(Inventory inventory)`.
-		- Added `public static Dictionary<ItemTier, int> GetConsumedItemCountByTier(Inventory inventory)`.
-		- Added `public string validItemNameTokens {get; private set;}` config property.
-		- Added `public static bool GetIsItemValid(ItemDef item)` public API method.
-	- Sturdy Mug and Timelost Rum now use ints instead of bools to track ignore state.
-		- Fixes hitscan projectiles repeatedly firing forever under some circumstances (e.g. when fired at Newt).
-		- REMOVED `public bool ignoreMugs = false;` from both classes.
-		- Added `public int ignoreStack = 0;` to both classes.
-- Balance pass:
-	- H3AD-53T now counts as a melee attack for purposes of Extendo-Arms.
-	- Causal Camera now has a configurable minimum time (default 3s), to make Gesture stacking while you have one less existentially hazardous.
-- Command Terminal will no longer summon Item Drone or Bulwark Drone if they are disabled.
-- If Command Terminal is allowed to work with Bottled Chaos in config (disabled by default), it will no longer remove other equipments when triggered by Bottled Chaos.
-- Timelost Rum now properly spawns projectiles at a muzzle point, instead of at the owner's core position (could lead to self-collision if stationary).
-- Improved an error message on Defibrillator to match newer, similar systems in Sturdy Mug and Timelost Rum.
-- Added some calculation shortcuts to Extendo-Arms public API (`public static float GetRangeMultiplier(CharacterBody body)`, `public static float GetDamageMultiplier(CharacterBody body)`).
-- Addressed some compiler messages and removed a duplicate state flag from Timelost Rum (reduced code complexity; should have minimal user-facing effect).
-- Updated libraries for latest Risk of Rain 2 patch.

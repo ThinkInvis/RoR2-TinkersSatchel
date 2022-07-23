@@ -2,6 +2,30 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.3.0**
+
+- New content:
+	- Items:
+		- Fudge Dice (T2): Every 20 seconds, automatically succeed on a random roll.
+		- Celestial Gambit (Lunar): Gain an extra item from the teleporter... BUT the teleporter zone weakens you (50% reduced healing per stack, no jumping). <small>Strawb!!</small>
+		- Lemurian's Claw (Lunar Equipment): Give a target item drop to ALL characters. Enemies receive multiple, 1 per ally.
+		- Scavenger's Rucksack (Boss): Hold one extra equipment. Stand still to cycle through equipment slots. Rarely replaces Scavenger backpack drops.
+	- Artifacts:
+		- Artifact of Reconfiguration: Start with 2 Scavenger's Rucksacks. All equipment has no cooldown and is consumed on use. Spawns a lot of extra equipment every stage.
+- Balance pass:
+	- Bulwark Drone was severely overperforming in an attempt to justify its high cost and lack of attacks, especially when multiple were obtained. Its taunt mechanic was also unintentionally inconsistent.
+		- Bulwark Drones now spawn with one stack of Razorwire. <small>Those shields are pointy!</small>
+		- Reduced taunt chance of Bulwark Drones per enemy (50% --> 25%).
+		- Reduced base stats of Bulwark Drones (health 400 --> 275, shield 60 --> 25, health regen 5 --> 2, armor 20 --> 0).
+		- Reduced base cost of Bulwark Drones ($80 --> $60).
+		- Bulwark Drone now selects a consistent fraction of valid targets to taunt, instead of rolling a chance for each target.
+	- Item Drone can no longer accept Lunar nor Void items by default. <small>You are now <i>slightly</i> safer from your friends.</small>
+- Item Drone item blacklist is now configurable and also includes a tier blacklist.
+- Made Bulwark Drone compatible with the Dronemeld mod.
+- Kintsugi:
+	- Fixed double percentage signs in description.
+	- Fixed missing unlockable icon.
+
 **3.2.0**
 
 - Balance pass:
