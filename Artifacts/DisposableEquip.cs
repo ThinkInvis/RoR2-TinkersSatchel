@@ -13,11 +13,25 @@ namespace ThinkInvisible.TinkersSatchel {
         public override string displayName => "Artifact of Flexibility";
 
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "Start with 2 Scavenger's Rucksacks. All equipments have no cooldown and are consumed on use. Spawns extra equipment barrels/multishops.";
+        protected override string GetDescString(string langid = null) => $"Start with {rucksackCount} Scavenger's Rucksacks. All equipments have no cooldown and are consumed on use. Spawns {extraEquipmentSpawnCount} extra equipment barrels/multishops per player per stage.";
 
 
 
         ////// Config //////
+
+        [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Number of Scavenger's Rucksacks to grant at run start.", AutoConfigFlags.None, 0, int.MaxValue)]
+        public int rucksackCount { get; private set; } = 2;
+
+        [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Number of extra equipment interactables to spawn per player per stage.", AutoConfigFlags.None, 0, int.MaxValue)]
+        public int extraEquipmentSpawnCount { get; private set; } = 2;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfig("Chance for an extra equipment interactable to be a multishop instead of a barrel.", AutoConfigFlags.None, 0f, 1f)]
+        public float multishopChance { get; private set; } = 0.2f;
 
 
 
@@ -53,10 +67,10 @@ namespace ThinkInvisible.TinkersSatchel {
             var sc1 = LegacyResourcesAPI.Load<InteractableSpawnCard>("SpawnCards/InteractableSpawnCard/iscEquipmentBarrel");
             var sc2 = LegacyResourcesAPI.Load<InteractableSpawnCard>("SpawnCards/InteractableSpawnCard/iscTripleShopEquipment");
             var participants = Run.instance.participatingPlayerCount;
-            for(var count = 0; count < participants * 2; count++) {
+            for(var count = 0; count < participants * extraEquipmentSpawnCount; count++) {
                 for(var retries = 0; retries < 10; retries++) {
                     var obj = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(
-                        (self.rng.nextNormalizedFloat < 0.8f) ? sc1 : sc2,
+                        (self.rng.nextNormalizedFloat > multishopChance) ? sc1 : sc2,
                         dpr,
                         self.rng
                         ));
@@ -71,7 +85,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void Run_onPlayerFirstCreatedServer(Run run, PlayerCharacterMasterController pcmc) {
             if(IsActiveAndEnabled() && pcmc && pcmc.master)
-                pcmc.master.inventory.GiveItem(ExtraEquipment.instance.catalogIndex, 2);
+                pcmc.master.inventory.GiveItem(ExtraEquipment.instance.catalogIndex, rucksackCount);
         }
 
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef) {
