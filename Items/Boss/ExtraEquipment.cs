@@ -234,8 +234,9 @@ namespace ThinkInvisible.TinkersSatchel {
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void FixedUpdate() {
 			if(!master || !master.hasBody || !NetworkServer.active) return;
+            var currPos = master.GetBodyObject().transform.position;
 			float minMove = 0.1f * Time.fixedDeltaTime;
-			if((master.GetBodyObject().transform.position - prevPos).sqrMagnitude <= minMove * minMove) {
+			if((currPos - prevPos).sqrMagnitude <= minMove * minMove) {
 				if(!isStopped) {
 					stationaryStopwatch += Time.fixedDeltaTime;
 					if(stationaryStopwatch > ExtraEquipment.instance.moveGracePeriod)
@@ -253,7 +254,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				shuffleStopwatch = 0f;
 			}
 
-			prevPos = master.transform.position;
+			prevPos = currPos;
         }
 
 		public void CheckCount() {
