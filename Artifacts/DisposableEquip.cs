@@ -32,17 +32,42 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             Run.onPlayerFirstCreatedServer += Run_onPlayerFirstCreatedServer;
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
+            On.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             Run.onPlayerFirstCreatedServer -= Run_onPlayerFirstCreatedServer;
             On.RoR2.EquipmentSlot.PerformEquipmentAction -= EquipmentSlot_PerformEquipmentAction;
+            On.RoR2.SceneDirector.PopulateScene -= SceneDirector_PopulateScene;
         }
 
 
 
         ////// Hooks //////
+
+        private void SceneDirector_PopulateScene(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self) {
+            orig(self);
+            if(!Run.instance || !IsActiveAndEnabled()) return;
+            var dpr = new DirectorPlacementRule { placementMode = DirectorPlacementRule.PlacementMode.Random };
+            var sc1 = LegacyResourcesAPI.Load<InteractableSpawnCard>("SpawnCards/InteractableSpawnCard/iscEquipmentBarrel");
+            var sc2 = LegacyResourcesAPI.Load<InteractableSpawnCard>("SpawnCards/InteractableSpawnCard/iscTripleShopEquipment");
+            var participants = Run.instance.participatingPlayerCount;
+            for(var count = 0; count < participants * 2; count++) {
+                for(var retries = 0; retries < 10; retries++) {
+                    var obj = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(
+                        (self.rng.nextNormalizedFloat < 0.8f) ? sc1 : sc2,
+                        dpr,
+                        self.rng
+                        ));
+                    if(obj) {
+                        if(obj.TryGetComponent<PurchaseInteraction>(out var purch) && purch.costType == CostTypeIndex.Money)
+                            purch.Networkcost = Run.instance.GetDifficultyScaledCost(purch.cost);
+                        break;
+                    }
+                }
+            }
+        }
 
         private void Run_onPlayerFirstCreatedServer(Run run, PlayerCharacterMasterController pcmc) {
             if(IsActiveAndEnabled() && pcmc && pcmc.master)
