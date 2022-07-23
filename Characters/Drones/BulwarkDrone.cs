@@ -170,7 +170,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [RequireComponent(typeof(TeamComponent), typeof(CharacterBody))]
     public class TauntNearbyBehaviour : MonoBehaviour {
         public float range = 100f;
-        public float tauntChancePerTargetPerInterval = 0.5f;
+        public float tauntChancePerTargetPerInterval = 0.25f;
         public float scanInterval = 5f;
         public HurtBox hurtbox;
         
@@ -191,6 +191,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(stopwatch <= 0f) {
                 var rangeSq = range * range;
                 stopwatch = scanInterval;
+
                 var tgtsToTaunt = GameObject.FindObjectsOfType<CharacterBody>()
                     .Where(x => (x.transform.position - transform.position).sqrMagnitude < rangeSq
                         && x.master
@@ -198,10 +199,15 @@ namespace ThinkInvisible.TinkersSatchel {
                     .Select(x => x.master.GetComponent<BaseAI>())
                     .Where(x => x);
 
-                foreach(var ai in tgtsToTaunt) {
-                    if(tauntChancePerTargetPerInterval > UnityEngine.Random.value)
-                        TauntDebuffController.ApplyTaunt(ai, body, scanInterval);
-                }
+                var tauntChanceAdvantage = body.master ? Compat_Dronemeld.SafeGetStackCount(body.master.inventory) : 0;
+                var modifiedTauntChance = 1f - Mathf.Pow(1f - tauntChancePerTargetPerInterval, tauntChanceAdvantage + 1);
+
+                tgtsToTaunt = tgtsToTaunt
+                    .OrderBy(t => BulwarkDrone.instance.rng.nextNormalizedFloat)
+                    .Take(Mathf.RoundToInt(tgtsToTaunt.Count() * modifiedTauntChance));
+
+                foreach(var ai in tgtsToTaunt)
+                    TauntDebuffController.ApplyTaunt(ai, body, scanInterval);
             }
         }
     }
