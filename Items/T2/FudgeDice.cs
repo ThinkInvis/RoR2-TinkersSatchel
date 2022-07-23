@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Periodically guarantee luck.";
-        protected override string GetDescString(string langid = null) => $"Once every {icd} seconds <style=cStack>(-{cdrStack:P0} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>guaranteed to succeed</style>.";
+        protected override string GetDescString(string langid = null) => $"Once every {icd} seconds <style=cStack>(-{cdrStack:P0} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>guaranteed to have a favorable outcome</style>.";
         protected override string GetLoreString(string langid = null) => "Don't tell the DM.";
 
 
