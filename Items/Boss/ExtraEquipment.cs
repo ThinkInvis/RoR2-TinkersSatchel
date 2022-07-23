@@ -35,6 +35,10 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Cycle time of extra slots, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float cyclePeriod { get; private set; } = 1f;
 
+		[AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
+		[AutoConfig("Chance to replace a drop from a Scavenger backpack with this item.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+		public float dropChance { get; private set; } = 0.03f;
+
 
 
 		////// Other Fields/Properties //////
@@ -55,17 +59,26 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void Install() {
 			base.Install();
 			CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.ChestBehavior.RollItem += ChestBehavior_RollItem;
 		}
 
         public override void Uninstall() {
 			base.Uninstall();
 			CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
+			On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
 		}
 
 
 
 		////// Hooks //////
-		
+
+		private void ChestBehavior_RollItem(On.RoR2.ChestBehavior.orig_RollItem orig, ChestBehavior self) {
+			orig(self);
+			if(self.gameObject.name == "ScavBackpack(Clone)" && rng.nextNormalizedFloat < dropChance) {
+				self.dropPickup = pickupIndex;
+			}
+		}
+
 		private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
 			var hasItem = GetCount(body) > 0;
 			var component = body.GetComponent<ExtraEquipmentTracker>();
