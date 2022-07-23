@@ -37,7 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		[AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
 		[AutoConfig("Chance to replace a drop from a Scavenger backpack with this item.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-		public float dropChance { get; private set; } = 0.03f;
+		public float dropChance { get; private set; } = 0.05f;
 
 
 
