@@ -259,14 +259,15 @@ namespace ThinkInvisible.TinkersSatchel {
 		public void CheckCount() {
 			var count = ExtraEquipment.instance.GetCount(master);
 
-            if(count > stashedEquipment.Count) {
+            while(stashedEquipment.Count < count) {
                 stashedEquipment.Enqueue(EquipmentState.empty);
-            } else if(count < stashedEquipment.Count) {
+            }
+            while(stashedEquipment.Count > count) {
                 var removedEquipment = stashedEquipment.Dequeue();
                 if(removedEquipment.equipmentIndex != EquipmentIndex.None && master.hasBody) {
                     var mb = master.GetBody();
                     var ipb = mb.inputBank;
-                    var obj = GameObject.Instantiate(GenericPickupController.pickupPrefab, ipb ? ipb.aimOrigin : mb.aimOrigin, Quaternion.identity);
+                    var obj = GameObject.Instantiate(GenericPickupController.pickupPrefab, mb.aimOrigin, Quaternion.identity);
                     var gpcComponent = obj.GetComponent<GenericPickupController>();
                     if(gpcComponent) {
                         var pi = PickupCatalog.FindPickupIndex(removedEquipment.equipmentIndex);
