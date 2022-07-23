@@ -21,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		protected override string GetPickupString(string langid = null) =>
 			"Hold an extra Equipment. Stand still to rummage through the rucksack.";
 		protected override string GetDescString(string langid = null) =>
-			$"Gain 1 extra Equipment slot <style=cStack>(+1 per stack)</style>. Standing still for more than {moveGracePeriod:N1} second{NPlur(moveGracePeriod)} causes you to cycle through Equipment slots once per {cyclePeriod:N1} second{NPlur(cyclePeriod)}.";
+			$"Gain 1 <style=cIsUtility>extra Equipment slot</style> <style=cStack>(+1 per stack)</style>. Standing still for more than {moveGracePeriod:N1} second{NPlur(moveGracePeriod)} causes you to cycle through Equipment slots once per {cyclePeriod:N1} second{NPlur(cyclePeriod)}.";
 		protected override string GetLoreString(string langid = null) => "";
 
 
