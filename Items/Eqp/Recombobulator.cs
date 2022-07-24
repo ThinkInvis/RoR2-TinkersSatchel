@@ -296,7 +296,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var root = MiscUtil.GetRootWithLocators(obj.gameObject);
                 if(!validObjectNames.Contains(root.name.Replace("(Clone)", ""))) continue;
                 var vdot = Vector3.Dot(aim.direction, (root.transform.position - aim.origin).normalized);
-                if(vdot > minDot) continue;
+                if(vdot < minDot) continue;
                 if(requireLoS && !Physics.Linecast(aim.origin, root.transform.position, LayerIndex.world.mask))
                     continue;
                 var c = vdot * Vector3.Distance(root.transform.position, aim.origin);
