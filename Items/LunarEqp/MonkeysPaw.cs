@@ -209,8 +209,10 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void EquipmentSlot_UpdateTargets(On.RoR2.EquipmentSlot.orig_UpdateTargets orig, EquipmentSlot self, EquipmentIndex targetingEquipmentIndex, bool userShouldAnticipateTarget) {
-            if(targetingEquipmentIndex != catalogIndex)
+            if(targetingEquipmentIndex != catalogIndex) {
                 orig(self, targetingEquipmentIndex, userShouldAnticipateTarget);
+                return;
+            }
 
             self.currentTarget = new EquipmentSlot.UserTargetInfo(self.FindPickupController(self.GetAimRay(), 10f, 30f, true, false));
             if(self.currentTarget.transformToIndicateAt && IsPickupValid(self.currentTarget.pickupController)) {
