@@ -2,6 +2,16 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.3.1**
+
+- Fixed Lemurian's Claw breaking other targetable equipments.
+- Balance pass:
+	- Quantum Recombobulator now provides an option, enabled by default, to retain category of recombobulated interactables (e.g. cannot turn a chest into a shrine, or a printer into a non-printer).
+- Slightly improved Quantum Recombobulator per-frame search performance.
+- Updated TILER2 dependency to 7.2.1.
+	- Fixes Item Drone name modification showing item type only appearing for the host in multiplayer.
+	- Fixes a mostly harmless NRE after using Quantum Recombobulator.
+
 **3.3.0**
 
 - New content:

@@ -537,6 +537,16 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.3.1**
+
+- Fixed Lemurian's Claw breaking other targetable equipments.
+- Balance pass:
+	- Quantum Recombobulator now provides an option, enabled by default, to retain category of recombobulated interactables (e.g. cannot turn a chest into a shrine, or a printer into a non-printer).
+- Slightly improved Quantum Recombobulator per-frame search performance.
+- Updated TILER2 dependency to 7.2.1.
+	- Fixes Item Drone name modification showing item type only appearing for the host in multiplayer.
+	- Fixes a mostly harmless NRE after using Quantum Recombobulator.
+
 **3.3.0**
 
 - New content:
@@ -603,9 +613,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - General project cleanup.
 	- Addressed or suppressed almost all compiler warnings/messages.
 	- Updated lang version to C#9 and implemented some of its features.
-
-**3.0.1**
-
-- Fixed Kintsugi always acting as if all characters have 1 stack of it.
-- Fixed Kintsugi description not reflecting configs.
-- Attempted to fix dead players being able to earn the Old War Lidar achievement in multiplayer.
