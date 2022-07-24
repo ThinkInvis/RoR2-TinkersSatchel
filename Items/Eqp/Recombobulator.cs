@@ -68,12 +68,18 @@ namespace ThinkInvisible.TinkersSatchel {
             "BulwarkDroneBroken"
         });
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, interactables will only reroll into other interactables of the same category (chest, shrine, drone, etc.).",
+            AutoConfigFlags.PreventNetMismatch)]
+        public bool respectCategory { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
 
         public static HashSet<string> validObjectNames { get; private set; } = new HashSet<string>();
         WeightedSelection<DirectorCard> mostRecentDeck = null;
+        Dictionary<DirectorCard, string> mostRecentDeckCategories = null;
         internal static UnlockableDef unlockable;
         public GameObject idrPrefab { get; private set; }
 
@@ -224,12 +230,12 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupConfig() {
             base.SetupConfig();
             validObjectNames.UnionWith(objectNamesConfig.Split(',')
-                .Select(x => x.Trim() + "(Clone)"));
+                .Select(x => x.Trim()));
         }
 
         public override void Install() {
             base.Install();
-            On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
+            IL.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping;
@@ -238,7 +244,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Uninstall() {
             base.Uninstall();
-            On.RoR2.SceneDirector.GenerateInteractableCardSelection -= SceneDirector_GenerateInteractableCardSelection;
+            IL.RoR2.SceneDirector.GenerateInteractableCardSelection -= SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
             On.RoR2.ScrapperController.BeginScrapping -= ScrapperController_BeginScrapping;
@@ -248,6 +254,20 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Private Methods //////
+
+        Dictionary<DirectorCard, string> RetrieveDirectorCardCategories(DirectorCardCategorySelection dccs) {
+            var retv = new Dictionary<DirectorCard, string>();
+            for(var i = 0; i < dccs.categories.Length; i++) {
+                ref var category = ref dccs.categories[i];
+                float sumWeights = dccs.SumAllWeightsInCategory(category);
+                if(sumWeights <= 0f) continue;
+                foreach(DirectorCard directorCard in category.cards) {
+                    if(directorCard.IsAvailable())
+                        retv[directorCard] = category.name;
+                }
+            }
+            return retv;
+        }
 
         private void DeathState_OnImpactServer(ILContext il) {
             var c = new ILCursor(il);
@@ -269,18 +289,23 @@ namespace ThinkInvisible.TinkersSatchel {
             aim = CameraRigController.ModifyAimRayIfApplicable(aim, senderObj, out float camAdjust);
             var results = Physics.OverlapSphere(aim.origin, maxDistance + camAdjust, Physics.AllLayers, QueryTriggerInteraction.Collide);
             var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI / 180f);
-            return results
-                .Where(x => x && x.gameObject)
-                .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
-                .Where(x => validObjectNames.Contains(x.name))
-                .Select(x => (target: x, vdot: Vector3.Dot(aim.direction, (x.transform.position - aim.origin).normalized)))
-                .Where(x => x.vdot > minDot
-                    && (!requireLoS
-                    || !Physics.Linecast(aim.origin, x.target.transform.position, LayerIndex.world.mask)
-                    ))
-                .OrderBy(x => x.vdot * Vector3.Distance(x.target.transform.position, aim.origin))
-                .Select(x => x.target.gameObject)
-                .FirstOrDefault();
+            GameObject retv = null;
+            var lowestC = float.MaxValue;
+            foreach(var obj in results) {
+                if(!obj || !obj.gameObject) continue;
+                var root = MiscUtil.GetRootWithLocators(obj.gameObject);
+                if(!validObjectNames.Contains(root.name.Replace("(Clone)", ""))) continue;
+                var vdot = Vector3.Dot(aim.direction, (root.transform.position - aim.origin).normalized);
+                if(vdot > minDot) continue;
+                if(requireLoS && !Physics.Linecast(aim.origin, root.transform.position, LayerIndex.world.mask))
+                    continue;
+                var c = vdot * Vector3.Distance(root.transform.position, aim.origin);
+                if(c < lowestC) {
+                    lowestC = c;
+                    retv = root;
+                }
+            }
+            return retv;
         }
 
 
@@ -299,17 +324,32 @@ namespace ThinkInvisible.TinkersSatchel {
                 self.gameObject.AddComponent<RecombobulatorFlag>();
         }
 
-        private WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self) {
-            var retv = orig(self);
-            mostRecentDeck = retv;
-            return retv;
+        private void SceneDirector_GenerateInteractableCardSelection(ILContext il) {
+            ILCursor c = new(il);
+
+            c.GotoNext(MoveType.Before,
+                i => i.MatchCallOrCallvirt<DirectorCardCategorySelection>(
+                    nameof(DirectorCardCategorySelection.GenerateDirectorCardWeightedSelection)
+                    )
+                );
+            c.EmitDelegate<Func<DirectorCardCategorySelection, DirectorCardCategorySelection>>(dccs => {
+                mostRecentDeckCategories = RetrieveDirectorCardCategories(dccs);
+                return dccs;
+            });
+            c.GotoNext(MoveType.After,
+                i => i.MatchCallOrCallvirt<DirectorCardCategorySelection>(
+                    nameof(DirectorCardCategorySelection.GenerateDirectorCardWeightedSelection)
+                    )
+                );
+            c.EmitDelegate<Func<WeightedSelection<DirectorCard>, WeightedSelection<DirectorCard>>>(wsdc => {
+                mostRecentDeck = wsdc;
+                return wsdc;
+            });
         }
 
         private void EquipmentSlot_UpdateTargets(On.RoR2.EquipmentSlot.orig_UpdateTargets orig, EquipmentSlot self, EquipmentIndex targetingEquipmentIndex, bool userShouldAnticipateTarget) {
-            if(targetingEquipmentIndex != catalogIndex || self.subcooldownTimer > 0f || self.stock == 0) {
+            if(targetingEquipmentIndex != catalogIndex) {
                 orig(self, targetingEquipmentIndex, userShouldAnticipateTarget);
-                if(targetingEquipmentIndex == catalogIndex)
-                    self.targetIndicator.active = false;
                 return;
             }
 
@@ -340,7 +380,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             if(slot.currentTarget.rootObject
-                && validObjectNames.Contains(slot.currentTarget.rootObject.name)
+                && validObjectNames.Contains(slot.currentTarget.rootObject.name.Replace("(Clone)",""))
                 && !slot.currentTarget.rootObject.GetComponent<RecombobulatorFlag>()
                 && mostRecentDeck != null
                 && Run.instance) {
@@ -362,10 +402,18 @@ namespace ThinkInvisible.TinkersSatchel {
                 var pos = slot.currentTarget.rootObject.transform.position;
 
                 WeightedSelection<DirectorCard> filteredDeck = new(8);
+                var matchCategories = mostRecentDeckCategories.Where(kvp => kvp.Key.spawnCard.prefab.name == slot.currentTarget.rootObject.name.Replace("(Clone)","")).Select(kvp => kvp.Value);
                 for(var i = 0; i < mostRecentDeck.Count; i++) {
                     var card = mostRecentDeck.GetChoice(i);
-                    if(card.value != null && card.value.IsAvailable() && (validObjectNames.Contains(card.value.spawnCard.prefab.name) || validObjectNames.Contains(card.value.spawnCard.prefab.name + "(Clone)")))
-                        filteredDeck.AddChoice(card);
+                    if(card.value == null || !card.value.IsAvailable()) continue;
+                    if(!validObjectNames.Contains(card.value.spawnCard.prefab.name))
+                        continue;
+                    if(respectCategory && (
+                        !mostRecentDeckCategories.TryGetValue(card.value, out var thisCategory)
+                        || !matchCategories.Contains(thisCategory)
+                        ))
+                        continue;
+                    filteredDeck.AddChoice(card);
                 }
                 if(filteredDeck.Count == 0)
                     return false;
