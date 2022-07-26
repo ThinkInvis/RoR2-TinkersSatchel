@@ -200,6 +200,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+            orig(self);
             var hasItem = GetCount(self) > 0;
             var component = self.gameObject.GetComponent<ExtraEquipmentStash>();
             if(hasItem && !component)
