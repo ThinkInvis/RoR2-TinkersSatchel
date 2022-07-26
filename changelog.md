@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.3.2**
+
+- Fixed Scavenger's Rucksack breaking Heretic transformation, luck calc, and Goobo Jr setup.
+
 **3.3.1**
 
 - Fixed Lemurian's Claw breaking other targetable equipments.

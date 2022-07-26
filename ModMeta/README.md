@@ -537,6 +537,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.3.2**
+
+- Fixed Scavenger's Rucksack breaking Heretic transformation, luck calc, and Goobo Jr setup.
+
 **3.3.1**
 
 - Fixed Lemurian's Claw breaking other targetable equipments.
@@ -597,19 +601,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 - Added a first pass of ItemDisplayRules for many items to all vanilla Survivors.
 - Fixed an accidental hard dependency on Risk of Options in the 3.1.0 presets feature.
-
-**3.1.0**
-
-- Added a TinkersSatchelPresets config super-category to the Risk of Options menu.
-	- Contains buttons that enable/disable entire types of content, such as all items, in the main Tinker's Satchel config.
-	- Listed as a separate "mod" to keep it out of the clutter and extreme category count of the main config.
-- Skills may now be enabled/disabled while the game is running.
-- Fixed a rare error during language reloads.
-- Added an unlock achievement to Armor Crystal.
-- Fixed Go-Faster Stripes unintentionally unlocking when ANY character performs the required action.
-- Causal Camera's ICD config is now a true ICD, preventing any recording of new save states until some time has passed. The old "minimum duration of rewind" behavior has been migrated to its own config entry, minDuration.
-- Slightly increased null safety in Cardboard Box icon override.
-- Updated dependencies.
-- General project cleanup.
-	- Addressed or suppressed almost all compiler warnings/messages.
-	- Updated lang version to C#9 and implemented some of its features.
