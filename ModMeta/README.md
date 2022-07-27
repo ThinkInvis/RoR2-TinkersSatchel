@@ -537,6 +537,19 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.4.0** *The Translatable Update*
+
+- Migrated ALL language tokens to a language file, making the mod more translation-friendly (read: it can now be done at all).
+- Fixed Fudge Dice being nonfunctional and causing per-frame errors once obtained.
+- Unstable Klein Bottle velocity, range, and internal cooldown are now configurable (defaults unchanged at 30 m/s, 20 m, 0.5 s).
+- Shrink Ray damage debuff and visual scale amounts are now configurable (defaults unchanged at 50% and 50%).
+- Made some improvements to item descriptions.
+- Added lore to some items.
+- Fixed some cases of erroneous spaces before percentage signs in item descriptions.
+- Minor project cleanup.
+- Updated TILER2 dependency to 7.3.1.
+	- Necessary for language system changes.
+
 **3.3.2**
 
 - Fixed Scavenger's Rucksack breaking Heretic transformation, luck calc, and Goobo Jr setup.
