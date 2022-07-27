@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y" />
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)Lang&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y" />
   </Target>
 
 </Project>
