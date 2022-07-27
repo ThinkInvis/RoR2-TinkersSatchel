@@ -2,9 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using R2API;
-using static TILER2.MiscUtil;
-using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class FudgeDice : Item<FudgeDice> {
