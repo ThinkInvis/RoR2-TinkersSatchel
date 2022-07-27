@@ -208,7 +208,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 	[RequireComponent(typeof(CharacterMaster))]
 	public class ExtraEquipmentStash : MonoBehaviour {
-        Queue<EquipmentState> stashedEquipment = new();
+        readonly Queue<EquipmentState> stashedEquipment = new();
 
 		float stationaryStopwatch = 0f;
 		float shuffleStopwatch = 0f;
