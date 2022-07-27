@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		protected override string GetNameString(string langid = null) => displayName;
 		protected override string GetPickupString(string langid = null) => "Suppress a single target's damage and non-primary skills.";
-		protected override string GetDescString(string langid = null) => $"Once every {icd:N1} seconds, hitting an enemy disables their <style=cIsUtility>non-primary skills</style> and reduces their <style=cIsDamage>damage</style> by 50% for {duration:N1} seconds <style=cStack>(+{duration:N1} seconds per stack)</style>.";
+		protected override string GetDescString(string langid = null) => $"Once every {icd:N1} seconds, hitting an enemy disables their <style=cIsUtility>non-primary skills</style> and reduces their <style=cIsDamage>damage</style> by {damageDebuff:P0} for {duration:N1} seconds <style=cStack>(+{duration:N1} seconds per stack)</style>.";
 		protected override string GetLoreString(string langid = null) => "";
 
 
@@ -38,11 +38,22 @@ namespace ThinkInvisible.TinkersSatchel {
 			AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float icd { get; private set; } = 2.5f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Strength of the damage debuff (higher = less damage). Does not stack.",
+            AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageDebuff { get; private set; } = 0.5f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfig("Strength of the model scale effect per stack (lower = smaller).",
+            AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float scaleDebuff { get; private set; } = 0.5f;
 
 
-		////// Other Fields/Properties //////
 
-		public BuffDef shrinkDebuff { get; private set; }
+        ////// Other Fields/Properties //////
+
+        public BuffDef shrinkDebuff { get; private set; }
         public GameObject idrPrefab { get; private set; }
 
 
@@ -231,21 +242,21 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void CharacterBody_OnBuffFirstStackGained(On.RoR2.CharacterBody.orig_OnBuffFirstStackGained orig, CharacterBody self, BuffDef buffDef) {
 			orig(self, buffDef);
 			if(self && buffDef == shrinkDebuff && self.modelLocator) {
-				self.modelLocator.modelTransform.localScale *= 0.5f;
+				self.modelLocator.modelTransform.localScale *= scaleDebuff;
 			}
 		}
 
 		private void CharacterBody_OnBuffFinalStackLost(On.RoR2.CharacterBody.orig_OnBuffFinalStackLost orig, CharacterBody self, BuffDef buffDef) {
 			orig(self, buffDef);
 			if(self && buffDef == shrinkDebuff && self.modelLocator) {
-				self.modelLocator.modelTransform.localScale *= 2f;
+				self.modelLocator.modelTransform.localScale /= scaleDebuff;
 			}
 		}
 
 		private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
 			orig(self);
 			if(self && self.HasBuff(shrinkDebuff)) {
-				self.damage *= 0.5f;
+				self.damage *= 1f - damageDebuff;
 			}
 		}
 	}
