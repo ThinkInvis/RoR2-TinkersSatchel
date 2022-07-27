@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override string GetNameString(string langid = null) => displayName;
         protected override string GetPickupString(string langid = null) => "Chance to push or pull nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} <style=cStack>(+{Pct(procChance, 1, 1f)} per stack, mult.)</style> chance to <style=cIsUtility>push</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {PULL_RADIUS:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {PROC_ICD:N1} s.</style>";
+        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} <style=cStack>(+{Pct(procChance, 1, 1f)} per stack, mult.)</style> chance to <style=cIsUtility>push</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {pullRadius:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {procIcd:N1} s.</style>";
         protected override string GetLoreString(string langid = null) => "";
 
 
@@ -31,6 +31,21 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Percent chance for Unstable Klein Bottle to proc; stacks multiplicatively.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
         public float procChance { get; private set; } = 8f;
+
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 100f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Range of the Unstable Klein Bottle effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float pullRadius { get; private set; } = 20f;
+
+        [AutoConfigRoOSlider("{0:N0} m/s", 0f, 100f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Strength of the Unstable Klein Bottle effect. Only applies to push; pulling has fixed velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float pushForce { get; private set; } = 30f;
+
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Internal cooldown of the Unstable Klein Bottle effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float procIcd { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -48,12 +63,10 @@ namespace ThinkInvisible.TinkersSatchel {
         public bool invertBodyNames { get; private set; } = false;
 
 
+
         ////// Other Fields/Properties //////
 
-        const float PULL_FORCE = 30f;
-        const float PULL_RADIUS = 20f;
         const float PULL_VFX_DURATION = 0.2f;
-        const float PROC_ICD = 0.5f;
 
         private GameObject blackHolePrefab;
 
@@ -258,7 +271,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!cpt)
                     cpt = self.gameObject.AddComponent<KleinBottleTimeTracker>();
 
-                if(Time.fixedTime - cpt.LastTimestamp < PROC_ICD)
+                if(Time.fixedTime - cpt.LastTimestamp < procIcd)
                     return;
                 else
                     cpt.LastTimestamp = Time.fixedTime;
@@ -281,7 +294,7 @@ namespace ThinkInvisible.TinkersSatchel {
                             teamMembers.AddRange(TeamComponent.GetTeamMembers(ind));
                     }
                     teamMembers.Remove(self.body.teamComponent);
-                    float sqrad = PULL_RADIUS * PULL_RADIUS;
+                    float sqrad = pullRadius * pullRadius;
                     var isCrit = self.body.RollCrit();
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
@@ -329,7 +342,7 @@ namespace ThinkInvisible.TinkersSatchel {
                                 var mcpt = tcpt.body.GetComponent<IPhysMotor>();
                                 if(mcpt != null && !tcpt.body.isBoss && !tcpt.body.isChampion)
                                     mcpt.ApplyForceImpulse(new PhysForceInfo {
-                                        force = velVec * (shouldPull ? 1 : PULL_FORCE) * mcpt.mass,
+                                        force = velVec * (shouldPull ? 1 : pushForce) * mcpt.mass,
                                         ignoreGroundStick = true,
                                         disableAirControlUntilCollision = false
                                     });
