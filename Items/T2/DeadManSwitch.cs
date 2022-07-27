@@ -3,23 +3,19 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using static TILER2.MiscUtil;
-using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class DeadManSwitch : Item<DeadManSwitch> {
 
         ////// Item Data //////
 
-        public override string displayName => "Pulse Monitor";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.EquipmentRelated, ItemTag.Utility, ItemTag.LowHealth });
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Auto-activate your equipment for free at low health.";
-        protected override string GetDescString(string langid = null) => $"Falling below <style=cIsHealth>25% health</style> activates your <style=cIsUtility>equipment</style> without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment <style=cStack>(-{Pct(cdrStack)} per stack, mult.)</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            cdrStack.ToString("P0")
+        };
 
 
 
@@ -52,15 +48,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/deadManSwitchIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Nine Lives");
-            LanguageAPI.Add(achiDescToken, "Survive falling to low health 9 times in the same run (must return to above 50% health each time).");
             itemDef.unlockableDef = unlockable;
 
             deadManSwitchBuff = ScriptableObject.CreateInstance<BuffDef>();

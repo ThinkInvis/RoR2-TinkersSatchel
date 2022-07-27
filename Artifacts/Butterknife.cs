@@ -6,15 +6,6 @@ using UnityEngine;
 namespace ThinkInvisible.TinkersSatchel {
     public class Butterknife : Artifact<Butterknife> {
 
-        ////// Artifact Data //////
-
-        public override string displayName => "Artifact of Haste";
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "All combatants attack 10x faster and deal 1/20x damage.";
-
-
-
         ////// Other Fields/Properties //////
 
         private readonly System.Reflection.MethodInfo cbDamageSetter;

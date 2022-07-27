@@ -14,16 +14,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Item Data //////
 
-		public override string displayName => "Go-Faster Stripes";
 		public override ItemTier itemTier => ItemTier.Tier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
-
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) =>
-			"Your Utility skill gains more mobility.";
-		protected override string GetDescString(string langid = null) =>
-			$"Upgrades your <style=cIsUtility>Utility skill</style>, greatly increasing its <style=cIsUtility>mobility</style>.";
-		protected override string GetLoreString(string langid = null) => "<style=cMono>//--AUTO-TRANSCRIPTION FROM UES [Redacted] --//</style>\n\n\"...What are you doing?\"\n\n\"Painting my armor.\"\n\n\"Why!?\"\n\n\"To make it go faster.\"\n\n\"What!? That\u2019s just a myth! And-- and it\u2019s supposed to be for cars! And in case you haven\u2019t noticed, we are -in the middle of a warzone-! We don\u2019t have -time- for--\"\n\n\"Red stripes make things go faster. More speed means more time. You\u2019ll see.\"";
 
 
 
@@ -216,15 +208,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			GameObject.Destroy(tmpPrefab);
 
-			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
 			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
 			unlockable.cachedName = $"TkSat_{name}Unlockable";
 			unlockable.sortScore = 200;
 			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/goFasterIcon.png");
 			ContentAddition.AddUnlockableDef(unlockable);
-			LanguageAPI.Add(achiNameToken, "Faster Than Recommended");
-			LanguageAPI.Add(achiDescToken, "Trimp.");
 			itemDef.unlockableDef = unlockable;
 		}
 

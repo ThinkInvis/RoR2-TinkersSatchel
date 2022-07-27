@@ -12,16 +12,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Item Data //////
 
-		public override string displayName => "Kintsugi";
 		public override ItemTier itemTier => ItemTier.Tier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.Damage });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) =>
-			"Your broken/consumed/scrapped items increase all your stats.";
-		protected override string GetDescString(string langid = null) =>
-			$"Each of your broken, consumed, or scrapped items increases <style=cIsUtility>ALL stats</style> based on its tier <style=cStack>(stacks linearly)</style>: {tier1Bonus:0%} for Common items, {tier2Bonus:0%} for Uncommon items, and {tier3Bonus:0%} for Rare/Boss items.";
-		protected override string GetLoreString(string langid = null) => "";
+		protected override string[] GetDescStringArgs(string langID = null) => new[] {
+			tier1Bonus.ToString("P0"), tier2Bonus.ToString("P0"), tier3Bonus.ToString("P0")
+		};
 
 
 
@@ -183,15 +179,11 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void SetupAttributes() {
 			base.SetupAttributes();
 
-			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
 			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
 			unlockable.cachedName = $"TkSat_{name}Unlockable";
 			unlockable.sortScore = 200;
 			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/kintsugiIcon.png");
 			ContentAddition.AddUnlockableDef(unlockable);
-			LanguageAPI.Add(achiNameToken, "Planned Obsolescence");
-			LanguageAPI.Add(achiDescToken, "Have at least 20 items, at least half of which are broken/consumed/scrapped.");
 			itemDef.unlockableDef = unlockable;
 		}
 

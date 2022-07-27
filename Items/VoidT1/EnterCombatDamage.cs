@@ -3,8 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using static TILER2.MiscUtil;
-using System;
 using UnityEngine.Networking;
 using System.Linq;
 using UnityEngine.AddressableAssets;
@@ -15,14 +13,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Villainous Visage";
         public override ItemTier itemTier => ItemTier.VoidTier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Deal more damage when given time to plot. <style=cIsVoid>Corrupts all Macho Moustaches</style>.";
-        protected override string GetDescString(string langid = null) => $"While out of combat, build up a <style=cIsDamage>damage buff</style> that will last <style=cIsDamage>{buffDuration:N0} seconds</style> once in combat. Builds <style=cIsDamage>{Pct(damageFracRate)} damage per second <style=cStack>(+{Pct(damageFracRate)} per stack)</style></style>, up to <style=cIsDamage>{Pct(damageFracMax)} <style=cStack>(+{Pct(damageFracMax)} per stack)</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            buffDuration.ToString("N0"), damageFracRate.ToString("P0"), damageFracMax.ToString("P0")
+        };
 
 
 

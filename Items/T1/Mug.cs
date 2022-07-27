@@ -10,14 +10,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Sturdy Mug";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to shoot extra, unpredictable projectiles.";
-        protected override string GetDescString(string langid = null) => $"All projectile attacks gain a <style=cIsDamage>{Pct(procChance)} <style=cStack>(+{Pct(procChance)} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{spreadConeHalfAngleDegr}° of inaccuracy</style>.";
-        protected override string GetLoreString(string langid = null) => "An inscription around the base reads: \"Rock and Stone!\"";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            procChance.ToString("P0"), spreadConeHalfAngleDegr.ToString("N1")
+        };
 
 
 
@@ -177,8 +175,6 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/mugIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "...So I Fired Again");
-            LanguageAPI.Add(achiDescToken, "Miss 1,000 TOTAL projectile attacks.");
             itemDef.unlockableDef = unlockable;
 
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);

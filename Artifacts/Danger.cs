@@ -8,15 +8,6 @@ using UnityEngine;
 namespace ThinkInvisible.TinkersSatchel {
     public class Danger : Artifact<Danger> {
 
-        ////// Artifact Data //////
-        
-        public override string displayName => "Artifact of Danger";
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "Players can be killed in one hit.";
-
-
-
         ////// Config //////
 
         [AutoConfig("If true, disabling this artifact will prevent curses (max HP reduction) from removing OHP.",

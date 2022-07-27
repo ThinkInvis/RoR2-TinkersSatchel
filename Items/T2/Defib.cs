@@ -16,14 +16,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Defibrillator";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Your heals can crit.";
-        protected override string GetDescString(string langid = null) => $"Your <style=cIsDamage>crit chance</style> applies to all <style=cIsHealing>healing</style> that you cause, for <style=cIsHealth>+{Pct(critFracBase)} <style=cStack>(+{Pct(critFracStack)} per stack)</style> HP healed</style> when a crit occurs.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            critFracBase.ToString("P0"), critFracStack.ToString("P0")
+        };
 
 
 
@@ -176,15 +174,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/defibIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Medic!");
-            LanguageAPI.Add(achiDescToken, "Item Set: Shareable healing. Have 4 or more (of 7) at once.");
             itemDef.unlockableDef = unlockable;
         }
 

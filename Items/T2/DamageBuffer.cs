@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using R2API;
 using static TILER2.MiscUtil;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
@@ -15,14 +14,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Negative Feedback Loop";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Some incoming damage is dealt over time.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(bufferFrac)} <style=cStack>(+{Pct(bufferFrac)} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {bufferDuration} seconds, ticking {(bufferRate <= 0f ? "continuously" : $"every {bufferRate:N2} seconds")}. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            bufferFrac.ToString("P0"), bufferDuration.ToString("N0"), GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2"))
+        };
 
 
 

@@ -2,8 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
-using R2API;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
@@ -13,14 +11,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Celestial Gambit";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.HoldoutZoneRelated });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Gain an extra item reward from teleporters... <color=#FF7F7F>BUT the teleporter zone weakens you.</color>";
-        protected override string GetDescString(string langid = null) => $"The teleporter boss drops 1 <style=cIsUtility>extra item</style> when killed <style=cStack>(+1 per stack)</style>. As long as you remain in the teleporter zone, you receive <color=#FF7F7F>50% less healing and health regen</color> <style=cStack>(+50% per stack, hyperbolic)</style> and become <color=#FF7F7F>unable to jump</color>.";
-        protected override string GetLoreString(string langid = null) => "This monument dedicated to those / Who perished in the storm";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            debuffAmount.ToString("P0")
+        };
 
 
 

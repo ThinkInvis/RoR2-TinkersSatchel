@@ -8,14 +8,6 @@ using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class BulwarkDrone : T2Module<BulwarkDrone> {
-        ////// Language //////
-
-        public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens["TKSAT_BULWARKDRONE_NAME"] = "Bulwark Drone";
-            permanentGenericLanguageTokens["TKSAT_BULWARKDRONE_BODY_NAME"] = "Bulwark Drone";
-            permanentGenericLanguageTokens["TKSAT_BULWARKDRONE_CONTEXT"] = "Repair Bulwark Drone";
-            base.RefreshPermanentLanguage();
-        }
 
         ////// Config //////
         

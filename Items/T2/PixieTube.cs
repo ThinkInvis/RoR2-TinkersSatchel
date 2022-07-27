@@ -14,14 +14,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Pixie Tube";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage, ItemTag.Utility });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Drop random buffs on using skills.";
-        protected override string GetDescString(string langid = null) => $"You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {buffDuration:N0} seconds: <color=#ffaa77>+{Pct(buffDamageAmt)} damage</color>, <color=#9999ff>+{Pct(buffMoveAmt)} movement speed</color>, <color=#eeff55>+{Pct(buffAttackAmt)} attack speed</color>, or <color=#997755>{buffArmorAmt:N0} armor</color>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            perSkillCooldown.ToString("N0"), primaryCooldown.ToString("N0"), buffDuration.ToString("N0"), buffDamageAmt.ToString("P0"), buffMoveAmt.ToString("P0"), buffAttackAmt.ToString("P0"), buffArmorAmt.ToString("N0")
+        };
 
 
 

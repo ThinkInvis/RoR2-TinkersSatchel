@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using static TILER2.MiscUtil;
 using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -11,16 +10,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Item Data //////
 
-		public override string displayName => "Spacetime Skein";
 		public override ItemTier itemTier => ItemTier.Tier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.Damage });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) =>
-			"Gain mass while stationary. Lose mass while moving.";
-		protected override string GetDescString(string langid = null) =>
-			$"Standing still reduces the next <style=cIsDamage>damage and knockback</style> you take by up to <style=cIsDamage>{Pct(highMassFrac)} <style=cStack>(+{Pct(highMassFrac)} per stack, hyperbolic)</style></style>. Moving increasing your <style=cIsUtility>move and attack speed</style> by up to <style=cIsUtility>{Pct(lowMassFrac)} <style=cStack>(+{Pct(lowMassFrac)} per stack, linear)</style></style>. Effect ramps up over {massChangeDuration:N0} seconds, and is lost once you start or stop moving (latter has a brief grace period).";
-		protected override string GetLoreString(string langid = null) => "";
+		protected override string[] GetDescStringArgs(string langID = null) => new[] {
+			highMassFrac.ToString("P0"), lowMassFrac.ToString("P0"), massChangeDuration.ToString("N0")
+		};
 
 
 
@@ -198,15 +193,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			resistBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/skeinResistBuffIcon.png");
 			ContentAddition.AddBuffDef(resistBuff);
 
-			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
 			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
 			unlockable.cachedName = $"TkSat_{name}Unlockable";
 			unlockable.sortScore = 200;
 			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/skeinIcon.png");
 			ContentAddition.AddUnlockableDef(unlockable);
-			LanguageAPI.Add(achiNameToken, "Phenomenal Cosmic Power");
-			LanguageAPI.Add(achiDescToken, "Complete all 4 Item Set achievements from Tinker's Satchel.");
 			itemDef.unlockableDef = unlockable;
 		}
 

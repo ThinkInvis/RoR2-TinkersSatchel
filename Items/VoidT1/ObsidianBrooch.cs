@@ -2,28 +2,22 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using R2API;
 using static TILER2.MiscUtil;
-using System;
-using UnityEngine.Networking;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
-using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ObsidianBrooch : Item<ObsidianBrooch> {
 
         ////// Item Data //////
 
-        public override string displayName => "Obsidian Brooch";
         public override ItemTier itemTier => ItemTier.VoidTier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage, ItemTag.Utility });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to spread DoTs on hit. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.";
-        protected override string GetDescString(string langid = null) => $"Whenever you hit an enemy, {procChance:N0}% chance <style=cStack>(rolls once per stack)</style> to mirror one of their <style=cIsDamage>damage-over-time effects</style> to another random enemy within {range:N0} m. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            (procChance/100f).ToString("P0"), range.ToString("N0")
+        };
 
 
 

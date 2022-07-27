@@ -11,17 +11,19 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Silver Compass";
         public override bool isLunar => true;
         public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override bool isEnigmaCompatible { get; protected set; } = false;
         public override float cooldown {get; protected set;} = 180f;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Shows you a path... <style=cDeath>BUT it will be fraught with danger.</style>";
-        protected override string GetDescString(string langid = null) =>
-            $"<style=cIsUtility>Immediately reveals the teleporter</style>. Also adds two stacks of <style=cShrine>Challenge of the Mountain</style> to the current stage{(applyPunishStack ? ", <style=cDeath>one of which will not provide extra item drops</style>" : "")}.{(useLimitType == UseLimitType.NTimesPerStage ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per stage." : (useLimitType == UseLimitType.NTimesPerCharacter ? $" Works only {useLimitCount} time{NPlur(useLimitCount)} per player per stage." : ""))}";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            applyPunishStack ? GetBestLanguage(langID).GetLocalizedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PUNISH") : "",
+            useLimitType == UseLimitType.NTimesPerStage
+                ? GetBestLanguage(langID).GetLocalizedFormattedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PERSTAGE", useLimitCount.ToString("N0"))
+                : (useLimitType == UseLimitType.NTimesPerCharacter
+                    ? GetBestLanguage(langID).GetLocalizedFormattedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PERPLAYER", useLimitCount.ToString("N0"))
+                    : "")
+        };
 
 
 
@@ -173,13 +175,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 localScale = new Vector3(0.2F, 0.2F, 0.2F)
             });
             #endregion
-        }
-
-        public override void SetupAttributes() {
-            base.SetupAttributes();
-
-            LanguageAPI.Add("TKSAT_COMPASS_USE_MESSAGE", "<style=cDeath>{0} seeks a path...</style>");
-            LanguageAPI.Add("TKSAT_COMPASS_USE_MESSAGE_2P", "<style=cDeath>You seek a path...</style>");
         }
         
 

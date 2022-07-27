@@ -8,15 +8,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Fudge Dice";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Periodically guarantee luck.";
-        protected override string GetDescString(string langid = null) => $"Once every {icd} seconds <style=cStack>(-{cdrStack:P0} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>guaranteed to have a favorable outcome</style>.";
-        protected override string GetLoreString(string langid = null) => "Don't tell the DM.";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            icd.ToString("N0"), cdrStack.ToString("P0")
+        };
 
 
 

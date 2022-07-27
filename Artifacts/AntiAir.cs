@@ -5,14 +5,7 @@ using UnityEngine;
 namespace ThinkInvisible.TinkersSatchel {
     public class AntiAir : Artifact<AntiAir> {
 
-        ////// Artifact Data //////
-
-        public override string displayName => "Artifact of Suppression";
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "Players take heavily increased damage while airborne.";
-
-
+        //TODO: custom death message
 
         ////// Config //////
 

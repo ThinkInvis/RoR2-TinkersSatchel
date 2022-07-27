@@ -14,16 +14,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Causal Camera";
         public override bool isLunar => false;
         public override bool canBeRandomlyTriggered { get; protected set; } = true;
         public override float cooldown {get; protected set;} = 90f;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Phase briefly and rewind yourself 10 seconds.";
-        protected override string GetDescString(string langid = null) =>
-            $"Phase out of existence for <style=cIsUtility>{phaseDuration:N1} seconds</style>. <style=cIsUtility>Rewind</style> your <style=cIsUtility>position</style>, <style=cIsHealth>health</style>, and <style=cIsUtility>skill cooldowns <style=cStack>(except equipment)</style></style> to their states from up to <style=cIsUtility>{rewindDuration:N1} seconds ago</style>. <style=cStack>Cannot use with less than {icd:N1} seconds saved.</style>";
-        protected override string GetLoreString(string langid = null) => $"Order: TIL-1.8c Temporal Imaging Lens Prototype\r\nTracking Number: 88***********\r\nEstimated Delivery: {rewindDuration:N0} seconds from now\r\nShipping Method:  Closed Timelike Curve\r\nShipping Address: Petrichor V\r\nShipping Details: \r\n\r\nFixed the problem with the slow-moving anomalies (< 0.01c) coming up blurry in photos. Hopefully we'll get better results on those now.\r\n\r\nDO NOT SHAKE -- I had to sacrifice some stasis field integrity. Already called UES logistics twice to correct the manifest when their equipment auto-detected localized time travel.\r\n";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            phaseDuration.ToString("N1"), rewindDuration.ToString("N1"), minDuration.ToString("N0")
+        };
+        protected override string[] GetLoreStringArgs(string langID = null) => new[] {
+            rewindDuration.ToString("N0")
+        };
 
 
 
@@ -94,7 +94,6 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddBuffDef(rewindBuff);
 
             if(Compat_ClassicItems.enabled) {
-                LanguageAPI.Add("TKSAT_REWIND_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: 50% chance to not consume stock.</style>");
                 Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_REWIND_CI_EMBRYO_APPEND", () => "TKSAT.CausalCamera");
             }
         }

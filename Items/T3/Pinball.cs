@@ -14,18 +14,13 @@ namespace ThinkInvisible.TinkersSatchel {
 	public class Pinball : Item<Pinball> {
 
 		////// Item Data //////
-
-		public override string displayName => "Pinball Wizard";
+		///
 		public override ItemTier itemTier => ItemTier.Tier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) =>
-			"Projectiles may bounce and home.";
-		protected override string GetDescString(string langid = null) =>
-			$"All your projectile attacks have a {Pct(bounceChance, 0, 1f)} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{Pct(bounceDamageFrac)} of their original damage</style>. Can happen up to <style=cIsDamage>{baseBounces} times <style=cStack>(+{stackBounces} per stack)</style></style> per projectile.";
-		protected override string GetLoreString(string langid = null) =>
-			"Ding! Ding! Ding! Ding!";
+		protected override string[] GetDescStringArgs(string langID = null) => new[] {
+			(bounceChance/100f).ToString("P0"), bounceDamageFrac.ToString("P0"), baseBounces.ToString("N0"), stackBounces.ToString("N0")
+		};
 
 
 
@@ -217,15 +212,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			GameObject.Destroy(tsp);
 			ContentAddition.AddEffect(effectPrefab);
 
-			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
 			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
 			unlockable.cachedName = $"TkSat_{name}Unlockable";
 			unlockable.sortScore = 200;
 			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/pinballIcon.png");
 			ContentAddition.AddUnlockableDef(unlockable);
-			LanguageAPI.Add(achiNameToken, "Woe, Explosions Be Upon Ye");
-			LanguageAPI.Add(achiDescToken, "Item Set: Damage-on-kill. Have 3 or more (of 6) at once.");
 			itemDef.unlockableDef = unlockable;
 		}
 

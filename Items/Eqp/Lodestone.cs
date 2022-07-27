@@ -2,11 +2,8 @@
 using UnityEngine;
 using TILER2;
 using System.Linq;
-using RoR2.Navigation;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 using R2API;
-using static TILER2.MiscUtil;
 using System;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -14,15 +11,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Lodestone";
         public override bool isLunar => false;
         public override bool canBeRandomlyTriggered { get; protected set; } = true;
         public override float cooldown { get; protected set; } = 20f;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Pull nearby enemies and allied item effects.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Pull</style> enemies within {enemyRange:N0} m towards yourself for <style=cIsDamage>{Pct(baseDamageFrac)} base damage</style>. <style=cIsUtility>Pull</style> drops, orbs, and projectiles caused by ally items within {objectRange:N0} m to your location.";
-        protected override string GetLoreString(string langid = null) => $"";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            enemyRange.ToString("N0"), baseDamageFrac.ToString("P0"), objectRange.ToString("N0")
+        };
 
 
 
@@ -237,12 +232,9 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/lodestoneIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Drive Me Closer");
-            LanguageAPI.Add(achiDescToken, "Item Set: Close-range. Have 6 or more (of 15) at once.");
             equipmentDef.unlockableDef = unlockable;
 
             if(Compat_ClassicItems.enabled) {
-                LanguageAPI.Add("TKSAT_LODESTONE_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Double range and damage.</style>");
                 Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_LODESTONE_CI_EMBRYO_APPEND", () => "TKSAT.Lodestone");
             }
         }

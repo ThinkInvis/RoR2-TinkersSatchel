@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
 using R2API;
 using UnityEngine.AddressableAssets;
@@ -12,14 +11,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Armor Crystal";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Gain armor by hoarding money.";
-        protected override string GetDescString(string langid = null) => $"Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>money</style>. The first point of <style=cIsHealing>armor</style> costs <style=cIsUtility>${goldAmt:N0}</style> <style=cStack>(-{Pct(goldReduc)} per stack, exponential; scales with difficulty)</style>; each subsequent point <style=cIsUtility>costs {Pct(goldExp)} more</style> than the last.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            goldAmt.ToString("N0"), goldReduc.ToString("P0"), goldExp.ToString("P0")
+        };
 
 
 
@@ -79,16 +76,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 .WaitForCompletion();
             ContentAddition.AddBuffDef(goldenGearBuff);
 
-
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/goldenGearIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "What Did It Cost?");
-            LanguageAPI.Add(achiDescToken, "Purchase the final item from a Shrine of Chance after failing it at least 4 times in total.");
             itemDef.unlockableDef = unlockable;
         }
 

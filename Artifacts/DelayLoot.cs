@@ -13,15 +13,6 @@ using static TILER2.MiscUtil;
 namespace ThinkInvisible.TinkersSatchel {
     public class DelayLoot : Artifact<DelayLoot> {
 
-        ////// Artifact Data //////
-
-        public override string displayName => "Artifact of Safekeeping";
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.";
-
-
-
         ////// Config //////
 
         public enum AnnounceItemsMode {

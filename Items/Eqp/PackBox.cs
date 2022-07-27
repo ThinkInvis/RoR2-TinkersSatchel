@@ -13,16 +13,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Cardboard Box";
         public override bool isLunar => false;
         public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override float cooldown {get; protected set;} = 60f;
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Pack up and move.";
-        protected override string GetDescString(string langid = null) =>
-            "Use once to <style=cIsUtility>pack up</style> a <style=cIsDamage>turret</style>, <style=cIsHealing>healing shrine</style>, or <style=cIsUtility>most other interactables</style>. Use again to <style=cIsUtility>place</style> the packed object and put the Cardboard Box on cooldown.";
-        protected override string GetLoreString(string langid = null) => "";
 
 
 
@@ -247,7 +240,6 @@ namespace ThinkInvisible.TinkersSatchel {
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPlace>();
 
             if(Compat_ClassicItems.enabled) {
-                LanguageAPI.Add("TKSAT_PACKBOX_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: 50% chance to not consume stock on place.</style>");
                 Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_PACKBOX_CI_EMBRYO_APPEND", () => "TKSAT.CardboardBox");
             }
         }

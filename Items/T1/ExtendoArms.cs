@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
@@ -12,14 +11,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Extendo-Arms";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Close-range attacks reach farther and deal slightly more damage.";
-        protected override string GetDescString(string langid = null) => $"All your melee attacks, as well as AoEs centered within {pbaoeRange:N1} meters of you, gain <style=cIsUtility>{Pct(resizeAmount)} range <style=cStack>(+{Pct(resizeAmount)} per stack)</style></style> and <style=cIsDamage>{Pct(damageAmount)} damage <style=cStack>(+{Pct(damageAmount)} per stack)</style></style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            pbaoeRange.ToString("N1"), resizeAmount.ToString("P0"), damageAmount.ToString("P0")
+        };
 
 
 

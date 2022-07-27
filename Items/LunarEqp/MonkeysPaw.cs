@@ -9,17 +9,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Lemurian's Claw";
         public override bool isLunar => true;
         public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override bool isEnigmaCompatible { get; protected set; } = false;
         public override float cooldown {get; protected set;} = 120f;
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Clone an item to every ally... <style=cDeath>BUT living enemies also receive one per ally.</style>";
-        protected override string GetDescString(string langid = null) =>
-            $"Use on an item drop to consume it and give <style=cDeath>ALL characters</style> a copy of it; living enemies gain multiple equal to ally count.";
-        protected override string GetLoreString(string langid = null) => "";
 
 
 
@@ -166,14 +159,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 localScale = new Vector3(0.3F, 0.3F, 0.3F)
             });
             #endregion
-        }
-
-        public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens["TKSAT_MONKEYSPAW_ACTIVATED"] = "<style=cEvent>{0}'s <color=#307FFF>Lemurian's Claw</color> curls...</style>";
-            permanentGenericLanguageTokens["TKSAT_MONKEYSPAW_ACTIVATED_2P"] = "<style=cEvent>Your <color=#307FFF>Lemurian's Claw</color> curls...</style>";
-            permanentGenericLanguageTokens["TKSAT_MONKEYSPAW_ITEMGRANT"] = "<color=#FFFF00>EVERYONE</color> <style=cEvent>picked up {1}. Enemies received {2}.</style>";
-
-            base.RefreshPermanentLanguage();
         }
 
         public override void Install() {

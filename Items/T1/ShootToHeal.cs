@@ -6,7 +6,6 @@ using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
 using R2API;
-using static TILER2.MiscUtil;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 
@@ -15,14 +14,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Percussive Maintenance";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Hit allies to heal them.";
-        protected override string GetDescString(string langid = null) => $"Hitting an ally with a direct attack heals them for <style=cIsHealing>{healAmount:N1} health <style=cStack>(+{healAmount:N1} per stack)</style></style> and you for {Pct(returnHealingAmount / healAmount)} as much.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            healAmount.ToString("N1"), (returnHealingAmount / healAmount).ToString("P0")
+        };
 
 
 
@@ -179,15 +176,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/shootToHealIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "One-Man Band");
-            LanguageAPI.Add(achiDescToken, "Item Set: Musical instruments. Have 3 or more (of 5) at once.");
             itemDef.unlockableDef = unlockable;
 
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgHealTargetAndSelf>();

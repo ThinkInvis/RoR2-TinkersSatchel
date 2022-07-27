@@ -1,27 +1,14 @@
 ﻿using RoR2;
 using UnityEngine;
 using TILER2;
-using R2API.Utils;
 using UnityEngine.Networking;
 using R2API;
 using static TILER2.MiscUtil;
 using System.Collections.Generic;
-using MonoMod.Cil;
-using System;
-using Mono.Cecil.Cil;
 using static R2API.RecalculateStatsAPI;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackTactics : Artifact<PackTactics> {
-
-        ////// Artifact Data //////
-
-        public override string displayName => "Artifact of Tactics";
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.";
-
-
 
         ////// Config //////
 

@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using static TILER2.MiscUtil;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
@@ -13,14 +12,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Triskelion Brooch";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to combine ignite, freeze, and stun.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {Pct(procBaseChance, 0, 1f)} <style=cStack>(+{Pct(procStackChance, 0, 1f)} per stack)</style> chance to also cause one of the other effects listed for <style=cIsDamage>{Pct(procBaseDamage)} base damage <style=cStack>(+{Pct(procStackDamage)} per stack)</style></style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            (procBaseChance/100f).ToString("P0"), (procStackChance/100f).ToString("P0"), procBaseDamage.ToString("P0"), procStackDamage.ToString("P0")
+        };
 
 
 
@@ -185,15 +182,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/triBroochIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Rasputin");
-            LanguageAPI.Add(achiDescToken, "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.");
             itemDef.unlockableDef = unlockable;
         }
 

@@ -11,17 +11,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Faulty Mortar Tube";
         public override bool isLunar => true;
         public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override bool isEnigmaCompatible { get; protected set; } = false;
         public override float cooldown {get; protected set;} = 40f;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Throw a bomb that will detonate when damaged... <style=cDeath>BUT it may damage survivors too.</style>";
-        protected override string GetDescString(string langid = null) =>
-            $"Throw a <style=cIsDamage>live mortar shell</style> that will embed in the ground. After taking any damage, or after 10 seconds, the shell <style=cIsDamage>explodes for {Pct(damageFrac)} damage</style> to <style=cDeath>ALL characters</style> in range.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            damageFrac.ToString("P0")
+        };
 
 
 

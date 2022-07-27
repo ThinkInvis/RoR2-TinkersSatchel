@@ -10,10 +10,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Artifact Data //////
 
-        public override string displayName => "Artifact of Reconfiguration";
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetDescString(string langid = null) => $"Start with {rucksackCount+1} equipment slots. Equipment is more common, and is consumed instead of going on cooldown.";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            (rucksackCount + 1).ToString("N0")
+        };
 
 
 

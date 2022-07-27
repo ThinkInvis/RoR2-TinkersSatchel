@@ -2,10 +2,7 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
-using static R2API.RecalculateStatsAPI;
 using R2API;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
@@ -15,14 +12,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Bramble Ring";
         public override ItemTier itemTier => ItemTier.VoidTier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Return some damage to sender. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>{Pct(damageFrac)} of damage taken <style=cStack>(+{Pct(damageFrac)} per stack, hyperbolic)</style></style> is also taken by the inflictor. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            damageFrac.ToString("P0")
+        };
 
 
 

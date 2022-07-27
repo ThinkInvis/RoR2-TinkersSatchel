@@ -15,15 +15,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Quantum Recombobulator";
         public override bool isLunar => false;
         public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override float cooldown { get; protected set; } = 60f;
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Reroll an interactable once.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Reroll</style> an interactable into a different one which is valid for the current stage. <style=cIsUtility>Only works once per interactable</style>.";
-        protected override string GetLoreString(string langid = null) => $"";
 
 
 
@@ -217,12 +211,9 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/recombobulatorIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Risktaker");
-            LanguageAPI.Add(achiDescToken, "Recycle a rare or boss item.");
             equipmentDef.unlockableDef = unlockable;
 
             if(Compat_ClassicItems.enabled) {
-                LanguageAPI.Add("TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Roll twice and choose the rarer result.</style>");
                 Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND", () => "TKSAT.QuantumRecombobulator");
             }
         }

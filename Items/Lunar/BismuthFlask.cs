@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -10,14 +9,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Bismuth Tonic";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Gain resistance when hit by one enemy tier... <color=#FF7F7F>BUT gain weakness to the others.</color>";
-        protected override string GetDescString(string langid = null) => $"On being hit by one <style=cIsDamage>tier of enemy</style> (Normal, Elite, or Boss): take <style=cIsHealing>{Pct(resistAmount, 1)} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{Pct(weakAmount, 1)} more damage</style> from all other types. Wears off after {duration:N0} seconds.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            resistAmount.ToString("P1"), weakAmount.ToString("P1"), duration.ToString("N0")
+        };
 
 
 

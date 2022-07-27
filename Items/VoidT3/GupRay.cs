@@ -18,14 +18,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Item Data //////
 
-		public override string displayName => "Gup Ray";
 		public override ItemTier itemTier => ItemTier.VoidTier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) => "Split enemies into two much weaker copies. <style=cIsVoid>Corrupts all Shrink Rays</style>.";
-		protected override string GetDescString(string langid = null) => $"Once every {icd:N1} seconds, hitting a non-final-boss enemy <style=cIsUtility>splits</style> them into 2 copies with {Pct(statMult)} <style=cIsHealth>health</style> and <style=cIsDamage>damage</style>. <style=cStack>Enemies can be split 1 time per stack.</style> <style=cIsVoid>Corrupts all Shrink Rays</style>.";
-		protected override string GetLoreString(string langid = null) => "";
+		protected override string[] GetDescStringArgs(string langID = null) => new[] {
+			icd.ToString("N1"), statMult.ToString("P0")
+		};
 
 
 

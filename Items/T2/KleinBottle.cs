@@ -14,14 +14,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override string displayName => "Unstable Klein Bottle";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Utility});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Chance to push or pull nearby enemies on taking damage.";
-        protected override string GetDescString(string langid = null) => $"After taking damage, {Pct(procChance, 1, 1f)} <style=cStack>(+{Pct(procChance, 1, 1f)} per stack, mult.)</style> chance to <style=cIsUtility>push</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {pullRadius:N0} m for <style=cIsDamage>{Pct(damageFrac)} damage</style>. <style=cStack>Has an internal cooldown of {procIcd:N1} s.</style>";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            (procChance/100f).ToString("P1"), pullRadius.ToString("N0"), damageFrac.ToString("P0"), procIcd.ToString("N1")
+        };
 
 
 
@@ -230,15 +228,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
             ContentAddition.AddProjectile(blackHolePrefab);
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/kleinBottleIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Can't Touch This");
-            LanguageAPI.Add(achiDescToken, "Block, or take 1 or less points of damage from, 3 attacks in a row.");
             itemDef.unlockableDef = unlockable;
         }
 

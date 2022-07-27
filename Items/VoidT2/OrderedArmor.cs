@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using static R2API.RecalculateStatsAPI;
 using R2API;
 using System.Collections.Generic;
@@ -15,14 +14,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Armor Prism";
         public override ItemTier itemTier => ItemTier.VoidTier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Gain massive armor by focusing your item build. <style=cIsVoid>Corrupts all Armor Crystals</style>.";
-        protected override string GetDescString(string langid = null) => $"Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>types of item</style> (fewer is better). Having only Armor Prisms gives <style=cIsHealing>{armorAmtBase:N0} armor</style> <style=cStack>(+{Pct(armorStacking)} per stack, inverse-exponential)</style>; each subsequent item type <style=cIsUtility>reduces armor by {Pct(1f-varietyExp)}</style>. <style=cIsVoid>Corrupts all Armor Crystals</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            armorAmtBase.ToString("N0"), armorStacking.ToString("P0"), (1f - varietyExp).ToString("P0")
+        };
 
 
 

@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
@@ -13,15 +12,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Hydroponic Cell";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
         public override bool itemIsAIBlacklisted { get; protected set; } = false;
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Half your healed health grows a plant that provides a single-use damage bonus... <color=#FF7F7F>BUT you don't receive the converted healing.</color>";
-        protected override string GetDescString(string langid = null) => $"Whenever you receive <style=cIsHealing>healing</style> that applies to your <style=cIsHealth>health</style> <style=cStack>(overheal, barrier, etc. do not count)</style>, {Pct(healingRatio)} <style=cStack>(+{Pct(healingRatio)} per stack, hyperbolic)</style> of this <style=cIsHealing>healing</style> will be <color=#FF7F7F>converted</color> into <style=cIsDamage>base damage</style> at a ratio of {(1/extraConversionMalus):N2}:1. This bonus damage will be consumed by your next attack that deals more than <style=cIsDamage>{Pct(triggerBigHitFrac)} damage</style>. Stores up to {maxStoredDamageRatio + 1:N0}x your <style=cIsDamage>damage stat</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            healingRatio.ToString("P0"), (1f/extraConversionMalus).ToString("N2"), triggerBigHitFrac.ToString("P0"), (maxStoredDamageRatio + 1).ToString("N0")
+        };
 
 
 

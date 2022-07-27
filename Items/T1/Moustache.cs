@@ -3,21 +3,18 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Moustache : Item<Moustache> {
 
         ////// Item Data //////
 
-        public override string displayName => "Macho Moustache";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "The bigger the fight, the higher your damage.";
-        protected override string GetDescString(string langid = null) => $"Gain <style=cIsDamage>+{Pct(stackingDamageFrac, 1)} damage <style=cStack>(+{Pct(stackingDamageFrac, 1)} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{maxRange:N0} m</style>. Elites count as {(eliteBonus+1f):N1} enemies, bosses count as {(champBonus+1f):N1} enemies, and elite bosses count as {(eliteBonus+champBonus+1f):N1} enemies.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            stackingDamageFrac.ToString("P1"), maxRange.ToString("N0"), (eliteBonus+1f).ToString("N1"), (champBonus+1f).ToString("N1"), (eliteBonus+champBonus+1f).ToString("N1")
+        };
 
 
 
@@ -193,15 +190,11 @@ namespace ThinkInvisible.TinkersSatchel {
             moustacheBuff.iconSprite = iconResource;
             ContentAddition.AddBuffDef(moustacheBuff);
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/moustacheIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
-            LanguageAPI.Add(achiNameToken, "Big Brawl");
-            LanguageAPI.Add(achiDescToken, "Participate in a very busy fight.");
             itemDef.unlockableDef = unlockable;
         }
 

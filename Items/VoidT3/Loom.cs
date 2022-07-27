@@ -12,16 +12,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Item Data //////
 
-		public override string displayName => "Unraveling Loom";
 		public override ItemTier itemTier => ItemTier.VoidTier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) =>
-			"All your attacks become progressively slower and more powerful. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.";
-		protected override string GetDescString(string langid = null) =>
-			$"Each <style=cIsDamage>combat skill</style> use gives you <style=cIsDamage>-{stackAttack:P1} attack speed and +{stackDamage:P1} damage</style> for {window} seconds <style=cStack>(+{window} s per stack)</style>, up to {maxStacks} times <style=cStack>(+{maxStacks} per stack)</style>. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.";
-		protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            stackAttack.ToString("P1"), stackDamage.ToString("P1"), window.ToString("N1"), maxStacks.ToString("N0")
+        };
 
 
 

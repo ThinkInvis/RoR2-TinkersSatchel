@@ -13,15 +13,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Equipment Data //////
 
-        public override string displayName => "Command Terminal";
         public override bool isLunar => false;
         public override bool canBeRandomlyTriggered { get; protected set; } = false;
         public override float cooldown { get; protected set; } = 10f;
-
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Revive an ally or summon a drone. Consumed on use.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Revives</style> one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a <style=cIsUtility>random drone</style> instead. <color=#FF7F7F>Will be consumed on use</style>.";
-        protected override string GetLoreString(string langid = null) => $"";
 
 
 
@@ -187,7 +181,6 @@ namespace ThinkInvisible.TinkersSatchel {
             UpdateDroneMasterPrefabNames();
 
             if(Compat_ClassicItems.enabled) {
-                LanguageAPI.Add("TKSAT_REVIVEONCE_CI_EMBRYO_APPEND", "\n<style=cStack>Beating Embryo: Activates twice simultaneously.</style>");
                 Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_REVIVEONCE_CI_EMBRYO_APPEND", () => "TKSAT.CommandTerminal");
             }
         }

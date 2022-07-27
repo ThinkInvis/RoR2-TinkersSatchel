@@ -2,25 +2,21 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Headset : Item<Headset> {
 
 		////// Item Data //////
 
-		public override string displayName => "H3AD-53T";
 		public override ItemTier itemTier => ItemTier.Tier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) => "Your Utility skill builds a stunning static charge.";
-		protected override string GetDescString(string langid = null) => $"After activating your <style=cIsUtility>Utility skill</style>, the next {procCount} enemies <style=cStack>(+{stackProcCount} per stack)</style> your path crosses will <style=cIsDamage>take {Pct(baseDamagePct)} damage</style> <style=cStack>(+{Pct(stackDamagePct)} per stack)</style> and be <style=cIsUtility>stunned for {stunDuration} seconds</style>.";
-		protected override string GetLoreString(string langid = null) => "You finally found a fall too long for your long fall boots. While you could probably jury-rig the parts back together for their original purpose, this is the perfect opportunity for... innovation.\r\n\r\nUse your head.";
+		protected override string[] GetDescStringArgs(string langID = null) => new[] {
+			procCount.ToString("N0"), stackProcCount.ToString("N0"), baseDamagePct.ToString("P0"), stackDamagePct.ToString("P0"), stunDuration.ToString("N1")
+		};
 
 
 
@@ -206,15 +202,11 @@ namespace ThinkInvisible.TinkersSatchel {
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(headsetBuff);
 
-			var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-			var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
 			unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
 			unlockable.cachedName = $"TkSat_{name}Unlockable";
 			unlockable.sortScore = 200;
 			unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/headsetIcon.png");
 			ContentAddition.AddUnlockableDef(unlockable);
-			LanguageAPI.Add(achiNameToken, "You Broke It");
-			LanguageAPI.Add(achiDescToken, "Kill a boss with a maximum damage H3AD-5T v2 explosion.");
 			itemDef.unlockableDef = unlockable;
 		}
 

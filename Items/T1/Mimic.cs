@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Networking;
@@ -12,15 +11,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Mostly-Tame Mimic";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Utility});
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Mimics your other items at random.";
-        protected override string GetDescString(string langid = null) => $"Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style> from a weighted selection of {1f - chanceTableSpikiness:P0} of your item types of each tier. <style=cIsUtility>Every {scrambleRate:N0} seconds</style>, all mimics will <style=cIsUtility>scramble</style> to a new selection.";
-        protected override string GetLoreString(string langid = null) => "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....";
-
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            (1f - chanceTableSpikiness).ToString("P0"), scrambleRate.ToString("N0")
+        };
 
 
         ////// Config //////

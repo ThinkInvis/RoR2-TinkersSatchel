@@ -12,16 +12,6 @@ using UnityEngine.Networking;
 namespace ThinkInvisible.TinkersSatchel {
     public class ItemDrone : T2Module<ItemDrone> {
 
-        ////// Language //////
-
-        public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_NAME"] = "Item Drone";
-            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_BODY_NAME"] = "Item Drone";
-            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_POPUP_TEXT"] = "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>";
-            permanentGenericLanguageTokens["TKSAT_ITEMDRONE_CONTEXT"] = "Give Item";
-            base.RefreshPermanentLanguage();
-        }
-
         ////// Config //////
         
         [AutoConfigRoOString()]

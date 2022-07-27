@@ -3,9 +3,7 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using static TILER2.MiscUtil;
 using UnityEngine.AddressableAssets;
-using System.Collections.Generic;
 using UnityEngine.Networking;
 using System.Linq;
 using RoR2.Orbs;
@@ -16,14 +14,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
 
-        public override string displayName => "Voidwisp Hive";
         public override ItemTier itemTier => ItemTier.VoidTier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
-        protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Drop damaging wisp allies on using skills. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
-        protected override string GetDescString(string langid = null) => $"You drop a <style=cIsDamage>voidwisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({perSkillCooldown:N0} s individual cooldown on each skill, {primaryCooldown:N0} s on primary skill)</style>. <style=cIsDamage>Voidwisps</style> live for {wispDuration:N0} seconds, tracking nearby enemies and zapping them for <style=cIsDamage>{1f/damageRate:N1}x{Pct(damageAmt)} damage per second <style=cStack>(damage increases linearly per stack)</style></style>. <style=cIsVoid>Corrupts all Pixie Tubes</style>.";
-        protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            perSkillCooldown.ToString("N0"), primaryCooldown.ToString("N0"), wispDuration.ToString("N0"), (1f/damageRate).ToString("N1"), damageAmt.ToString("P0")
+        };
 
 
 

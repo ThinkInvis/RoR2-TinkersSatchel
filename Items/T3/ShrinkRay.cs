@@ -2,25 +2,21 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class ShrinkRay : Item<ShrinkRay> {
 
 		////// Item Data //////
 
-		public override string displayName => "Shrink Ray";
 		public override ItemTier itemTier => ItemTier.Tier3;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
-		protected override string GetNameString(string langid = null) => displayName;
-		protected override string GetPickupString(string langid = null) => "Suppress a single target's damage and non-primary skills.";
-		protected override string GetDescString(string langid = null) => $"Once every {icd:N1} seconds, hitting an enemy disables their <style=cIsUtility>non-primary skills</style> and reduces their <style=cIsDamage>damage</style> by {damageDebuff:P0} for {duration:N1} seconds <style=cStack>(+{duration:N1} seconds per stack)</style>.";
-		protected override string GetLoreString(string langid = null) => "";
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            icd.ToString("N1"), damageDebuff.ToString("P0"), duration.ToString("N1")
+        };
 
 
 
