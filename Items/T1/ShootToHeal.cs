@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            healAmount.ToString("N1"), (returnHealingAmount / healAmount).ToString("P0")
+            healAmount.ToString("N1"), (returnHealingAmount / healAmount).ToString("0%")
         };
 
 

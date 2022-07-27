@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override float cooldown { get; protected set; } = 20f;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            enemyRange.ToString("N0"), baseDamageFrac.ToString("P0"), objectRange.ToString("N0")
+            enemyRange.ToString("N0"), baseDamageFrac.ToString("0%"), objectRange.ToString("N0")
         };
 
 

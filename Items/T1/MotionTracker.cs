@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            damageFrac.ToString("P0"), damageTime.ToString("N0")
+            damageFrac.ToString("0%"), damageTime.ToString("N0")
         };
 
 

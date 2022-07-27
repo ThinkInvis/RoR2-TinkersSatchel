@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            critFracBase.ToString("P0"), critFracStack.ToString("P0")
+            critFracBase.ToString("0%"), critFracStack.ToString("0%")
         };
 
 

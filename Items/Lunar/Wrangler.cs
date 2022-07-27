@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            wrange.ToString("N0"), baseExtraSpeed.ToString("P0"), stackExtraSpeed.ToString("P0")
+            wrange.ToString("N0"), baseExtraSpeed.ToString("0%"), stackExtraSpeed.ToString("0%")
         };
 
 

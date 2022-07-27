@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage, ItemTag.Utility });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            perSkillCooldown.ToString("N0"), primaryCooldown.ToString("N0"), buffDuration.ToString("N0"), buffDamageAmt.ToString("P0"), buffMoveAmt.ToString("P0"), buffAttackAmt.ToString("P0"), buffArmorAmt.ToString("N0")
+            perSkillCooldown.ToString("N0"), primaryCooldown.ToString("N0"), buffDuration.ToString("N0"), buffDamageAmt.ToString("0%"), buffMoveAmt.ToString("0%"), buffAttackAmt.ToString("0%"), buffArmorAmt.ToString("N0")
         };
 
 

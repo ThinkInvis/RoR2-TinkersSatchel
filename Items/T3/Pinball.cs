@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
 		protected override string[] GetDescStringArgs(string langID = null) => new[] {
-			(bounceChance/100f).ToString("P0"), bounceDamageFrac.ToString("P0"), baseBounces.ToString("N0"), stackBounces.ToString("N0")
+			(bounceChance/100f).ToString("0%"), bounceDamageFrac.ToString("0%"), baseBounces.ToString("N0"), stackBounces.ToString("N0")
 		};
 
 

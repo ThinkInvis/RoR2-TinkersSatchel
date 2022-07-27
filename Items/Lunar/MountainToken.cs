@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.HoldoutZoneRelated });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            debuffAmount.ToString("P0")
+            debuffAmount.ToString("0%")
         };
 
 

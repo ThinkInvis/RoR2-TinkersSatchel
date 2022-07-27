@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = false;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            healingRatio.ToString("P0"), (1f/extraConversionMalus).ToString("N2"), triggerBigHitFrac.ToString("P0"), (maxStoredDamageRatio + 1).ToString("N0")
+            healingRatio.ToString("0%"), (1f/extraConversionMalus).ToString("N2"), triggerBigHitFrac.ToString("0%"), (maxStoredDamageRatio + 1).ToString("N0")
         };
 
 

@@ -22,7 +22,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
 		protected override string[] GetDescStringArgs(string langID = null) => new[] {
-			icd.ToString("N1"), statMult.ToString("P0")
+			icd.ToString("N1"), statMult.ToString("0%")
 		};
 
 
