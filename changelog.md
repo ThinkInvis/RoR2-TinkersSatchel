@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.4.1**
+
+- Migrated a few language tokens missed in the first pass (skills, CommonCode). <small>Slippery little devils...</small>
+
 **3.4.0** *The Translatable Update*
 
 - Migrated ALL language tokens to a language file, making the mod more translation-friendly (read: it can now be done at all).
