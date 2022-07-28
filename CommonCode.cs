@@ -14,16 +14,6 @@ namespace ThinkInvisible.TinkersSatchel {
 	public class CommonCode : T2Module<CommonCode> {
         public override bool managedEnable => false;
 
-        public override void RefreshPermanentLanguage() {
-			permanentGenericLanguageTokens["TKSAT_DISABLED_SKILL_NAME"] = "Suppressed Skill";
-			permanentGenericLanguageTokens["TKSAT_DISABLED_SKILL_DESCRIPTION"] = "Something has temporarily prevented you from using this skill!";
-
-			permanentGenericLanguageTokens["TKSAT_KEYWORD_TAUNT"] = "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style> sources of Taunt unless no other option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is reduced by 50%. Cleared early if the source of Taunt dies.</style>";
-			permanentGenericLanguageTokens["TKSAT_KEYWORD_SUPPRESS"] = "<style=cKeywordName>Suppressed</style><style=cSub>A Suppressed skill cannot be used and has its cooldowns frozen.</style>";
-
-			base.RefreshPermanentLanguage();
-		}
-
 		public static SkillDef disabledSkillDef;
 		public static BuffDef tauntDebuff;
 
