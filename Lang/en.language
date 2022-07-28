@@ -294,6 +294,34 @@
         "TKSAT_ITEMDRONE_NAME": "Item Drone",
         "TKSAT_ITEMDRONE_BODY_NAME": "Item Drone",
         "TKSAT_ITEMDRONE_POPUP_TEXT": "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>",
-        "TKSAT_ITEMDRONE_CONTEXT": "Give Item"
+        "TKSAT_ITEMDRONE_CONTEXT": "Give Item",
+
+
+		
+		"TKSAT_COMMANDO_PRIMARY_PULSE_NAME": "Pulse",
+		"TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION_MAIN": "Rapidly shoot an enemy 4 times with high recoil. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75% to 150%</style> over the course of the burst.",
+		"TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION_ALT": "Rapidly shoot an enemy 4 times. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75%</style> to a maximum of <style=cIsDamage>150%</style> over the course of the burst, increasing over the course of 20 hits to the same target without missing.",
+
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME": "Plasma Grenade",
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION": "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with verydes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>",
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME_SCEP": "Big F【??』ing Grenade",
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION_SCEP": "<style=cIsDamage>Ignite</style>. Throw a sticky grenade with very-close-range homing that explodes for <style=cIsDamage>500% damage</style>. Hold up to 2. <style=cStack>Watch your aim near low walls.</style>\n<color=#d299ff>SCEPTER: Double blast radius and damage.</color>",
+
+		"TKSAT_COMMANDO_UTILITY_JINKJET_NAME": "Jink Jet",
+		"TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION": "Perform a small jet-assisted horizontal jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.",
+
+
+		"TKSAT_ENGI_PRIMARY_FLAK_NAME": "Smart Flak",
+        "TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION": "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.",
+
+		"TKSAT_ENGI_SECONDARY_CHAFF_NAME": "Decoy Chaff",
+        "TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION": "Deal <style=cIsDamage>4x75% damage</style> and <style=cIsUtility>clear enemy projectiles</style> in a frontal cone. Struck enemies within line of sight of any of your turrets will be <style=cIsUtility>Taunted</style> by a turret for 6 seconds.",
+
+		"TKSAT_ENGI_SPEEDISPENSER_BODY_NAME": "Speed Dispenser",
+		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT": "Take speed boost",
+		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_ALREADY_HAVE": "Can't take speed boost\n(Don't be greedy!)",
+		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_CHARGING": "Can't take speed boost\n(Still brewing...)",
+		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME": "Speed Dispenser",
+        "TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION": "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>."
 	}
 }

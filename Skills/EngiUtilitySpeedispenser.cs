@@ -35,17 +35,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public EngiUtilitySpeedispenser() {
         }
-
-        public override void RefreshPermanentLanguage() {
-			permanentGenericLanguageTokens["TKSAT_ENGI_SPEEDISPENSER_BODY_NAME"] = "Speed Dispenser";
-			permanentGenericLanguageTokens["TKSAT_ENGI_SPEEDISPENSER_CONTEXT"] = "Take speed boost";
-			permanentGenericLanguageTokens["TKSAT_ENGI_SPEEDISPENSER_CONTEXT_ALREADY_HAVE"] = "Can't take speed boost\n(Don't be greedy!)";
-			permanentGenericLanguageTokens["TKSAT_ENGI_SPEEDISPENSER_CONTEXT_CHARGING"] = "Can't take speed boost\n(Still brewing...)";
-			permanentGenericLanguageTokens["TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME"] = "Speed Dispenser";
-            permanentGenericLanguageTokens["TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION"] = "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>.";
-            base.RefreshPermanentLanguage();
 			//todo: allow interact to consume partial charge and renew buff
-        }
 
         public override void SetupAttributes() {
             base.SetupAttributes();

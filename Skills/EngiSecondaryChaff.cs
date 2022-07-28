@@ -31,12 +31,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		public EngiSecondaryChaff() {
         }
 
-        public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens["TKSAT_ENGI_SECONDARY_CHAFF_NAME"] = "Decoy Chaff";
-            permanentGenericLanguageTokens["TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION"] = "Deal <style=cIsDamage>4x75% damage</style> and <style=cIsUtility>clear enemy projectiles</style> in a frontal cone. Struck enemies within line of sight of any of your turrets will be <style=cIsUtility>Taunted</style> by a turret for 6 seconds.";
-            base.RefreshPermanentLanguage();
-        }
-
         public override void SetupAttributes() {
             base.SetupAttributes();
 

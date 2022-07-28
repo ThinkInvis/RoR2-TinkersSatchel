@@ -35,12 +35,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		public EngiPrimaryFlak() {
         }
 
-        public override void RefreshPermanentLanguage() {
-            permanentGenericLanguageTokens["TKSAT_ENGI_PRIMARY_FLAK_NAME"] = "Smart Flak";
-            permanentGenericLanguageTokens["TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION"] = "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.";
-            base.RefreshPermanentLanguage();
-        }
-
         public override void SetupAttributes() {
             base.SetupAttributes();
 
