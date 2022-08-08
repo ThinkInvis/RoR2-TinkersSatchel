@@ -104,7 +104,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goldenGearIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Armor Crystal</b><br>
+				<b>Chestplate</b><br>
 				Gain armor by hoarding money.
 			</td>
 		</tr>
@@ -332,8 +332,8 @@ Short summaries are provided below. For a full description of each item, see: ht
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Armor Prism</b> (T2)<br>
-				Gain massive armor by focusing your item build. Corrupts all Armor Crystals.
+				<b>Lens of Order</b> (T2)<br>
+				Gain massive armor by focusing your item build. Corrupts all Chestplates.
 			</td>
 		</tr>
 		<tr>
@@ -524,8 +524,8 @@ Short summaries are provided below. For a full description of each item, see: ht
 - ItemDisplayRule incompleteness:
 	- A few TkSat items have absent or incomplete ItemDisplayRules.
 	- Non-Survivor vanilla characters have no display rules for TkSat items.
-	- TkSat drones have no ItemDisplayRules for important vanilla items (Spare Drone Parts).
 - Most items need some effects & model polish in general.
+	- Chestplate texture has unintentional specularity in some areas.
 	- Broken drones are missing smoke/sparks effects.
 	- Cardboard Box alternate icon has not been updated to vanilla style like other icons as of v2.2.3.
 - Some class-specific item behaviors on Go-Faster Stripes are missing or placeholders.
@@ -536,6 +536,22 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+
+**3.5.0**
+
+- Item Drones now support holding more than 1 item type.
+	- `public ItemIndex ItemDrone.ItemDroneWardPersist.index` is now obsolete and will have no effect.
+	- `public int ItemDrone.ItemDroneWardPersist.count` is now obsolete and will have no effect.
+	- Added `public int[] ItemDrone.ItemDroneWardPersist stacks {get; private set;}` (populated via `ItemCatalog.RequestItemStackArray()`).
+	- Added `public void ItemDrone.ItemDroneWardPersist.AddItems(ItemIndex ind, int count)`.
+- Added Spare Drone Parts IDRs to Item Drone and Bulwark Drone.
+- Item Drone now supports the Dronemeld mod (requires Dronemeld 1.3.0 or later).
+- Fixed bad armature/animation setup (extraneous 90-degree rotations) on Item Drone.
+- Renamed Armor Crystal to Chestplate and gave it a new model and lore.
+- Renamed Armor Prism to Lens of Order and improved its model.
+- Character models are now set to read/write enabled (stops some rare console spam).
+- For developers: NuGet config is now localized (building project no longer requires end-user modification of system or directory NuGet config).
+- Updated TILER2 dependency to 7.3.2.
 
 **3.4.1**
 
@@ -567,29 +583,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Updated TILER2 dependency to 7.2.1.
 	- Fixes Item Drone name modification showing item type only appearing for the host in multiplayer.
 	- Fixes a mostly harmless NRE after using Quantum Recombobulator.
-
-**3.3.0**
-
-- New content:
-	- Items:
-		- Fudge Dice (T2): Every 20 seconds, automatically succeed on a random roll.
-		- Celestial Gambit (Lunar): Gain an extra item from the teleporter... BUT the teleporter zone weakens you (50% reduced healing per stack, no jumping). <small>Strawb!!</small>
-		- Lemurian's Claw (Lunar Equipment): Give a target item drop to ALL characters. Enemies receive multiple, 1 per ally.
-		- Scavenger's Rucksack (Boss): Hold one extra equipment. Stand still to cycle through equipment slots. Rarely replaces Scavenger backpack drops.
-	- Artifacts:
-		- Artifact of Reconfiguration: Start with 2 Scavenger's Rucksacks. All equipment has no cooldown and is consumed on use. Spawns a lot of extra equipment every stage.
-- Balance pass:
-	- Bulwark Drone:
-		- Bulwark Drone was severely overperforming in an attempt to justify its high cost and lack of attacks, especially when multiple were obtained. Its taunt mechanic was also unintentionally inconsistent.
-		- Now spawns with one stack of Razorwire. <small>Those shields are pointy!</small>
-		- Reduced taunt chance per enemy (50% --> 25%).
-		- Now selects a consistent fraction of valid targets to taunt, instead of rolling a chance for each target.
-		- Reduced base stats (health 400 --> 275, shield 60 --> 25, health regen 5 --> 2, armor 20 --> 0, move speed 20 --> 15).
-		- Increased hitbox size.
-		- Reduced base cost ($80 --> $60).
-	- Item Drone can no longer accept Lunar nor Void items by default. <small>You are now <i>slightly</i> safer from your friends.</small>
-- Item Drone item blacklist is now configurable and also includes a tier blacklist.
-- Made Bulwark Drone compatible with the Dronemeld mod.
-- Kintsugi:
-	- Fixed double percentage signs in description.
-	- Fixed missing unlockable icon.

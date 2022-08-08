@@ -116,7 +116,7 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goldenGearIcon.png?raw=true" width=256></td>
 			<td>
-				<b>Armor Crystal</b><br>
+				<b>Chestplate</b><br>
 				<details>
 					<summary>Gain armor by hoarding money.</summary>
 					<small>Gain armor based on your currently held money. The first point of armor costs $10 (-10% per stack, exponential; scales with difficulty); each subsequent point costs 7.5% more than the last.</small>
@@ -531,10 +531,10 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=256></td>
 			<td>
-				<b>Armor Prism</b> (T2)<br>
+				<b>Lens of Order</b> (T2)<br>
 				<details>
-				<summary>Gain massive armor by focusing your item build. Corrupts all Armor Crystals.</summary>
-				<small>Gain armor based on your currently held types of item (fewer is better). Having only Armor Prisms gives 500 armor (+25% per stack, inverse-exponential); each subsequent item type reduces armor by 12.5%. Corrupts all Armor Crystals.</small>
+				<summary>Gain massive armor by focusing your item build. Corrupts all Chestplates.</summary>
+				<small>Gain armor based on your currently held types of item (fewer is better). Having only Lenses of Order gives 500 armor (+25% per stack, inverse-exponential); each subsequent item type reduces armor by 12.5%. Corrupts all Chestplates.</small>
 				</details>
 			</td>
 			<td><ul>

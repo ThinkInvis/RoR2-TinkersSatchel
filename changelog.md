@@ -2,6 +2,22 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
 
+**3.5.0**
+
+- Item Drones now support holding more than 1 item type.
+	- `public ItemIndex ItemDrone.ItemDroneWardPersist.index` is now obsolete and will have no effect.
+	- `public int ItemDrone.ItemDroneWardPersist.count` is now obsolete and will have no effect.
+	- Added `public int[] ItemDrone.ItemDroneWardPersist stacks {get; private set;}` (populated via `ItemCatalog.RequestItemStackArray()`).
+	- Added `public void ItemDrone.ItemDroneWardPersist.AddItems(ItemIndex ind, int count)`.
+- Added Spare Drone Parts IDRs to Item Drone and Bulwark Drone.
+- Item Drone now supports the Dronemeld mod (requires Dronemeld 1.3.0 or later).
+- Fixed bad armature/animation setup (extraneous 90-degree rotations) on Item Drone.
+- Renamed Armor Crystal to Chestplate and gave it a new model and lore.
+- Renamed Armor Prism to Lens of Order and improved its model.
+- Character models are now set to read/write enabled (stops some rare console spam).
+- For developers: NuGet config is now localized (building project no longer requires end-user modification of system or directory NuGet config).
+- Updated TILER2 dependency to 7.3.2.
+
 **3.4.1**
 
 - Migrated a few language tokens missed in the first pass (skills, CommonCode). <small>Slippery little devils...</small>
