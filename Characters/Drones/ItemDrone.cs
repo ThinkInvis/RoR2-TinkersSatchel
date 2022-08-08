@@ -226,9 +226,9 @@ namespace ThinkInvisible.TinkersSatchel {
                         .Select(kvp => (itemDef: ItemCatalog.GetItemDef(kvp.Key), count: kvp.Value))
                         .Where(tDbC => tDbC.itemDef != null) //tuple itemdef by count
                         .GroupBy(tDbC => tDbC.itemDef.tier)
-                        .Select(tDbC_gTier => (tDbC_gTier.Key, tDbC_gTier.Sum(tDbC => tDbC.count)))
-                        .Where(tTbC => tTbC.Item2 > 0) //tuple itemtier by count
-                        .Select(tTbC => $"<color=#{ColorCatalog.GetColorHexString(ItemTierCatalog.GetItemTierDef(tTbC.Item1).colorIndex)}>{tTbC.Item2}</color>");
+                        .Select(tDbC_gTier => (itemTier: tDbC_gTier.Key, count: tDbC_gTier.Sum(tDbC => tDbC.count)))
+                        .Where(tTbC => tTbC.count > 0) //tuple itemtier by count
+                        .Select(tTbC => $"<color=#{ColorCatalog.GetColorHexString(ItemTierCatalog.GetItemTierDef(tTbC.itemTier).colorIndex)}>{tTbC.count}</color>");
 
                     return $"{retv} ({string.Join(", ", countByTier)})";
                 } else {
