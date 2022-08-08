@@ -25,7 +25,17 @@ namespace ThinkInvisible.TinkersSatchel {
         private static bool? _enabled;
         public static bool enabled {
             get {
-                if(_enabled == null) _enabled = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.ThinkInvisible.Dronemeld");
+                if(_enabled == null) {
+                    if(BepInEx.Bootstrap.Chainloader.PluginInfos.TryGetValue("com.ThinkInvisible.Dronemeld", out var pi)) {
+                        var versionOK = pi.Metadata.Version >= new System.Version(1, 3, 0);
+                        _enabled = versionOK;
+                        if(!versionOK) {
+                            TinkersSatchelPlugin._logger.LogError("Dronemeld is installed, but has an older version than supported. Install Dronemeld 1.3.0 or later to enable compatibility for Item Drone/Bulwark Drone.");
+                        }
+                    } else {
+                        _enabled = false;
+                    }
+                }
                 return (bool)_enabled;
             }
         }
