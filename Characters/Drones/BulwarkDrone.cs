@@ -103,6 +103,48 @@ namespace ThinkInvisible.TinkersSatchel {
                 .WaitForCompletion();
 
             var mdl = bulwarkDroneBodyPrefab.transform.Find("Model Base/BulwarkDrone").GetComponent<CharacterModel>();
+
+            #region Vanilla IDRs
+            mdl.itemDisplayRuleSet.SetDisplayRuleGroup(Addressables.LoadAssetAsync<ItemDef>("RoR2/DLC1/DroneWeapons/DroneWeaponsDisplay1.asset").WaitForCompletion(), new DisplayRuleGroup {
+                rules = new[] {
+                    new ItemDisplayRule {
+                        ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponLauncher.prefab").WaitForCompletion(),
+                        childName = "BulwarkDroneModel",
+                        localPos = new Vector3(0F, 0.78087F, 0.72665F),
+                        localAngles = new Vector3(356.5202F, 0F, 0F),
+                        localScale = new Vector3(1F, 1F, 1F)
+                    }, new ItemDisplayRule {
+                        ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponRobotArm.prefab").WaitForCompletion(),
+                        childName = "BulwarkDroneModel",
+                        localPos = new Vector3(0.48613F, 0F, 0.41692F),
+                        localAngles = new Vector3(82.44529F, 86.80688F, 0.00014F),
+                        localScale = new Vector3(1.5F, 1.5F, 1.5F)
+                    }
+                }
+            });
+            mdl.itemDisplayRuleSet.SetDisplayRuleGroup(Addressables.LoadAssetAsync<ItemDef>("RoR2/DLC1/DroneWeapons/DroneWeaponsDisplay2.asset").WaitForCompletion(), new DisplayRuleGroup {
+                rules = new[] {
+                    new ItemDisplayRule {
+                        ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponMinigun.prefab").WaitForCompletion(),
+                        childName = "BulwarkDroneModel",
+                        localPos = new Vector3(0F, 0.37601F, 0F),
+                        localAngles = new Vector3(-0.00001F, 180F, 180F),
+                        localScale = new Vector3(1F, 1F, 1F)
+                    }, new ItemDisplayRule {
+                        ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponLauncher.prefab").WaitForCompletion(),
+                        childName = "BulwarkDroneModel",
+                        localPos = new Vector3(0F, 0.78087F, 0.72665F),
+                        localAngles = new Vector3(356.5202F, 0F, 0F),
+                        localScale = new Vector3(1F, 1F, 1F)
+                    }
+                }
+            });
+            #endregion
+
             mdl.baseRendererInfos[0].defaultMaterial = coreMtl;
             mdl.baseRendererInfos[0].renderer.material = coreMtl;
 
