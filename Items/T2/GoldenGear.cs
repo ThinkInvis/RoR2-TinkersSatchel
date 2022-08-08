@@ -82,6 +82,8 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/goldenGearIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
             itemDef.unlockableDef = unlockable;
+
+            modelResource.transform.Find("GoldenGear2").GetComponent<MeshRenderer>().material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Chest1/matChest1.mat").WaitForCompletion();
         }
 
         public override void Install() {
