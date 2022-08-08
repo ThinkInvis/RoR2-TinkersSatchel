@@ -1,6 +1,4 @@
 ﻿using RoR2;
-using RoR2.Skills;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -17,6 +15,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         public static int GetStackCount(Inventory inv) {
             return inv.GetItemCount(Dronemeld.DronemeldPlugin.stackItem);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static CharacterMaster TryApply(CharacterMaster ownerMaster, string targetPrefabName) {
+            return Dronemeld.DronemeldPlugin.TryApply(ownerMaster, targetPrefabName);
         }
 
         private static bool? _enabled;

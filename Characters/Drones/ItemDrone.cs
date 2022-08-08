@@ -220,14 +220,27 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self.name == "ItemDroneBody(Clone)") {
                 var ward = self.GetComponent<ItemWard>();
                 if(!ward || ward.itemcounts.Count == 0) return retv;
-                var idef = ItemCatalog.GetItemDef(ward.itemcounts.First().Key);
-                if(idef == null) return retv;
-                
-                var color = "FFFFFF";
-                var itd = ItemTierCatalog.GetItemTierDef(idef.tier);
-                if(itd)
-                    color = ColorCatalog.GetColorHexString(itd.colorIndex);
-                return $"{retv} (<color=#{color}>{Language.GetString(idef.nameToken)}</color>)";
+
+                if(ward.itemcounts.Count > 1) {
+                    var countByTier = ward.itemcounts
+                        .Select(kvp => (itemDef: ItemCatalog.GetItemDef(kvp.Key), count: kvp.Value))
+                        .Where(tDbC => tDbC.itemDef != null) //tuple itemdef by count
+                        .GroupBy(tDbC => tDbC.itemDef.tier)
+                        .Select(tDbC_gTier => (tDbC_gTier.Key, tDbC_gTier.Sum(tDbC => tDbC.count)))
+                        .Where(tTbC => tTbC.Item2 > 0) //tuple itemtier by count
+                        .Select(tTbC => $"<color=#{ColorCatalog.GetColorHexString(ItemTierCatalog.GetItemTierDef(tTbC.Item1).colorIndex)}>{tTbC.Item2}</color>");
+
+                    return $"{retv} ({string.Join(", ", countByTier)})";
+                } else {
+                    var idef = ItemCatalog.GetItemDef(ward.itemcounts.First().Key);
+                    if(idef == null) return retv;
+
+                    var color = "FFFFFF";
+                    var itd = ItemTierCatalog.GetItemTierDef(idef.tier);
+                    if(itd)
+                        color = ColorCatalog.GetColorHexString(itd.colorIndex);
+                    return $"{retv} (<color=#{color}>{Language.GetString(idef.nameToken)}</color>)";
+                }
             }
             return retv;
         }
@@ -259,24 +272,34 @@ namespace ThinkInvisible.TinkersSatchel {
 
             remCount = Mathf.Min(count, remCount);
 
-            var summon = GetComponent<SummonMasterBehavior>();
-            var cm = summon.OpenSummonReturnMaster(currentInteractor);
-            var cmBody = cm.GetBodyObject();
-            var persist = cm.GetComponent<ItemDroneWardPersist>();
-            if(!summon || !cmBody || !persist)
-                return;
-            body.inventory.RemoveItem(pickupDef.itemIndex, remCount);
-            persist.index = pickupDef.itemIndex;
-            persist.count = remCount;
+            CharacterMaster extantMaster;
+            GameObject effectTarget;
+            if(Compat_Dronemeld.enabled && (extantMaster = Compat_Dronemeld.TryApply(body.master, "ItemDroneMaster")) != null) {
+                var persist = extantMaster.GetComponent<ItemDroneWardPersist>();
+                if(!persist) return;
+                persist.AddItems(pickupDef.itemIndex, remCount);
+                effectTarget = extantMaster.GetBodyObject();
+            } else {
+                var summon = GetComponent<SummonMasterBehavior>();
+                var cm = summon.OpenSummonReturnMaster(currentInteractor);
+                var persist = cm.GetComponent<ItemDroneWardPersist>();
+                if(!summon || !persist)
+                    return;
+                body.inventory.RemoveItem(pickupDef.itemIndex, remCount);
+                persist.AddItems(pickupDef.itemIndex, remCount);
+                effectTarget = cm.GetBodyObject();
+            }
 
-            for(var i = 0; i < remCount; i++) {
-                var effectData = new EffectData {
-                    origin = body.corePosition,
-                    genericFloat = Mathf.Lerp(1.5f, 2.5f, (float)i / (float)remCount),
-                    genericUInt = (uint)(pickupDef.itemIndex + 1)
-                };
-                effectData.SetNetworkedObjectReference(cmBody);
-                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
+            if(effectTarget) {
+                for(var i = 0; i < remCount; i++) {
+                    var effectData = new EffectData {
+                        origin = body.corePosition,
+                        genericFloat = Mathf.Lerp(1.5f, 2.5f, (float)i / (float)remCount),
+                        genericUInt = (uint)(pickupDef.itemIndex + 1)
+                    };
+                    effectData.SetNetworkedObjectReference(effectTarget);
+                    EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
+                }
             }
 
             GameObject.Destroy(this.gameObject);
@@ -295,12 +318,19 @@ namespace ThinkInvisible.TinkersSatchel {
         public void OnKilledServer(DamageReport damageReport) {
             if(!body || !body.master || !body.master.IsDeadAndOutOfLivesServer()) return;
             var idwp = body.master.GetComponent<ItemDroneWardPersist>();
-            if(!idwp || idwp.count <= 0) return;
+            if(!idwp) return;
 
-            var theta = 360f / (float)idwp.count;
-            for(int i = 0; i < idwp.count; i++) {
-                var vel = Quaternion.AngleAxis((float)i * theta, Vector3.up) * new Vector3(5f, 5f);
-                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(idwp.index), transform.position, vel);
+            var totalItems = idwp.stacks.Sum();
+            if(totalItems <= 0) return;
+
+            var thetaStep = 360f / (float)totalItems;
+            var thetaCurr = 0f;
+            for(int i = 0; i < idwp.stacks.Length; i++) {
+                for(int j = 0; j < idwp.stacks[i]; j++) {
+                    var vel = Quaternion.AngleAxis((float)i * thetaCurr, Vector3.up) * new Vector3(5f, 5f);
+                    PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex((ItemIndex)i), transform.position, vel);
+                    thetaCurr += thetaStep;
+                }
             }
             MonoBehaviour.Destroy(this);
         }
@@ -308,32 +338,53 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterMaster))]
     public class ItemDroneWardPersist : MonoBehaviour {
-        public ItemIndex index = ItemIndex.None;
-        public int count = 0;
+        public int[] stacks { get; private set; } = null;
         CharacterMaster master;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             master = GetComponent<CharacterMaster>();
+            stacks = ItemCatalog.RequestItemStackArray();
+            if(master)
+                master.onBodyStart += Master_onBodyStart;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-        void FixedUpdate() {
-            if(!NetworkServer.active || !master || index == ItemIndex.None) return;
+        void OnDestroy() {
+            ItemCatalog.ReturnItemStackArray(stacks);
+            stacks = null;
+            if(master)
+                master.onBodyStart -= Master_onBodyStart;
+        }
+
+        void Master_onBodyStart(CharacterBody obj) {
             var body = master.GetBodyObject();
             if(!body) return;
             var ward = body.GetComponent<ItemWard>();
             if(!ward) return;
             if(ward.radius != 100f)
                 ward.radius = 100f;
-            ward.itemcounts.TryGetValue(index, out int oldCount);
-            var ctc = Mathf.Abs(oldCount - count);
-            if(oldCount < count) {
-                for(var i = 0; i < ctc; i++)
-                    ward.ServerAddItem(index);
-            } else if(oldCount > count) {
-                for(var i = 0; i < ctc; i++)
-                    ward.ServerRemoveItem(index);
+            for(var i = 0; i < stacks.Length; i++)
+                CheckItemCount((ItemIndex)i);
+        }
+
+        public void AddItems(ItemIndex ind, int count) {
+            stacks[(int)ind] += count;
+            CheckItemCount(ind);
+        }
+
+        void CheckItemCount(ItemIndex ind) {
+            if(!master.hasBody) return;
+            var ward = master.GetBodyObject().GetComponent<ItemWard>();
+            ward.itemcounts.TryGetValue(ind, out int oldCount);
+            var newCount = stacks[(int)ind];
+            var countToChange = Mathf.Abs(oldCount - newCount);
+            if(oldCount < newCount) {
+                for(var i = 0; i < countToChange; i++)
+                    ward.ServerAddItem(ind);
+            } else if(oldCount > newCount) {
+                for(var i = 0; i < countToChange; i++)
+                    ward.ServerRemoveItem(ind);
             }
         }
     }
