@@ -95,7 +95,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 newEvent.useCallbacks = akEvent.useCallbacks;
                 newEvent.Callbacks = akEvent.Callbacks.ToArray().ToList();
                 newEvent.playingId = akEvent.playingId;
-                newEvent.soundEmitterObject = tmpBodySetup;
+                newEvent.soundEmitterObject = bulwarkDroneBodyPrefab;
                 newEvent.transitionDuration = akEvent.transitionDuration;
             }
 
