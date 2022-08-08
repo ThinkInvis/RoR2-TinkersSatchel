@@ -380,6 +380,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterMaster))]
     public class ItemDroneWardPersist : MonoBehaviour {
+        [Obsolete("Replaced by stacks and AddItems.")]
+        public ItemIndex index;
+        [Obsolete("Replaced by stacks and AddItems.")]
+        public int count;
+
+
         public int[] stacks { get; private set; } = null;
         CharacterMaster master;
 
