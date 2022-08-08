@@ -253,7 +253,7 @@
 		
 		"TINKERSSATCHEL_ORDEREDARMOR_NAME": "Lens of Order",
 		"TINKERSSATCHEL_ORDEREDARMOR_PICKUP": "Gain massive armor by focusing your item build. <style=cIsVoid>Corrupts all Chestplates</style>.",
-		"TINKERSSATCHEL_ORDEREDARMOR_DESC": "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>types of item</style> (fewer is better). Having only Armor Prisms gives <style=cIsHealing>{0} armor</style> <style=cStack>(+{1} per stack, inverse-exponential)</style>; each subsequent item type <style=cIsUtility>reduces armor bonus by {2}</style>. <style=cIsVoid>Corrupts all Armor Crystals</style>.",
+		"TINKERSSATCHEL_ORDEREDARMOR_DESC": "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>types of item</style> (fewer is better). Having only <style=cIsVoid>Lenses of Order</style> gives <style=cIsHealing>{0} armor</style> <style=cStack>(+{1} per stack, inverse-exponential)</style>; each subsequent item type <style=cIsUtility>reduces armor bonus by {2}</style>. <style=cIsVoid>Corrupts all Armor Crystals</style>.",
 		"TINKERSSATCHEL_ORDEREDARMOR_LORE": "",
 		
 		"TINKERSSATCHEL_VOIDWISPHIVE_NAME": "Voidwisp Hive",
