@@ -283,8 +283,7 @@ namespace ThinkInvisible.TinkersSatchel {
                             remCount = 3;
                         if(pdef.itemTier == ItemTier.Tier1 || pdef.itemTier == ItemTier.VoidTier1)
                             remCount = 5;
-                        wardPersist.index = pdef.itemIndex;
-                        wardPersist.count = remCount;
+                        wardPersist.AddItems(pdef.itemIndex, remCount);
                     }
                 }
             }
