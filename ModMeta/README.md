@@ -1,4 +1,4 @@
-﻿# Tinker's Satchel
+# Tinker's Satchel
 
 ## SUPPORT DISCLAIMER
 
