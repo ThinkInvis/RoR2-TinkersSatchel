@@ -244,7 +244,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         master.inventory.SetEquipment(stashedEquipment.Dequeue(), master.inventory.activeEquipmentSlot);
 					}
 				}
-			} else if(!isStopped) {
+			} else {
 				isStopped = false;
 				stationaryStopwatch = 0f;
 				shuffleStopwatch = 0f;
