@@ -55,7 +55,7 @@
 		
 		"TINKERSSATCHEL_HEALSTODAMAGE_NAME": "Hydroponic Cell",
 		"TINKERSSATCHEL_HEALSTODAMAGE_PICKUP": "Half your healed health grows a plant that provides a single-use damage bonus... <color=#FF7F7F>BUT you don't receive the converted healing.</color>",
-		"TINKERSSATCHEL_HEALSTODAMAGE_DESC": "Whenever you receive <style=cIsHealing>healing</style> that applies to your <style=cIsHealth>health</style> <style=cStack>(overheal, barrier, etc. do not count)</style>, {0} <style=cStack>(+{0} per stack, hyperbolic)</style> of this <style=cIsHealing>healing</style> will be <color=#FF7F7F>converted</color> into <style=cIsDamage>base damage</style> at a ratio of {1}:1. This bonus damage will be consumed by your next attack that deals more than <style=cIsDamage>{2} damage</style>. Stores up to {3}x your <style=cIsDamage>damage stat</style>.",
+		"TINKERSSATCHEL_HEALSTODAMAGE_DESC": "Whenever you receive <style=cIsHealing>healing</style> that applies to your <style=cIsHealth>health</style> <style=cStack>(overheal, barrier, etc. do not count)</style>, {0} <style=cStack>(每层 +{0}, hyperbolic)</style> of this <style=cIsHealing>healing</style> will be <color=#FF7F7F>converted</color> into <style=cIsDamage>base damage</style> at a ratio of {1}:1. This bonus damage will be consumed by your next attack that deals more than <style=cIsDamage>{2} damage</style>. Stores up to {3}x your <style=cIsDamage>damage stat</style>.",
 		"TINKERSSATCHEL_HEALSTODAMAGE_LORE": "",
 
 		"TINKERSSATCHEL_MOUNTAINTOKEN_NAME": "Celestial Gambit",
@@ -65,7 +65,7 @@
 
 		"TINKERSSATCHEL_WRANGLER_NAME": "RC Controller",
 		"TINKERSSATCHEL_WRANGLER_PICKUP": "Nearby turrets and drones attack with you... <color=#FF7F7F>BUT no longer attack automatically.</color>",
-		"TINKERSSATCHEL_WRANGLER_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {0} meters</style> will <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>. Order drones to fire by holding your <style=cIsUtility>Primary skill</style> keybind. Affected <style=cIsDamage>turrets and drones</style> gain <style=cIsDamage>+{1} attack speed <style=cStack>(+{2} per stack)</style></style>.",
+		"TINKERSSATCHEL_WRANGLER_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {0} meters</style> will <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>. Order drones to fire by holding your <style=cIsUtility>Primary skill</style> keybind. Affected <style=cIsDamage>turrets and drones</style> gain <style=cIsDamage>+{1} attack speed <style=cStack>(每层 +{2})</style></style>.",
 		"TINKERSSATCHEL_WRANGLER_LORE": "",
 		
 
@@ -98,47 +98,47 @@
 		"TINKERSSATCHEL_UNSTABLEBOMB_LORE": "",
 
 
-		"TINKERSSATCHEL_EXTENDOARMS_NAME": "Extendo-Arms",
-		"TINKERSSATCHEL_EXTENDOARMS_PICKUP": "Close-range attacks reach farther and deal slightly more damage.",
-		"TINKERSSATCHEL_EXTENDOARMS_DESC": "All your melee attacks, as well as AoEs centered within {0} meters of you, gain <style=cIsUtility>{1} range <style=cStack>(+{1} per stack)</style></style> and <style=cIsDamage>{2} damage <style=cStack>(+{2} per stack)</style></style>.",
+		"TINKERSSATCHEL_EXTENDOARMS_NAME": "伸展臂",
+		"TINKERSSATCHEL_EXTENDOARMS_PICKUP": "近距离攻击的范围更远，造成的伤害也会略大一些。",
+		"TINKERSSATCHEL_EXTENDOARMS_DESC": "你的所有近战攻击, 以及以你为中心的 {0} 米以内的范围攻击, 都会增加 <style=cIsUtility>{1} 的范围 <style=cStack>(每层 +{1})</style></style> 以及 <style=cIsDamage>{2} 的伤害 <style=cStack>(每层 +{2})</style></style>。",
 		"TINKERSSATCHEL_EXTENDOARMS_LORE": "",
 
-		"TINKERSSATCHEL_MIMIC_NAME": "Mostly-Tame Mimic",
-		"TINKERSSATCHEL_MIMIC_PICKUP": "Mimics your other items at random.",
-		"TINKERSSATCHEL_MIMIC_DESC": "Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style> from a weighted selection of {0} of your item types of each tier. <style=cIsUtility>Every {1} second(s)</style>, all mimics will <style=cIsUtility>scramble</style> to a new selection.",
+		"TINKERSSATCHEL_MIMIC_NAME": "最驯服的模仿",
+		"TINKERSSATCHEL_MIMIC_PICKUP": "随机模仿您的其他物品.",
+		"TINKERSSATCHEL_MIMIC_DESC": "根据每个等级你拥有的物品种类的{0}的加权选择，选择你其他物品当中的一个去<style=cIsUtility>模仿</style> <style=cStack>(每层独立选择)</style>. <style=cIsUtility>每 {1} 秒</style>, 所有的模仿将会 <style=cIsUtility>作出</style> 一次新的选择.",
 		"TINKERSSATCHEL_MIMIC_LORE": "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....",
 
-		"TINKERSSATCHEL_MOTIONTRACKER_NAME": "Old War Lidar",
-		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "Deal more damage to persistent combatants.",
-		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "Deal up to <style=cIsDamage>{0} more damage <style=cStack>(+{0} per stack)</style></style> to any enemy you have recently hit or been hit by, <style=cIsUtility>ramping up</style> over {1} second(s).",
+		"TINKERSSATCHEL_MOTIONTRACKER_NAME": "老旧战争激光雷达",
+		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "对持久战斗人员造成更多伤害。",
+		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "对于您最近攻击过或被其攻击过的敌人，可对其造成至多<style=cIsDamage>{0} 的额外伤害 <style=cStack>(每层 +{0})</style></style>, 造成的额外伤害将在 {1} 秒内<style=cIsUtility>逐渐上升</style>。",
 		"TINKERSSATCHEL_MOTIONTRACKER_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_NAME": "Why Won't You Die?!",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "Fully charge a Teleporter without killing the boss or dying.",
 		
-		"TINKERSSATCHEL_MOUSTACHE_NAME": "Macho Moustache",
-		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "The bigger the fight, the higher your damage.",
-		"TINKERSSATCHEL_MOUSTACHE_DESC": "Gain <style=cIsDamage>+{0} damage <style=cStack>(+{0} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{1} m</style>. Elites count as {2} enemies, bosses count as {3} enemies, and elite bosses count as {4} enemies.",
+		"TINKERSSATCHEL_MOUSTACHE_NAME": "男子汉胡子",
+		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "敌人越多，伤害越高。",
+		"TINKERSSATCHEL_MOUSTACHE_DESC": "<style=cIsDamage>{1} 米</style>内，每个处于战斗中或处于危险中的敌人都会使你增加<style=cIsDamage>+{0} 的伤害 <style=cStack>(每层 +{0}, 线性)</style></style> . 精英算 {2} 个敌人, boss算 {3} 个敌人, 精英boss算 {4} 个敌人.",
 		"TINKERSSATCHEL_MOUSTACHE_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_NAME": "Big Brawl",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_DESCRIPTION": "Participate in a very busy fight.",
 
-		"TINKERSSATCHEL_MUG_NAME": "Sturdy Mug",
-		"TINKERSSATCHEL_MUG_PICKUP": "Chance to shoot extra, unpredictable projectiles.",
-		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>.",
+		"TINKERSSATCHEL_MUG_NAME": "结实的马克杯",
+		"TINKERSSATCHEL_MUG_PICKUP": "有机会发射额外的、不可预测的子弹。",
+		"TINKERSSATCHEL_MUG_DESC": "所有子弹攻击都有<style=cIsDamage>{0} <style=cStack>(每层 +{0})</style></style> 的几率发射 <style=cIsDamage>一枚额外的子弹</style>，偏移角度为<color=#FF7F7F>{1}°</style>.",
 		"TINKERSSATCHEL_MUG_LORE": "An inscription around the base reads: \"Rock and Stone!\"",
 		"ACHIEVEMENT_TKSAT_MUG_NAME": "...So I Fired Again",
 		"ACHIEVEMENT_TKSAT_MUG_DESCRIPTION": "Miss 1,000 TOTAL projectile attacks.",
 		
-		"TINKERSSATCHEL_SHOOTTOHEAL_NAME": "Percussive Maintenance",
-		"TINKERSSATCHEL_SHOOTTOHEAL_PICKUP": "Hit allies to heal them.",
-		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "Hitting an ally with a direct attack heals them for <style=cIsHealing>{0} health <style=cStack>(+{0} per stack)</style></style> and you for {1} as much.",
+		"TINKERSSATCHEL_SHOOTTOHEAL_NAME": "冲击式修复",
+		"TINKERSSATCHEL_SHOOTTOHEAL_PICKUP": "击中友军可以治疗他们.",
+		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "直接攻击友军可以使他恢复 <style=cIsHealing>{0} 点血量 <style=cStack>(每层 +{0})</style></style>，并且也会使你恢复恢复值的 {1} 的血量。",
 		"TINKERSSATCHEL_SHOOTTOHEAL_LORE": "",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_NAME": "One-Man Band",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_DESCRIPTION": "Item Set: Musical instruments. Have 3 or more (of 5) at once.",
 		
-		"TINKERSSATCHEL_TRIBROOCH_NAME": "Triskelion Brooch",
-		"TINKERSSATCHEL_TRIBROOCH_PICKUP": "Chance to combine ignite, freeze, and stun.",
-		"TINKERSSATCHEL_TRIBROOCH_DESC": "<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {0} <style=cStack>(+{1} per stack)</style> chance to also cause one of the other effects listed for <style=cIsDamage>{2} base damage <style=cStack>(+{3} per stack)</style></style>.",
+		"TINKERSSATCHEL_TRIBROOCH_NAME": "三曲腿胸针",
+		"TINKERSSATCHEL_TRIBROOCH_PICKUP": "有几率结合点燃、冻结和眩晕的效果。",
+		"TINKERSSATCHEL_TRIBROOCH_DESC": "<style=cIsDamage>点燃</style>, <style=cIsDamage>冻结</style>, 以及 <style=cIsUtility>击晕</style> 都有 {0} <style=cStack>(每层 +{1})</style> 的几率触发列出来的其他效果，伤害为 <style=cIsDamage>{2} 的基础伤害 <style=cStack>(每层 +{3})</style></style>.",
 		"TINKERSSATCHEL_TRIBROOCH_LORE": "",
 		"ACHIEVEMENT_TKSAT_TRIBROOCH_NAME": "Rasputin",
 		"ACHIEVEMENT_TKSAT_TRIBROOCH_DESCRIPTION": "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.",
@@ -146,7 +146,7 @@
 
 		"TINKERSSATCHEL_DAMAGEBUFFER_NAME": "Negative Feedback Loop",
 		"TINKERSSATCHEL_DAMAGEBUFFER_PICKUP": "Some incoming damage is dealt over time.",
-		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "<style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {1} seconds, ticking {2}. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.",
+		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "<style=cIsDamage>{0} <style=cStack>(每层 +{0}, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {1} seconds, ticking {2}. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.",
 		"TINKERSSATCHEL_DAMAGEBUFFER_LORE": "",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK": "continuously",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK": "every {0} second(s)",
@@ -160,7 +160,7 @@
 		
 		"TINKERSSATCHEL_DEFIB_NAME": "Defibrillator",
 		"TINKERSSATCHEL_DEFIB_PICKUP": "Your heals can crit.",
-		"TINKERSSATCHEL_DEFIB_DESC": "Any <style=cIsHealing>healing</style> caused by you has a chance to <style=cIsHealing>critically heal</style> equal to your <style=cIsDamage>crit chance</style>. <style=cIsHealing>Critical heals</style> heal for <style=cIsHealth>+{0} <style=cStack>(+{1} per stack)</style> more HP</style>.",
+		"TINKERSSATCHEL_DEFIB_DESC": "Any <style=cIsHealing>healing</style> caused by you has a chance to <style=cIsHealing>critically heal</style> equal to your <style=cIsDamage>crit chance</style>. <style=cIsHealing>Critical heals</style> heal for <style=cIsHealth>+{0} <style=cStack>(每层 +{1})</style> more HP</style>.",
 		"TINKERSSATCHEL_DEFIB_LORE": "",
 		"ACHIEVEMENT_TKSAT_DEFIB_NAME": "Medic!",
 		"ACHIEVEMENT_TKSAT_DEFIB_DESCRIPTION": "Item Set: Shareable healing. Have 4 or more (of 7) at once.",
@@ -179,7 +179,7 @@
 		
 		"TINKERSSATCHEL_KLEINBOTTLE_NAME": "Unstable Klein Bottle",
 		"TINKERSSATCHEL_KLEINBOTTLE_PICKUP": "Chance to push or pull nearby enemies on taking damage.",
-		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "After taking damage, {0} <style=cStack>(+{0} per stack, mult.)</style> chance to <style=cIsUtility>push</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {1} m for <style=cIsDamage>{2} damage</style>. <style=cStack>Has an internal cooldown of {3} s.</style>",
+		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "After taking damage, {0} <style=cStack>(每层 +{0}, mult.)</style> chance to <style=cIsUtility>push</style> or <style=cIsUtility>pull</style> <style=cStack>(pulls on melee survivors)</style> enemies within {1} m for <style=cIsDamage>{2} damage</style>. <style=cStack>Has an internal cooldown of {3} s.</style>",
 		"TINKERSSATCHEL_KLEINBOTTLE_LORE": "Order: \u201CUnstable Klein Bottle\u201D\r\nTracking Number: 23******\r\nEstimated Delivery: 09\/04\/2056\r\nShipping Method: Fragile\r\nShipping Address: 43rd Floor, Crumbling Tower, Venus\r\nShipping Details:\r\n\r\nThis one was a doozy. Damn near sucked in one of our artificers during final construction of this proof-of-concept. But your formula worked! We've sent it over for your examination.\r\n\r\nCareful not to drop it. In theory, the construct's temporal metastability should cause it to revert when the glass is broken, and we think its topology would leave a bubble of safety in the middle during detonation... but none of us were brave enough to test that. Losing this could set us back weeks, let alone the potential for injury and damage even if we're right.",
 		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_NAME": "Can't Touch This",
 		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_DESCRIPTION": "Block, or take 1 or less points of damage from, 3 attacks in a row.",
@@ -199,7 +199,7 @@
 		
 		"TINKERSSATCHEL_HEADSET_NAME": "H3AD-53T",
 		"TINKERSSATCHEL_HEADSET_PICKUP": "Your Utility skill builds a stunning static charge.",
-		"TINKERSSATCHEL_HEADSET_DESC": "After activating your <style=cIsUtility>Utility skill</style>, the next {0} enemies <style=cStack>(+{1} per stack)</style> your path crosses will <style=cIsDamage>take {2} damage</style> <style=cStack>(+{3} per stack)</style> and be <style=cIsUtility>stunned for {4} seconds</style>.",
+		"TINKERSSATCHEL_HEADSET_DESC": "After activating your <style=cIsUtility>Utility skill</style>, the next {0} enemies <style=cStack>(每层 +{1})</style> your path crosses will <style=cIsDamage>take {2} damage</style> <style=cStack>(+{3} per stack)</style> and be <style=cIsUtility>stunned for {4} seconds</style>.",
 		"TINKERSSATCHEL_HEADSET_LORE": "You finally found a fall too long for your long fall boots. While you could probably jury-rig the parts back together for their original purpose, this is the perfect opportunity for... innovation.\r\n\r\nUse your head.",
 		"ACHIEVEMENT_TKSAT_HEADSET_NAME": "You Broke It",
 		"ACHIEVEMENT_TKSAT_HEADSET_DESCRIPTION": "Kill a boss with a maximum damage H3AD-5T v2 explosion.",
@@ -225,14 +225,14 @@
 
 		"TINKERSSATCHEL_SKEIN_NAME": "Spacetime Skein",
 		"TINKERSSATCHEL_SKEIN_PICKUP": "Gain mass while stationary. Lose mass while moving.",
-		"TINKERSSATCHEL_SKEIN_DESC": "Standing still reduces the next <style=cIsDamage>damage and knockback</style> you take by up to <style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style></style>. Moving increasing your <style=cIsUtility>move and attack speed</style> by up to <style=cIsUtility>{1} <style=cStack>(+{1} per stack, linear)</style></style>. Effect ramps up over {2} seconds, and is lost once you start or stop moving (latter has a brief grace period).",
+		"TINKERSSATCHEL_SKEIN_DESC": "Standing still reduces the next <style=cIsDamage>damage and knockback</style> you take by up to <style=cIsDamage>{0} <style=cStack>(每层 +{0}, hyperbolic)</style></style>. Moving increasing your <style=cIsUtility>move and attack speed</style> by up to <style=cIsUtility>{1} <style=cStack>(每层 +{1}, linear)</style></style>. Effect ramps up over {2} seconds, and is lost once you start or stop moving (latter has a brief grace period).",
 		"TINKERSSATCHEL_SKEIN_LORE": "",
 		"ACHIEVEMENT_TKSAT_SKEIN_NAME": "Phenomenal Cosmic Power",
 		"ACHIEVEMENT_TKSAT_SKEIN_DESCRIPTION": "Complete all 4 Item Set achievements from Tinker's Satchel.",
 
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_NAME": "Villainous Visage",
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Deal more damage when given time to plot. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "While out of combat, build up a <style=cIsDamage>damage buff</style> that will last <style=cIsDamage>{0} seconds</style> once in combat. Builds <style=cIsDamage>{1} damage per second <style=cStack>(+{1} per stack)</style></style>, up to <style=cIsDamage>{2} <style=cStack>(+{2} per stack)</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
+		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "While out of combat, build up a <style=cIsDamage>damage buff</style> that will last <style=cIsDamage>{0} seconds</style> once in combat. Builds <style=cIsDamage>{1} damage per second <style=cStack>(每层 +{1})</style></style>, up to <style=cIsDamage>{2} <style=cStack>(每层 +{2})</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_LORE": "",
 		
 		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "Obsidian Brooch",
@@ -242,18 +242,18 @@
 
 		"TINKERSSATCHEL_TIMELOSTRUM_NAME": "Timelost Rum",
 		"TINKERSSATCHEL_TIMELOSTRUM_PICKUP": "Chance to shoot temporal echoes of projectiles. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
-		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
+		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(每层 +{0})</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
 		"TINKERSSATCHEL_TIMELOSTRUM_LORE": "What's left of the label reads: \"『?ROC??K」 and 【S?TO?NE』!\"",
 		
 
 		"TINKERSSATCHEL_BRAMBLERING_NAME": "Bramble Ring",
 		"TINKERSSATCHEL_BRAMBLERING_PICKUP": "Return some damage to sender. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
-		"TINKERSSATCHEL_BRAMBLERING_DESC": "<style=cIsDamage>{0} of damage taken <style=cStack>(+{0} per stack, hyperbolic)</style></style> is also taken by the inflictor. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
+		"TINKERSSATCHEL_BRAMBLERING_DESC": "<style=cIsDamage>{0} of damage taken <style=cStack>(每层 +{0}, hyperbolic)</style></style> is also taken by the inflictor. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
 		"TINKERSSATCHEL_BRAMBLERING_LORE": "",
 		
 		"TINKERSSATCHEL_ORDEREDARMOR_NAME": "Lens of Order",
 		"TINKERSSATCHEL_ORDEREDARMOR_PICKUP": "Gain massive armor by focusing your item build. <style=cIsVoid>Corrupts all Chestplates</style>.",
-		"TINKERSSATCHEL_ORDEREDARMOR_DESC": "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>types of item</style> (fewer is better). Having only <style=cIsVoid>Lenses of Order</style> gives <style=cIsHealing>{0} armor</style> <style=cStack>(+{1} per stack, inverse-exponential)</style>; each subsequent item type <style=cIsUtility>reduces armor bonus by {2}</style>. <style=cIsVoid>Corrupts all Chestplates</style>.",
+		"TINKERSSATCHEL_ORDEREDARMOR_DESC": "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>types of item</style> (fewer is better). Having only <style=cIsVoid>Lenses of Order</style> gives <style=cIsHealing>{0} armor</style> <style=cStack>(每层 +{1}, inverse-exponential)</style>; each subsequent item type <style=cIsUtility>reduces armor bonus by {2}</style>. <style=cIsVoid>Corrupts all Chestplates</style>.",
 		"TINKERSSATCHEL_ORDEREDARMOR_LORE": "",
 		
 		"TINKERSSATCHEL_VOIDWISPHIVE_NAME": "Voidwisp Hive",
