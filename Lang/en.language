@@ -2,7 +2,7 @@
 	"strings": {
 		"TKSAT_DISABLED_SKILL_NAME": "Suppressed Skill",
 		"TKSAT_DISABLED_SKILL_DESCRIPTION": "Something has temporarily prevented you from using this skill!",
-		"TKSAT_KEYWORD_TAUNT": "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style>her option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is if the source of Taunt dies.</style>",
+		"TKSAT_KEYWORD_TAUNT": "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style> targets that have inflicted Taunt on them, unless no other option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is halved. Taunt is removed if the source of Taunt dies.</style>",
 		"TKSAT_KEYWORD_SUPPRESS": "<style=cKeywordName>Suppressed</style><style=cSub>A Suppressed skill cannot be used and has its cooldowns frozen.</style>",
 
 
