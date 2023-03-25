@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            icd.ToString("N0"), cdrStack.ToString("0%")
+            icd.ToString("N0"), cdrStack.ToString("0%"), boostAmount.ToString()
         };
 
 
