@@ -167,7 +167,7 @@
 		
 		"TINKERSSATCHEL_FUDGEDICE_NAME": "Fudge Dice",
 		"TINKERSSATCHEL_FUDGEDICE_PICKUP": "Periodically guarantee luck.",
-		"TINKERSSATCHEL_FUDGEDICE_DESC": "Once every {0} seconds <style=cStack>(-{1} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>guaranteed to have a favorable outcome</style>.",
+		"TINKERSSATCHEL_FUDGEDICE_DESC": "Once every {0} seconds <style=cStack>(-{1} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>rolled with +{2} luck</style>.",
 		"TINKERSSATCHEL_FUDGEDICE_LORE": "Don't tell the DM.",
 		
 		"TINKERSSATCHEL_GOLDENGEAR_NAME": "Chestplate",
