@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Utility});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            (procChance/100f).ToString("0.0%"), pullRadius.ToString("N0"), damageFrac.ToString("0%"), procIcd.ToString("N1")
+            (procChance/100f).ToString("0.0%"), pullRadius.ToString("N0"), pullTime.ToString("N1"), damageFrac.ToString("0%"), procIcd.ToString("N1")
         };
 
 
@@ -35,10 +35,20 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Range of the Unstable Klein Bottle effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float pullRadius { get; private set; } = 20f;
 
-        [AutoConfigRoOSlider("{0:N0} m/s", 0f, 100f)]
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Strength of the Unstable Klein Bottle effect. Only applies to push; pulling has fixed velocity.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float pushForce { get; private set; } = 30f;
+        [AutoConfig("Vertical hold distance of the Unstable Klein Bottle's float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float pullHeight { get; private set; } = 2f;
+
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Instability radius of the Unstable Klein Bottle's float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float pullWobble { get; private set; } = 0.5f;
+
+        [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Duration of the Unstable Klein Bottle's float effect and stun.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float pullTime { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -49,16 +59,6 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
-
-        [AutoConfigRoOString()]
-        [AutoConfig("Which survivor body names count as melee and proc pull instead of push (comma-delimited, leading/trailing whitespace will be ignored). MUL-T has special hardcoded handling for detecting Power-Saw, but will never count as melee if not in this list.",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
-        public string meleeBodyNamesConfig { get; private set; } = "CrocoBody, MercBody, LoaderBody, ToolbotBody";
-
-        [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, MeleeBodyNamesConfig becomes a blacklist instead of a whitelist.",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
-        public bool invertBodyNames { get; private set; } = false;
 
 
 
@@ -238,8 +238,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupConfig() {
             base.SetupConfig();
-            meleeSurvivorBodyNames.UnionWith(meleeBodyNamesConfig.Split(',')
-                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {
@@ -293,53 +291,26 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
-
-                            bool shouldPull = meleeSurvivorBodyNames.Contains(self.body.name);
-                            if(self.body.name == "ToolbotBody(Clone)")
-                                shouldPull &= self.body.skillLocator.primary.skillDef.skillName == "FireBuzzsaw";
-
-                            if(invertBodyNames) shouldPull = !shouldPull;
-
-                            if(shouldPull) {
-                                var (vInitial, _) = CalculateVelocityForFinalPosition(tcpt.transform.position, self.transform.position, 0f);
-                                velVec = vInitial;
-                            } else {
-                                float theta;
-
-                                if(velVec.x == 0 && velVec.z == 0)
-                                    theta = UnityEngine.Random.value * Mathf.PI * 2f;
-                                else
-                                    theta = Mathf.Atan2(velVec.z, velVec.x);
-
-                                float mag = velVec.magnitude;
-                                if(mag == 0) mag = velVec.y;
-
-                                var pitch = Mathf.Asin(velVec.y / mag);
-                                pitch = Remap(pitch, -1, 1, 0.325f, 0.675f);
-                                velVec = new Vector3(Mathf.Cos(theta) * Mathf.Cos(pitch), Mathf.Sin(pitch), Mathf.Sin(theta) * Mathf.Cos(pitch));
-                            }
-
                             if(tcpt.body && tcpt.body.isActiveAndEnabled) {
-                                if(tcpt.body.healthComponent) tcpt.body.healthComponent.TakeDamage(new DamageInfo {
-                                    attacker = self.gameObject,
-                                    canRejectForce = true,
-                                    crit = isCrit,
-                                    damage = self.body.damage * damageFrac,
-                                    damageColorIndex = DamageColorIndex.Item,
-                                    damageType = DamageType.AOE,
-                                    force = Vector3.zero,
-                                    inflictor = null,
-                                    position = tcpt.body.corePosition,
-                                    procChainMask = default,
-                                    procCoefficient = 1f
-                                });
-                                var mcpt = tcpt.body.GetComponent<IPhysMotor>();
-                                if(mcpt != null && !tcpt.body.isBoss && !tcpt.body.isChampion)
-                                    mcpt.ApplyForceImpulse(new PhysForceInfo {
-                                        force = velVec * (shouldPull ? 1 : pushForce) * mcpt.mass,
-                                        ignoreGroundStick = true,
-                                        disableAirControlUntilCollision = false
-                                    });
+                                if(tcpt.body.healthComponent.gameObject.TryGetComponent<KleinBottleDebuff>(out var existingDebuff)) {
+                                    existingDebuff.RenewFloat();
+                                } else {
+                                    var debuff = tcpt.body.healthComponent.gameObject.AddComponent<KleinBottleDebuff>();
+                                    debuff.deferredDamageInfo = new DamageInfo {
+                                        attacker = self.gameObject,
+                                        canRejectForce = true,
+                                        crit = isCrit,
+                                        damage = self.body.damage * damageFrac,
+                                        damageColorIndex = DamageColorIndex.Item,
+                                        damageType = DamageType.AOE,
+                                        force = Vector3.zero,
+                                        inflictor = null,
+                                        position = tcpt.body.corePosition,
+                                        procChainMask = default,
+                                        procCoefficient = 1f
+                                    };
+                                    debuff.InflictFloat();
+                                }
                             }
                         }
                     }
@@ -350,6 +321,65 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class KleinBottleTimeTracker : MonoBehaviour {
         public float LastTimestamp = 0f;
+    }
+
+    [RequireComponent(typeof(HealthComponent))]
+    public class KleinBottleDebuff : MonoBehaviour {
+        HealthComponent healthComponent;
+        IPhysMotor motor;
+        bool started = false;
+        public Vector3 targetHoldPos;
+        public float holdStopwatch;
+        public float wobbleSeed;
+        public DamageInfo deferredDamageInfo;
+
+        void Awake() {
+            healthComponent = GetComponent<HealthComponent>();
+        }
+
+        void FixedUpdate() {
+            if(!started) return;
+            holdStopwatch -= Time.fixedDeltaTime;
+            var wobbleParam = (holdStopwatch+wobbleSeed) * Mathf.PI * 0.5f;
+            var targetPos = targetHoldPos + new Vector3(Mathf.Cos(wobbleParam), Mathf.Cos(wobbleParam*2), Mathf.Cos(wobbleParam*3)) * KleinBottle.instance.pullWobble;
+            var velVec = (targetPos - healthComponent.body.transform.position);
+            motor.ApplyForceImpulse(new PhysForceInfo {
+                force = (velVec.normalized * 8f - motor.velocity) * motor.mass,
+                ignoreGroundStick = true,
+                disableAirControlUntilCollision = false
+            });
+            if(holdStopwatch <= 0f) {
+                motor.ApplyForceImpulse(new PhysForceInfo {
+                    force = new Vector3(0, -25f, 0) * motor.mass,
+                    ignoreGroundStick = true,
+                    disableAirControlUntilCollision = false
+                });
+                InflictDamage();
+            }
+        }
+
+        public void RenewFloat() {
+            healthComponent.TakeDamage(deferredDamageInfo);
+            holdStopwatch = KleinBottle.instance.pullTime;
+            healthComponent.GetComponent<SetStateOnHurt>().SetStun(KleinBottle.instance.pullTime);
+        }
+
+        public void InflictFloat() {
+            if(!healthComponent.TryGetComponent<SetStateOnHurt>(out var ssoh) || !healthComponent.TryGetComponent<IPhysMotor>(out motor) || !ssoh.canBeStunned) {
+                InflictDamage();
+            } else {
+                targetHoldPos = healthComponent.transform.position + new Vector3(0, KleinBottle.instance.pullHeight, 0);
+                wobbleSeed = KleinBottle.instance.rng.nextNormalizedFloat;
+                holdStopwatch = KleinBottle.instance.pullTime;
+                ssoh.SetStun(KleinBottle.instance.pullTime);
+            }
+            started = true;
+        }
+
+        public void InflictDamage() {
+            healthComponent.TakeDamage(deferredDamageInfo);
+            Destroy(this);
+        }
     }
 
     [RegisterAchievement("TkSat_KleinBottle", "TkSat_KleinBottleUnlockable", "")]
