@@ -42,7 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Instability radius of the Unstable Klein Bottle's float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Radius of random motion of the Unstable Klein Bottle's float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float pullWobble { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
