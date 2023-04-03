@@ -42,6 +42,12 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float statMult { get; private set; } = 0.25f;
 
 		[AutoConfigRoOSlider("{0:P0}", float.Epsilon, 1f)]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
+		[AutoConfig("Speed and attack speed multiplier per stack (exponential).",
+			AutoConfigFlags.None, float.Epsilon, 1f)]
+		public float speedStatMult { get; private set; } = 0.5f;
+
+		[AutoConfigRoOSlider("{0:P0}", float.Epsilon, 1f)]
 		[AutoConfig("Visual scale multiplier per stack (exponential).",
 			AutoConfigFlags.DeferUntilNextStage, float.Epsilon, 1f)]
 		public float scaleMult { get; private set; } = 0.5f;
@@ -290,10 +296,15 @@ namespace ThinkInvisible.TinkersSatchel {
 					var splitCount = newBody.master.inventory.GetItemCount(gupDebuff);
 					newBody.modelLocator.transform.localScale *= Mathf.Pow(GupRay.instance.scaleMult, splitCount);
 					var statsFac = Mathf.Pow(statMult, splitCount);
+					var speedStatsFac = Mathf.Pow(speedStatMult, splitCount);
 					newBody.baseMaxHealth *= statsFac;
 					newBody.levelMaxHealth *= statsFac;
 					newBody.baseDamage *= statsFac;
 					newBody.levelDamage *= statsFac;
+					newBody.baseAttackSpeed *= speedStatsFac;
+					newBody.levelAttackSpeed *= speedStatsFac;
+					newBody.baseMoveSpeed *= speedStatsFac;
+					newBody.levelMoveSpeed *= speedStatsFac;
 					newBody.healthComponent.Networkhealth = oldSplitter.body.healthComponent.health * statsFac;
 					newBody.MarkAllStatsDirty();
 					
