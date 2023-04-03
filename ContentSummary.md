@@ -200,7 +200,7 @@
 				<b>Fudge Dice</b><br>
 				<details>
 					<summary>Periodically guarantee luck.</summary>
-					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is guaranteed to have a favorable outcome.</small>
+					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is rolled with +10 luck.</small>
 				</details>
 			</td>
 			<td></td>

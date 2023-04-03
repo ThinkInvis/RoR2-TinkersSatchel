@@ -535,7 +535,20 @@ Short summaries are provided below. For a full description of each item, see: ht
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
-(🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+(🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**3.6.0**
+
+- Balance pass:
+	- Fudge Dice now provides 10 luck (configurable) on affected rolls, instead of guaranteeing a success. This is intended to prevent an inordinate effect this item was having on very-low-chance events, such as Aspect equipment drops.
+	- Kintsugi now counts itself as a broken/consumed item by default (so it will never have zero effect).
+	- Gup Ray now also debuffs its targets' move and attack speed by 50% per split (configurable, exponential).
+- Restored missing chunks of the Taunt effect description.
+- 🌧︎ Fixed a typo that was preventing the Scavenger's Rucksack movement grace period from working.
+- Fixed Timelost Rum proc chance displaying in its description as 1/100 of the actual value.
+- Updated R2API dependency to 5.0.6 (now using split assembly).
+- Updated TILER2 dependency to 7.3.3.
+- Updated BepInExPack dependency to 5.4.2103.
 
 **3.5.0**
 
@@ -573,13 +586,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **3.3.2**
 
 - Fixed Scavenger's Rucksack breaking Heretic transformation, luck calc, and Goobo Jr setup.
-
-**3.3.1**
-
-- Fixed Lemurian's Claw breaking other targetable equipments.
-- Balance pass:
-	- Quantum Recombobulator now provides an option, enabled by default, to retain category of recombobulated interactables (e.g. cannot turn a chest into a shrine, or a printer into a non-printer).
-- Slightly improved Quantum Recombobulator per-frame search performance.
-- Updated TILER2 dependency to 7.2.1.
-	- Fixes Item Drone name modification showing item type only appearing for the host in multiplayer.
-	- Fixes a mostly harmless NRE after using Quantum Recombobulator.

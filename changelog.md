@@ -1,6 +1,19 @@
 ﻿# Tinker's Satchel Changelog
 
-(🌧︎: Involves an accepted GitHub Pull Request from the community. Thanks for your help!)
+(🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**3.6.0**
+
+- Balance pass:
+	- Fudge Dice now provides 10 luck (configurable) on affected rolls, instead of guaranteeing a success. This is intended to prevent an inordinate effect this item was having on very-low-chance events, such as Aspect equipment drops.
+	- Kintsugi now counts itself as a broken/consumed item by default (so it will never have zero effect).
+	- Gup Ray now also debuffs its targets' move and attack speed by 50% per split (configurable, exponential).
+- Restored missing chunks of the Taunt effect description.
+- 🌧︎ Fixed a typo that was preventing the Scavenger's Rucksack movement grace period from working.
+- Fixed Timelost Rum proc chance displaying in its description as 1/100 of the actual value.
+- Updated R2API dependency to 5.0.6 (now using split assembly).
+- Updated TILER2 dependency to 7.3.3.
+- Updated BepInExPack dependency to 5.4.2103.
 
 **3.5.0**
 
