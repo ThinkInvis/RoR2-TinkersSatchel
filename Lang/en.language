@@ -8,8 +8,8 @@
 
 
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_NAME": "Scavenger's Rucksack",
-		"TINKERSSATCHEL_EXTRAEQUIPMENT_PICKUP": "Hold an extra Equipment. Stand still to rummage through the rucksack.",
-		"TINKERSSATCHEL_EXTRAEQUIPMENT_DESC": "Gain 1 <style=cIsUtility>extra Equipment slot</style> <style=cStack>(+1 per stack)</style>. Standing still for more than {0} second(s) causes you to cycle through Equipment slots once per {1} second(s).",
+		"TINKERSSATCHEL_EXTRAEQUIPMENT_PICKUP": "Hold an extra Equipment. Activate with scoreboard open to rummage through the rucksack.",
+		"TINKERSSATCHEL_EXTRAEQUIPMENT_DESC": "Gain 1 <style=cIsUtility>extra Equipment slot</style> <style=cStack>(+1 per stack)</style>. Activating your Equipment while the scoreboard is open will cycle through equipment slots instead.",
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_LORE": "",
 		
 

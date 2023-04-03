@@ -15,22 +15,9 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ItemTier itemTier => ItemTier.Boss;
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.EquipmentRelated, ItemTag.WorldUnique });
 
-        protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            moveGracePeriod.ToString("N1"), cyclePeriod.ToString("N1")
-        };
-
-
 
 		////// Config //////
-
-		[AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
-		[AutoConfig("Time required to register a movement stop, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float moveGracePeriod { get; private set; } = 2f;
-
-		[AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
-		[AutoConfig("Cycle time of extra slots, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float cyclePeriod { get; private set; } = 1f;
-
+        ///
 		[AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
 		[AutoConfig("Chance to replace a drop from a Scavenger backpack with this item.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
 		public float dropChance { get; private set; } = 0.05f;
@@ -176,13 +163,15 @@ namespace ThinkInvisible.TinkersSatchel {
 			base.Install();
             On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem += ChestBehavior_RollItem;
-		}
+            On.RoR2.EquipmentSlot.ExecuteIfReady += EquipmentSlot_ExecuteIfReady;
+        }
 
         public override void Uninstall() {
 			base.Uninstall();
             On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
-		}
+            On.RoR2.EquipmentSlot.ExecuteIfReady -= EquipmentSlot_ExecuteIfReady;
+        }
 
 
 
@@ -204,53 +193,35 @@ namespace ThinkInvisible.TinkersSatchel {
             if(component)
                 component.CheckCount();
         }
-	}
+
+        private bool EquipmentSlot_ExecuteIfReady(On.RoR2.EquipmentSlot.orig_ExecuteIfReady orig, EquipmentSlot self) {
+            if(self.inventory && GetCount(self.inventory) > 0
+                && self.characterBody
+                && self.characterBody.master
+                && self.characterBody.master.TryGetComponent<ExtraEquipmentStash>(out var ees)
+                && self.characterBody.master.playerCharacterMasterController
+                && self.characterBody.master.playerCharacterMasterController.networkUser
+                && self.characterBody.master.playerCharacterMasterController.networkUser.localUser.inputPlayer.GetButton("info")) {
+                ees.AdvanceEquipment();
+                return false;
+            }
+            return orig(self);
+        }
+    }
 
 	[RequireComponent(typeof(CharacterMaster))]
 	public class ExtraEquipmentStash : MonoBehaviour {
         readonly Queue<EquipmentState> stashedEquipment = new();
-
-		float stationaryStopwatch = 0f;
-		float shuffleStopwatch = 0f;
-		bool isStopped = false;
-
-		Vector3 prevPos;
-
 		CharacterMaster master;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
 			master = GetComponent<CharacterMaster>();
-            if(master.hasBody)
-                prevPos = master.GetBodyObject().transform.position;
-            else prevPos = Vector3.zero;
         }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-		void FixedUpdate() {
-			if(!master || !master.hasBody || !NetworkServer.active) return;
-            var currPos = master.GetBodyObject().transform.position;
-			float minMove = 0.1f * Time.fixedDeltaTime;
-			if((currPos - prevPos).sqrMagnitude <= minMove * minMove) {
-				if(!isStopped) {
-					stationaryStopwatch += Time.fixedDeltaTime;
-					if(stationaryStopwatch > ExtraEquipment.instance.moveGracePeriod)
-						isStopped = true;
-				} else {
-					shuffleStopwatch += Time.fixedDeltaTime;
-					if(shuffleStopwatch >= ExtraEquipment.instance.cyclePeriod) {
-						shuffleStopwatch = 0f;
-                        stashedEquipment.Enqueue(master.inventory.currentEquipmentState);
-                        master.inventory.SetEquipment(stashedEquipment.Dequeue(), master.inventory.activeEquipmentSlot);
-					}
-				}
-			} else if(isStopped) {
-				isStopped = false;
-				stationaryStopwatch = 0f;
-				shuffleStopwatch = 0f;
-			}
-
-			prevPos = currPos;
+        public void AdvanceEquipment() {
+            stashedEquipment.Enqueue(master.inventory.currentEquipmentState);
+            master.inventory.SetEquipment(stashedEquipment.Dequeue(), master.inventory.activeEquipmentSlot);
         }
 
 		public void CheckCount() {

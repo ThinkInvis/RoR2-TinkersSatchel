@@ -322,7 +322,7 @@
 				<b>Scavenger's Rucksack</b><br>
 				<details>
 					<summary>Hold an extra Equipment. Stand still to rummage through the rucksack.</summary>
-					<small>Gain 1 extra Equipment slot (+1 per stack). Standing still for more than 2 seconds causes you to cycle through Equipment slots once per 1 second.</small>
+					<small>Gain 1 extra Equipment slot (+1 per stack). Activating your Equipment while the scoreboard is open will cycle through equipment slots instead.</small>
 				</details>
 			</td>
 			<td><ul>
