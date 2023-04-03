@@ -77,7 +77,7 @@
 				<b>Triskelion Brooch</b><br>
 				<details>
 					<summary>Chance to combine ignite, freeze, and stun.</summary>
-					<small>Ignites, freezes, and stuns have a 9% (+9% per stack) chance to also cause one of the other effects listed for 100% base damage (+25% per stack).</small>
+					<small>Ignites, freezes, and stuns have a 9% chance to also cause one of the other effects listed for 50% base damage (+50% per stack). Inflicts an 80% slow instead of freeze.</small>
 				</details>
 			</td>
 			<td><ul>

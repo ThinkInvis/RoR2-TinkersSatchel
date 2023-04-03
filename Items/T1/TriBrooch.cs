@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            (procBaseChance/100f).ToString("0%"), (procStackChance/100f).ToString("0%"), procBaseDamage.ToString("0%"), procStackDamage.ToString("0%")
+            (procChance/100f).ToString("0%"), procBaseDamage.ToString("0%"), procStackDamage.ToString("0%")
         };
 
 
@@ -25,23 +25,18 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc chance at first stack (linear, percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
-        public float procBaseChance { get; private set; } = 9f;
-
-        [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc chance per additional stack (linear, percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
-        public float procStackChance { get; private set; } = 9f;
+        [AutoConfig("Chance for the effect to trigger (percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        public float procChance { get; private set; } = 9f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proc damage, as base damage fraction, at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float procBaseDamage { get; private set; } = 1f;
+        public float procBaseDamage { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proc damage, as base damage fraction, per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float procStackDamage { get; private set; } = 0.25f;
+        public float procStackDamage { get; private set; } = 0.5f;
 
         [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, will never proc from self damage.", AutoConfigFlags.PreventNetMismatch)]
@@ -210,10 +205,11 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!report.victim.isInFrozenState) {
                 if(isStun) {
                     if(ssoh.canBeStunned)
-                        ssoh.SetStun(1f);
+                        ssoh.SetStun(1f * report.damageInfo.procCoefficient);
                 } else {
-                    if(ssoh.canBeFrozen)
-                        ssoh.SetFrozen(2f * report.damageInfo.procCoefficient);
+                    var cb = ssoh.GetComponent<CharacterBody>();
+                    if(cb)
+                        cb.AddTimedBuff(RoR2Content.Buffs.Slow80, 2f * report.damageInfo.procCoefficient);
                 }
             }
             report.victim.TakeDamage(new DamageInfo {
@@ -258,7 +254,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!self.targetStateMachine || !self.spawnedOverNetwork || !report.attackerBody)
                     return;
                 var count = GetCount(report.attackerBody);
-                if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, report.attackerMaster)) return;
+                if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procChance, report.attackerMaster)) return;
                 bool isFreeze = (report.damageInfo.damageType & DamageType.Freeze2s) != DamageType.Generic;
                 bool isStun = (report.damageInfo.damageType & DamageType.Stun1s) != DamageType.Generic || (report.damageInfo.damageType & DamageType.Shock5s) != DamageType.Generic;
                 if(isFreeze) {
@@ -287,7 +283,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.EmitDelegate<Action<SetStateOnHurt, DamageReport>>((self, report) => {
                     if(report == null || !report.attackerBody || !report.victimBody) return;
                     var count = GetCount(report.attackerBody);
-                    if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, report.attackerMaster)) return;
+                    if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procChance, report.attackerMaster)) return;
                     bool doFreeze = rng.nextBool;
                     if(doFreeze) {
                         InflictFreezeOrStun(count, self, report, false);
@@ -308,7 +304,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var atkb = inflictDotInfo.attackerObject.GetComponent<CharacterBody>();
             var count = GetCount(atkb);
             if(count <= 0 || !victimBody || !victimSSOH || (preventSelfProc && victimBody == atkb)) return;
-            if(!Util.CheckRoll(procBaseChance + (float)(count - 1) * procStackChance, atkb.master))
+            if(!Util.CheckRoll(procChance, atkb.master))
                 return;
             bool isStun = rng.nextBool;
             if(!victimBody.healthComponent.isInFrozenState) {
@@ -316,8 +312,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(victimSSOH.canBeStunned)
                         victimSSOH.SetStun(1f);
                 } else {
-                    if(victimSSOH.canBeFrozen)
-                        victimSSOH.SetFrozen(2f);
+                    victimBody.AddTimedBuff(RoR2Content.Buffs.Slow80, 2f);
                 }
             }
             var attackerDamage = 1f;

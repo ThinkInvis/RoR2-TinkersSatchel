@@ -138,7 +138,7 @@
 		
 		"TINKERSSATCHEL_TRIBROOCH_NAME": "Triskelion Brooch",
 		"TINKERSSATCHEL_TRIBROOCH_PICKUP": "Chance to combine ignite, freeze, and stun.",
-		"TINKERSSATCHEL_TRIBROOCH_DESC": "<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {0} <style=cStack>(+{1} per stack)</style> chance to also cause one of the other effects listed for <style=cIsDamage>{2} base damage <style=cStack>(+{3} per stack)</style></style>.",
+		"TINKERSSATCHEL_TRIBROOCH_DESC": "<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {0} chance to also cause one of the other effects listed for <style=cIsDamage>{1} base damage <style=cStack>(+{2} per stack)</style></style>. <style=cStack>Inflicts an 80% slow instead of freeze.</style>",
 		"TINKERSSATCHEL_TRIBROOCH_LORE": "",
 		"ACHIEVEMENT_TKSAT_TRIBROOCH_NAME": "Rasputin",
 		"ACHIEVEMENT_TKSAT_TRIBROOCH_DESCRIPTION": "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.",
