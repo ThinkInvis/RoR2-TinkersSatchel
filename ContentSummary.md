@@ -302,6 +302,18 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/wranglerIcon.png?raw=true" width=256></td>
+			<td>
+				<b>RC Controller</b><br>
+				<details>
+					<summary>Nearby turrets and drones gain attack speed. Ping to take control.</summary>
+					<small>All turrets and drones under your ownership within 150 meters will gain +40% attack speed (+40% per stack). Ping a turret or drone to override its targeting AI for 30 seconds. Overridden allies no longer auto-target, auto-attack, or chase enemies, but may be ordered to fire at your target by holding your Primary skill keybind.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Boss Items</h3></td>
 		</tr>
 		<tr>
@@ -386,18 +398,6 @@
 		</tr>
 		<tr>
 			<td colspan="3" align="center"><h3>Lunar Items</h3></td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/wranglerIcon.png?raw=true" width=256></td>
-			<td>
-				<b>RC Controller</b><br>
-				<details>
-					<summary>Nearby turrets and drones attack with you... <i>BUT no longer attack automatically.</i></summary>
-					<small>All turrets and drones under your ownership within 150 meters will no longer auto-target, auto-attack, or chase enemies. Order drones to fire by holding your Primary skill keybind. Affected turrets and drones gain +40% attack speed (+40% per stack).</small>
-				</details>
-			</td>
-			<td><ul>
-			</ul></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/bismuthFlaskIcon.png?raw=true" width=256></td>

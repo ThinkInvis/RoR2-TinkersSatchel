@@ -11,7 +11,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Item Data //////
         
-        public override ItemTier itemTier => ItemTier.Lunar;
+        public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
@@ -35,8 +35,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Range (m) to search for AI to override.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum range (m) before breaking AI override.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;
+
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 300f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Time (s) to override AI on ping.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float duwration { get; private set; } = 30f;
 
 
 
@@ -192,8 +197,16 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.UpdateBodyAim += BaseAI_UpdateBodyAim;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs += BaseAI_UpdateBodyInputs;
             On.RoR2.GenericSkill.RunRecharge += GenericSkill_RunRecharge;
+            On.RoR2.PingerController.SetCurrentPing += PingerController_SetCurrentPing;
 
             GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
+            orig(self, newPingInfo);
+            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<WranglerReceiverComponent>(out var wrc)) {
+                wrc.ApplyOverride();
+            }
         }
 
         public override void Uninstall() {
@@ -203,6 +216,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterAI.BaseAI.UpdateBodyAim -= BaseAI_UpdateBodyAim;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs -= BaseAI_UpdateBodyInputs;
             On.RoR2.GenericSkill.RunRecharge -= GenericSkill_RunRecharge;
+            On.RoR2.PingerController.SetCurrentPing -= PingerController_SetCurrentPing;
 
             GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
@@ -303,9 +317,11 @@ namespace ThinkInvisible.TinkersSatchel {
         static readonly Color LASER_COLOR = Color.cyan;
         const float SEEK_RANGE = 200f;
         float lasWidth = 0f;
+        bool _hasStacks = false;
+        float _overrideStopwatch = 0f;
 
         public int cachedWranglerCount { get; private set; } = 0;
-        public bool isWrangled { get; private set; } = false;
+        public bool isWrangled => _hasStacks && _overrideStopwatch > 0f;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
@@ -321,6 +337,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Update() {
+            lasWidth = isWrangled ? 0.05f : 0f;
             laser.startWidth = lasWidth;
             laser.endWidth = lasWidth;
             if(isWrangled) {
@@ -334,12 +351,21 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void FixedUpdate() {
+            if(_overrideStopwatch > 0f)
+                _overrideStopwatch -= Time.fixedDeltaTime;
+        }
+
         public void SetWranglerCount(int count) {
             if(cachedWranglerCount != count)
                 body.MarkAllStatsDirty();
             cachedWranglerCount = count;
-            isWrangled = count > 0;
-            lasWidth = isWrangled ? 0.05f : 0f;
+            _hasStacks = count > 0;
+        }
+
+        public void ApplyOverride() {
+            _overrideStopwatch = Wrangler.instance.duwration;
         }
     }
 
