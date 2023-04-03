@@ -111,6 +111,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(itd && tierNames.Contains(itd.name)) return true;
                 return false;
             }));
+            blacklistedItems.UnionWith(FakeInventory.blacklist);
         }
 
         void LoadBodyPrefab() {
