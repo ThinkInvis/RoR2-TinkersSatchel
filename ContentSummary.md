@@ -298,6 +298,7 @@
 				</details>
 			</td>
 			<td><ul>
+				<li>By default, Kintsugi itself counts as a broken item, and each stack will contribute 5% to all stats on its own.</li>
 			</ul></td>
 		</tr>
 		<tr>
