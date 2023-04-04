@@ -109,8 +109,8 @@
 		"TINKERSSATCHEL_MIMIC_LORE": "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....",
 
 		"TINKERSSATCHEL_MOTIONTRACKER_NAME": "Old War Lidar",
-		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "Deal more damage to persistent combatants.",
-		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "Deal up to <style=cIsDamage>{0} more damage <style=cStack>(+{0} per stack)</style></style> to any enemy you have recently hit or been hit by, <style=cIsUtility>ramping up</style> over {1} second(s).",
+		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "Periodically fire weak projectiles at all hostiles.",
+		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "After first hitting or being hit by an enemy, and then every {1} seconds <style=cStack>(-{2} per stack)</style>: retaliate with an orbital laser projectile for <style=cIsDamage>{0} damage</style>.",
 		"TINKERSSATCHEL_MOTIONTRACKER_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_NAME": "Why Won't You Die?!",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "Fully charge a Teleporter without killing the boss or dying.",
@@ -131,7 +131,7 @@
 		
 		"TINKERSSATCHEL_SHOOTTOHEAL_NAME": "Percussive Maintenance",
 		"TINKERSSATCHEL_SHOOTTOHEAL_PICKUP": "Hit allies to heal them.",
-		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "Hitting an ally with a direct attack heals them for <style=cIsHealing>{0} health <style=cStack>(+{0} per stack)</style></style> and you for {1} as much.",
+		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "Hitting an ally with a direct attack heals them for <style=cIsHealing>{0} maximum health <style=cStack>(+{0} per stack)</style></style> and you for {1} as much. Scales with attack damage coefficient and proc coefficient.",
 		"TINKERSSATCHEL_SHOOTTOHEAL_LORE": "",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_NAME": "One-Man Band",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_DESCRIPTION": "Item Set: Musical instruments. Have 3 or more (of 5) at once.",
@@ -153,14 +153,14 @@
 		
 		"TINKERSSATCHEL_DEADMANSWITCH_NAME": "Pulse Monitor",
 		"TINKERSSATCHEL_DEADMANSWITCH_PICKUP": "Auto-activate your equipment for free at low health.",
-		"TINKERSSATCHEL_DEADMANSWITCH_DESC": "Falling below <style=cIsHealth>25% health</style> activates your <style=cIsUtility>equipment</style> without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment <style=cStack>(-{0} per stack, mult.)</style>.",
+		"TINKERSSATCHEL_DEADMANSWITCH_DESC": "Falling below <style=cIsHealth>{1} health</style> activates your <style=cIsUtility>equipment</style> without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment <style=cStack>(-{0} per stack, mult.)</style>.",
 		"TINKERSSATCHEL_DEADMANSWITCH_LORE": "",
 		"ACHIEVEMENT_TKSAT_DEADMANSWITCH_NAME": "Nine Lives",
 		"ACHIEVEMENT_TKSAT_DEADMANSWITCH_DESCRIPTION": "Survive falling to low health 9 times in the same run (must return to above 50% health each time).",
 		
 		"TINKERSSATCHEL_DEFIB_NAME": "Defibrillator",
 		"TINKERSSATCHEL_DEFIB_PICKUP": "Your heals can crit.",
-		"TINKERSSATCHEL_DEFIB_DESC": "Any <style=cIsHealing>healing</style> caused by you has a chance to <style=cIsHealing>critically heal</style> equal to your <style=cIsDamage>crit chance</style>. <style=cIsHealing>Critical heals</style> heal for <style=cIsHealth>+{0} <style=cStack>(+{1} per stack)</style> more HP</style>.",
+		"TINKERSSATCHEL_DEFIB_DESC": "Any <style=cIsHealing>healing</style> caused by you has a chance to <style=cIsHealing>critically heal</style> equal to your <style=cIsDamage>crit chance</style>. <style=cIsHealing>Critical heals</style> heal for <style=cIsHealth>+{0} <style=cStack>(+{0} per stack)</style> more HP</style>.",
 		"TINKERSSATCHEL_DEFIB_LORE": "",
 		"ACHIEVEMENT_TKSAT_DEFIB_NAME": "Medic!",
 		"ACHIEVEMENT_TKSAT_DEFIB_DESCRIPTION": "Item Set: Shareable healing. Have 4 or more (of 7) at once.",
@@ -264,7 +264,7 @@
 
 		"TINKERSSATCHEL_GUPRAY_NAME": "Gup Ray",
 		"TINKERSSATCHEL_GUPRAY_PICKUP": "Split enemies into two much weaker copies. <style=cIsVoid>Corrupts all Shrink Rays</style>.",
-		"TINKERSSATCHEL_GUPRAY_DESC": "Once every {0} seconds, hitting a non-final-boss enemy <style=cIsUtility>splits</style> them into 2 copies with {1} <style=cIsHealth>health</style> and <style=cIsDamage>damage</style>. <style=cStack>Enemies can be split 1 time per stack.</style> <style=cIsVoid>Corrupts all Shrink Rays</style>.",
+		"TINKERSSATCHEL_GUPRAY_DESC": "Once every {0} seconds, hitting a non-final-boss enemy <style=cIsUtility>splits</style> them into 2 copies with {1} <style=cIsHealth>health</style> and <style=cIsDamage>damage</style>, as well as {2} <style=cIsUtility>speed</style> and <style=cIsUtility>attack speed</style>. <style=cStack>Enemies can be split 1 time per stack.</style> <style=cIsVoid>Corrupts all Shrink Rays</style>.",
 		"TINKERSSATCHEL_GUPRAY_LORE": "",
 		
 		"TINKERSSATCHEL_LOOM_NAME": "Unraveling Loom",
