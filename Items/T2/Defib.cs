@@ -20,17 +20,12 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            critFracBase.ToString("0%"), critFracStack.ToString("0%")
+            critFracStack.ToString("0%")
         };
 
 
 
         ////// Config //////
-
-        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplier for extra healing at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float critFracBase { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -300,7 +295,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     var sourceCount = GetCount(sourceBody);
                     if(sourceCount > 0 && sourceBody.RollCrit()) {
                         wasCrit = true;
-                        return origAmount * (1f + critFracBase + critFracStack * (sourceCount - 1));
+                        return origAmount * (1f + critFracStack * sourceCount);
                     }
                 }
                 return origAmount;
