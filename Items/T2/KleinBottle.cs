@@ -53,7 +53,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Internal cooldown of the Unstable Klein Bottle effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float procIcd { get; private set; } = 0.5f;
+        public float procIcd { get; private set; } = 1.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
