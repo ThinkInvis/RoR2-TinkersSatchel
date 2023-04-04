@@ -244,6 +244,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
             else {
                 activeCombatants[with] = (COMBAT_TIMER, 0f, TryAddIndicator(with));
+                Fire(with);
             }
         }
 
