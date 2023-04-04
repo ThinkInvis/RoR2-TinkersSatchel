@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            healAmount.ToString("N1"), (returnHealingAmount / healAmount).ToString("0%")
+            (baseHealMod * 100f).ToString("0%"), (returnHealMod * 100f).ToString("0%")
         };
 
 
@@ -32,15 +32,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Healing amount, in flat HP, per stack.",
+        [AutoConfig("Healing amount multiplier, relative to attack power+proc and target health, per stack.",
             AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float healAmount { get; private set; } = 2f;
+        public float baseHealMod { get; private set; } = 0.01f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Self-healing amount on healing an ally, in flat HP, per stack.",
+        [AutoConfig("Self-healing amount on healing an ally, relative to the healing the ally received, per stack.",
             AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float returnHealingAmount { get; private set; } = 0.5f;
+        public float returnHealMod { get; private set; } = 0.5f;
 
 
 
@@ -242,7 +242,8 @@ namespace ThinkInvisible.TinkersSatchel {
                         var ob = self.attacker.GetComponent<CharacterBody>();
                         var count = GetCount(ob);
                         if(count > 0) {
-                            new MsgHealTargetAndSelf(cpt.healthComponent, ob.healthComponent, count * self.procCoefficient, self.procChainMask)
+                            var relativeAttackDamage = (self.attacker.TryGetComponent<CharacterBody>(out var acb)) ? (self.damage / acb.damage) : 1f;
+                            new MsgHealTargetAndSelf(cpt.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
                                 .Send(R2API.Networking.NetworkDestination.Server);
                         }
                     }
@@ -260,7 +261,8 @@ namespace ThinkInvisible.TinkersSatchel {
             var ob = self.owner.GetComponent<CharacterBody>();
             var count = GetCount(ob);
             if(hitInfo.hitHurtBox.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                new MsgHealTargetAndSelf(hitInfo.hitHurtBox.healthComponent, ob.healthComponent, count * self.procCoefficient, self.procChainMask)
+                var relativeAttackDamage = ob ? (self.damage / ob.damage) : 1f;
+                new MsgHealTargetAndSelf(hitInfo.hitHurtBox.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
                     .Send(R2API.Networking.NetworkDestination.Server);
             }
             return retv;
@@ -273,7 +275,8 @@ namespace ThinkInvisible.TinkersSatchel {
             var ob = self.owner.GetComponent<CharacterBody>();
             var count = GetCount(ob);
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                new MsgHealTargetAndSelf(hb.healthComponent, ob.healthComponent, count * self.procCoefficient, self.procChainMask)
+                var relativeAttackDamage = (ob && self.TryGetComponent<RoR2.Projectile.ProjectileDamage>(out var pd)) ? (pd.damage / ob.damage) : 1f;
+                new MsgHealTargetAndSelf(hb.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
                     .Send(R2API.Networking.NetworkDestination.Server);
             }
         }
@@ -285,7 +288,8 @@ namespace ThinkInvisible.TinkersSatchel {
             var ob = self.owner.GetComponent<CharacterBody>();
             var count = GetCount(ob);
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
-                new MsgHealTargetAndSelf(hb.healthComponent, ob.healthComponent, count * self.procCoefficient, self.procChainMask)
+                var relativeAttackDamage = (ob && self.TryGetComponent<RoR2.Projectile.ProjectileDamage>(out var pd)) ? (pd.damage / ob.damage) : 1f;
+                new MsgHealTargetAndSelf(hb.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
                     .Send(R2API.Networking.NetworkDestination.Server);
             }
         }
@@ -293,19 +297,20 @@ namespace ThinkInvisible.TinkersSatchel {
         public struct MsgHealTargetAndSelf : INetMessage {
             HealthComponent _target;
             HealthComponent _self;
-            float _adjustedCount;
+            float _adjustedCoeffs;
             ProcChainMask _pcm;
 
             public MsgHealTargetAndSelf(HealthComponent target, HealthComponent self, float amount, ProcChainMask pcm) {
                 _target = target;
                 _self = self;
-                _adjustedCount = amount;
+                _adjustedCoeffs = amount;
                 _pcm = pcm;
             }
 
             public void OnReceived() {
-                _target.Heal(_adjustedCount * ShootToHeal.instance.healAmount, _pcm);
-                if(_self) _self.Heal(_adjustedCount * ShootToHeal.instance.returnHealingAmount, _pcm);
+                var th = _adjustedCoeffs * ShootToHeal.instance.baseHealMod;
+                _target.Heal(th * _target.fullHealth, _pcm);
+                if(_self) _self.Heal(th * _self.fullHealth * ShootToHeal.instance.returnHealMod, _pcm);
             }
 
             public void Deserialize(NetworkReader reader) {
@@ -326,14 +331,14 @@ namespace ThinkInvisible.TinkersSatchel {
                     TinkersSatchelPlugin._logger.LogWarning("Received MsgHealTargetAndSelf for self object with no HealthComponent");
                     _self = null;
                 }
-                _adjustedCount = reader.ReadSingle();
+                _adjustedCoeffs = reader.ReadSingle();
                 _pcm = reader.ReadProcChainMask();
             }
 
             public void Serialize(NetworkWriter writer) {
                 writer.Write(_target.gameObject);
                 writer.Write(_self.gameObject);
-                writer.Write(_adjustedCount);
+                writer.Write(_adjustedCoeffs);
                 writer.Write(_pcm);
             }
         }
