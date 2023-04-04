@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            cdrStack.ToString("0%")
+            cdrStack.ToString("0%"), healthThreshold.ToString("0%")
         };
 
 
@@ -29,6 +29,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, also applies equipment cooldown reduction from other sources to the ICD. If false, only cdrStack is applied.", AutoConfigFlags.PreventNetMismatch)]
         public bool externalCdr { get; private set; } = false;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("The percentage of maximum health below which to trigger this item's effect.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float healthThreshold { get; private set; } = 0.5f;
 
 
 
@@ -107,7 +112,9 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = DeadManSwitch.instance.GetCount(body);
             if(count <= 0) return;
             var eqp = EquipmentCatalog.GetEquipmentDef(body.equipmentSlot.equipmentIndex);
-            if(icd <= 0f && body.healthComponent.isHealthLow && eqp != null) {
+            if(icd <= 0f
+                && eqp != null
+                && ((body.healthComponent.health + body.healthComponent.shield) / body.healthComponent.fullCombinedHealth) <= DeadManSwitch.instance.healthThreshold) {
                 icd = Mathf.Pow(1f - DeadManSwitch.instance.cdrStack, count - 1)
                     * eqp.cooldown
                     * (DeadManSwitch.instance.externalCdr ? body.inventory.CalculateEquipmentCooldownScale() : 1f);
