@@ -198,7 +198,6 @@ namespace ThinkInvisible.TinkersSatchel {
             //main tracking
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.BulletAttack.FireSingle += BulletAttack_FireSingle;
             On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
 
             //blacklist
@@ -223,7 +222,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.BulletAttack.FireSingle -= BulletAttack_FireSingle;
             On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
 
             On.EntityStates.Huntress.ArrowRain.DoFireArrowRain -= ArrowRain_DoFireArrowRain;
@@ -301,14 +299,8 @@ namespace ThinkInvisible.TinkersSatchel {
                     procCoefficient = self.procCoefficient, queryTriggerInteraction = self.queryTriggerInteraction, radius = self.radius,
                     smartCollision = self.smartCollision, sniper = self.sniper, spreadPitchScale = self.spreadPitchScale,
                     spreadYawScale = self.spreadYawScale, stopperMask = self.stopperMask, tracerEffectPrefab = self.tracerEffectPrefab,
-                    weapon = null
+                    weapon = CommonCode.worldSpaceWeaponDummy
                 }, Time.fixedTime, i * delayTime));
-        }
-
-        private void BulletAttack_FireSingle(On.RoR2.BulletAttack.orig_FireSingle orig, BulletAttack self, Vector3 normal, int muzzleIndex) {
-            if(ignoreStack > 0)
-                self.weapon = null; //force tracer effect to happen in worldspace. BulletAttack.Fire sets weapon to owner if null, even if you set it to null on purpose >:(
-            orig(self, normal, muzzleIndex);
         }
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo) {
