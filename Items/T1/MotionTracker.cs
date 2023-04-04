@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            damageFrac.ToString("0%"), damageTime.ToString("N0")
+            damageFrac.ToString("0%"), damageTime.ToString("N0"), damageTimeStack.ToString("N0")
         };
 
 
@@ -25,13 +25,23 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFrac { get; private set; } = 0.15f;
+        [AutoConfig("Damage coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageFrac { get; private set; } = 0.5f;
 
-        [AutoConfigRoOSlider("{0:N0} s", 0f, 300f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Time in combat required to reach maximum damage bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageTime { get; private set; } = 15f;
+        [AutoConfig("Proc coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float procFrac { get; private set; } = 0.5f;
+
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Time in combat required to recharge projectile attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageTime { get; private set; } = 5f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 0.5f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Recharge time reduction per additional item stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float damageTimeStack { get; private set; } = 0.05f;
 
         [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, indicator VFX will be disabled.")]
@@ -44,6 +54,8 @@ namespace ThinkInvisible.TinkersSatchel {
         internal static UnlockableDef unlockable;
         internal static GameObject vfxPrefab;
         public GameObject idrPrefab { get; private set; }
+        internal static GameObject tracerEffectPrefab;
+        internal static GameObject hitEffectPrefab;
 
 
 
@@ -174,6 +186,12 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
+            hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/SniperTargetHitEffect.prefab")
+                .WaitForCompletion();
+
+            tracerEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/TracerRailgunLight.prefab")
+                .WaitForCompletion();
+
             var partMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matCritImpactHeavy.mat")
                 .WaitForCompletion();
 
@@ -191,54 +209,33 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
-            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
 
 
 
         ////// Hooks //////
-
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(self && damageInfo.attacker) {
-                var mtt = damageInfo.attacker.GetComponent<MotionTrackerTracker>();
-                var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
-                if(mtt && count > 0) {
-                    mtt.SetInCombat(self.gameObject);
-                    damageInfo.damage *= 1f + mtt.GetCombatBonusScalar(self.gameObject) * count;
-                }
-            }
-
-            orig(self, damageInfo);
-
-            if(self && self.body && damageInfo.attacker) {
-                var mtt = self.body.GetComponent<MotionTrackerTracker>();
-                if(mtt)
-                    mtt.SetInCombat(damageInfo.attacker);
-            }
-        }
-
+        
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             if(GetCount(body) > 0 && !body.GetComponent<MotionTrackerTracker>())
                 body.gameObject.AddComponent<MotionTrackerTracker>();
         }
-
     }
 
+    [RequireComponent(typeof(CharacterBody))]
     public class MotionTrackerTracker : MonoBehaviour {
         const float COMBAT_TIMER = 6f;
 
+        CharacterBody ownerBody;
+
         readonly Dictionary<GameObject, (float stopwatch, float duration, Indicator indicator)> activeCombatants = new();
 
-        public float GetCombatBonusScalar(GameObject with) {
-            if(!with || !activeCombatants.ContainsKey(with))
-                return 0f;
-            return Mathf.Clamp01(activeCombatants[with].duration / MotionTracker.instance.damageTime) * MotionTracker.instance.damageFrac;
+        void Awake() {
+            ownerBody = GetComponent<CharacterBody>();
         }
 
         public void SetInCombat(GameObject with) {
@@ -278,9 +275,39 @@ namespace ThinkInvisible.TinkersSatchel {
                     activeCombatants.Remove(kvp.Key);
                     if(kvp.Value.indicator != null)
                         kvp.Value.indicator.active = false;
-                } else
-                    activeCombatants[kvp.Key] = (nsw, kvp.Value.duration + Time.fixedDeltaTime, kvp.Value.indicator);
+                } else {
+                    var nt = kvp.Value.duration + Time.fixedDeltaTime;
+                    if(nt >= MotionTracker.instance.damageTime
+                        * Mathf.Pow(1f - MotionTracker.instance.damageTimeStack, MotionTracker.instance.GetCount(ownerBody) - 1)) {
+                        nt = 0;
+                        Fire(kvp.Key);
+                    }
+                    activeCombatants[kvp.Key] = (nsw, nt, kvp.Value.indicator);
+                }
             }
+        }
+
+        public void Fire(GameObject targetObject) {
+            var hc = targetObject.GetComponent<HealthComponent>();
+            if(!hc) return;
+            new BulletAttack {
+                owner = gameObject,
+                weapon = null,
+                origin = targetObject.transform.position + Vector3.up * 10,
+                aimVector = -Vector3.up,
+                minSpread = 0,
+                maxSpread = 0,
+                bulletCount = 1u,
+                damage = MotionTracker.instance.damageFrac * ownerBody.damage,
+                force = 0f,
+                tracerEffectPrefab = MotionTracker.tracerEffectPrefab,
+                hitEffectPrefab = MotionTracker.hitEffectPrefab,
+                muzzleName = null,
+                isCrit = ownerBody.RollCrit(),
+                radius = 1f,
+                smartCollision = true,
+                damageType = DamageType.Generic
+            }.Fire();
         }
     }
 
