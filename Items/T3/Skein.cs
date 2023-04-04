@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.Damage });
 
 		protected override string[] GetDescStringArgs(string langID = null) => new[] {
-			highMassFrac.ToString("0%"), lowMassFrac.ToString("0%"), massChangeDuration.ToString("N0")
+			highMassFrac.ToString("0%"), lowMassFrac.ToString("0%"), massChangeDuration.ToString("N0"), graceRate.ToString("0%"), hitIcd.ToString("N2")
 		};
 
 
@@ -36,14 +36,18 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Time required to reach maximum buff, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float massChangeDuration { get; private set; } = 5f;
 
-		[AutoConfigRoOSlider("{0:N0} s", 0f, 5f)]
-		[AutoConfig("Time required to register a movement stop, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float moveGracePeriod { get; private set; } = 0.25f;
+		[AutoConfigRoOSlider("{0:P0}", 0f, 4f)]
+		[AutoConfig("Rate at which buffs decay, relative to the charge rate.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float graceRate { get; private set; } = 2f;
+
+		[AutoConfigRoOSlider("{0:N0} s", 0f, 10f)]
+		[AutoConfig("Time after being hit to force movement state.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float hitIcd { get; private set; } = 0.25f;
 
 
 
 		////// Other Fields/Properties //////
-		
+
 		public BuffDef speedBuff { get; private set; }
 		public BuffDef resistBuff { get; private set; }
 		internal static UnlockableDef unlockable;
@@ -251,7 +255,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					damageInfo.damage *= fac;
 					if(damageInfo.canRejectForce)
 						damageInfo.force *= fac;
-					cpt.ForceResetStopped();
+					cpt.forcedMovingStopwatch += hitIcd;
                 }
             }
 			orig(self, damageInfo);
@@ -263,27 +267,21 @@ namespace ThinkInvisible.TinkersSatchel {
 		const float RECALC_TICK_RATE = 0.2f;
 
 		float movingStopwatch = 0f;
-		float shortNotMovingStopwatch = 0f;
-		float tickStopwatch = 0f;
-		bool isStopped = false;
+		float stoppedStopwatch = 0f;
+		float recalcStopwatch = 0f;
+		public float forcedMovingStopwatch = 0f;
 
 		Vector3 prevPos;
 
 		CharacterBody body;
 
 		public float GetMovementScalar() {
-			if(isStopped) return 0;
 			return Mathf.Clamp01(movingStopwatch / Skein.instance.massChangeDuration);
         }
 
 		public float GetResistanceScalar() {
-			if(!isStopped) return 0;
-			return Mathf.Clamp01(shortNotMovingStopwatch / Skein.instance.massChangeDuration);
+			return Mathf.Clamp01(stoppedStopwatch / Skein.instance.massChangeDuration);
 		}
-
-		public void ForceResetStopped() {
-			shortNotMovingStopwatch = 0f;
-        }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		void Awake() {
@@ -295,33 +293,29 @@ namespace ThinkInvisible.TinkersSatchel {
 		void FixedUpdate() {
 			if(!body || !NetworkServer.active) return;
 			float minMove = 0.1f * Time.fixedDeltaTime;
-			if((body.transform.position - prevPos).sqrMagnitude <= minMove * minMove) {
-				shortNotMovingStopwatch += Time.fixedDeltaTime;
-				if(!isStopped) {
-					if(shortNotMovingStopwatch > Skein.instance.moveGracePeriod) {
-						movingStopwatch = 0f;
-						isStopped = true;
-						body.statsDirty = true;
-						body.SetBuffCount(Skein.instance.speedBuff.buffIndex, 0);
-					} else movingStopwatch += Time.fixedDeltaTime;
-                }
+			if((body.transform.position - prevPos).sqrMagnitude <= minMove * minMove && forcedMovingStopwatch <= 0f) {
+				stoppedStopwatch += Time.fixedDeltaTime;
+				if(stoppedStopwatch > Skein.instance.massChangeDuration) stoppedStopwatch = Skein.instance.massChangeDuration;
+				movingStopwatch -= Time.fixedDeltaTime * Skein.instance.graceRate;
+				if(movingStopwatch < 0f) movingStopwatch = 0f;
 			} else {
-				if(isStopped) {
-					body.SetBuffCount(Skein.instance.resistBuff.buffIndex, 0);
-					isStopped = false;
-				}
+				if(forcedMovingStopwatch > 0f) forcedMovingStopwatch -= Time.fixedDeltaTime;
 				movingStopwatch += Time.fixedDeltaTime;
-				shortNotMovingStopwatch = 0f;
+				if(movingStopwatch > Skein.instance.massChangeDuration) movingStopwatch = Skein.instance.massChangeDuration;
+				stoppedStopwatch -= Time.fixedDeltaTime * Skein.instance.graceRate;
+				if(stoppedStopwatch < 0f) stoppedStopwatch = 0f;
 			}
 
 			prevPos = body.transform.position;
 
-			tickStopwatch -= Time.fixedDeltaTime;
-			if(tickStopwatch <= 0f) {
-				tickStopwatch = RECALC_TICK_RATE;
-				if(!isStopped) body.statsDirty = true;
-				body.SetBuffCount((isStopped ? Skein.instance.resistBuff : Skein.instance.speedBuff).buffIndex,
-					Mathf.FloorToInt((isStopped ? GetResistanceScalar() : GetMovementScalar()) * 100));
+			recalcStopwatch -= Time.fixedDeltaTime;
+			if(recalcStopwatch <= 0f) {
+				recalcStopwatch = RECALC_TICK_RATE;
+				body.statsDirty = true;
+				body.SetBuffCount(Skein.instance.resistBuff.buffIndex,
+					Mathf.FloorToInt(GetResistanceScalar() * 100));
+				body.SetBuffCount(Skein.instance.speedBuff.buffIndex,
+					Mathf.FloorToInt(GetMovementScalar() * 100));
 			}
         }
     }
