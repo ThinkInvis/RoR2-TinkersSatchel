@@ -313,7 +313,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!hc) return;
             new BulletAttack {
                 owner = gameObject,
-                weapon = null,
+                weapon = CommonCode.worldSpaceWeaponDummy,
                 origin = targetObject.transform.position + Vector3.up * 10,
                 aimVector = -Vector3.up,
                 minSpread = 0,

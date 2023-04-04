@@ -17,6 +17,14 @@ namespace ThinkInvisible.TinkersSatchel {
 		public static SkillDef disabledSkillDef;
 		public static BuffDef tauntDebuff;
 
+		static GameObject _worldSpaceWeaponDummy = null;
+		public static GameObject worldSpaceWeaponDummy {
+			get {
+				if(!_worldSpaceWeaponDummy) _worldSpaceWeaponDummy = new GameObject("Workaround for an Inconvenient Quirk of BulletAttack");
+				return _worldSpaceWeaponDummy;
+			}
+		}
+
         public override void SetupAttributes() {
             base.SetupAttributes();
 
@@ -49,7 +57,14 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Util.CleanseBody += Util_CleanseBody;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.BulletAttack.FireSingle += BulletAttack_FireSingle;
         }
+
+        private void BulletAttack_FireSingle(On.RoR2.BulletAttack.orig_FireSingle orig, BulletAttack self, Vector3 normal, int muzzleIndex) {
+			if(self.weapon == worldSpaceWeaponDummy)
+				self.weapon = null; //force tracer effect to happen in worldspace. BulletAttack.Fire sets weapon to owner if null, even if you set it to null on purpose >:(
+			orig(self, normal, muzzleIndex);
+		}
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
 			if(self && self.body && damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var atkb) && atkb.master) {
