@@ -28,16 +28,16 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N0}", 0f, 5000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Armor given at minimum item type variety (1).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float armorAmtBase { get; private set; } = 500f;
+        public float armorAmtBase { get; private set; } = 100f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Multiplier of armor scaling per additional item type (higher = less penalty).", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
-        public float varietyExp { get; private set; } = 0.875f;
+        public float varietyExp { get; private set; } = 0.975f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Exponential multiplier for increased ArmorAmt per stack (higher = more powerful).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Linear multiplier for increased ArmorAmt per stack (higher = more powerful).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float armorStacking { get; private set; } = 0.25f;
 
 
@@ -121,7 +121,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(count <= 0) return 0;
             var types = GetTotalItemTypes(inv);
 
-            var baseArmor = armorAmtBase * Mathf.Pow(count, armorStacking);
+            var baseArmor = armorAmtBase * (1f + count * armorStacking);
             return baseArmor * Mathf.Pow(varietyExp, types - 1);
         }
 

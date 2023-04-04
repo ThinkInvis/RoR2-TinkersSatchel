@@ -28,7 +28,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fractional damage increase per stack for unresisted attack types, linear: damage = original * (1 + resistAmount * stacks)", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float weakAmount { get; private set; } = 0.2f;
+        public float weakAmount { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]

@@ -44,7 +44,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, an extra stack of Shrine of the Mountain which has no reward will be applied.", AutoConfigFlags.None)]
-        public bool applyPunishStack { get; private set; } = false;
+        public bool applyPunishStack { get; private set; } = true;
 
 
 
