@@ -209,11 +209,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
 
 
@@ -223,6 +225,24 @@ namespace ThinkInvisible.TinkersSatchel {
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             if(GetCount(body) > 0 && !body.GetComponent<MotionTrackerTracker>())
                 body.gameObject.AddComponent<MotionTrackerTracker>();
+        }
+
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
+            orig(self, damageInfo);
+
+            if(self && damageInfo.attacker) {
+                var mtt = damageInfo.attacker.GetComponent<MotionTrackerTracker>();
+                var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
+                if(mtt && count > 0) {
+                    mtt.SetInCombat(self.gameObject);
+                }
+
+                if(self.body) {
+                    var mtt2 = self.body.GetComponent<MotionTrackerTracker>();
+                    if(mtt2)
+                        mtt2.SetInCombat(damageInfo.attacker);
+                }
+            }
         }
     }
 
