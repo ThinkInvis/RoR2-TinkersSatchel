@@ -15,9 +15,9 @@ namespace ThinkInvisible.TinkersSatchel {
     public class Defib : Item<Defib> {
 
         ////// Item Data //////
-        
+
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
             critFracStack.ToString("0%")
@@ -29,8 +29,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplier for extra healing per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Multiplier for extra healing per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float critFracStack { get; private set; } = 0.25f;
+        
+        [AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Crit chance added by the first stack of this item.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        public float critBonus { get; private set; } = 5f;
 
 
 
@@ -206,6 +211,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.MushroomVoidBehavior.FixedUpdate += MushroomVoidBehavior_FixedUpdate;
 
             On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
+            R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
 
             IL.RoR2.HealthComponent.HandleHeal += HealthComponent_HandleHeal;
 
@@ -243,8 +249,13 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.MushroomVoidBehavior.FixedUpdate -= MushroomVoidBehavior_FixedUpdate;
 
             On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
+            R2API.RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
 
             DamageColor.colors[(int)DamageColorIndex.CritHeal] = origColorValue;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
+            args.critAdd += (GetCount(sender) > 0) ? critBonus : 0f;
         }
 
 
@@ -258,9 +269,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(c.TryGotoNext(MoveType.After, x => x.MatchLdfld<HealthComponent.HealMessage>(nameof(HealthComponent.HealMessage.amount)))) {
                 c.EmitDelegate<Func<float, float>>(hv => {
-                        wasCrit = hv < 0;
-                        return Mathf.Abs(hv);
-                    });
+                    wasCrit = hv < 0;
+                    return Mathf.Abs(hv);
+                });
             } else {
                 TinkersSatchelPlugin._logger.LogError("Defib: failed to apply IL hook (HealthComponent_HandleHeal), target instructions not found (amount). Heal numbers may appear as 1s.");
             }
