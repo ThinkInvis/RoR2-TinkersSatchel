@@ -36,7 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time in combat required to recharge projectile attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageTime { get; private set; } = 5f;
+        public float damageTime { get; private set; } = 3f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -264,7 +264,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
             else {
                 activeCombatants[with] = (COMBAT_TIMER, 0f, TryAddIndicator(with));
-                Fire(with);
             }
         }
 
