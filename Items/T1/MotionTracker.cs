@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            damageFrac.ToString("0%"), damageTime.ToString("N0"), damageTimeStack.ToString("0%")
+            damageFracBase.ToString("0%"), damageTime.ToString("N0"), damageFracStack.ToString("0%")
         };
 
 
@@ -26,7 +26,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFrac { get; private set; } = 0.5f;
+        public float damageFracBase { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -40,8 +40,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage increase, relative to base, per additional item stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFracStack { get; private set; } = 0.5f;
+        [AutoConfig("Damage coefficient per additional item stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageFracStack { get; private set; } = 0.25f;
 
         [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, indicator VFX will be disabled.")]
@@ -322,7 +322,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 minSpread = 0,
                 maxSpread = 0,
                 bulletCount = 1u,
-                damage = MotionTracker.instance.damageFrac * ownerBody.damage * (1f + MotionTracker.instance.GetCount(ownerBody) * MotionTracker.instance.damageFracStack),
+                damage = ownerBody.damage * (MotionTracker.instance.damageFracBase + (MotionTracker.instance.GetCount(ownerBody) - 1) * MotionTracker.instance.damageFracStack),
                 force = 0f,
                 tracerEffectPrefab = MotionTracker.tracerEffectPrefab,
                 hitEffectPrefab = MotionTracker.hitEffectPrefab,

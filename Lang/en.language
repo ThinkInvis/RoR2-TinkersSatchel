@@ -110,7 +110,7 @@
 
 		"TINKERSSATCHEL_MOTIONTRACKER_NAME": "Old War Lidar",
 		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "Periodically fire weak projectiles at all hostiles.",
-		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "After first hitting or being hit by an enemy, and then every {1} seconds <style=cStack>(-{2} per stack)</style>: retaliate with an orbital laser projectile for <style=cIsDamage>{0} damage</style>.",
+		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "For 6 seconds after hitting or being hit by an enemy, strike with an orbital laser for <style=cIsDamage>{0} damage</style> <style=cIsStack>(+{2} per stack)</style> every {1} seconds.",
 		"TINKERSSATCHEL_MOTIONTRACKER_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_NAME": "Why Won't You Die?!",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "Fully charge a Teleporter without killing the boss or dying.",
