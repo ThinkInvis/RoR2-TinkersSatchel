@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [BepInDependency(Dronemeld.DronemeldPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
-        public const string ModVer = "3.6.0";
+        public const string ModVer = "3.7.0";
         public const string ModName = "TinkersSatchel";
         public const string ModGuid = "com.ThinkInvisible.TinkersSatchel";
 
@@ -31,6 +31,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         internal static AssetBundle resources;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void Awake() {
             _logger = Logger;
 
@@ -67,6 +68,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         .WaitForCompletion();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void Start() {
             CommonCode.instance.RefreshPermanentLanguage();
             CommonCode.instance.InstallLanguage();

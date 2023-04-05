@@ -88,7 +88,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/motionTrackerIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Old War Lidar</b><br>
-				Deal more damage to persistent combatants.
+				Periodically fire weak projectiles at all hostiles.
 			</td>
 		</tr>
 		<tr>
@@ -112,7 +112,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kleinBottleIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Unstable Klein Bottle</b><br>
-				Chance to push or pull nearby enemies on taking damage.
+				Gravity slam nearby enemies on taking damage.
 			</td>
 		</tr>
 		<tr>
@@ -175,6 +175,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/wranglerIcon.png?raw=true" width=128></td>
+			<td>
+				<b>RC Controller</b><br>
+				Nearby turrets and drones gain attack speed. Ping to take control.
+			</td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/skeinIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Spacetime Skein</b><br>
@@ -202,7 +209,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extraEquipmentIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Scavenger's Rucksack</b><br>
-				Hold an extra Equipment. Stand still to rummage through the rucksack.
+				Hold an extra Equipment. Activate with scoreboard open to rummage through the rucksack.
 			</td>
 		</tr>
 		<tr>
@@ -245,13 +252,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 		</tr>
 		<tr>
 			<td colspan="2" align="center"><h3>Lunar Items</h3></td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/wranglerIcon.png?raw=true" width=128></td>
-			<td>
-				<b>RC Controller</b><br>
-				Nearby turrets and drones attack with you... <i>BUT no longer attack automatically.</i>
-			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/bismuthFlaskIcon.png?raw=true" width=128></td>
@@ -537,6 +537,68 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.7.0** *The Doozy of a Balance Pass Update*
+
+- 1 Balance Pass, Doozy of a:
+	- 🌧︎ Thank you for your feedback! Many of these changes were made after considering suggestions from the community.
+	- Old-War Lidar:
+		- Reworked.
+			- Now fires a weak laser projectile (40% damage + 20% per stack) at acquired targets on reaching maximum charge. Charge resets after a projectile is fired.
+			- Reduced charge time to 3 seconds (was 15 seconds).
+			- No longer provides a damage buff.
+	- Percussive Maintenance:
+		- Now additionally scales with attack damage coefficient and maximum health.
+			- New defaults: healing = 1% of maximum health * relative attack damage * attack proc coefficient * item stack count.
+			- Old defaults: healing = 2 HP * attack proc coefficient * item stack count.
+		- Increased self healing to 50% of ally healing (was 25%).
+		- *Who's Leeching Seed? Never heard of 'em.*
+	- Triskelion Brooch:
+		- No longer stacks chance.
+		- Now inflicts 80% slow instead of freeze.
+		- Changed first-stack damage from 100% to 50%.
+		- Changed per-extra-stack damage from 25% to 50%.
+		- *This item was drastically overperforming for a tier-1, and also had something of a disparity in power between the different debuffs it could inflict.*
+	- Defibrillator:
+		- Removed the first-stack healing modifier. All stacks now add 25% to the healing value for critical heals (was 50% for first stack).
+		- First stack now provides 5% crit chance (configurable), similarly to Predatory Instincts.
+	- Negative Feedback Loop:
+		- Changed damage absorption per stack to 10% (was 20%).
+		- Changed absorbed damage delay to 3 sec (was 5 sec).
+	- Pulse Monitor:
+		- Changed low health threshold to 50% (was 25%).
+			- Low health threshold is now configurable.
+			- This does not affect the low health threshold for the item's unlock achievement, which remains hardcoded at 25%.
+		- *Old War Stealthkit's 25% threshold was fine for triggering a guaranteed defensive buff, but using the same threshold here could be problematic with some equipment.*
+	- Unstable Klein Bottle:
+		- Reworked.
+			- Now holds affected enemies stunned in midair for 1 second (duration and height configurable), instead of pushing/pulling based on nominal character playstyle.
+		- Increased internal cooldown from 0.5 seconds to 1.5 seconds to remove the potential for complete stunlocks.
+	- RC Controller:
+		- Changed tier from Lunar to Rare/3.
+		- Now only overrides an AI ally's aim for 30 seconds (configurable) after pinging it. Multiple AI may be overridden at once. All valid AI within range, overridden or not, will still receive the fire rate buff.
+	- Spacetime Skein:
+		- Buffs are no longer mutually exclusive. While one buff charges, the other buff will decay at 200% (configurable) of the charge speed.
+		- Being hit will now force charging onto the movement buff for 0.25 seconds (configurable), instead of resetting the stationary buff.
+		- Removed the grace period before registering a movement stop, as it's redundant with the above.
+	- Scavenger's Rucksack:
+		- Now intercepts equipment activation while the scoreboard is open and swaps slots then, instead of while standing still.
+		- *I just fixed a bug here, and now I'm throwing away the fix and everything around it. Such is life!*
+	- Bismuth Tonic:
+		- Reduced increase to incoming damage from differing enemy tiers to 12.5% (was 25%).
+	- Silver Compass:
+		- Now applies a second stack of Challenge of the Mountain, but only one extra item (behavior was already present, but off by default).
+	- Lens of Order:
+		- Reduced base armor bonus to 100 (was 500).
+		- Reduced downscaling per other item to 2.5% (was 12.5%).
+		- Now scales linearly instead of exponentially with further stacks.
+		- *The variation of usefulness of this item between early and late game was a little too spiky.*
+	- Villainous Visage:
+		- No longer triggers when entering danger (taking damage), only when entering combat (dealing damage or using a combat skill).
+		- *My evil plan starts when I SAY it does, and no sooner, thank you very much.*
+- Fixed an issue where Item Drone was not respecting the FakeInventory item blacklist under some circumstances. Resolves a bug with Standalone Ancient Scepter et al.
+- Implemented a slightly cleaner solution to keeping Timelost Rum projectile tracer effects in worldspace (also used in Old War Lidar rework).
+- Updated TILER2 dependency to 7.3.4.
+
 **3.6.0**
 
 - Balance pass:
@@ -582,7 +644,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Minor project cleanup.
 - Updated TILER2 dependency to 7.3.1.
 	- Necessary for language system changes.
-
-**3.3.2**
-
-- Fixed Scavenger's Rucksack breaking Heretic transformation, luck calc, and Goobo Jr setup.

@@ -49,11 +49,11 @@
 				<b>Percussive Maintenance</b><br>
 				<details>
 					<summary>Hit allies to heal them.</summary>
-					<small>Hitting an ally with a direct attack heals them for 2.0 health (+2.0 per stack) and you for 25% as much.</small>
+					<small>Hitting an ally with a direct attack heals them for 1% maximum health (+1% per stack) and you for 50% as much. Scales with attack damage coefficient and proc coefficient.</small>
 				</details>
 			</td>
 			<td><ul>
-				<li>Double healing of and lower tier than Leeching Seed, due to the opportunity cost of dealing damage to enemies, needing to see and hit your probably-juking-very-hard teammates, etc.</li>
+				<li>Higher healing and lower tier than Leeching Seed, due to the opportunity cost of dealing damage to enemies, needing to see and hit your probably-juking-very-hard teammates, etc.</li>
 				<li>AI allies may attempt to use this item if there is a valid heal target and no enemies in range, and only if Artifact of Chaos is not on.</li>
 				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Ukulele/Polylute, War Horn, Gorag's Opus, Unstable Tesla Coil, and Brilliant Behemoth at once.</details></li>
 			</ul></td>
@@ -90,8 +90,8 @@
 			<td>
 				<b>Old War Lidar</b><br>
 				<details>
-					<summary>Deal more damage to persistent combatants.</summary>
-					<small>Deal up to 15% more damage (+15% per stack) to any enemy you have recently hit or been hit by, ramping up over 15 seconds.</small>
+					<summary>Periodically fire weak projectiles at all hostiles.</summary>
+					<small>For 6 seconds after hitting or being hit by an enemy, strike with an orbital laser for 40% damage (+20% per stack) every 3 seconds.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -131,8 +131,8 @@
 			<td>
 				<b>Unstable Klein Bottle</b><br>
 				<details>
-					<summary>Chance to push or pull nearby enemies on taking damage.</summary>
-					<small>After taking damage, 8.0% (+8.0% per stack, mult.) chance to push or pull (pulls on melee survivors) enemies within 20 m for 50% damage. Has an internal cooldown of 0.5 s.</small>
+					<summary>Gravity slam nearby enemies on taking damage.</summary>
+					<small>After taking damage, 8.0% (+8.0% per stack, mult.) chance to stun enemies within 20 m for 1.0 seconds. Affected enemies are held in midair while stunned, then slammed into the ground for 50% damage. Has an internal cooldown of 1.5 s.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -145,7 +145,7 @@
 				<b>Pulse Monitor</b><br>
 				<details>
 					<summary>Auto-activate your equipment for free at low health.</summary>
-					<small>Falling below 25% health activates your equipment without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment (-15% per stack, mult.).</small>
+					<small>Falling below 50% health activates your equipment without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment (-15% per stack, mult.).</small>
 				</details>
 			</td>
 			<td><ul>
@@ -159,7 +159,7 @@
 				<b>Negative Feedback Loop</b><br>
 				<details>
 					<summary>Some incoming damage is dealt over time.</summary>
-					<small>20% (+20% per stack, hyperbolic) of incoming damage is applied gradually over 5 seconds, ticking continuously. Healing past max health will apply to the pool of delayed damage.</small>
+					<small>10% (+10% per stack, hyperbolic) of incoming damage is applied gradually over 3 seconds, ticking continuously. Healing past max health will apply to the pool of delayed damage.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -186,7 +186,7 @@
 				<b>Defibrillator</b><br>
 				<details>
 					<summary>Your heals can crit.</summary>
-					<small>Your crit chance applies to all healing that you cause, for +50% (+25% per stack) HP healed when a crit occurs.</small>
+					<small>Your crit chance applies to all healing that you cause, for +25% (+25% per stack) HP healed when a crit occurs.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -200,7 +200,7 @@
 				<b>Fudge Dice</b><br>
 				<details>
 					<summary>Periodically guarantee luck.</summary>
-					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is rolled with +10 luck.</small>
+					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is rolled with +9 luck.</small>
 				</details>
 			</td>
 			<td></td>
@@ -269,7 +269,7 @@
 				<b>Spacetime Skein</b><br>
 				<details>
 					<summary>Gain mass while stationary. Lose mass while moving.</summary>
-					<small>Standing still reduces the next damage and knockback you take by up to 50% (+50% per stack, hyperbolic). Moving increasing your move and attack speed by up to 50% (+50% per stack, linear). Effect ramps up over 5 seconds, and is lost once you start or stop moving (latter has a brief grace period).</small>
+					<small>Standing still reduces the next damage and knockback you take by up to 50% (+50% per stack, hyperbolic). Moving increasing your move and attack speed by up to 50% (+50% per stack, linear). Each effect ramps up over 5 seconds, while the other effect is lost 200% as fast. Taking damage forces the movement effect to charge for 0.25 seconds.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -321,7 +321,7 @@
 			<td>
 				<b>Scavenger's Rucksack</b><br>
 				<details>
-					<summary>Hold an extra Equipment. Stand still to rummage through the rucksack.</summary>
+					<summary>Hold an extra Equipment. Activate with scoreboard open to rummage through the rucksack.</summary>
 					<small>Gain 1 extra Equipment slot (+1 per stack). Activating your Equipment while the scoreboard is open will cycle through equipment slots instead.</small>
 				</details>
 			</td>
@@ -405,7 +405,7 @@
 				<b>Bismuth Tonic</b><br>
 				<details>
 					<summary>Gain resistance when hit by one enemy type... <i>BUT gain weakness to the others.</i></summary>
-					<small>On being hit by one type of enemy: take 12.5% less damage from subsequent attacks from that type, but 20% more damage from all other types. Wears off after 10 seconds.</small>
+					<small>On being hit by one type of enemy: take 12.5% less damage from subsequent attacks from that type, but 12.5% more damage from all other types. Wears off after 10 seconds.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -535,7 +535,7 @@
 				<b>Lens of Order</b> (T2)<br>
 				<details>
 				<summary>Gain massive armor by focusing your item build. Corrupts all Chestplates.</summary>
-				<small>Gain armor based on your currently held types of item (fewer is better). Having only Lenses of Order gives 500 armor (+25% per stack, inverse-exponential); each subsequent item type reduces armor by 12.5%. Corrupts all Chestplates.</small>
+				<small>Gain armor based on your currently held types of item (fewer is better). Having only Lenses of Order gives 100 armor (+25% per stack, linear); each subsequent item type reduces armor by 2.5%. Corrupts all Chestplates.</small>
 				</details>
 			</td>
 			<td><ul>
