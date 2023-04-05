@@ -248,7 +248,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterBody))]
     public class MotionTrackerTracker : MonoBehaviour {
-        const float COMBAT_TIMER = 6f;
+        const float COMBAT_TIMER = 6.05f;
 
         CharacterBody ownerBody;
 
