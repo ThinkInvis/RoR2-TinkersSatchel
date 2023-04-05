@@ -276,15 +276,19 @@ namespace ThinkInvisible.TinkersSatchel {
                     active = true
                 };
 
-                if(ind.visualizerInstance) {
-                    if(with.TryGetComponent<CharacterBody>(out var tgtBody))
-                        ind.visualizerInstance.transform.position = tgtBody.corePosition;
-                    var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
-                    anim.SetFloat("Speed", 1f / MotionTracker.instance.damageTime);
-                    anim.PlayInFixedTime("ZeroIn");
-                }
+                ResetIndicator(ind, with);
             }
             return ind;
+        }
+
+        void ResetIndicator(Indicator ind, GameObject with) {
+            if(ind.visualizerInstance) {
+                if(with.TryGetComponent<CharacterBody>(out var tgtBody))
+                    ind.visualizerInstance.transform.position = tgtBody.corePosition;
+                var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
+                anim.SetFloat("Speed", 1f / (MotionTracker.instance.damageTime * Mathf.Pow(1f - MotionTracker.instance.damageTimeStack, MotionTracker.instance.GetCount(ownerBody) - 1)));
+                anim.PlayInFixedTime("ZeroIn");
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
@@ -302,6 +306,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         * Mathf.Pow(1f - MotionTracker.instance.damageTimeStack, MotionTracker.instance.GetCount(ownerBody) - 1)) {
                         nt = 0;
                         Fire(kvp.Key);
+                        ResetIndicator(kvp.Value.indicator, kvp.Key);
                     }
                     activeCombatants[kvp.Key] = (nsw, nt, kvp.Value.indicator);
                 }
