@@ -38,10 +38,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Time in combat required to recharge projectile attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageTime { get; private set; } = 5f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 0.5f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Recharge time reduction per additional item stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float damageTimeStack { get; private set; } = 0.05f;
+        [AutoConfig("Damage increase, relative to base, per additional item stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageFracStack { get; private set; } = 0.5f;
 
         [AutoConfigRoOCheckbox()]
         [AutoConfig("If true, indicator VFX will be disabled.")]
@@ -286,8 +286,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(with.TryGetComponent<CharacterBody>(out var tgtBody))
                     ind.visualizerInstance.transform.position = tgtBody.corePosition;
                 var anim = ind.visualizerInstance.transform.Find("Background").GetComponent<Animator>();
-                anim.SetFloat("Speed", 1f / (MotionTracker.instance.damageTime * Mathf.Pow(1f - MotionTracker.instance.damageTimeStack, MotionTracker.instance.GetCount(ownerBody) - 1)));
-                anim.PlayInFixedTime("ZeroIn");
+                anim.SetFloat("Speed", 1f / MotionTracker.instance.damageTime);
+                anim.PlayInFixedTime("ZeroIn", -1, 0f);
             }
         }
 
@@ -302,8 +302,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         kvp.Value.indicator.active = false;
                 } else {
                     var nt = kvp.Value.duration + Time.fixedDeltaTime;
-                    if(nt >= MotionTracker.instance.damageTime
-                        * Mathf.Pow(1f - MotionTracker.instance.damageTimeStack, MotionTracker.instance.GetCount(ownerBody) - 1)) {
+                    if(nt >= MotionTracker.instance.damageTime) {
                         nt = 0;
                         Fire(kvp.Key);
                         ResetIndicator(kvp.Value.indicator, kvp.Key);
@@ -324,7 +323,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 minSpread = 0,
                 maxSpread = 0,
                 bulletCount = 1u,
-                damage = MotionTracker.instance.damageFrac * ownerBody.damage,
+                damage = MotionTracker.instance.damageFrac * ownerBody.damage * (1f + MotionTracker.instance.GetCount(ownerBody) * MotionTracker.instance.damageFracStack),
                 force = 0f,
                 tracerEffectPrefab = MotionTracker.tracerEffectPrefab,
                 hitEffectPrefab = MotionTracker.hitEffectPrefab,
