@@ -535,6 +535,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 ## Changelog
 
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
+
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
 **3.7.0** *The Doozy of a Balance Pass Update*
