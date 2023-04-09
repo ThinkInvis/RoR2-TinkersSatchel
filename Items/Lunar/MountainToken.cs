@@ -82,7 +82,8 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(var nu in NetworkUser.readOnlyInstancesList) {
                         if(!nu.isParticipating) continue;
                         var body = nu.GetCurrentBody();
-                        extraRewardsSingular += GetCount(body);
+                        if(body.TryGetComponent<MountainTokenTracker>(out var mtt))
+                            extraRewardsSingular += mtt.Stacks;
                     }
                     return origRewards + extraRewardsSingular;
                 });
@@ -130,7 +131,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class MountainTokenTracker : MonoBehaviour {
         CharacterBody body;
         float ungroundedTime = 0f;
-        int stacks = 0;
+        public int Stacks { get; private set; } = 0;
         int maxStacks = 0;
 
         void Awake() {
@@ -142,7 +143,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 ungroundedTime += Time.fixedDeltaTime;
                 if(ungroundedTime > MountainToken.instance.maxUngroundedTime / (float)maxStacks) {
                     ungroundedTime = 0;
-                    stacks--;
+                    Stacks--;
                     MountainToken.GrantToEnemiesInTeleporter();
                 }
             }
@@ -151,7 +152,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public void Reset() {
             ungroundedTime = 0f;
             maxStacks = MountainToken.instance.GetCount(body);
-            stacks = maxStacks;
+            Stacks = maxStacks;
         }
     }
 }
