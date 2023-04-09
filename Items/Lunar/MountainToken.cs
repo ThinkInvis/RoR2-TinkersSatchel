@@ -5,6 +5,8 @@ using TILER2;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
+using EntityStates;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MountainToken : Item<MountainToken> {
@@ -15,17 +17,17 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.HoldoutZoneRelated });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            debuffAmount.ToString("0%")
+            maxUngroundedTime.ToString("N1")
         };
 
 
 
         ////// Config //////
-
-        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
+        
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Fractional healing reduction per stack, hyperbolic.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float debuffAmount { get; private set; } = 0.5f;
+        [AutoConfig("All bonus item stacks will be removed and granted to enemies after spending this long in midair.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float maxUngroundedTime { get; private set; } = 20f;
 
 
 
@@ -47,17 +49,16 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
 
-            On.RoR2.HealthComponent.Heal += HealthComponent_Heal;
-            On.EntityStates.GenericCharacterMain.ApplyJumpVelocity += GenericCharacterMain_ApplyJumpVelocity;
             IL.RoR2.BossGroup.DropRewards += BossGroup_DropRewards;
+            On.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
+
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
-            On.RoR2.HealthComponent.Heal -= HealthComponent_Heal;
-            On.EntityStates.GenericCharacterMain.ApplyJumpVelocity -= GenericCharacterMain_ApplyJumpVelocity;
             IL.RoR2.BossGroup.DropRewards -= BossGroup_DropRewards;
+            On.RoR2.TeleporterInteraction.ChargingState.OnEnter -= ChargingState_OnEnter;
         }
 
 
@@ -92,23 +93,64 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen) {
-            var count = GetCount(self.body);
-            if(count > 0
-                && TeleporterInteraction.instance
-                && TeleporterInteraction.instance.activationState == TeleporterInteraction.ActivationState.Charging
-                && TeleporterInteraction.instance.holdoutZoneController.IsBodyInChargingRadius(self.body))
-                amount *= Mathf.Pow(debuffAmount, count);
-            return orig(self, amount, procChainMask, nonRegen);
+        private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, BaseState self) {
+            foreach(var cb in UnityEngine.Object.FindObjectsOfType<CharacterBody>())
+                if(GetCount(cb) > 0 && !cb.TryGetComponent<MountainTokenTracker>(out _))
+                    cb.gameObject.AddComponent<MountainTokenTracker>();
+            foreach(var mtt in UnityEngine.Object.FindObjectsOfType<MountainTokenTracker>())
+                mtt.Reset();
         }
 
-        private void GenericCharacterMain_ApplyJumpVelocity(On.EntityStates.GenericCharacterMain.orig_ApplyJumpVelocity orig, CharacterMotor characterMotor, CharacterBody characterBody, float horizontalBonus, float verticalBonus, bool vault) {
-            if(GetCount(characterBody) > 0
-                && TeleporterInteraction.instance
-                && TeleporterInteraction.instance.activationState == TeleporterInteraction.ActivationState.Charging
-                && TeleporterInteraction.instance.holdoutZoneController.IsBodyInChargingRadius(characterBody))
-                return;
-            orig(characterMotor, characterBody, horizontalBonus, verticalBonus, vault);
+        public static void GrantToEnemiesInTeleporter() {
+            if(!TeleporterInteraction.instance || !TeleporterInteraction.instance.bossGroup || !TeleporterInteraction.instance.bossGroup.dropTable) return;
+            PickupIndex pickupIndex = PickupIndex.none;
+
+            if(TeleporterInteraction.instance.bossGroup.dropTable) {
+                pickupIndex = TeleporterInteraction.instance.bossGroup.dropTable.GenerateDrop(instance.rng);
+            } else {
+                pickupIndex = instance.rng.NextElementUniform<PickupIndex>(
+                    TeleporterInteraction.instance.bossGroup.forceTier3Reward
+                    ? Run.instance.availableTier3DropList
+                    : Run.instance.availableTier2DropList);
+            }
+
+            if(pickupIndex == PickupIndex.none) return;
+            var pickup = PickupCatalog.GetPickupDef(pickupIndex);
+            if(pickup == null || pickup.itemIndex == ItemIndex.None) return;
+
+            var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
+                .Where(e => e.body && e.body.inventory && TeleporterInteraction.instance.holdoutZoneController.IsBodyInChargingRadius(e.body));
+            foreach(var enemy in enemies)
+                enemy.body.inventory.GiveItem(ItemCatalog.GetItemDef(pickup.itemIndex));
+        }
+    }
+
+    [RequireComponent(typeof(CharacterBody))]
+    public class MountainTokenTracker : MonoBehaviour {
+        CharacterBody body;
+        float ungroundedTime = 0f;
+        int stacks = 0;
+        int maxStacks = 0;
+
+        void Awake() {
+            body = GetComponent<CharacterBody>();
+        }
+
+        void FixedUpdate() {
+            if(body.characterMotor && !body.characterMotor.isGrounded && TeleporterInteraction.instance && TeleporterInteraction.instance.activationState == TeleporterInteraction.ActivationState.Charging && stacks > 0) {
+                ungroundedTime += Time.fixedDeltaTime;
+                if(ungroundedTime > MountainToken.instance.maxUngroundedTime / (float)maxStacks) {
+                    ungroundedTime = 0;
+                    stacks--;
+                    MountainToken.GrantToEnemiesInTeleporter();
+                }
+            }
+        }
+
+        public void Reset() {
+            ungroundedTime = 0f;
+            maxStacks = MountainToken.instance.GetCount(body);
+            stacks = maxStacks;
         }
     }
 }
