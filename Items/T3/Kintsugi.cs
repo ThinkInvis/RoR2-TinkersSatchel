@@ -40,8 +40,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		[AutoConfigRoOString()]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
-		[AutoConfig("Items to count towards Kintsugi, as a comma-delimited list of name tokens (will be automatically trimmed).", AutoConfigFlags.PreventNetMismatch)]
-		public string validItemNameTokens { get; private set; } = "ITEM_SCRAPWHITE_NAME, ITEM_SCRAPGREEN_NAME, ITEM_SCRAPRED_NAME, ITEM_SCRAPYELLOW_NAME, ITEM_REGENERATINGSCRAP_NAME, ITEM_REGENERATINGSCRAPCONSUMED_NAME, ITEM_HEALINGPOTIONCONSUMED_NAME, ITEM_FRAGILEDAMAGEBONUSCONSUMED_NAME, ITEM_EXTRALIFEVOIDCONSUMED_NAME, ITEM_EXTRALIFECONSUMED_NAME, TINKERSSATCHEL_KINTSUGI_NAME";
+		[AutoConfig("Items to count towards Kintsugi, as a comma-delimited list of name tokens or internal names (will be automatically trimmed, prefix name tokens with @).", AutoConfigFlags.PreventNetMismatch)]
+		public string validItemNameTokens { get; private set; } = "ScrapWhite, ScrapGreen, ScrapRed, ScrapYellow, RegeneratingScrap, RegeneratingScrapConsumed, HealingPotionConsumed, FragileDamageBonusConsumed, ExtraLifeVoidConsumed, ExtraLifeConsumed, TKSATKintsugi";
 
 
 
@@ -205,11 +205,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
 			base.Install();
 			RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
 		}
 
         public override void Uninstall() {
 			base.Uninstall();
 			RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
+			On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
 		}
 
 
@@ -248,10 +250,22 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void UpdateValidItems() {
 			if(!ItemCatalog.availability.available) return;
-			var nameTokens = validItemNameTokens.Split(',').Select(x => x.Trim());
+			var nameTokens = validItemNameTokens.Split(',').Select(x => {
+				bool isInternalName = x.Length > 0 && (x[0] == '@');
+				return (content: (isInternalName ? x : x.Substring(1)).Trim(), isInternalName: isInternalName);
+				});
 			validItems.Clear();
-			validItems.UnionWith(ItemCatalog.allItemDefs.Where(idef => nameTokens.Contains(idef.nameToken)));
-        }
+			validItems.UnionWith(
+				ItemCatalog.allItemDefs.Where(
+					idef => nameTokens.Any(
+						(kvp) => (kvp.isInternalName ? idef.name : idef.nameToken)
+						== kvp.content
+						)
+					)
+				);
+			Debug.Log(string.Join(", ", ItemCatalog.allItemDefs.Select(x => x.nameToken)));
+			Debug.Log(string.Join(", ", ItemCatalog.allItemDefs.Select(x => x.name)));
+		}
 
 
 
@@ -277,6 +291,10 @@ namespace ThinkInvisible.TinkersSatchel {
 			args.regenMultAdd += totalBonus;
 			args.critAdd += totalBonus;
 			args.armorAdd += totalBonus;
+		}
+
+		private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
+			orig(self);
 		}
 	}
 
