@@ -157,7 +157,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void FixedUpdate() {
-            if(body.characterMotor && !body.characterMotor.isGrounded && TeleporterInteraction.instance && TeleporterInteraction.instance.activationState == TeleporterInteraction.ActivationState.Charging && stacks > 0) {
+            if(body.characterMotor && !body.characterMotor.isGrounded && TeleporterInteraction.instance && TeleporterInteraction.instance.activationState == TeleporterInteraction.ActivationState.Charging && Stacks > 0) {
                 ungroundedTime += Time.fixedDeltaTime;
                 if(ungroundedTime > MountainToken.instance.maxUngroundedTime / (float)maxStacks) {
                     ungroundedTime = 0;
