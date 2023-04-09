@@ -7,6 +7,7 @@ using Mono.Cecil.Cil;
 using System;
 using EntityStates;
 using System.Linq;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MountainToken : Item<MountainToken> {
@@ -33,6 +34,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
+        public BuffDef eligibilityBuff { get; private set; }
 
 
         ////// TILER2 Module Setup //////
@@ -44,6 +46,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            eligibilityBuff = ScriptableObject.CreateInstance<BuffDef>();
+            eligibilityBuff.buffColor = Color.blue;
+            eligibilityBuff.canStack = true;
+            eligibilityBuff.isDebuff = false;
+            eligibilityBuff.name = "TKSATMountainTokenEligibility";
+            eligibilityBuff.iconSprite = itemDef.pickupIconSprite;
+            ContentAddition.AddBuffDef(eligibilityBuff);
         }
 
         public override void Install() {
@@ -131,7 +141,15 @@ namespace ThinkInvisible.TinkersSatchel {
     public class MountainTokenTracker : MonoBehaviour {
         CharacterBody body;
         float ungroundedTime = 0f;
-        public int Stacks { get; private set; } = 0;
+        int _stacks = 0;
+        public int Stacks {
+            get { return _stacks; }
+            private set {
+                _stacks = value;
+                if(body)
+                    body.SetBuffCount(MountainToken.instance.eligibilityBuff.buffIndex, _stacks);
+            }
+        }
         int maxStacks = 0;
 
         void Awake() {
