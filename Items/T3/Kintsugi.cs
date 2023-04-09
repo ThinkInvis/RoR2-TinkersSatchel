@@ -263,8 +263,6 @@ namespace ThinkInvisible.TinkersSatchel {
 						)
 					)
 				);
-			Debug.Log(string.Join(", ", ItemCatalog.allItemDefs.Select(x => x.nameToken)));
-			Debug.Log(string.Join(", ", ItemCatalog.allItemDefs.Select(x => x.name)));
 		}
 
 
