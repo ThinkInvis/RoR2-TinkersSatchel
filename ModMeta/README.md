@@ -17,10 +17,10 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 - 42 items/equipments:
 	- 7 tier-1,
 	- 7 tier-2,
-	- 6 tier-3,
+	- 7 tier-3,
 	- 1 boss item,
 	- 5 equipments,
-	- 4 lunar items,
+	- 3 lunar items,
 	- 4 lunar equipments,
 	- 3 tier-1 void,
 	- 3 tier-2 void,
@@ -271,7 +271,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mountainTokenIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Celestial Gambit</b><br>
-				Gain an extra item reward from teleporters... <i>BUT the teleporter zone weakens you.</i>
+				Gain an extra item reward from teleporters... <i>BUT jumping for too long gives the item to enemies instead.</i>
 			</td>
 		</tr>
 		<tr>
@@ -538,6 +538,18 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.8.0**
+
+- Balance pass:
+	- Celestial Gambit:
+		- Partial rework.
+			- No longer debuffs health nor prevents jumping.
+			- Now gradually removes bonus items from the teleporter pool and gives them to enemies while the player carrying Celestial Gambit remains in midair. After 20 seconds of airtime (configurable), all bonus items will have been given to enemies.
+			- The more stacks of Celestial Gambit an airborne player has, the faster bonus items will be given to enemies.
+- Fixed Kintsugi not counting itself as a valid item.
+- Fixed Kintsugi granting 1/100 of the intended armor and crit chance bonuses.
+- Kintsugi now uses internal item names by default, but may also accept name tokens if prefixed with "@".
+
 **3.7.0** *The Doozy of a Balance Pass Update*
 
 - 1 Balance Pass, Doozy of a:
@@ -632,16 +644,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **3.4.1**
 
 - Migrated a few language tokens missed in the first pass (skills, CommonCode). <small>Slippery little devils...</small>
-
-**3.4.0** *The Translatable Update*
-
-- Migrated ALL language tokens to a language file, making the mod more translation-friendly (read: it can now be done at all).
-- Fixed Fudge Dice being nonfunctional and causing per-frame errors once obtained.
-- Unstable Klein Bottle velocity, range, and internal cooldown are now configurable (defaults unchanged at 30 m/s, 20 m, 0.5 s).
-- Shrink Ray damage debuff and visual scale amounts are now configurable (defaults unchanged at 50% and 50%).
-- Made some improvements to item descriptions.
-- Added lore to some items.
-- Fixed some cases of erroneous spaces before percentage signs in item descriptions.
-- Minor project cleanup.
-- Updated TILER2 dependency to 7.3.1.
-	- Necessary for language system changes.

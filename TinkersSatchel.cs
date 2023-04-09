@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [BepInDependency(Dronemeld.DronemeldPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
-        public const string ModVer = "3.7.0";
+        public const string ModVer = "3.8.0";
         public const string ModName = "TinkersSatchel";
         public const string ModGuid = "com.ThinkInvisible.TinkersSatchel";
 

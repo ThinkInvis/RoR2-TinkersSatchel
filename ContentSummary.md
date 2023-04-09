@@ -428,8 +428,8 @@
 			<td>
 				<b>Celestial Gambit</b><br>
 				<details>
-					<summary>Gain an extra item reward from teleporters... <i>BUT the teleporter zone weakens you.</i></summary>
-					<small>The teleporter boss drops 1 extra item when killed (+1 per stack). As long as you remain in the teleporter zone, you receive 50% less healing and health regen (+50% per stack, hyperbolic) and become unable to jump.</small>
+					<summary>Gain an extra item reward from teleporters... <i>BUT jumping for too long gives the item to enemies instead.</i></summary>
+					<small>The teleporter boss drops 1 extra item when killed (+1 per stack). As long as you remain in midair while the teleporter is charging, these extra items will gradually be lost and given to all enemies within the teleporter zone. All extra items will be lost after 20 seconds.</small>
 				</details>
 			</td>
 			<td><ul>

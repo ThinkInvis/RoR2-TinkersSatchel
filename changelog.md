@@ -2,6 +2,18 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.8.0**
+
+- Balance pass:
+	- Celestial Gambit:
+		- Partial rework.
+			- No longer debuffs health nor prevents jumping.
+			- Now gradually removes bonus items from the teleporter pool and gives them to enemies while the player carrying Celestial Gambit remains in midair. After 20 seconds of airtime (configurable), all bonus items will have been given to enemies.
+			- The more stacks of Celestial Gambit an airborne player has, the faster bonus items will be given to enemies.
+- Fixed Kintsugi not counting itself as a valid item.
+- Fixed Kintsugi granting 1/100 of the intended armor and crit chance bonuses.
+- Kintsugi now uses internal item names by default, but may also accept name tokens if prefixed with "@".
+
 **3.7.0** *The Doozy of a Balance Pass Update*
 
 - 1 Balance Pass, Doozy of a:
