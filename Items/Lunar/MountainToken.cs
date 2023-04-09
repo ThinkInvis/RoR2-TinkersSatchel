@@ -26,7 +26,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("All bonus item stacks will be removed and granted to enemies after spending this long in midair.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Time spent in midair after which all bonus item stacks will have been removed and granted to enemies. Bonus items decay linearly over this timespan.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float maxUngroundedTime { get; private set; } = 20f;
 
 
