@@ -133,7 +133,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
                 .Where(e => e.body && e.body.inventory && TeleporterInteraction.instance.holdoutZoneController.IsBodyInChargingRadius(e.body));
             foreach(var enemy in enemies)
-                enemy.body.inventory.GiveItem(ItemCatalog.GetItemDef(pickup.itemIndex));
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(TeleporterInteraction.instance.holdoutZoneController.transform.position, enemy.body.inventory, pickup.itemIndex, 1);
         }
     }
 
