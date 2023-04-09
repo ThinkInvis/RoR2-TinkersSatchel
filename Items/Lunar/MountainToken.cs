@@ -94,6 +94,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, BaseState self) {
+            orig(self);
             foreach(var cb in UnityEngine.Object.FindObjectsOfType<CharacterBody>())
                 if(GetCount(cb) > 0 && !cb.TryGetComponent<MountainTokenTracker>(out _))
                     cb.gameObject.AddComponent<MountainTokenTracker>();
