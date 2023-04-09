@@ -289,8 +289,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			args.moveSpeedMultAdd += totalBonus;
 			args.jumpPowerMultAdd += totalBonus;
 			args.regenMultAdd += totalBonus;
-			args.critAdd += totalBonus;
-			args.armorAdd += totalBonus;
+			args.critAdd += totalBonus * 100;
+			args.armorAdd += totalBonus * 100;
 		}
 
 		private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
