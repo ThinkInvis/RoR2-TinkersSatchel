@@ -165,6 +165,11 @@
 		"ACHIEVEMENT_TKSAT_DEFIB_NAME": "Medic!",
 		"ACHIEVEMENT_TKSAT_DEFIB_DESCRIPTION": "Item Set: Shareable healing. Have 4 or more (of 7) at once.",
 		
+		"TINKERSSATCHEL_ENPASSANT_NAME": "En Passant",
+		"TINKERSSATCHEL_ENPASSANT_PICKUP": "Melee strike with your Utility skill to recharge it.",
+		"TINKERSSATCHEL_ENPASSANT_DESC": "After activating your Utility skill, fire a horizontal <style=cIsDamage>melee attack</style> which lasts {1} seconds and deals <style=cIsDamage>{0} damage</style> <style=cStack>(+{0} per stack)</style>. Each hit with this attack <style=cIsUtility>recharges your Utility skill by {2} seconds</style> <style=cStack>(+{2} s per stack)</style>.",
+		"TINKERSSATCHEL_ENPASSANT_LORE": "",
+
 		"TINKERSSATCHEL_FUDGEDICE_NAME": "Fudge Dice",
 		"TINKERSSATCHEL_FUDGEDICE_PICKUP": "Periodically guarantee luck.",
 		"TINKERSSATCHEL_FUDGEDICE_DESC": "Once every {0} seconds <style=cStack>(-{1} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>rolled with +{2} luck</style>.",
