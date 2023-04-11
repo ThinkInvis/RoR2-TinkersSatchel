@@ -201,7 +201,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 && self.characterBody.master.TryGetComponent<ExtraEquipmentStash>(out var ees)
                 && self.characterBody.master.playerCharacterMasterController
                 && self.characterBody.master.playerCharacterMasterController.networkUser
-                && self.characterBody.master.playerCharacterMasterController.networkUser.localUser.inputPlayer.GetButton("info")) {
+                && self.characterBody.master.playerCharacterMasterController.networkUser.inputPlayer != null
+                && self.characterBody.master.playerCharacterMasterController.networkUser.inputPlayer.GetButton("info")) {
                 ees.AdvanceEquipment();
                 return false;
             }
