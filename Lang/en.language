@@ -62,11 +62,6 @@
 		"TINKERSSATCHEL_MOUNTAINTOKEN_PICKUP": "Gain an extra item reward from teleporters... <color=#FF7F7F>BUT jumping for too long gives the item to enemies instead.</color>",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_DESC": "The teleporter boss drops 1 <style=cIsUtility>extra item</style> when killed <style=cStack>(+1 per stack)</style>. As long as you remain in midair while the teleporter is charging, these extra items will gradually be <color=#FF7F7F>lost</color> and <color=#FF7F7F>given to all enemies</color> within the teleporter zone. All extra items will be lost after {0} seconds.",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_LORE": "This monument dedicated to those / Who perished in the storm",
-
-		"TINKERSSATCHEL_WRANGLER_NAME": "RC Controller",
-		"TINKERSSATCHEL_WRANGLER_PICKUP": "Nearby turrets and drones gain attack speed. Ping to take control.",
-		"TINKERSSATCHEL_WRANGLER_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {0} meters</style> will gain <style=cIsDamage>+{1} attack speed <style=cStack>(+{2} per stack)</style></style>. <style=cIsUtility>Ping</style> a turret or drone to override its targeting AI for <style=cIsUtility>{3} seconds</style>. Overridden allies <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>, but may be ordered to fire at your target by holding your <style=cIsUtility>Primary skill</style> keybind.",
-		"TINKERSSATCHEL_WRANGLER_LORE": "",
 		
 
 		"TINKERSSATCHEL_COMPASS_NAME": "Silver Compass",
@@ -229,6 +224,12 @@
 		"TINKERSSATCHEL_SKEIN_LORE": "",
 		"ACHIEVEMENT_TKSAT_SKEIN_NAME": "Phenomenal Cosmic Power",
 		"ACHIEVEMENT_TKSAT_SKEIN_DESCRIPTION": "Complete all 4 Item Set achievements from Tinker's Satchel.",
+
+		"TINKERSSATCHEL_WRANGLER_NAME": "RC Controller",
+		"TINKERSSATCHEL_WRANGLER_PICKUP": "Nearby turrets and drones gain attack speed. Ping to take control.",
+		"TINKERSSATCHEL_WRANGLER_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {0} meters</style> will gain <style=cIsDamage>+{1} attack speed <style=cStack>(+{2} per stack)</style></style>. <style=cIsUtility>Ping</style> a turret or drone to override its targeting AI for <style=cIsUtility>{3} seconds</style>. Overridden allies <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>, but may be ordered to fire at your target by holding your <style=cIsUtility>Primary skill</style> keybind.",
+		"TINKERSSATCHEL_WRANGLER_LORE": "",
+
 
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_NAME": "Villainous Visage",
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Deal more damage when given time to plot. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
