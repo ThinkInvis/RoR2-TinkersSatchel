@@ -64,8 +64,8 @@
 		"TINKERSSATCHEL_MOUNTAINTOKEN_LORE": "This monument dedicated to those / Who perished in the storm",
 		
 		"TINKERSSATCHEL_WAXFEATHER_NAME": "Wax Feather",
-		"TINKERSSATCHEL_WAXFEATHER_PICKUP": "Staying airborne ignites your attacks... <color=#FF7F7F>BUT also weakens your armor.</color>",
-		"TINKERSSATCHEL_WAXFEATHER_DESC": "While ungrounded, you build charges of a combination buff/debuff at 1 charge per {0} seconds, up to {1} <style=cStack>(+{1} per stack)</style>. Having any charges adds a {2} chance to <style=cIsDamage>ignite your attacks</style> for <style=cIsDamage>{3} damage per charge</style>. Each charge also <color=#FF7F7F>reduces your armor by {4}</color>. While grounded, you lose charges {5} as fast as they are gained.",
+		"TINKERSSATCHEL_WAXFEATHER_PICKUP": "Staying airborne ignites your attacks and reduces gravity... <color=#FF7F7F>BUT also weakens your armor and speed.</color>",
+		"TINKERSSATCHEL_WAXFEATHER_DESC": "While ungrounded, you build charges of a combination buff/debuff at 1 charge per {0} seconds, up to {1} <style=cStack>(+{1} per stack)</style>. Having any charges adds a {2} chance to <style=cIsDamage>ignite your attacks</style> for <style=cIsDamage>{3} damage per charge</style>, and each charge <style=cIsUtility>reduces your gravity by {4}</style> <style=cStack>(hyperbolic)</style>. Each charge also <color=#FF7F7F>reduces your armor by {5} (linear) and speed by {6} (linear divisor)</color>. While grounded, you lose charges {7} as fast as they are gained.",
 		"TINKERSSATCHEL_WAXFEATHER_LORE": "",
 
 

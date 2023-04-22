@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            chargeFreq.ToString("N1"), maxStacks.ToString("N0"), (igniteChance / 100f).ToString("0%"), igniteDamage.ToString("P0"), armorDebuff.ToString("N0"), (1f / decayFreqMult).ToString("P0")
+            chargeFreq.ToString("N1"), maxStacks.ToString("N0"), (igniteChance / 100f).ToString("0%"), igniteDamage.ToString("P0"), gravityBuff.ToString("P0"), armorDebuff.ToString("N0"), speedDebuff.ToString("0%"), (1f / decayFreqMult).ToString("P0")
         };
 
 
