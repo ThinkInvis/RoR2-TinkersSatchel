@@ -156,7 +156,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void Body_onInventoryChanged() {
-            stacks = WaxFeather.instance.GetCount(body);
+            stacks = WaxFeather.instance.GetCount(body) * WaxFeather.instance.maxStacks;
             if(stacks == 0) {
                 body.SetBuffCount(WaxFeather.instance.statusBuff.buffIndex, 0);
                 body.statsDirty = true;
