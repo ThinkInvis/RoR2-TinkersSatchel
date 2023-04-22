@@ -172,9 +172,9 @@ namespace ThinkInvisible.TinkersSatchel {
             var dot = new InflictDotInfo {
                 victimObject = report.victim.gameObject,
                 attackerObject = report.attacker,
-                totalDamage = new float?(report.damageDealt * WaxFeather.instance.igniteDamage),
+                totalDamage = new float?(report.damageDealt * WaxFeather.instance.igniteDamage * charge),
                 dotIndex = DotController.DotIndex.Burn,
-                damageMultiplier = charge
+                damageMultiplier = 1f
             };
             if(report.attackerMaster)
                 StrengthenBurnUtils.CheckDotForUpgrade(report.attackerMaster.inventory, ref dot);
