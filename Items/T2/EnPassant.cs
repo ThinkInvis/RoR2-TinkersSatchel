@@ -26,17 +26,17 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Base damage of the attack, per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float attackDamage { get; private set; } = 0.5f;
+        public float attackDamage { get; private set; } = 0.7f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float attackTime { get; private set; } = 2f;
+        public float attackTime { get; private set; } = 1.5f;
 
         [AutoConfigRoOSlider("{0:N2} s", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fixed cooldown reduction per attack hit, per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float cdrPerHit { get; private set; } = 0.01f;
+        public float cdrPerHit { get; private set; } = 0.025f;
 
 
 
