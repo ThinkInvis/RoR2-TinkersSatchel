@@ -3,6 +3,8 @@ using UnityEngine;
 using TILER2;
 using System.Linq;
 using UnityEngine.AddressableAssets;
+using System;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MonkeysPaw : Equipment<MonkeysPaw> {
@@ -17,22 +19,25 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-
-        [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, this equipment will not work on Lunar items.",
-            AutoConfigFlags.PreventNetMismatch)]
-        public bool noLunars { get; private set; } = true;
-
-        [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, this equipment will not work on Void items.",
-            AutoConfigFlags.PreventNetMismatch)]
-        public bool noVoid { get; private set; } = true;
+        
+        [AutoConfigRoOString()]
+        [AutoConfig("Which object names are allowed for activation (comma-delimited, leading/trailing whitespace will be ignored). Target objects must also incorporate a ChestBehavior component. WARNING: May have unintended results on some untested objects!",
+            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "Chest1",
+            "Chest2",
+            "GoldChest",
+            "CategoryChestDamage",
+            "CategoryChestHealing",
+            "CategoryChestUtility"
+        });
 
 
 
         ////// Other Fields/Properties //////
 
         public GameObject idrPrefab { get; private set; }
+        public static HashSet<string> validObjectNames { get; private set; } = new HashSet<string>();
 
 
 
@@ -161,6 +166,12 @@ namespace ThinkInvisible.TinkersSatchel {
             #endregion
         }
 
+        public override void SetupConfig() {
+            base.SetupConfig();
+            validObjectNames.UnionWith(objectNamesConfig.Split(',')
+                .Select(x => x.Trim()));
+        }
+
         public override void Install() {
             base.Install();
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
@@ -174,19 +185,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Private Methods //////
 
-        bool IsPickupValid(GenericPickupController ctrl) {
-            if(!ctrl) return false;
-            var pdef = PickupCatalog.GetPickupDef(ctrl.pickupIndex);
-            if(pdef == null || pdef.itemIndex == ItemIndex.None) return false;
-            var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-            if(!idef) return false;
-            if(noLunars && idef.tier == ItemTier.Lunar) return false;
-            if(noVoid &&
-                (idef.tier == ItemTier.VoidTier1 || idef.tier == ItemTier.VoidTier2
-                || idef.tier == ItemTier.VoidTier3 || idef.tier == ItemTier.VoidBoss))
-                return false;
-
-            return true;
+        bool IsInteractableValid(GameObject obj, out ChestBehavior cb) {
+            cb = null;
+            if(!obj) return false;
+            return obj.TryGetComponent(out cb) && obj.TryGetComponent<PurchaseInteraction>(out var purch) && purch.available && cb.dropTable is BasicPickupDropTable bpdt && bpdt.equipmentWeight == 0 && bpdt.lunarEquipmentWeight == 0;
         }
 
 
@@ -199,8 +201,32 @@ namespace ThinkInvisible.TinkersSatchel {
                 return;
             }
 
-            self.currentTarget = new EquipmentSlot.UserTargetInfo(self.FindPickupController(self.GetAimRay(), 10f, 30f, true, false));
-            if(self.currentTarget.transformToIndicateAt && IsPickupValid(self.currentTarget.pickupController)) {
+            var res = CommonCode.FindNearestInteractable(self.gameObject, validObjectNames, self.GetAimRay(), 10f, 20f, false);
+            Transform tsf = null;
+            if(res) tsf = res.transform;
+            self.currentTarget = new EquipmentSlot.UserTargetInfo {
+                transformToIndicateAt = tsf,
+                pickupController = null,
+                hurtBox = null,
+                rootObject = res
+            };
+
+            if(self.currentTarget.rootObject != null) {
+                var purch = res.GetComponent<PurchaseInteraction>();
+                var ch = res.GetComponent<ChestBehavior>();
+                if(!purch || purch.available) {
+                    self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
+                } else {
+                    self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
+                }
+
+                self.targetIndicator.active = true;
+                self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
+            } else {
+                self.targetIndicator.active = false;
+            }
+
+            if(self.currentTarget.transformToIndicateAt && IsInteractableValid(res, out _)) {
                 self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
                 self.targetIndicator.active = true;
                 self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
@@ -212,33 +238,40 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             slot.UpdateTargets(catalogIndex, false);
-            if(!IsPickupValid(slot.currentTarget.pickupController)) return false;
+            if(!IsInteractableValid(slot.currentTarget.rootObject, out ChestBehavior cb)) return false;
 
-            var pickup = PickupCatalog.GetPickupDef(slot.currentTarget.pickupController.pickupIndex);
+            cb.dropCount++;
+            cb.Open();
 
             Chat.SendBroadcastChat(new SubjectChatMessage {
                 baseToken = "TKSAT_MONKEYSPAW_ACTIVATED",
                 subjectAsCharacterBody = slot.characterBody
             });
 
-            var allyCount = CharacterMaster.readOnlyInstancesList.Count(cm => cm.teamIndex == slot.teamComponent.teamIndex);
-            var idef = ItemCatalog.GetItemDef(pickup.itemIndex);
+            cb.Roll();
+
+            var pdef = PickupCatalog.GetPickupDef(cb.dropPickup);
+            var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
             var tdef = ItemTierCatalog.GetItemTierDef(idef.tier);
+
+            var grantCount = idef.tier switch {
+                ItemTier.Tier2 or ItemTier.VoidTier2 => 3,
+                ItemTier.Tier3 or ItemTier.VoidTier3 or ItemTier.Boss or ItemTier.VoidBoss => 1,
+                _ => 5
+            };
 
             Chat.SendBroadcastChat(new ColoredTokenChatMessage {
                 baseToken = "TKSAT_MONKEYSPAW_ITEMGRANT",
-                paramTokens = new[] { Language.GetString(idef.nameToken), "x" + allyCount.ToString() },
+                paramTokens = new[] { Language.GetString(idef.nameToken), "x" + grantCount.ToString() },
                 paramColors = new[] { ColorCatalog.GetColor(tdef.colorIndex), new Color32(255, 255, 255, 255) }
             });
 
-            foreach(var cm in CharacterMaster.readOnlyInstancesList) {
-                if(cm.teamIndex != slot.teamComponent.teamIndex)
-                    cm.inventory.GiveItem(pickup.itemIndex, allyCount);
-                else
-                    cm.inventory.GiveItem(pickup.itemIndex);
-            }
+            var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
+                .Where(e => e.body && e.body.inventory);
 
-            GameObject.Destroy(slot.currentTarget.rootObject);
+            foreach(var enemy in enemies)
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(TeleporterInteraction.instance.holdoutZoneController.transform.position, enemy.body.inventory, pdef.itemIndex, grantCount);
+
             slot.InvalidateCurrentTarget();
             return true;
         }
