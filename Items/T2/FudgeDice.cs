@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Multiplicative internal cooldown reduction per stack past the first.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float cdrStack { get; private set; } = 0.1f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigRoOIntSlider("{0:N0}", 0, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of luck to provide per proc.", AutoConfigFlags.PreventNetMismatch, 1, 100)]
         public int boostAmount { get; private set; } = 9;
