@@ -92,8 +92,10 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(var nu in NetworkUser.readOnlyInstancesList) {
                         if(!nu.isParticipating) continue;
                         var body = nu.GetCurrentBody();
-                        if(body.TryGetComponent<MountainTokenTracker>(out var mtt))
+                        if(body.TryGetComponent<MountainTokenTracker>(out var mtt)) {
                             extraRewardsSingular += mtt.Stacks;
+                            mtt.Unset();
+                        }
                     }
                     return origRewards + extraRewardsSingular;
                 });
@@ -171,6 +173,10 @@ namespace ThinkInvisible.TinkersSatchel {
             ungroundedTime = 0f;
             maxStacks = MountainToken.instance.GetCount(body);
             Stacks = maxStacks;
+        }
+
+        public void Unset() {
+            Stacks = 0;
         }
     }
 }
