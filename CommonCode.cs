@@ -117,6 +117,29 @@ namespace ThinkInvisible.TinkersSatchel {
 				disp.rendererInfos[i] = ri;
 			}
 		}
+
+		internal static GameObject FindNearestInteractable(GameObject senderObj, HashSet<string> validObjectNames, Ray aim, float maxAngle, float maxDistance, bool requireLoS) {
+			aim = CameraRigController.ModifyAimRayIfApplicable(aim, senderObj, out float camAdjust);
+			var results = Physics.OverlapSphere(aim.origin, maxDistance + camAdjust, Physics.AllLayers, QueryTriggerInteraction.Collide);
+			var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI / 180f);
+			GameObject retv = null;
+			var lowestC = float.MaxValue;
+			foreach(var obj in results) {
+				if(!obj || !obj.gameObject) continue;
+				var root = MiscUtil.GetRootWithLocators(obj.gameObject);
+				if(!validObjectNames.Contains(root.name.Replace("(Clone)", ""))) continue;
+				var vdot = Vector3.Dot(aim.direction, (root.transform.position - aim.origin).normalized);
+				if(vdot < minDot) continue;
+				if(requireLoS && !Physics.Linecast(aim.origin, root.transform.position, LayerIndex.world.mask))
+					continue;
+				var c = vdot * Vector3.Distance(root.transform.position, aim.origin);
+				if(c < lowestC) {
+					lowestC = c;
+					retv = root;
+				}
+			}
+			return retv;
+		}
 	}
 
 	[RequireComponent(typeof(BaseAI))]
