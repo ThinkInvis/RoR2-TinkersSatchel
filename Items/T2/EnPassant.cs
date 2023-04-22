@@ -56,11 +56,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
             hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/OmniImpactVFXSlash.prefab").WaitForCompletion();
 
-            var origSwingEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordSlashWhirlwind.prefab").WaitForCompletion().InstantiateClone("TkSatTempSetupPrefab");
+            var origSwingEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordSlashWhirlwind.prefab").WaitForCompletion().InstantiateClone("TkSatTempSetupPrefab", false);
             var rot = origSwingEffectPrefab.transform.rotation;
             rot.y = 90f;
             origSwingEffectPrefab.transform.rotation = rot;
-            swingEffectPrefab = origSwingEffectPrefab.InstantiateClone("TkSatEnPassantSwingEffect");
+            swingEffectPrefab = origSwingEffectPrefab.InstantiateClone("TkSatEnPassantSwingEffect", false);
+
+            ContentAddition.AddEffect(swingEffectPrefab);
         }
 
         public override void SetupAttributes() {
@@ -88,8 +90,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 && self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility) {
                 var count = GetCount(self);
                 if(count > 0) {
-                    var hitbox = Object.Instantiate(attackPrefab, self.coreTransform);
+                    var hitbox = Object.Instantiate(attackPrefab);
                     hitbox.GetComponent<DestroyOnTimer>().duration = attackTime;
+                    NetworkServer.Spawn(hitbox);
                     hitbox.GetComponent<EnPassantAttack>().Begin(self);
                 }
             }
@@ -129,6 +132,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 Destroy(this);
                 return;
             }
+            transform.position = attackerBody.corePosition;
             stopwatch += Time.fixedDeltaTime;
             visualStopwatch += Time.fixedDeltaTime;
             if(stopwatch > TICK_RATE) {
