@@ -248,6 +248,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 subjectAsCharacterBody = slot.characterBody
             });
 
+            if(cb.TryGetComponent<PurchaseInteraction>(out var purch))
+                purch.SetAvailable(false);
+
             cb.Roll();
 
             var pdef = PickupCatalog.GetPickupDef(cb.dropPickup);
