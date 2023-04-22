@@ -251,9 +251,8 @@ namespace ThinkInvisible.TinkersSatchel {
             if(cb.TryGetComponent<PurchaseInteraction>(out var purch))
                 purch.SetAvailable(false);
 
-            cb.Roll();
-
-            var pdef = PickupCatalog.GetPickupDef(cb.dropPickup);
+            var pind = cb.dropTable.GenerateDrop(this.rng);
+            var pdef = PickupCatalog.GetPickupDef(pind);
             var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
             var tdef = ItemTierCatalog.GetItemTierDef(idef.tier);
 
