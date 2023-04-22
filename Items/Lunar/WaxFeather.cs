@@ -28,7 +28,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N1} s", 0f, 15f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Airtime required to accumulate a buff/debuff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float chargeFreq { get; private set; } = 1f;
+        public float chargeFreq { get; private set; } = 0.6f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
