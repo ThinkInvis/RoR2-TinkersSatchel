@@ -90,7 +90,7 @@
 		"TINKERSSATCHEL_MONKEYSPAW_LORE": "",
         "TKSAT_MONKEYSPAW_ACTIVATED": "<style=cEvent>{0}'s <color=#307FFF>Lemurian's Claw</color> curls...</style>",
         "TKSAT_MONKEYSPAW_ACTIVATED_2P": "<style=cEvent>Your <color=#307FFF>Lemurian's Claw</color> curls...</style>",
-        "TKSAT_MONKEYSPAW_ITEMGRANT": "<style=cEvent>Living enemies received {1}{2}.</style>",
+        "TKSAT_MONKEYSPAW_ITEMGRANT": "<style=cEvent>Living enemies received {1} x{2}.</style>",
 
 		"TINKERSSATCHEL_UNSTABLEBOMB_NAME": "Faulty Mortar Tube",
 		"TINKERSSATCHEL_UNSTABLEBOMB_PICKUP": "Throw a bomb that will detonate when damaged... <style=cDeath>BUT it may damage survivors too.</style>",

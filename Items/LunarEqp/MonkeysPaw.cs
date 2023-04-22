@@ -262,7 +262,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             Chat.SendBroadcastChat(new ColoredTokenChatMessage {
                 baseToken = "TKSAT_MONKEYSPAW_ITEMGRANT",
-                paramTokens = new[] { Language.GetString(idef.nameToken), "x" + grantCount.ToString() },
+                paramTokens = new[] { Language.GetString(idef.nameToken), grantCount.ToString() },
                 paramColors = new[] { ColorCatalog.GetColor(tdef.colorIndex), new Color32(255, 255, 255, 255) }
             });
 
