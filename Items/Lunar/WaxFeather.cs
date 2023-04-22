@@ -10,11 +10,12 @@ using System.Linq;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class Icarus : Item<Icarus> {
+    public class WaxFeather : Item<WaxFeather> {
 
         ////// Item Data //////
         
         public override ItemTier itemTier => ItemTier.Lunar;
+        public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
             chargeFreq.ToString("N1"), maxStacks.ToString("N0"), (igniteChance / 100f).ToString("0%"), igniteDamage.ToString("P0"), armorDebuff.ToString("N0"), (1f / decayFreqMult).ToString("P0")
@@ -64,9 +65,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// TILER2 Module Setup //////
 
-        public Icarus() {
-            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Icarus.prefab");
-            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/icarusIcon.png");
+        public WaxFeather() {
+            modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/WaxFeather.prefab");
+            iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/waxFeatherIcon.png");
         }
 
         public override void SetupAttributes() {
@@ -120,29 +121,29 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void FixedUpdate() {
             if(body.characterMotor && !body.characterMotor.isGrounded) {
-                charge += Time.fixedDeltaTime / Icarus.instance.chargeFreq;
-                var count = Icarus.instance.GetCount(body);
+                charge += Time.fixedDeltaTime / WaxFeather.instance.chargeFreq;
+                var count = WaxFeather.instance.GetCount(body);
                 if(charge > stacks) charge = stacks;
             } else {
-                charge -= Time.fixedDeltaTime / Icarus.instance.chargeFreq * Icarus.instance.decayFreqMult;
+                charge -= Time.fixedDeltaTime / WaxFeather.instance.chargeFreq * WaxFeather.instance.decayFreqMult;
                 if(charge < 0f) charge = 0f;
             }
         }
 
         private void Body_onInventoryChanged() {
-            stacks = Icarus.instance.GetCount(body);
+            stacks = WaxFeather.instance.GetCount(body);
             if(stacks == 0) Destroy(this);
         }
 
         private void GlobalEventManager_onServerDamageDealt(DamageReport report) {
             if(report == null || !report.victimBody || !report.attackerBody || report.attackerBody != body) return;
 
-            if(!Util.CheckRoll(Icarus.instance.igniteChance * Mathf.Min(charge, 1f), report.attackerMaster)) return;
+            if(!Util.CheckRoll(WaxFeather.instance.igniteChance * Mathf.Min(charge, 1f), report.attackerMaster)) return;
 
             var dot = new InflictDotInfo {
                 victimObject = report.victim.gameObject,
                 attackerObject = report.attacker,
-                totalDamage = new float?(report.damageDealt * Icarus.instance.igniteDamage * charge),
+                totalDamage = new float?(report.damageDealt * WaxFeather.instance.igniteDamage * charge),
                 dotIndex = DotController.DotIndex.Burn,
                 damageMultiplier = 1f
             };

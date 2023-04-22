@@ -63,10 +63,10 @@
 		"TINKERSSATCHEL_MOUNTAINTOKEN_DESC": "The teleporter boss drops 1 <style=cIsUtility>extra item</style> when killed <style=cStack>(+1 per stack)</style>. As long as you remain in midair while the teleporter is charging, these extra items will gradually be <color=#FF7F7F>lost</color> and <color=#FF7F7F>given to all enemies</color> within the teleporter zone. All extra items will be lost after {0} seconds.",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_LORE": "This monument dedicated to those / Who perished in the storm",
 		
-		"TINKERSSATCHEL_ICARUS_NAME": "Icarus' Wings",
-		"TINKERSSATCHEL_ICARUS_PICKUP": "Staying airborne ignites your attacks... <color=#FF7F7F>BUT also weakens your armor.</color>",
-		"TINKERSSATCHEL_ICARUS_DESC": "While ungrounded, you build charges of a combination buff/debuff at 1 charge per {0} seconds, up to {1} <style=cStack>(+{1} per stack)</style>. Having any charges adds a {2} chance to <style=cIsDamage>ignite your attacks</style> for <style=cIsDamage>{3} damage per charge</style>. Each charge also <color=#FF7F7F>reduces your armor by {4}</color>. While grounded, you lose charges {5} as fast as they are gained.",
-		"TINKERSSATCHEL_ICARUS_LORE": "",
+		"TINKERSSATCHEL_WAXFEATHER_NAME": "Wax Feather",
+		"TINKERSSATCHEL_WAXFEATHER_PICKUP": "Staying airborne ignites your attacks... <color=#FF7F7F>BUT also weakens your armor.</color>",
+		"TINKERSSATCHEL_WAXFEATHER_DESC": "While ungrounded, you build charges of a combination buff/debuff at 1 charge per {0} seconds, up to {1} <style=cStack>(+{1} per stack)</style>. Having any charges adds a {2} chance to <style=cIsDamage>ignite your attacks</style> for <style=cIsDamage>{3} damage per charge</style>. Each charge also <color=#FF7F7F>reduces your armor by {4}</color>. While grounded, you lose charges {5} as fast as they are gained.",
+		"TINKERSSATCHEL_WAXFEATHER_LORE": "",
 
 
 		"TINKERSSATCHEL_COMPASS_NAME": "Silver Compass",
