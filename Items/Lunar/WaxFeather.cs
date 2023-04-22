@@ -48,22 +48,22 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Relative ignite damage per stack at full strength (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float igniteDamage { get; private set; } = 0.5f;
+        public float igniteDamage { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Armor penalty per stack at full strength (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float armorDebuff { get; private set; } = 10f;
+        public float armorDebuff { get; private set; } = 5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Gravity reduction per stack at full strength (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float gravityBuff { get; private set; } = 0.1f;
+        public float gravityBuff { get; private set; } = 0.01f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Speed penalty per stack at full strength (linear divisor).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float speedDebuff { get; private set; } = 0.1f;
+        public float speedDebuff { get; private set; } = 0.01f;
 
 
 
