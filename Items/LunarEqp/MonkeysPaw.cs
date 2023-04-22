@@ -270,7 +270,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 .Where(e => e.body && e.body.inventory);
 
             foreach(var enemy in enemies)
-                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(TeleporterInteraction.instance.holdoutZoneController.transform.position, enemy.body.inventory, pdef.itemIndex, grantCount);
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(slot.currentTarget.rootObject.transform.position, enemy.body.inventory, pdef.itemIndex, grantCount);
 
             slot.InvalidateCurrentTarget();
             return true;
