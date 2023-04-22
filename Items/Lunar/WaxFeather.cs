@@ -53,7 +53,17 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N0}", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Armor penalty per stack at full strength (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float armorDebuff { get; private set; } = 50f;
+        public float armorDebuff { get; private set; } = 10f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Gravity reduction per stack at full strength (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float gravityBuff { get; private set; } = 0.1f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Speed penalty per stack at full strength (linear divisor).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float speedDebuff { get; private set; } = 0.1f;
 
 
 
@@ -85,11 +95,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
+            RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
 
 
@@ -99,6 +111,11 @@ namespace ThinkInvisible.TinkersSatchel {
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody obj) {
             if(GetCount(obj) > 0 && !obj.TryGetComponent<IcarusTracker>(out _))
                 obj.gameObject.AddComponent<IcarusTracker>();
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
+            args.moveSpeedReductionMultAdd += sender.GetBuffCount(statusBuff) * speedDebuff;
+            args.armorAdd -= sender.GetBuffCount(statusBuff) * armorDebuff;
         }
     }
 
@@ -120,19 +137,31 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         void FixedUpdate() {
-            if(body.characterMotor && !body.characterMotor.isGrounded) {
+            int prevCharge = Mathf.FloorToInt(charge);
+            var onGround = body.characterMotor && !body.characterMotor.isGrounded;
+            if(onGround) {
                 charge += Time.fixedDeltaTime / WaxFeather.instance.chargeFreq;
-                var count = WaxFeather.instance.GetCount(body);
                 if(charge > stacks) charge = stacks;
             } else {
                 charge -= Time.fixedDeltaTime / WaxFeather.instance.chargeFreq * WaxFeather.instance.decayFreqMult;
                 if(charge < 0f) charge = 0f;
             }
+            int currCharge = Mathf.FloorToInt(charge);
+            if(currCharge != prevCharge) {
+                body.SetBuffCount(WaxFeather.instance.statusBuff.buffIndex, currCharge);
+                body.statsDirty = true;
+            }
+            if(onGround)
+                body.characterMotor.velocity -= Physics.gravity * (1f - Mathf.Pow(1f - WaxFeather.instance.gravityBuff, charge)) * Time.fixedDeltaTime;
         }
 
         private void Body_onInventoryChanged() {
             stacks = WaxFeather.instance.GetCount(body);
-            if(stacks == 0) Destroy(this);
+            if(stacks == 0) {
+                body.SetBuffCount(WaxFeather.instance.statusBuff.buffIndex, 0);
+                body.statsDirty = true;
+                Destroy(this);
+            }
         }
 
         private void GlobalEventManager_onServerDamageDealt(DamageReport report) {
