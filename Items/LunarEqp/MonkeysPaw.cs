@@ -214,7 +214,7 @@ namespace ThinkInvisible.TinkersSatchel {
             slot.UpdateTargets(catalogIndex, false);
             if(!IsPickupValid(slot.currentTarget.pickupController)) return false;
 
-            var pickup = PickupCatalog.GetPickupDef(slot.currentTarget.pickupController.pickupIndex);;
+            var pickup = PickupCatalog.GetPickupDef(slot.currentTarget.pickupController.pickupIndex);
 
             Chat.SendBroadcastChat(new SubjectChatMessage {
                 baseToken = "TKSAT_MONKEYSPAW_ACTIVATED",
