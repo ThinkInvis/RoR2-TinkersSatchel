@@ -57,9 +57,10 @@ namespace ThinkInvisible.TinkersSatchel {
             hitEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/OmniImpactVFXSlash.prefab").WaitForCompletion();
 
             var origSwingEffectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordSlashWhirlwind.prefab").WaitForCompletion().InstantiateClone("TkSatTempSetupPrefab", false);
-            var rot = origSwingEffectPrefab.transform.rotation;
-            rot.y = 90f;
-            origSwingEffectPrefab.transform.rotation = rot;
+            var ch1 = origSwingEffectPrefab.transform.Find("SwingTrail");
+            var ch2 = origSwingEffectPrefab.transform.Find("Distortion");
+            ch1.rotation = Quaternion.Euler(90f, 0, 0);
+            ch2.rotation = Quaternion.Euler(90f, 0, 0);
             swingEffectPrefab = origSwingEffectPrefab.InstantiateClone("TkSatEnPassantSwingEffect", false);
 
             ContentAddition.AddEffect(swingEffectPrefab);
