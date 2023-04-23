@@ -43,6 +43,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Time (s) to override AI on ping.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float duwration { get; private set; } = 30f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, the vanilla ping feature will be suppressed while activating RC Controller.", AutoConfigFlags.PreventNetMismatch)]
+        public bool suppressPing { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -202,13 +206,6 @@ namespace ThinkInvisible.TinkersSatchel {
             GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
-            orig(self, newPingInfo);
-            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<WranglerReceiverComponent>(out var wrc)) {
-                wrc.ApplyOverride();
-            }
-        }
-
         public override void Uninstall() {
             base.Uninstall();
 
@@ -225,6 +222,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
         #region Hooks
+        private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
+            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<WranglerReceiverComponent>(out var wrc)) {
+                wrc.ApplyOverride();
+                if(suppressPing) return;
+            }
+            orig(self, newPingInfo);
+        }
+
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
             var cpt = sender.GetComponent<WranglerReceiverComponent>();
