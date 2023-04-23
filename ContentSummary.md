@@ -195,6 +195,19 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enPassantIcon.png?raw=true" width=256></td>
+			<td>
+				<b>En Passant</b><br>
+				<details>
+					<summary>Melee strike with your Utility skill to recharge it.</summary>
+					<small>After activating your Utility skill, fire a horizontal melee attack which lasts 1.5 seconds and deals 70% damage (+70% per stack). Each hit with this attack recharges your Utility skill by 0.025 seconds (+0.025 s per stack).</small>
+				</details>
+			</td>
+			<td><ul>
+				<li>Each enemy may only be struck once per activation.</li>
+			</ul></td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/fudgeDiceIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Fudge Dice</b><br>
@@ -412,6 +425,18 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mountainTokenIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Celestial Gambit</b><br>
+				<details>
+					<summary>Gain an extra item reward from teleporters... <i>BUT jumping for too long gives the item to enemies instead.</i></summary>
+					<small>The teleporter boss drops 1 extra item when killed (+1 per stack). As long as you remain in midair while the teleporter is charging, these extra items will gradually be lost and given to all enemies within the teleporter zone. All extra items will be lost after 20 seconds.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Hydroponic Cell</b><br>
@@ -424,12 +449,12 @@
 			</ul></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mountainTokenIcon.png?raw=true" width=256></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/waxFeatherIcon.png?raw=true" width=256></td>
 			<td>
-				<b>Celestial Gambit</b><br>
+				<b>Wax Feather</b><br>
 				<details>
-					<summary>Gain an extra item reward from teleporters... <i>BUT jumping for too long gives the item to enemies instead.</i></summary>
-					<small>The teleporter boss drops 1 extra item when killed (+1 per stack). As long as you remain in midair while the teleporter is charging, these extra items will gradually be lost and given to all enemies within the teleporter zone. All extra items will be lost after 20 seconds.</small>
+					<summary>Staying airborne ignites your attacks and reduces gravity... <i>BUT also weakens your armor and speed.</i></summary>
+					<small>While ungrounded, you build charges of a combination buff/debuff at 1 charge per 1.0 seconds, up to 5 (+5 per stack). Having any charges adds a 15% chance to ignite your attacks for 20% damage per charge, and each charge reduces your gravity by 1% (hyperbolic). Each charge also reduces your armor by 5 (linear) and speed by 1% (linear divisor). While grounded, you lose charges 200% as fast as they are gained.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -468,8 +493,8 @@
 			<td>
 				<b>Lemurian's Claw</b><br>
 				<details>
-				<summary>Clone an item to every ally... <i>BUT living enemies also receive one per ally.</i> <small>[Cooldown: 120 s]</small></summary>
-				<small>Use on an item drop to consume it and give ALL characters a copy of it; living enemies gain multiple equal to ally count.</small>
+				<summary>Open a chest for free and drop an extra item... <i>BUT living enemies also receive items.</i> <small>[Cooldown: 120 s]</small></summary>
+				<small>Use on a chest to open the chest for free and add one extra item to its drops. All living enemies will also gain items, with count dependent on rarity (5 Common, 3 Uncommon, or 1 Rare).</small>
 				</details>
 			</td>
 			<td><ul>
@@ -584,6 +609,19 @@
 				<details>
 					<summary>All your attacks become progressively slower and more powerful. Corrupts all Spacetime Skeins.</summary>
 					<small>Each combat skill use gives you -5% attack speed and +12.5% damage for 3 seconds (+3 s per stack), up to 10 times (+10 per stack). Corrupts all Spacetime Skeins.</small>
+				</details>
+			</td>
+			<td><ul>
+				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Spacetime Skein.</details></li>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/nautilusIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Nautilus Protocol</b> (T3)<br>
+				<details>
+					<summary>All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. Corrupts all RC Controllers.</summary>
+					<small>All turrets and drones under your ownership gain 25 armor (+25 per stack), 2 health regen (+2 per stack), and 20% damage (+20% per stack). Ping a turret or drone (5 s cooldown per drone) to cause a massive void detonation, damaging the ally for 50% MAXIMUM health and enemies within 80 m for 100% of the inflicted self-damage. Corrupts all RC Controllers.</small>
 				</details>
 			</td>
 			<td><ul>

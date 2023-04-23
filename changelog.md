@@ -2,6 +2,25 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.9.0**
+
+- New content:
+	- Items:
+		- En Passant (T2): Melee strike with your Utility skill to recharge it.
+		- Wax Feather (Lunar): Staying airborne ignites your attacks and lowers gravity... BUT also weakens your armor and speed.
+		- Nautilus Protocol (T3 Void): All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. Corrupts all RC Controllers.
+- Balance pass:
+	- Lemurian's Claw:
+		- Partial rework.
+			- New behavior: targets a chest, which it will open for free and add an extra drop to. Will also grant enemies copies of an item from the same drop table, with count dependent on rarity (more common items grant more stacks).
+			- Old behavior: targets an item, which it will duplicate one copy of to each ally, and one copy per ally to enemies.
+			- *This item had too much cheese potential, between allowing saving it for "useless for enemies" items & being able to use it with an item discard mod. This change should make Lemurian's Claw harder to abuse, while also giving it some use in singleplayer.*
+- Lemurian's Claw now displays an animation for granting items to enemies, instead of granting instantly and silently.
+- Fixed Celestial Gambit being able to grant items to enemies after the teleporter boss dies.
+- RC Controller now suppresses vanilla ping behavior while triggering an AI override (may be reverted in config).
+- Potential fix for Scavenger's Rucksack slot swapping not working in multiplayer.
+- Fixed missing Risk of Options integration on `Tinker's Satchel/Items.FudgeDice/BoostAmount`.
+
 **3.8.0**
 
 - Balance pass:

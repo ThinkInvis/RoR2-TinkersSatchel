@@ -16,15 +16,15 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 
 - 42 items/equipments:
 	- 7 tier-1,
-	- 7 tier-2,
+	- 8 tier-2,
 	- 7 tier-3,
 	- 1 boss item,
 	- 5 equipments,
-	- 3 lunar items,
+	- 4 lunar items,
 	- 4 lunar equipments,
 	- 3 tier-1 void,
 	- 3 tier-2 void,
-	- 2 tier-3 void;
+	- 3 tier-3 void;
 - 2 interactables:
 	- 2 drones;
 - 6 skill variants:
@@ -50,24 +50,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td colspan="2" align="center"><h3>Tier-1 Items</h3></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mimicIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extendoArmsIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Mostly-Tame Mimic</b><br>
-				Mimics your other items at random.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mugIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Sturdy Mug</b><br>
-				Chance to shoot extra, unpredictable projectiles.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/shootToHealIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Percussive Maintenance</b><br>
-				Hit allies to heal them.
+				<b>Extendo-Arms</b><br>
+				Close-range attacks reach farther and deal slightly more damage.
 			</td>
 		</tr>
 		<tr>
@@ -78,10 +64,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/triBroochIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mimicIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Triskelion Brooch</b><br>
-				Chance to combine ignite, freeze, and stun.
+				<b>Mostly-Tame Mimic</b><br>
+				Mimics your other items at random.
 			</td>
 		</tr>
 		<tr>
@@ -92,10 +78,24 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extendoArmsIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/shootToHealIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Extendo-Arms</b><br>
-				Close-range attacks reach farther and deal slightly more damage.
+				<b>Percussive Maintenance</b><br>
+				Hit allies to heal them.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mugIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Sturdy Mug</b><br>
+				Chance to shoot extra, unpredictable projectiles.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/triBroochIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Triskelion Brooch</b><br>
+				Chance to combine ignite, freeze, and stun.
 			</td>
 		</tr>
 		<tr>
@@ -109,17 +109,24 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kleinBottleIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/defibIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Unstable Klein Bottle</b><br>
-				Gravity slam nearby enemies on taking damage.
+				<b>Defibrillator</b><br>
+				Your heals can crit.
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/deadManSwitchIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enPassantIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Pulse Monitor</b><br>
-				Auto-activate your equipment for free at low health.
+				<b>En Passant</b><br>
+				Melee strike with your Utility skill to recharge it.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/fudgeDiceIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Fudge Dice</b><br>
+				Periodically guarantee luck.
 			</td>
 		</tr>
 		<tr>
@@ -137,27 +144,41 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/defibIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/deadManSwitchIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Defibrillator</b><br>
-				Your heals can crit.
+				<b>Pulse Monitor</b><br>
+				Auto-activate your equipment for free at low health.
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/fudgeDiceIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kleinBottleIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Fudge Dice</b><br>
-				Periodically guarantee luck.
+				<b>Unstable Klein Bottle</b><br>
+				Gravity slam nearby enemies on taking damage.
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center"><h3>Tier-3 Items</h3></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goFasterIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Go-Faster Stripes</b><br>
+				Your Utility skill gains more mobility.
+			</td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/headsetIcon.png?raw=true" width=128></td>
 			<td>
 				<b>H3AD-53T</b><br>
 				Your Utility skill builds a stunning static charge.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kintsugiIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Kintsugi</b><br>
+				Your broken/consumed/scrapped items increase all your stats.
 			</td>
 		</tr>
 		<tr>
@@ -168,24 +189,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goFasterIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Go-Faster Stripes</b><br>
-				Your Utility skill gains more mobility.
-			</td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/wranglerIcon.png?raw=true" width=128></td>
 			<td>
 				<b>RC Controller</b><br>
 				Nearby turrets and drones gain attack speed. Ping to take control.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/skeinIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Spacetime Skein</b><br>
-				Gain mass while stationary. Lose mass while moving.
 			</td>
 		</tr>
 		<tr>
@@ -196,10 +203,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kintsugiIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/skeinIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Kintsugi</b><br>
-				Your broken/consumed/scrapped items increase all your stats.
+				<b>Spacetime Skein</b><br>
+				Gain mass while stationary. Lose mass while moving.
 			</td>
 		</tr>
 		<tr>
@@ -230,13 +237,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/recombobulatorIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Quantum Recombobulator</b><br>
-				Reroll an interactable once. <small>[Cooldown: 60 s]</small>
-			</td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/reviveOnceIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Command Terminal</b><br>
@@ -251,6 +251,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/recombobulatorIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Quantum Recombobulator</b><br>
+				Reroll an interactable once. <small>[Cooldown: 60 s]</small>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Lunar Items</h3></td>
 		</tr>
 		<tr>
@@ -261,13 +268,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Hydroponic Cell</b><br>
-				Half your healed health grows a plant that provides a single-use damage bonus... <i>BUT you don't receive the converted healing.</i>
-			</td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mountainTokenIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Celestial Gambit</b><br>
@@ -275,13 +275,27 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Hydroponic Cell</b><br>
+				Half your healed health grows a plant that provides a single-use damage bonus... <i>BUT you don't receive the converted healing.</i>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/waxFeatherIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Wax Feather</b><br>
+				Staying airborne ignites your attacks and reduces gravity... <i>BUT also weakens your armor and speed.</i>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Lunar Equipments</h3></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/compassIcon.png?raw=true" width=128></td>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EMPIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Silver Compass</b><br>
-				Shows you a path... <i>BUT it will be fraught with danger.</i> <small>[Cooldown*: 180 s]</small>
+				<b>EMP Device</b><br>
+				Disable skills on enemies... <i>BUT disable non-primary skills on survivors.</i> <small>[Cooldown: 60 s]</small>
 			</td>
 		</tr>
 		<tr>
@@ -292,56 +306,21 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/EMPIcon.png?raw=true" width=128></td>
-			<td>
-				<b>EMP Device</b><br>
-				Disable skills on enemies... <i>BUT disable non-primary skills on survivors.</i> <small>[Cooldown: 60 s]</small>
-			</td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/monkeysPawIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Lemurian's Claw</b><br>
-				Clone an item to every ally... <i>BUT living enemies also receive one per ally.</i>
+				Open a chest for free and drop an extra item... <i>BUT living enemies also receive items.</i> <small>[Cooldown: 120 s]</small>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/compassIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Silver Compass</b><br>
+				Shows you a path... <i>BUT it will be fraught with danger.</i> <small>[Cooldown*: 180 s]</small>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center"><h3>Void Items</h3><h4>(requires Survivors of the Void DLC)</h4></td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enterCombatDamageIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Villainous Visage</b> (T1)<br>
-				Deal more damage when given time to plot. Corrupts all Macho Moustaches.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timelostRumIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Timelost Rum</b> (T1)<br>
-				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/obsidianBroochIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Obsidian Brooch</b> (T1)<br>
-				Chance to spread DoTs on hit. Corrupts all Triskelion Brooches.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Lens of Order</b> (T2)<br>
-				Gain massive armor by focusing your item build. Corrupts all Chestplates.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidwispHiveIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Voidwisp Hive</b> (T2)<br>
-				Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.
-			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/brambleRingIcon.png?raw=true" width=128></td>
@@ -358,10 +337,52 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/orderedArmorIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Lens of Order</b> (T2)<br>
+				Gain massive armor by focusing your item build. Corrupts all Chestplates.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/nautilusIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Nautilus Protocol</b> (T3)<br>
+				All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. Corrupts all RC Controllers.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/obsidianBroochIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Obsidian Brooch</b> (T1)<br>
+				Chance to spread DoTs on hit. Corrupts all Triskelion Brooches.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timelostRumIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Timelost Rum</b> (T1)<br>
+				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
+			</td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/loomIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Unraveling Loom</b> (T3)<br>
 				All your attacks become progressively slower and more powerful. Corrupts all Spacetime Skeins.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enterCombatDamageIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Villainous Visage</b> (T1)<br>
+				Deal more damage when given time to plot. Corrupts all Macho Moustaches.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/voidwispHiveIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Voidwisp Hive</b> (T2)<br>
+				Drop damaging wisp allies on using skills. Corrupts all Pixie Tubes.
 			</td>
 		</tr>
 	</tbody>
@@ -538,6 +559,25 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.9.0**
+
+- New content:
+	- Items:
+		- En Passant (T2): Melee strike with your Utility skill to recharge it.
+		- Wax Feather (Lunar): Staying airborne ignites your attacks and lowers gravity... BUT also weakens your armor and speed.
+		- Nautilus Protocol (T3 Void): All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. Corrupts all RC Controllers.
+- Balance pass:
+	- Lemurian's Claw:
+		- Partial rework.
+			- New behavior: targets a chest, which it will open for free and add an extra drop to. Will also grant enemies copies of an item from the same drop table, with count dependent on rarity (more common items grant more stacks).
+			- Old behavior: targets an item, which it will duplicate one copy of to each ally, and one copy per ally to enemies.
+			- *This item had too much cheese potential, between allowing saving it for "useless for enemies" items & being able to use it with an item discard mod. This change should make Lemurian's Claw harder to abuse, while also giving it some use in singleplayer.*
+- Lemurian's Claw now displays an animation for granting items to enemies, instead of granting instantly and silently.
+- Fixed Celestial Gambit being able to grant items to enemies after the teleporter boss dies.
+- RC Controller now suppresses vanilla ping behavior while triggering an AI override (may be reverted in config).
+- Potential fix for Scavenger's Rucksack slot swapping not working in multiplayer.
+- Fixed missing Risk of Options integration on `Tinker's Satchel/Items.FudgeDice/BoostAmount`.
+
 **3.8.0**
 
 - Balance pass:
@@ -640,7 +680,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Character models are now set to read/write enabled (stops some rare console spam).
 - For developers: NuGet config is now localized (building project no longer requires end-user modification of system or directory NuGet config).
 - Updated TILER2 dependency to 7.3.2.
-
-**3.4.1**
-
-- Migrated a few language tokens missed in the first pass (skills, CommonCode). <small>Slippery little devils...</small>
