@@ -454,7 +454,7 @@
 				<b>Wax Feather</b><br>
 				<details>
 					<summary>Staying airborne ignites your attacks and reduces gravity... <i>BUT also weakens your armor and speed.</i></summary>
-					<small>While ungrounded, you build charges of a combination buff/debuff at 1 charge per 1.0 seconds, up to 5 (+5 per stack). Having any charges adds a 15% chance to ignite your attacks for 20% damage per charge, and each charge reduces your gravity by 1% (hyperbolic). Each charge also reduces your armor by 5 (linear) and speed by 1% (linear divisor). While grounded, you lose charges 200% as fast as they are gained.</small>
+					<small>While ungrounded, you build charges of a combination buff/debuff at 1 charge per 0.4 seconds, up to 10 (+10 per stack). Having any charges adds a 15% chance to ignite your attacks for 20% damage per charge, and each charge reduces your gravity by 1.5% (hyperbolic). Each charge also reduces your armor by 5 (linear) and speed by 1% (linear divisor). While grounded, you lose charges 300% as fast as they are gained.</small>
 				</details>
 			</td>
 			<td><ul>
