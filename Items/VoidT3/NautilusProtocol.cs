@@ -7,6 +7,8 @@ using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
 using System.Linq;
 using static R2API.RecalculateStatsAPI;
+using R2API.Networking.Interfaces;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class NautilusProtocol : Item<NautilusProtocol> {
@@ -55,10 +57,6 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Minimum time between detonations on a single drone.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float detIcd { get; private set; } = 5f;
 
-        [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, the vanilla ping feature will be suppressed while activating Nautilus Protocol.", AutoConfigFlags.PreventNetMismatch)]
-        public bool suppressPing { get; private set; } = true;
-
 
 
         ////// Other Fields/Properties //////
@@ -94,6 +92,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgDetonateNautilus>();
 
             itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
                 .WaitForCompletion();
@@ -141,11 +141,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
-            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<NautilusTrackerComponent>(out var ntc) && ntc.cachedWranglerCount > 0) {
-                ntc.Detonate();
-                if(suppressPing) return;
-            }
             orig(self, newPingInfo);
+            if(
+                self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0
+                && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<CharacterBody>(out var cb)) {
+                new MsgDetonateNautilus(cb).Send(R2API.Networking.NetworkDestination.Server);
+            }
         }
 
         private RoR2.CharacterAI.BaseAI.SkillDriverEvaluation BaseAI_EvaluateSkillDrivers(On.RoR2.CharacterAI.BaseAI.orig_EvaluateSkillDrivers orig, RoR2.CharacterAI.BaseAI self) {
@@ -166,6 +167,36 @@ namespace ThinkInvisible.TinkersSatchel {
                 cpt.SetWranglerCount(GetCount(self.leader.characterBody));
 
             return retv;
+        }
+
+
+
+        ////// Networking //////
+
+        public struct MsgDetonateNautilus : INetMessage {
+            CharacterBody _target;
+
+            public MsgDetonateNautilus(CharacterBody target) {
+                _target = target;
+            }
+
+            public void Deserialize(NetworkReader reader) {
+                var tgto = reader.ReadGameObject();
+                if(tgto)
+                    _target = tgto.GetComponent<CharacterBody>();
+                else {
+                    TinkersSatchelPlugin._logger.LogError("Received MsgDetonateNautilus for nonexistent or non-networked GameObject");
+                }
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target.gameObject);
+            }
+
+            public void OnReceived() {
+                if(!_target || !_target.TryGetComponent<NautilusTrackerComponent>(out var ntc)) return;
+                ntc.Detonate();
+            }
         }
     }
 

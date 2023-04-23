@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static R2API.RecalculateStatsAPI;
 using System.Linq;
+using R2API.Networking.Interfaces;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     //todo: aim assist with tracking (may need to build velocity table for turret projectiles?), make drones follow aim
@@ -42,10 +44,6 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time (s) to override AI on ping.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float duwration { get; private set; } = 30f;
-
-        [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, the vanilla ping feature will be suppressed while activating RC Controller.", AutoConfigFlags.PreventNetMismatch)]
-        public bool suppressPing { get; private set; } = true;
 
 
 
@@ -192,6 +190,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgWrangle>();
         }
 
         public override void Install() {
@@ -223,9 +222,9 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
         #region Hooks
         private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
-            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<WranglerReceiverComponent>(out var wrc)) {
-                wrc.ApplyOverride();
-                if(suppressPing) return;
+            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0
+                && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<CharacterBody>(out var cb)) {
+                new MsgWrangle(cb).Send(R2API.Networking.NetworkDestination.Server);
             }
             orig(self, newPingInfo);
         }
@@ -312,6 +311,36 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, deltaTime);
         }
         #endregion
+
+
+
+        ////// Networking //////
+
+        public struct MsgWrangle : INetMessage {
+            CharacterBody _target;
+
+            public MsgWrangle(CharacterBody target) {
+                _target = target;
+            }
+
+            public void Deserialize(NetworkReader reader) {
+                var tgto = reader.ReadGameObject();
+                if(tgto)
+                    _target = tgto.GetComponent<CharacterBody>();
+                else {
+                    TinkersSatchelPlugin._logger.LogError("Received MsgWrangle for nonexistent or non-networked GameObject");
+                }
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target.gameObject);
+            }
+
+            public void OnReceived() {
+                if(!_target || !_target.TryGetComponent<WranglerReceiverComponent>(out var wrc)) return;
+                wrc.ApplyOverride();
+            }
+        }
     }
 
     [RequireComponent(typeof(CharacterBody))]

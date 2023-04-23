@@ -93,7 +93,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(count > 0) {
                     var hitbox = Object.Instantiate(attackPrefab);
                     hitbox.GetComponent<DestroyOnTimer>().duration = attackTime;
-                    NetworkServer.Spawn(hitbox);
                     hitbox.GetComponent<EnPassantAttack>().Begin(self);
                 }
             }
@@ -146,7 +145,8 @@ namespace ThinkInvisible.TinkersSatchel {
             if(visualStopwatch >= VISUAL_TICK_RATE) {
                 visualStopwatch %= VISUAL_TICK_RATE;
                 EffectManager.SpawnEffect(EnPassant.instance.swingEffectPrefab, new EffectData {
-                    rootObject = gameObject
+                    origin = attackerBody.corePosition,
+                    start = attackerBody.corePosition
                 }, true);
             }
         }

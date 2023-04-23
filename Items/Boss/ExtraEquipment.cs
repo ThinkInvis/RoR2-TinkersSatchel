@@ -6,6 +6,7 @@ using static TILER2.MiscUtil;
 using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
 using System.Collections.Generic;
+using R2API.Networking.Interfaces;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class ExtraEquipment : Item<ExtraEquipment> {
@@ -157,20 +158,21 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
 			base.SetupAttributes();
-		}
+            R2API.Networking.NetworkingAPI.RegisterMessageType<MsgSwapEquipment>();
+        }
 
 		public override void Install() {
 			base.Install();
             On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem += ChestBehavior_RollItem;
-            On.RoR2.EquipmentSlot.ExecuteIfReady += EquipmentSlot_ExecuteIfReady;
+            On.RoR2.PlayerCharacterMasterController.FixedUpdate += PlayerCharacterMasterController_FixedUpdate;
         }
 
         public override void Uninstall() {
 			base.Uninstall();
             On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
-            On.RoR2.EquipmentSlot.ExecuteIfReady -= EquipmentSlot_ExecuteIfReady;
+            On.RoR2.PlayerCharacterMasterController.FixedUpdate -= PlayerCharacterMasterController_FixedUpdate;
         }
 
 
@@ -194,19 +196,45 @@ namespace ThinkInvisible.TinkersSatchel {
                 component.CheckCount();
         }
 
-        private bool EquipmentSlot_ExecuteIfReady(On.RoR2.EquipmentSlot.orig_ExecuteIfReady orig, EquipmentSlot self) {
-            if(self.inventory && GetCount(self.inventory) > 0
-                && self.characterBody
-                && self.characterBody.master
-                && self.characterBody.master.TryGetComponent<ExtraEquipmentStash>(out var ees)
-                && self.characterBody.master.playerCharacterMasterController
-                && self.characterBody.master.playerCharacterMasterController.networkUser
-                && self.characterBody.master.playerCharacterMasterController.networkUser.inputPlayer != null
-                && self.characterBody.master.playerCharacterMasterController.networkUser.inputPlayer.GetButton("info")) {
-                ees.AdvanceEquipment();
-                return false;
+        private void PlayerCharacterMasterController_FixedUpdate(On.RoR2.PlayerCharacterMasterController.orig_FixedUpdate orig, PlayerCharacterMasterController self) {
+            orig(self);
+            if(self.hasEffectiveAuthority && self.bodyInputs && self.body && GetCount(self.body.inventory) > 0 && PlayerCharacterMasterController.CanSendBodyInput(self.networkUser, out _, out var player, out _)) {
+                var infoIsPressed = player.GetButton("info");
+                if(self.bodyInputs.activateEquipment.justPressed && infoIsPressed) {
+                    self.bodyInputs.activateEquipment.PushState(true); //skip rising edge (wasDown == down), should prevent equipment activation
+                    new MsgSwapEquipment(self.body).Send(R2API.Networking.NetworkDestination.Server);
+                }
             }
-            return orig(self);
+        }
+
+
+
+        ////// Networking //////
+
+        public struct MsgSwapEquipment : INetMessage {
+            CharacterBody _target;
+
+            public MsgSwapEquipment(CharacterBody target) {
+                _target = target;
+            }
+
+            public void Deserialize(NetworkReader reader) {
+                var tgto = reader.ReadGameObject();
+                if(tgto)
+                    _target = tgto.GetComponent<CharacterBody>();
+                else {
+                    TinkersSatchelPlugin._logger.LogError("Received MsgSwapEquipment for nonexistent or non-networked GameObject");
+                }
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target.gameObject);
+            }
+
+            public void OnReceived() {
+                if(!_target || !_target.master || !_target.master.TryGetComponent<ExtraEquipmentStash>(out var ees)) return;
+                ees.AdvanceEquipment();
+            }
         }
     }
 
