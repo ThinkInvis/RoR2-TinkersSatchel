@@ -282,6 +282,11 @@
 		"TINKERSSATCHEL_LOOM_PICKUP": "All your attacks become progressively slower and more powerful. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.",
 		"TINKERSSATCHEL_LOOM_DESC": "Each <style=cIsDamage>combat skill</style> use gives you <style=cIsDamage>-{0} attack speed and +{1} damage</style> for {2} seconds <style=cStack>(+{2} s per stack)</style>, up to {3} times <style=cStack>(+{3} per stack)</style>. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.",
 		"TINKERSSATCHEL_LOOM_LORE": "",
+
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_NAME": "Nautilus Protocol",
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_PICKUP": "All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. <style=cIsVoid>Corrupts all RC Controllers</style>.",
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership gain <style=cIsUtility>{0} armor <style=cStack>(+{0} per stack)</style></style>, <style=cIsHealing>{1} health regen <style=cStack>(+{1} per stack)</style></style>, and <style=cIsDamage>{2} damage <style=cStack>(+{2} per stack)</style></style>. <style=cIsUtility>Ping</style> a turret or drone ({5} s cooldown per drone) to cause a massive <style=cIsDamage>void detonation</style>, damaging the ally for <style=cDeath>50% MAXIMUM health</style> and enemies within {3} m for <style=cIsDamage>{4}</style> of the inflicted self-damage. <style=cIsVoid>Corrupts all RC Controllers</style>.",
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_LORE": "",
 		
 
 
