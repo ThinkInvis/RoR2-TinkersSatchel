@@ -28,17 +28,17 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N1} s", 0f, 15f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Airtime required to accumulate a buff/debuff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float chargeFreq { get; private set; } = 0.6f;
+        public float chargeFreq { get; private set; } = 0.4f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum buff/debuff stacks per item stack.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
-        public int maxStacks { get; private set; } = 5;
+        public int maxStacks { get; private set; } = 10;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How fast to decay charge while grounded, relative to chargeFreq.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float decayFreqMult { get; private set; } = 0.5f;
+        public float decayFreqMult { get; private set; } = 3f;
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -58,7 +58,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Gravity reduction per stack at full strength (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float gravityBuff { get; private set; } = 0.01f;
+        public float gravityBuff { get; private set; } = 0.015f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -152,7 +152,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 body.statsDirty = true;
             }
             if(onGround)
-                body.characterMotor.velocity -= Physics.gravity * (1f - Mathf.Pow(1f - WaxFeather.instance.gravityBuff, charge)) * Time.fixedDeltaTime;
+                body.characterMotor.velocity -= Physics.gravity * Mathf.Min(1f - Mathf.Pow(1f - WaxFeather.instance.gravityBuff, charge), 0.95f) * Time.fixedDeltaTime;
         }
 
         private void Body_onInventoryChanged() {
