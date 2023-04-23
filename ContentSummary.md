@@ -625,7 +625,6 @@
 				</details>
 			</td>
 			<td><ul>
-				<li><details><summary>Unlock (spoilers!):</summary>Unlocks along with Spacetime Skein.</details></li>
 			</ul></td>
 		</tr>
 	</tbody>
