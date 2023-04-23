@@ -99,8 +99,8 @@
 
 
 		"TINKERSSATCHEL_EXTENDOARMS_NAME": "Extendo-Arms",
-		"TINKERSSATCHEL_EXTENDOARMS_PICKUP": "Close-range attacks reach farther and deal slightly more damage.",
-		"TINKERSSATCHEL_EXTENDOARMS_DESC": "All your melee attacks, as well as AoEs centered within {0} meters of you, gain <style=cIsUtility>{1} range <style=cStack>(+{1} per stack)</style></style> and <style=cIsDamage>{2} damage <style=cStack>(+{2} per stack)</style></style>.",
+		"TINKERSSATCHEL_EXTENDOARMS_PICKUP": "Attacks reach farther and deal slightly more damage.",
+		"TINKERSSATCHEL_EXTENDOARMS_DESC": "Gain <style=cIsUtility>{1} range/radius <style=cStack>(+{1} per stack)</style></style> for melee attacks and AoEs within {0} meters of you, <style=cIsUtility>{3} speed <style=cStack>(+{3} per stack)</style></style> for projectile attacks, and <style=cIsUtility>{4} maximum range <style=cStack>(+{4} per stack)</style></style> for hitscan attacks. Also gain <style=cIsDamage>{2} damage <style=cStack>(+{2} per stack)</style></style>.",
 		"TINKERSSATCHEL_EXTENDOARMS_LORE": "",
 
 		"TINKERSSATCHEL_MIMIC_NAME": "Mostly-Tame Mimic",

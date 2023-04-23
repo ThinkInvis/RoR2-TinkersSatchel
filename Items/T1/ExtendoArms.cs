@@ -15,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            pbaoeRange.ToString("N1"), resizeAmount.ToString("0%"), damageAmount.ToString("0%")
+            pbaoeRange.ToString("N1"), resizeAmount.ToString("0%"), damageAmount.ToString("0%"), speedAmount.ToString("0%"), rangeAmount.ToString("0%")
         };
 
 
@@ -29,8 +29,18 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Melee attack damage increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageAmount { get; private set; } = 0.0625f;
+        [AutoConfig("Projectile velocity increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float speedAmount { get; private set; } = 0.075f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Hitscan range increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float rangeAmount { get; private set; } = 0.075f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Global attack damage increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageAmount { get; private set; } = 0.05f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -190,12 +200,18 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             IL.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
             On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
+            R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            On.RoR2.Projectile.ProjectileController.Awake += ProjectileController_Awake;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             IL.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
             On.RoR2.BlastAttack.Fire -= BlastAttack_Fire;
+            R2API.RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.Projectile.ProjectileController.Awake -= ProjectileController_Awake;
         }
 
 
@@ -208,6 +224,7 @@ namespace ThinkInvisible.TinkersSatchel {
             return 1f + count * ExtendoArms.instance.resizeAmount;
         }
 
+        [Obsolete("Damage bonus provided by this item is now global, and applied to the character's damage stat.")]
         public static float GetDamageMultiplier(CharacterBody body) {
             if(!ExtendoArms.instance.enabled || !body) return 1f;
             var count = ExtendoArms.instance.GetCount(body.inventory);
@@ -219,30 +236,20 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self) {
-            var origDamage = self.baseDamage;
             var origRadius = self.radius;
             if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
                 if(Vector3.Distance(attackerBody.corePosition, self.position) < pbaoeRange) {
                     var count = GetCount(attackerBody);
-                    self.baseDamage *= 1f + count * damageAmount;
                     self.radius *= 1f + count * resizeAmount;
                 }
             }
             var retv = orig(self);
-            self.baseDamage = origDamage;
             self.radius = origRadius;
             return retv;
         }
 
         private void OverlapAttack_Fire(ILContext il) {
             var c = new ILCursor(il);
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Action<OverlapAttack>>((self) => {
-                if(self.attacker) {
-                    var count = GetCount(self.attacker.GetComponent<CharacterBody>());
-                    self.damage *= 1f + count * damageAmount;
-                }
-            });
             if(c.TryGotoNext(MoveType.After,
                 x => x.MatchCallOrCallvirt<Transform>("get_lossyScale"))) {
                 c.Emit(OpCodes.Ldarg_0);
@@ -254,17 +261,48 @@ namespace ThinkInvisible.TinkersSatchel {
             } else {
                 TinkersSatchelPlugin._logger.LogError("ExtendoArms: failed to apply IL hook (OverlapAttack_Fire), target instructions not found. Item will not apply a hitbox scale bonus.");
             }
-            c.Index = 0;
-            while(c.TryGotoNext(MoveType.Before, x => x.MatchRet())) {
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Action<OverlapAttack>>((self) => {
-                    if(self.attacker) {
-                        var count = GetCount(self.attacker.GetComponent<CharacterBody>());
-                        self.damage /= 1f + count * damageAmount;
+        }
+
+        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
+            float mdAdd = 0;
+            if(self.owner && self.owner.TryGetComponent<CharacterBody>(out var ownerBody))
+                mdAdd += GetCount(ownerBody) * rangeAmount;
+            self.maxDistance += mdAdd;
+            orig(self);
+            self.maxDistance -= mdAdd;
+        }
+
+        private void ProjectileController_Awake(On.RoR2.Projectile.ProjectileController.orig_Awake orig, RoR2.Projectile.ProjectileController self) {
+            orig(self);
+            if(!self.owner || !self.owner.TryGetComponent<CharacterBody>(out var cb)) return;
+            var count = GetCount(cb);
+            if(count == 0) return;
+
+            if(self.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
+                ps.desiredForwardSpeed *= 1f + count * speedAmount;
+                ps.oscillateSpeed *= 1f + count * speedAmount;
+                ps.oscillateMagnitude *= 1f + count * speedAmount;
+                var vol = ps.velocityOverLifetime;
+                if(vol != null) {
+                    for(var i = 0; i < vol.length; i++) {
+                        vol.keys[i].value *= 1f + count * speedAmount;
                     }
-                });
-                c.Index++;
+                }
             }
+
+            if(self.TryGetComponent<RoR2.Projectile.BoomerangProjectile>(out var bp)) {
+                bp.travelSpeed *= 1f + count * speedAmount;
+            }
+
+            if(self.TryGetComponent<RoR2.Projectile.MissileController>(out var mc)) {
+                mc.maxVelocity *= 1f + count * speedAmount;
+                mc.acceleration *= 1f + count * speedAmount;
+            }
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args) {
+            if(!sender) return;
+            args.damageMultAdd += GetCount(sender) * damageAmount;
         }
     }
 }
