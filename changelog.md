@@ -2,6 +2,12 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.9.1**
+
+- Fixed Scavenger's Rucksack (equipment slot swapping), RC Controller (ping AI override), and Nautilus Protocol (ping detonation) not working for clients in multiplayer.
+- Fixed En Passant VFX not appearing for clients in multiplayer.
+- Due to difficulty of netcode implementation, RC Controller and Nautilus Protocol are no longer able to suppress vanilla ping behavior.
+
 **3.9.0**
 
 - New content:

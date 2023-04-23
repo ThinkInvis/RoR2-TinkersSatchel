@@ -559,6 +559,12 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**3.9.1**
+
+- Fixed Scavenger's Rucksack (equipment slot swapping), RC Controller (ping AI override), and Nautilus Protocol (ping detonation) not working for clients in multiplayer.
+- Fixed En Passant VFX not appearing for clients in multiplayer.
+- Due to difficulty of netcode implementation, RC Controller and Nautilus Protocol are no longer able to suppress vanilla ping behavior.
+
 **3.9.0**
 
 - New content:
@@ -664,19 +670,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Updated R2API dependency to 5.0.6 (now using split assembly).
 - Updated TILER2 dependency to 7.3.3.
 - Updated BepInExPack dependency to 5.4.2103.
-
-**3.5.0**
-
-- Item Drones now support holding more than 1 item type.
-	- `public ItemIndex ItemDrone.ItemDroneWardPersist.index` is now obsolete and will have no effect.
-	- `public int ItemDrone.ItemDroneWardPersist.count` is now obsolete and will have no effect.
-	- Added `public int[] ItemDrone.ItemDroneWardPersist stacks {get; private set;}` (populated via `ItemCatalog.RequestItemStackArray()`).
-	- Added `public void ItemDrone.ItemDroneWardPersist.AddItems(ItemIndex ind, int count)`.
-- Added Spare Drone Parts IDRs to Item Drone and Bulwark Drone.
-- Item Drone now supports the Dronemeld mod (requires Dronemeld 1.3.0 or later).
-- Fixed bad armature/animation setup (extraneous 90-degree rotations) on Item Drone.
-- Renamed Armor Crystal to Chestplate and gave it a new model and lore.
-- Renamed Armor Prism to Lens of Order and improved its model.
-- Character models are now set to read/write enabled (stops some rare console spam).
-- For developers: NuGet config is now localized (building project no longer requires end-user modification of system or directory NuGet config).
-- Updated TILER2 dependency to 7.3.2.
