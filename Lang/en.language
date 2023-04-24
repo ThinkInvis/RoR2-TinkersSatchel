@@ -85,8 +85,8 @@
 		"TINKERSSATCHEL_EMP_LORE": "",
 		
 		"TINKERSSATCHEL_MONKEYSPAW_NAME": "Lemurian's Claw",
-		"TINKERSSATCHEL_MONKEYSPAW_PICKUP": "Open a chest for free and drop an extra item... <style=cDeath>BUT living enemies also receive items.</style>",
-		"TINKERSSATCHEL_MONKEYSPAW_DESC": "Use on a chest to <style=cIsUtility>open the chest for free</style> and add <style=cIsUtility>one extra item</style> to its drops. <style=cDeath>All living enemies will also gain items</style>, with count dependent on rarity (5 Common, 3 Uncommon, or 1 Rare).",
+		"TINKERSSATCHEL_MONKEYSPAW_PICKUP": "Open a chest for cheap and drop an extra item... <style=cDeath>BUT living enemies also receive items.</style>",
+		"TINKERSSATCHEL_MONKEYSPAW_DESC": "Use on a chest to <style=cIsUtility>open the chest for {0} reduced cost</style> and add <style=cIsUtility>one extra item</style> to its drops. <style=cDeath>All living enemies will also gain items</style>, with count dependent on rarity (5 Common, 3 Uncommon, or 1 Rare).",
 		"TINKERSSATCHEL_MONKEYSPAW_LORE": "",
         "TKSAT_MONKEYSPAW_ACTIVATED": "<style=cEvent>{0}'s <color=#307FFF>Lemurian's Claw</color> curls...</style>",
         "TKSAT_MONKEYSPAW_ACTIVATED_2P": "<style=cEvent>Your <color=#307FFF>Lemurian's Claw</color> curls...</style>",
