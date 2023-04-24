@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.AddressableAssets;
 using System;
 using System.Collections.Generic;
+using RoR2.Stats;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MonkeysPaw : Equipment<MonkeysPaw> {
@@ -16,10 +17,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool isEnigmaCompatible { get; protected set; } = false;
         public override float cooldown {get; protected set;} = 120f;
 
+        protected override string[] GetDescStringArgs(string langID = null) => new[] {
+            refundFrac.ToString("0%")
+        };
 
 
         ////// Config //////
-        
+
         [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for activation (comma-delimited, leading/trailing whitespace will be ignored). Target objects must also incorporate a ChestBehavior component. WARNING: May have unintended results on some untested objects!",
             AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
@@ -29,8 +33,16 @@ namespace ThinkInvisible.TinkersSatchel {
             "GoldChest",
             "CategoryChestDamage",
             "CategoryChestHealing",
-            "CategoryChestUtility"
+            "CategoryChestUtility",
+            "CategoryChest2Damage Variant",
+            "CategoryChest2Healing Variant",
+            "CategoryChest2Utility Variant"
         });
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Cost reduction (0 = no reduction).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float refundFrac { get; private set; } = 0.5f;
 
 
 
@@ -185,10 +197,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Private Methods //////
 
-        bool IsInteractableValid(GameObject obj, out ChestBehavior cb) {
+        bool IsInteractableValid(GameObject obj, out ChestBehavior cb, out PurchaseInteraction purch) {
             cb = null;
+            purch = null;
             if(!obj) return false;
-            return obj.TryGetComponent(out cb) && obj.TryGetComponent<PurchaseInteraction>(out var purch) && purch.available && cb.dropTable is BasicPickupDropTable bpdt && bpdt.equipmentWeight == 0 && bpdt.lunarEquipmentWeight == 0;
+            return obj.TryGetComponent(out cb)
+                && (!obj.TryGetComponent<PurchaseInteraction>(out purch)
+                    || (purch.available && purch.costType is CostTypeIndex.Money or CostTypeIndex.PercentHealth or CostTypeIndex.LunarCoin))
+                && cb.dropTable is BasicPickupDropTable bpdt && bpdt.equipmentWeight == 0 && bpdt.lunarEquipmentWeight == 0;
         }
 
 
@@ -226,7 +242,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 self.targetIndicator.active = false;
             }
 
-            if(self.currentTarget.transformToIndicateAt && IsInteractableValid(res, out _)) {
+            if(self.currentTarget.transformToIndicateAt && IsInteractableValid(res, out _, out _)) {
                 self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
                 self.targetIndicator.active = true;
                 self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
@@ -238,7 +254,20 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             slot.UpdateTargets(catalogIndex, false);
-            if(!IsInteractableValid(slot.currentTarget.rootObject, out ChestBehavior cb)) return false;
+            if(!IsInteractableValid(slot.currentTarget.rootObject, out ChestBehavior cb, out PurchaseInteraction purch)) return false;
+
+            if(purch && refundFrac != 1f) {
+                var origCost = purch.cost;
+                purch.cost = Mathf.CeilToInt(purch.cost * (1f - refundFrac));
+                if(!slot.characterBody.TryGetComponent<Interactor>(out var iac) || !purch.CanBeAffordedByInteractor(iac)) {
+                    purch.cost = origCost;
+                    return false;
+                }
+                var payCostResults = CostTypeCatalog.GetCostTypeDef(purch.costType)
+                    .PayCost(purch.cost, iac, slot.currentTarget.rootObject, rng, ItemIndex.None); //paying items currently unsupported
+                if(slot.characterBody)
+                    StatManager.OnPurchase(slot.characterBody, purch.costType, purch.purchaseStatNames.Select(new Func<string, StatDef>(StatDef.Find)));
+            }
 
             cb.dropCount++;
             cb.Open();
@@ -248,7 +277,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 subjectAsCharacterBody = slot.characterBody
             });
 
-            if(cb.TryGetComponent<PurchaseInteraction>(out var purch))
+            if(purch)
                 purch.SetAvailable(false);
 
             var pind = cb.dropTable.GenerateDrop(this.rng);
