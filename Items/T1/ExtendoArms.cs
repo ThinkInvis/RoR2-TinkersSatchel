@@ -264,12 +264,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
-            float mdAdd = 0;
+            float mdMult = 1f;
             if(self.owner && self.owner.TryGetComponent<CharacterBody>(out var ownerBody))
-                mdAdd += GetCount(ownerBody) * rangeAmount;
-            self.maxDistance += mdAdd;
+                mdMult += GetCount(ownerBody) * rangeAmount;
+            self.maxDistance *= mdMult;
             orig(self);
-            self.maxDistance -= mdAdd;
+            self.maxDistance /= mdMult;
         }
 
         private void ProjectileController_Awake(On.RoR2.Projectile.ProjectileController.orig_Awake orig, RoR2.Projectile.ProjectileController self) {
@@ -278,25 +278,27 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCount(cb);
             if(count == 0) return;
 
+            float speedMult = 1f + count * speedAmount;
+
             if(self.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
-                ps.desiredForwardSpeed *= 1f + count * speedAmount;
-                ps.oscillateSpeed *= 1f + count * speedAmount;
-                ps.oscillateMagnitude *= 1f + count * speedAmount;
+                ps.desiredForwardSpeed *= speedMult;
+                ps.oscillateSpeed *= speedMult;
+                ps.oscillateMagnitude *= speedMult;
                 var vol = ps.velocityOverLifetime;
                 if(vol != null) {
                     for(var i = 0; i < vol.length; i++) {
-                        vol.keys[i].value *= 1f + count * speedAmount;
+                        vol.keys[i].value *= speedMult;
                     }
                 }
             }
 
             if(self.TryGetComponent<RoR2.Projectile.BoomerangProjectile>(out var bp)) {
-                bp.travelSpeed *= 1f + count * speedAmount;
+                bp.travelSpeed *= speedMult;
             }
 
             if(self.TryGetComponent<RoR2.Projectile.MissileController>(out var mc)) {
-                mc.maxVelocity *= 1f + count * speedAmount;
-                mc.acceleration *= 1f + count * speedAmount;
+                mc.maxVelocity *= speedMult;
+                mc.acceleration *= speedMult;
             }
         }
 
