@@ -270,7 +270,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					attacker = self.gameObject,
 					inflictor = self.gameObject,
 					crit = false,
-					damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)) * ExtendoArms.GetDamageMultiplier(self),
+					damage = self.damage * (baseDamagePct + stackDamagePct * (count - 1)),
 					damageColorIndex = DamageColorIndex.Item,
 					damageType = DamageType.Generic,
 					force = Vector3.zero,
