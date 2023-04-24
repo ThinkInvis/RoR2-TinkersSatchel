@@ -29,7 +29,10 @@ namespace ThinkInvisible.TinkersSatchel {
             "GoldChest",
             "CategoryChestDamage",
             "CategoryChestHealing",
-            "CategoryChestUtility"
+            "CategoryChestUtility",
+            "CategoryChest2Damage Variant",
+            "CategoryChest2Healing Variant",
+            "CategoryChest2Utility Variant"
         });
 
 
