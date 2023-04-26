@@ -117,7 +117,7 @@
 
 		"TINKERSSATCHEL_MAGNETISM_NAME": "Bloodstained Hematite",
 		"TINKERSSATCHEL_MAGNETISM_PICKUP": "Your attacks become slightly magnetic and gain crit chance.",
-		"TINKERSSATCHEL_MAGNETISM_DESC": "Your projectile attacks <style=cIsUtility>track</style> towards enemies within <style=cIsUtility>{0} deg (+{0} per stack)</style>. Your melee attacks perform a forward lunge for <style=cIsUtility>{1} m/s <style=cStack>(+{1} per stack)</style></style>. Also gain <style=cIsDamage>{3} crit chance <style=cStack>(+{3} per stack)</style></style>.",
+		"TINKERSSATCHEL_MAGNETISM_DESC": "Your projectile attacks <style=cIsUtility>track</style> towards enemies within <style=cIsUtility>{0} deg (+{0} per stack)</style>. Your melee attacks perform a forward lunge for <style=cIsUtility>{1} m/s <style=cStack>(+{1} per stack)</style></style>. Also gain <style=cIsDamage>{2} crit chance <style=cStack>(+{2} per stack)</style></style>.",
 		"TINKERSSATCHEL_MAGNETISM_LORE": "",
 
 		"TINKERSSATCHEL_MIMIC_NAME": "Mostly-Tame Mimic",
