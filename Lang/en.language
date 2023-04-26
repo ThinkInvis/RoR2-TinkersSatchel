@@ -56,8 +56,8 @@
 
 
 		"TINKERSSATCHEL_BISMUTHFLASK_NAME": "Bismuth Tonic",
-		"TINKERSSATCHEL_BISMUTHFLASK_PICKUP": "Gain resistance when hit by one enemy tier... <color=#FF7F7F>BUT gain weakness to the others.</color>",
-		"TINKERSSATCHEL_BISMUTHFLASK_DESC": "On being hit by one <style=cIsDamage>tier of enemy</style> (Normal, Elite, or Boss): take <style=cIsHealing>{0} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{1} more damage</style> from all other types. Wears off after {2} seconds.",
+		"TINKERSSATCHEL_BISMUTHFLASK_PICKUP": "Reduce duration of debuffs... <color=#FF7F7F>BUT also reduce duration of buffs.</color>",
+		"TINKERSSATCHEL_BISMUTHFLASK_DESC": "Any debuffs inflicted on you <style=cIsUtility>last {0} as long</style>. Any buffs inflicted on you <color=#FF7F7F>last {1} as long</color>.",
 		"TINKERSSATCHEL_BISMUTHFLASK_LORE": "",
 
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_NAME": "Concentrating Alembic",

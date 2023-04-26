@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class BismuthFlask : Item<BismuthFlask> {
@@ -13,33 +12,27 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            resistAmount.ToString("0.0%"), weakAmount.ToString("0.0%"), duration.ToString("N0")
+            debuffReduction.ToString("P0"), buffReduction.ToString("P0")
         };
 
 
 
         ////// Config //////
-
-        [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
+        
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Fractional damage reduction per stack for the resisted attack type, linear: damage = original / (1 + resistAmount * stacks).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float resistAmount { get; private set; } = 0.125f;
+        [AutoConfig("Reduction to duration of debuffs/DoTs per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float debuffReduction { get; private set; } = 0.125f;
 
-        [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Fractional damage increase per stack for unresisted attack types, linear: damage = original * (1 + resistAmount * stacks)", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float weakAmount { get; private set; } = 0.125f;
-
-        [AutoConfigRoOSlider("{0:N0} s", 0f, 100f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration of the item's effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float duration { get; private set; } = 10f;
+        [AutoConfig("Reduction to duration of buffs per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float buffReduction { get; private set; } = 0.1f;
 
 
 
         ////// Other Fields/Properties //////
 
-        public BuffDef bismuthFlaskBuff { get; private set; }
         public GameObject idrPrefab { get; private set; }
 
 
@@ -169,91 +162,56 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
-
-            bismuthFlaskBuff = ScriptableObject.CreateInstance<BuffDef>();
-            bismuthFlaskBuff.buffColor = Color.white;
-            bismuthFlaskBuff.canStack = false;
-            bismuthFlaskBuff.isDebuff = false;
-            bismuthFlaskBuff.name = "TKSATBismuthFlask";
-            bismuthFlaskBuff.iconSprite = iconResource;
-            ContentAddition.AddBuffDef(bismuthFlaskBuff);
         }
 
         public override void Install() {
             base.Install();
 
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float_int += CharacterBody_AddTimedBuff_BuffDef_float_int;
+            On.RoR2.DotController.InflictDot_refInflictDotInfo += DotController_InflictDot_refInflictDotInfo;
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
-            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float -= CharacterBody_AddTimedBuff_BuffDef_float;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float_int -= CharacterBody_AddTimedBuff_BuffDef_float_int;
+            On.RoR2.DotController.InflictDot_refInflictDotInfo -= DotController_InflictDot_refInflictDotInfo;
         }
 
 
 
         ////// Hooks //////
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(self && self.body && damageInfo.attacker && GetCount(self.body) > 0) {
-                var atkb = damageInfo.attacker.GetComponent<CharacterBody>();
-                if(!atkb) {
-                    orig(self, damageInfo);
-                    return;
-                }
-                var cpt = self.body.gameObject.GetComponent<DamageSourceResistanceTracker>();
-                if(!cpt) cpt = self.body.gameObject.AddComponent<DamageSourceResistanceTracker>();
-                damageInfo.damage = cpt.ModifyDamage(damageInfo.damage, atkb);
-            }
-            orig(self, damageInfo);
-        }
-    }
-
-    [RequireComponent(typeof(CharacterBody))]
-    public class DamageSourceResistanceTracker  : MonoBehaviour {
-        enum DamageSource {
-            None, Normal, Elite, Boss
-        }
-        DamageSource lastSource = DamageSource.None;
-        float stopwatch = 0f;
-
-        CharacterBody body;
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-        void Awake() {
-            body = GetComponent<CharacterBody>();
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-        void FixedUpdate() {
-            if(stopwatch > 0f) {
-                stopwatch -= Time.fixedDeltaTime;
-            } else lastSource = DamageSource.None;
-        }
-
-        public float ModifyDamage(float damage, CharacterBody sourceBody) {
-            var count = BismuthFlask.instance.GetCount(body);
-            if(count <= 0 || !sourceBody) {
-                lastSource = DamageSource.None;
-                return damage;
-            }
-            var currentSource = DamageSource.Normal;
-            if(sourceBody.isChampion || sourceBody.isBoss)
-                currentSource = DamageSource.Boss;
-            else if(sourceBody.isElite)
-                currentSource = DamageSource.Elite;
-            if(lastSource != DamageSource.None) {
-                if(lastSource == currentSource) {
-                    damage /= 1f + BismuthFlask.instance.resistAmount * count;
-                } else {
-                    damage *= 1f + BismuthFlask.instance.weakAmount * count;
+        private void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo) {
+            if(inflictDotInfo.victimObject && inflictDotInfo.victimObject.TryGetComponent<CharacterBody>(out var victimBody)) {
+                var count = GetCount(victimBody);
+                if(count > 0) {
+                    inflictDotInfo.duration *= 1f - Mathf.Pow(1f - debuffReduction, count);
                 }
             }
-            lastSource = currentSource;
-            stopwatch = BismuthFlask.instance.duration;
-            body.AddTimedBuff(BismuthFlask.instance.bismuthFlaskBuff, stopwatch);
-            return damage;
+            orig(ref inflictDotInfo);
+        }
+
+        private void CharacterBody_AddTimedBuff_BuffDef_float_int(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float_int orig, CharacterBody self, BuffDef buffDef, float duration, int maxStacks) {
+            if(self) {
+                var count = GetCount(self);
+                if(count > 0) {
+                    duration *= 1f - Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
+                }
+            }
+            orig(self, buffDef, duration, maxStacks);
+        }
+
+        private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration) {
+            if(self) {
+                var count = GetCount(self);
+                if(count > 0) {
+                    duration *= 1f - Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
+                }
+            }
+            orig(self, buffDef, duration);
         }
     }
 }
