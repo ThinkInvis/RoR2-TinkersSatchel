@@ -13,14 +13,14 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            rangedAmount.ToString("0%"), meleeAmount.ToString("N1"), critAmount.ToString("P0")
+            rangedAmount.ToString("0%"), meleeAmount.ToString("N1"), critAmount.ToString("0.0%")
         };
 
 
 
         ////// Config //////
         
-        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:N0}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Projectile magnetism angle (deg) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float rangedAmount { get; private set; } = 0.5f;
@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Melee lunge speed (m/s) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float meleeAmount { get; private set; } = 2f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
+        [AutoConfigRoOSlider("{0:N0}%", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Global critical chance increase (percentage 0-100) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float critAmount { get; private set; } = 2.5f;

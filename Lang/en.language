@@ -62,7 +62,7 @@
 
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_NAME": "Concentrating Alembic",
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_PICKUP": "Gain debuff strength and duration... <color=#FF7F7F>BUT lose reach.</color>",
-		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_DESC": "Your ignites and bleeds deal <style=cIsDamage>{0} damage</style>, and all debuffs inflicted on enemies last <style=cIsUtility>{4} longer</style>. Your melee attacks and blast attacks have <color=#FF7F7F>{1} reduced range/radius</color>, your projectiles <color=#FF7F7F>move {2} slower</color>, and your hitscan attacks have <color=#FF7F7F>{3} reduced range</color>.",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_DESC": "Your ignites and bleeds deal <style=cIsDamage>+{0} damage</style>, and all debuffs inflicted on enemies last <style=cIsUtility>{4} longer</style>. Your melee attacks and blast attacks have <color=#FF7F7F>{1} reduced range/radius</color>, your projectiles <color=#FF7F7F>move {2} slower</color>, and your hitscan attacks have <color=#FF7F7F>{3} reduced range</color>.",
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_LORE": "",
 		
 		"TINKERSSATCHEL_HEALSTODAMAGE_NAME": "Hydroponic Cell",
