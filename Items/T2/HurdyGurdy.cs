@@ -80,13 +80,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
             orig(self, skill);
-            if(!self) return;
+            if(!self || !self.skillLocator) return;
             var count = GetCount(self);
             if(count == 0) return;
 
             if(!self.TryGetComponent<HurdyGurdyTracker>(out var hgt)) hgt = self.gameObject.AddComponent<HurdyGurdyTracker>();
 
-            if(skill.skillDef.skillIndex != 1) {
+            if(self.skillLocator.FindSkillSlot(skill) != SkillSlot.Secondary) {
                 hgt.consecutiveCasts = 0;
             } else {
                 hgt.consecutiveCasts++;
