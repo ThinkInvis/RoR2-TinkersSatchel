@@ -203,6 +203,7 @@ namespace ThinkInvisible.TinkersSatchel {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
             On.RoR2.Projectile.ProjectileController.Awake += ProjectileController_Awake;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
         public override void Uninstall() {
@@ -212,6 +213,7 @@ namespace ThinkInvisible.TinkersSatchel {
             R2API.RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
             On.RoR2.Projectile.ProjectileController.Awake -= ProjectileController_Awake;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
 
@@ -234,6 +236,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Hooks //////
+        
+        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
+            if(self && fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody)) {
+                fireProjectileInfo.speedOverride *= 1f + GetCount(ownerBody) * speedAmount;
+            }
+            orig(self, fireProjectileInfo);
+        }
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self) {
             var origRadius = self.radius;
