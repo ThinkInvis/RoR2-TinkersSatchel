@@ -100,7 +100,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     filterByLoS = true,
                     searchOrigin = self.corePosition,
                     searchDirection = self.characterDirection.forward,
-                    sortMode = BullseyeSearch.SortMode.Angle
+                    sortMode = BullseyeSearch.SortMode.None
                 };
                 bs.teamMaskFilter.RemoveTeam(self.teamComponent.teamIndex);
                 bs.RefreshCandidates();
