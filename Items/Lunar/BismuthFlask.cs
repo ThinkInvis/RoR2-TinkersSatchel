@@ -12,19 +12,19 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            debuffReduction.ToString("P0"), buffReduction.ToString("P0")
+            debuffReduction.ToString("P1"), buffReduction.ToString("P1")
         };
 
 
 
         ////// Config //////
         
-        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Reduction to duration of debuffs/DoTs per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float debuffReduction { get; private set; } = 0.125f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Reduction to duration of buffs per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float buffReduction { get; private set; } = 0.1f;

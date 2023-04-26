@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override float cooldown { get; protected set; } = 10f;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            evadeBurstSpeed.ToString("N0"), invulnTime.ToString("N0")
+            evadeBurstSpeed.ToString("N0"), invulnTime.ToString("N1")
         };
 
 

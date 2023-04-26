@@ -15,29 +15,29 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            pbaoeRange.ToString("N1"), resizeAmount.ToString("0%"), damageAmount.ToString("0%"), speedAmount.ToString("0%"), rangeAmount.ToString("0%")
+            pbaoeRange.ToString("N1"), resizeAmount.ToString("0.0%"), damageAmount.ToString("0.0%"), speedAmount.ToString("0.0%"), rangeAmount.ToString("0.0%")
         };
 
 
 
         ////// Config //////
         
-        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Hitbox scale increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float resizeAmount { get; private set; } = 0.125f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Projectile velocity increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float speedAmount { get; private set; } = 0.075f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Hitscan range increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float rangeAmount { get; private set; } = 0.075f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Global attack damage increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageAmount { get; private set; } = 0.05f;
