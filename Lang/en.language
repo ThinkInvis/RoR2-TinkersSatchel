@@ -12,6 +12,13 @@
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_DESC": "Gain 1 <style=cIsUtility>extra Equipment slot</style> <style=cStack>(+1 per stack)</style>. Activating your Equipment while the scoreboard is open will cycle through equipment slots instead.",
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_LORE": "",
 		
+		
+		"TINKERSSATCHEL_DODGE_NAME": "Dancing Shoes",
+		"TINKERSSATCHEL_DODGE_PICKUP": "Perform up to 3 dodge rolls.",
+		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{0} m/s</style> and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>. This equipment <style=cIsUtility>holds 3 times as many charges</style>.",
+		"TINKERSSATCHEL_DODGE_LORE": "",
+		"ACHIEVEMENT_TKSAT_DODGE_NAME": "Smooth Moves",
+		"ACHIEVEMENT_TKSAT_DODGE_DESCRIPTION": "Take no hits from enemies within 50 meters for 30 seconds, while keeping at least 10 enemies in range.",
 
 		"TINKERSSATCHEL_LODESTONE_NAME": "Lodestone",
 		"TINKERSSATCHEL_LODESTONE_PICKUP": "Pull nearby enemies and allied item effects.",
@@ -52,6 +59,11 @@
 		"TINKERSSATCHEL_BISMUTHFLASK_PICKUP": "Gain resistance when hit by one enemy tier... <color=#FF7F7F>BUT gain weakness to the others.</color>",
 		"TINKERSSATCHEL_BISMUTHFLASK_DESC": "On being hit by one <style=cIsDamage>tier of enemy</style> (Normal, Elite, or Boss): take <style=cIsHealing>{0} less damage</style> from subsequent attacks from that type, but <style=cIsDamage>{1} more damage</style> from all other types. Wears off after {2} seconds.",
 		"TINKERSSATCHEL_BISMUTHFLASK_LORE": "",
+
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_NAME": "Concentrating Alembic",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_PICKUP": "Gain debuff strength and duration... <color=#FF7F7F>BUT lose reach.</color>",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_DESC": "Your ignites and bleeds deal <style=cIsDamage>{0} damage</style>, and all debuffs inflicted on enemies last <style=cIsUtility>{4} longer</style>. Your melee attacks and blast attacks have <color=#FF7F7F>{1} reduced range/radius</color>, your projectiles <color=#FF7F7F>move {2} slower</color>, and your hitscan attacks have <color=#FF7F7F>{3} reduced range</color>.",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_LORE": "",
 		
 		"TINKERSSATCHEL_HEALSTODAMAGE_NAME": "Hydroponic Cell",
 		"TINKERSSATCHEL_HEALSTODAMAGE_PICKUP": "Half your healed health grows a plant that provides a single-use damage bonus... <color=#FF7F7F>BUT you don't receive the converted healing.</color>",
@@ -102,6 +114,11 @@
 		"TINKERSSATCHEL_EXTENDOARMS_PICKUP": "Attacks reach farther and deal slightly more damage.",
 		"TINKERSSATCHEL_EXTENDOARMS_DESC": "Gain <style=cIsUtility>{1} range/radius <style=cStack>(+{1} per stack)</style></style> for melee attacks and AoEs within {0} meters of you, <style=cIsUtility>{3} speed <style=cStack>(+{3} per stack)</style></style> for projectile attacks, and <style=cIsUtility>{4} maximum range <style=cStack>(+{4} per stack)</style></style> for hitscan attacks. Also gain <style=cIsDamage>{2} damage <style=cStack>(+{2} per stack)</style></style>.",
 		"TINKERSSATCHEL_EXTENDOARMS_LORE": "",
+
+		"TINKERSSATCHEL_MAGNETISM_NAME": "Bloodstained Hematite",
+		"TINKERSSATCHEL_MAGNETISM_PICKUP": "Your attacks become slightly magnetic and gain crit chance.",
+		"TINKERSSATCHEL_MAGNETISM_DESC": "Your projectile attacks <style=cIsUtility>track</style> towards enemies within <style=cIsUtility>{0} deg (+{0} per stack)</style>. Your melee attacks perform a forward lunge for <style=cIsUtility>{1} m/s <style=cStack>(+{1} per stack)</style></style>. Also gain <style=cIsDamage>{3} crit chance <style=cStack>(+{3} per stack)</style></style>.",
+		"TINKERSSATCHEL_MAGNETISM_LORE": "",
 
 		"TINKERSSATCHEL_MIMIC_NAME": "Mostly-Tame Mimic",
 		"TINKERSSATCHEL_MIMIC_PICKUP": "Mimics your other items at random.",
@@ -182,6 +199,11 @@
 		"ACHIEVEMENT_TKSAT_GOLDENGEAR_NAME": "What Did It Cost?",
 		"ACHIEVEMENT_TKSAT_GOLDENGEAR_DESCRIPTION": "Purchase the final item from a Shrine of Chance after it has dropped nothing 4 times or more.",
 		
+		"TINKERSSATCHEL_HURDYGURDY_NAME": "Hurdy-Gurdy",
+		"TINKERSSATCHEL_HURDYGURDY_PICKUP": "Wind up with your Secondary skill to fire burning projectiles.",
+		"TINKERSSATCHEL_HURDYGURDY_DESC": "Add <style=cIsUtility>{2} <style=cStack>(+{3} per stack)</style></style> charges of your <style=cIsUtility>Secondary skill</style>. After {1} or more uninterrupted uses of your Secondary skill, launch 1 <style=cStack>(+1 per stack)</style> burning strings at targets in front of you for <style=cIsDamage>{0} Ignite damage</style>.",
+		"TINKERSSATCHEL_HURDYGURDY_LORE": "...and his music was eclectic.",
+
 		"TINKERSSATCHEL_KLEINBOTTLE_NAME": "Unstable Klein Bottle",
 		"TINKERSSATCHEL_KLEINBOTTLE_PICKUP": "Chance to gravity slam nearby enemies on taking damage.",
 		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "After taking damage, {0} <style=cStack>(+{0} per stack, mult.)</style> chance to <style=cIsUtility>stun</style> enemies within {1} m for {2} seconds. Affected enemies are held in midair while stunned, then slammed into the ground for <style=cIsDamage>{3} damage</style>. <style=cStack>Has an internal cooldown of {4} s.</style>",
