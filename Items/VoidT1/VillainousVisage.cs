@@ -3,13 +3,12 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
-using UnityEngine.Networking;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class EnterCombatDamage : Item<EnterCombatDamage> {
+    public class VillainousVisage : Item<VillainousVisage> {
 
         ////// Item Data //////
 
@@ -17,42 +16,35 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            buffDuration.ToString("N0"), damageFracRate.ToString("0%"), damageFracMax.ToString("0%")
+            buffDuration.ToString("N0"), damageFrac.ToString("0%")
         };
 
 
 
         ////// Config ///////
         
-        [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Fractional damage bonus per second per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFracRate { get; private set; } = 0.03f;
-
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Maximum fractional damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFracMax { get; private set; } = 0.15f;
+        [AutoConfig("Fractional stealth attack damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float damageFrac { get; private set; } = 0.13f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Duration of the damage buff once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffDuration { get; private set; } = 2f;
+        [AutoConfig("Duration of the stealth buff once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffDuration { get; private set; } = 1.3f;
 
 
 
         ////// Other Fields/Properties //////
 
         public BuffDef activeBuff { get; private set; }
-        public BuffDef chargingBuff { get; private set; }
-        public BuffDef readyBuff { get; private set; }
         public Sprite buffIconResource;
         public GameObject idrPrefab { get; private set; }
 
 
 
         ////// TILER2 Module Setup //////
-        public EnterCombatDamage() {
+        public VillainousVisage() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/EnterCombatDamage.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/enterCombatDamageIcon.png");
             buffIconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/enterCombatDamageBuff.png");
@@ -188,25 +180,9 @@ namespace ThinkInvisible.TinkersSatchel {
             activeBuff.buffColor = new Color(0.85f, 0.2f, 0.2f);
             activeBuff.canStack = false;
             activeBuff.isDebuff = false;
-            activeBuff.name = "TKSATEnterCombatDamageActive";
+            activeBuff.name = "TKSATVillainousVisageActive";
             activeBuff.iconSprite = buffIconResource;
             ContentAddition.AddBuffDef(activeBuff);
-
-            readyBuff = ScriptableObject.CreateInstance<BuffDef>();
-            readyBuff.buffColor = new Color(0.85f, 0.85f, 0.2f);
-            readyBuff.canStack = false;
-            readyBuff.isDebuff = false;
-            readyBuff.name = "TKSATEnterCombatDamageReady";
-            readyBuff.iconSprite = buffIconResource;
-            ContentAddition.AddBuffDef(readyBuff);
-
-            chargingBuff = ScriptableObject.CreateInstance<BuffDef>();
-            chargingBuff.buffColor = new Color(0.4f, 0.4f, 0.4f);
-            chargingBuff.canStack = false;
-            chargingBuff.isDebuff = false;
-            chargingBuff.name = "TKSATEnterCombatDamageCharging";
-            chargingBuff.iconSprite = buffIconResource;
-            ContentAddition.AddBuffDef(chargingBuff);
 
             itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
                 .WaitForCompletion();
@@ -229,13 +205,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Install() {
             base.Install();
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
         public override void Uninstall() {
             base.Uninstall();
-            CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
+            GlobalEventManager.onCharacterDeathGlobal -= GlobalEventManager_onCharacterDeathGlobal;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
 
@@ -243,69 +219,20 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
 
-        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(GetCount(body) > 0 && !body.GetComponent<EnterCombatDamageTracker>())
-                body.gameObject.AddComponent<EnterCombatDamageTracker>();
+        private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport) {
+            if(damageReport.attackerBody && GetCount(damageReport.attackerBody) > 0) {
+                damageReport.attackerBody.AddTimedBuff(RoR2Content.Buffs.Cloak, buffDuration);
+                damageReport.attackerBody.AddTimedBuff(activeBuff, buffDuration);
+            }
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(damageInfo != null && damageInfo.attacker) {
-                var vmdc = damageInfo.attacker.GetComponent<EnterCombatDamageTracker>();
-                var body = damageInfo.attacker.GetComponent<CharacterBody>();
-                if(vmdc && body) {
-                    damageInfo.damage *= 1f + vmdc.charge;
-                }
+            if(damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && attackerBody.HasBuff(activeBuff)) {
+                attackerBody.RemoveBuff(activeBuff);
+                attackerBody.RemoveBuff(RoR2Content.Buffs.Cloak);
+                damageInfo.damage *= 1f + GetCount(attackerBody) * damageFrac;
             }
             orig(self, damageInfo);
-        }
-    }
-
-    [RequireComponent(typeof(CharacterBody))]
-    public class EnterCombatDamageTracker : MonoBehaviour {
-        public float charge = 0f;
-        public bool isActive = false;
-
-        CharacterBody body;
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-        void Awake() {
-            body = GetComponent<CharacterBody>();
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-        void FixedUpdate() {
-            if(!NetworkServer.active) return;
-
-            if(body.outOfCombat) {
-                if(isActive) {
-                    charge = 0f;
-                    isActive = false;
-                    body.SetBuffCount(EnterCombatDamage.instance.activeBuff.buffIndex, 0);
-                }
-                var count = EnterCombatDamage.instance.GetCount(body);
-                if(count <= 0) {
-                    body.SetBuffCount(EnterCombatDamage.instance.chargingBuff.buffIndex, 0);
-                    body.SetBuffCount(EnterCombatDamage.instance.readyBuff.buffIndex, 0);
-                    charge = 0f;
-                    return;
-                }
-                var chargeDelta = Time.fixedDeltaTime * EnterCombatDamage.instance.damageFracRate * (float)count;
-                var chargeMax = EnterCombatDamage.instance.damageFracMax * (float)count;
-                charge = Mathf.Min(charge + chargeDelta, chargeMax);
-                body.SetBuffCount(EnterCombatDamage.instance.chargingBuff.buffIndex, (charge >= chargeMax) ? 0 : 1);
-                body.SetBuffCount(EnterCombatDamage.instance.readyBuff.buffIndex, (charge >= chargeMax) ? 1 : 0);
-            } else {
-                body.SetBuffCount(EnterCombatDamage.instance.chargingBuff.buffIndex, 0);
-                body.SetBuffCount(EnterCombatDamage.instance.readyBuff.buffIndex, 0);
-                if(!isActive && charge > 0f) {
-                    isActive = true;
-                    body.AddTimedBuff(EnterCombatDamage.instance.activeBuff, EnterCombatDamage.instance.buffDuration);
-                }
-                if(!body.HasBuff(EnterCombatDamage.instance.activeBuff)) {
-                    charge = 0f;
-                    isActive = false;
-                }
-            }
         }
     }
 }

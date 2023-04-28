@@ -116,15 +116,15 @@
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "Fully charge a Teleporter without killing the boss or dying.",
 		
 		"TINKERSSATCHEL_MOUSTACHE_NAME": "Macho Moustache",
-		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "The bigger the fight, the higher your damage.",
-		"TINKERSSATCHEL_MOUSTACHE_DESC": "Gain <style=cIsDamage>+{0} damage <style=cStack>(+{0} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{1} m</style>. Elites count as {2} enemies, bosses count as {3} enemies, and elite bosses count as {4} enemies.",
+		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "Chance to Taunt on hit. Resist Taunted enemies.",
+		"TINKERSSATCHEL_MOUSTACHE_DESC": "<style=cIsUtility>{0} <style=cStack>(+{0} per stack)</style> chance on hit to <style=cIsUtility>Taunt</style> enemies for <style=cIsUtility>{1} seconds</style>. Also receive <style=cIsHealing>{2} reduced damage</style> and <style=cIsHealing>{3} reduced knockback</style> from <style=cIsUtility>Taunted</style> enemies.",
 		"TINKERSSATCHEL_MOUSTACHE_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_NAME": "Big Brawl",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_DESCRIPTION": "Participate in a very busy fight.",
 
 		"TINKERSSATCHEL_MUG_NAME": "Sturdy Mug",
 		"TINKERSSATCHEL_MUG_PICKUP": "Chance to shoot extra, unpredictable projectiles.",
-		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>.",
+		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>. Melee attacks gain an equal chance to fire a weak projectile for {2} of the attack damage.",
 		"TINKERSSATCHEL_MUG_LORE": "An inscription around the base reads: \"Rock and Stone!\"",
 		"ACHIEVEMENT_TKSAT_MUG_NAME": "...So I Fired Again",
 		"ACHIEVEMENT_TKSAT_MUG_DESCRIPTION": "Miss 1,000 TOTAL projectile attacks.",
@@ -242,8 +242,8 @@
 
 
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_NAME": "Villainous Visage",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Deal more damage when given time to plot. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "While out of combat, build up a <style=cIsDamage>damage buff</style> that will last <style=cIsDamage>{0} seconds</style> once in combat. Builds <style=cIsDamage>{1} damage per second <style=cStack>(+{1} per stack)</style></style>, up to <style=cIsDamage>{2} <style=cStack>(+{2} per stack)</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
+		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Briefly stealth for a damage boost after killing powerful opponents. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
+		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "Killing an elite enemy or a boss causes you to gain <style=cIsUtility>invisibility</style> for <style=cIsUtility>{0} seconds</style>. Attacking while <style=cIsUtility>invisible</style> due to this item breaks stealth and deals <style=cIsDamage>+{1} damage <style=cStack>(+{1} per stack)</style></style>",
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_LORE": "",
 		
 		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "Obsidian Brooch",
