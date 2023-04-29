@@ -5,6 +5,11 @@
 		"TKSAT_KEYWORD_TAUNT": "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style> targets that have inflicted Taunt on them, unless no other option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is halved. Taunt is removed if the source of Taunt dies.</style>",
 		"TKSAT_KEYWORD_SUPPRESS": "<style=cKeywordName>Suppressed</style><style=cSub>A Suppressed skill cannot be used and has its cooldowns frozen.</style>",
 
+		"TINKERSSATCHEL_EXPANSION_NAME": "Tinker's Satchel",
+		"TINKERSSATCHEL_EXPANSION_DESCRIPTION": "Adds standalone content from the 'Tinker's Satchel' mod to the game.",
+		"TINKERSSATCHEL_VOIDEXPANSION_NAME": "Tinker's Satchel (SotV)",
+		"TINKERSSATCHEL_VOIDEXPANSION_DESCRIPTION": "Adds content from the 'Tinker's Satchel' mod to the game which also requires the 'Survivors of the Void' expansion to be active.",
+
 
 
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_NAME": "Scavenger's Rucksack",
