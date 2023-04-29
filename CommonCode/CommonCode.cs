@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using RoR2.CharacterAI;
 using System.Linq;
 using UnityEngine.AddressableAssets;
+using RoR2.ExpansionManagement;
+using RoR2.EntitlementManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class CommonCode : T2Module<CommonCode> {
@@ -16,6 +18,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public static SkillDef disabledSkillDef;
 		public static BuffDef tauntDebuff;
+
+		public static ExpansionDef expansionDef;
+		public static ExpansionDef voidExpansionDef;
+
+		public static DirectorCardCategorySelection globalInteractablesDccs;
 
 		static GameObject _worldSpaceWeaponDummy = null;
 		public static GameObject worldSpaceWeaponDummy {
@@ -25,9 +32,17 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 		}
 
-        public override void SetupAttributes() {
-            base.SetupAttributes();
+		void _SetupExpansions() {
+			expansionDef = TinkersSatchelPlugin.resources.LoadAsset<ExpansionDef>("Assets/TinkersSatchel/TinkersSatchelExpansion.asset");
+			voidExpansionDef = TinkersSatchelPlugin.resources.LoadAsset<ExpansionDef>("Assets/TinkersSatchel/TinkersSatchelVoidExpansion.asset");
 
+			ContentAddition.AddExpansionDef(expansionDef);
+			ContentAddition.AddExpansionDef(voidExpansionDef);
+
+			voidExpansionDef.requiredEntitlement = Addressables.LoadAssetAsync<EntitlementDef>("RoR2/DLC1/Common/entitlementDLC1.asset").WaitForCompletion();
+		}
+
+		void _SetupDisabledSkill() {
 			var captainSD = LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CaptainSkillUsedUp");
 
 			disabledSkillDef = SkillUtil.CloneSkillDef(captainSD);
@@ -37,7 +52,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			disabledSkillDef.beginSkillCooldownOnSkillEnd = true;
 
 			ContentAddition.AddSkillDef(disabledSkillDef);
+			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgApply>();
+			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgRemove>();
+		}
 
+		void _SetupTauntDebuff() {
 			tauntDebuff = ScriptableObject.CreateInstance<BuffDef>();
 			tauntDebuff.buffColor = Color.white;
 			tauntDebuff.canStack = false;
@@ -46,9 +65,51 @@ namespace ThinkInvisible.TinkersSatchel {
 			tauntDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texAttackIcon.png")
 				.WaitForCompletion();
 			ContentAddition.AddBuffDef(tauntDebuff);
+		}
 
-			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgApply>();
-			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgRemove>();
+		void _SetupInteractablesCategory() {
+			globalInteractablesDccs = TinkersSatchelPlugin.resources.LoadAsset<DirectorCardCategorySelection>("Assets/TinkersSatchel/dccsTkSatGlobalInteractables.asset");
+            DirectorAPI.InteractableActions += DirectorAPI_InteractableActions;
+		}
+
+		internal class ConditionalDirectorCardHolder {
+			public DirectorAPI.DirectorCardHolder directorCardHolder;
+			public ExpansionDef[] requiredExpansions;
+			public ConditionalDirectorCardHolder(DirectorAPI.DirectorCardHolder dch, params ExpansionDef[] exps) {
+				directorCardHolder = dch;
+				requiredExpansions = exps;
+			}
+		}
+		internal static HashSet<ConditionalDirectorCardHolder> dchList = new();
+
+		private void DirectorAPI_InteractableActions(DccsPool arg1, DirectorAPI.StageInfo arg2) {
+			var toAdd = dchList.Where(dch => dch.requiredExpansions.All(ed => Run.instance.IsExpansionEnabled(ed)));
+			foreach(var cat in arg1.poolCategories) {
+				foreach(var pool in cat.alwaysIncluded) {
+					foreach(var dch in toAdd) {
+						pool.dccs.AddCard(dch.directorCardHolder);
+					}
+				}
+				foreach(var pool in cat.includedIfConditionsMet) {
+					foreach(var dch in toAdd) {
+						pool.dccs.AddCard(dch.directorCardHolder);
+					}
+				}
+				foreach(var pool in cat.includedIfNoConditionsMet) {
+					foreach(var dch in toAdd) {
+						pool.dccs.AddCard(dch.directorCardHolder);
+					}
+				}
+			}
+        }
+
+        public override void SetupAttributes() {
+            base.SetupAttributes();
+
+			_SetupExpansions();
+			_SetupDisabledSkill();
+			_SetupTauntDebuff();
+			_SetupInteractablesCategory();
 		}
 
         public override void SetupBehavior() {

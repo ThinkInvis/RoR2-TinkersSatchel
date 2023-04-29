@@ -26,14 +26,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public GameObject itemDroneInteractablePrefab;
-        public GameObject itemDroneBodyPrefab;
-        public GameObject itemDroneMasterPrefab;
-        public InteractableSpawnCard itemDroneSpawnCard;
-        public DirectorCard itemDroneDirectorCard;
-        public GameObject itemDronePanelPrefab;
-        public DirectorAPI.DirectorCardHolder itemDroneDCH;
-        public HashSet<ItemDef> blacklistedItems = new();
+        public GameObject itemDroneInteractablePrefab { get; private set; }
+        public GameObject itemDroneBodyPrefab { get; private set; }
+        public GameObject itemDroneMasterPrefab { get; private set; }
+        public InteractableSpawnCard itemDroneSpawnCard { get; private set; }
+        public DirectorCard itemDroneDirectorCard { get; private set; }
+        public GameObject itemDronePanelPrefab { get; private set; }
+        public DirectorAPI.DirectorCardHolder itemDroneDCH { get; private set; }
+        public HashSet<ItemDef> blacklistedItems { get; private set; } = new();
+        internal CommonCode.ConditionalDirectorCardHolder itemDroneCDCH { get; private set; }
 
 
 
@@ -82,7 +83,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             On.RoR2.CharacterBody.GetDisplayName += CharacterBody_GetDisplayName;
 
-            DirectorAPI.Helpers.AddNewInteractable(itemDroneDCH);
+            CommonCode.dchList.Add(itemDroneCDCH);
             if(ClassicStageInfo.instance)
                 DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -91,7 +92,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             On.RoR2.CharacterBody.GetDisplayName -= CharacterBody_GetDisplayName;
 
-            DirectorAPI.Helpers.RemoveExistingInteractable(itemDroneDirectorCard.spawnCard.name);
+            CommonCode.dchList.Remove(itemDroneCDCH);
             if(ClassicStageInfo.instance)
                 DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -252,6 +253,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 InteractableCategory = DirectorAPI.InteractableCategory.Drones,
                 MonsterCategory = DirectorAPI.MonsterCategory.Invalid
             };
+            itemDroneCDCH = new(itemDroneDCH, CommonCode.expansionDef);
         }
 
 
