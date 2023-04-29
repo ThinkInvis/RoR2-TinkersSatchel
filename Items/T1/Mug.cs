@@ -280,7 +280,7 @@ namespace ThinkInvisible.TinkersSatchel {
                                 (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
                             position = attackerBody.corePosition,
                             procChainMask = self.procChainMask,
-                            projectilePrefab = null
+                            projectilePrefab = projectilePrefab
                         });
                     }
 
