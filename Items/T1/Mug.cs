@@ -5,6 +5,8 @@ using TILER2;
 using static TILER2.MiscUtil;
 using R2API;
 using RoR2.Projectile;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mug : Item<Mug> {
@@ -46,7 +48,9 @@ namespace ThinkInvisible.TinkersSatchel {
         internal RoR2.Stats.StatDef whiffsStatDef;
         public GameObject idrPrefab { get; private set; }
         public GameObject projectilePrefab { get; private set; }
-
+        HashSet<System.WeakReference<OverlapAttack>> firedAttacks = new();
+        const float GC_INTERVAL = 2f;
+        float _gcStopwatch;
 
 
         ////// TILER2 Module Setup //////
@@ -249,6 +253,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 TinkersSatchelPlugin._logger.LogError("Mug: ignoreStack was not empty on new frame, clearing. May be a cascading effect of another error, or a mod may be misusing ignoreStack.");
                 ignoreStack = 0;
             }
+            _gcStopwatch -= Time.fixedDeltaTime;
+            if(_gcStopwatch <= 0f) {
+                firedAttacks.RemoveWhere(r => !r.TryGetTarget(out _));
+                _gcStopwatch = GC_INTERVAL;
+            }
         }
 
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
@@ -257,16 +266,17 @@ namespace ThinkInvisible.TinkersSatchel {
             ignoreStack--;
         }
 
-        private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, System.Collections.Generic.List<HurtBox> hitResults) {
+        private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HurtBox> hitResults) {
             var retv = orig(self, hitResults);
-            if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
+            if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
+                && !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
                 var count = GetCount(attackerBody);
                 if(count > 0) {
                     ignoreStack++;
 
                     var totalChance = count * procChance;
                     int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-                    var origRot = Quaternion.LookRotation(attackerBody.characterDirection.forward, attackerBody.transform.up);
+                    var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.characterDirection.forward, attackerBody.transform.up);
                     for(var i = 0; i < procCount; i++) {
                         ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
                             crit = attackerBody.RollCrit(),
@@ -283,6 +293,8 @@ namespace ThinkInvisible.TinkersSatchel {
                             projectilePrefab = projectilePrefab
                         });
                     }
+
+                    firedAttacks.Add(new(self));
 
                     ignoreStack--;
                 }
