@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using R2API;
+using RoR2.Projectile;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mug : Item<Mug> {
@@ -14,7 +15,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            procChance.ToString("0%"), spreadConeHalfAngleDegr.ToString("N1")
+            procChance.ToString("0%"), spreadConeHalfAngleDegr.ToString("N1"), meleeProjectileDamage.ToString("0%")
         };
 
 
@@ -31,6 +32,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Extra projectile chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float procChance { get; private set; } = 0.1f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float meleeProjectileDamage { get; private set; } = 0.25f;
+
 
 
         /////// Other Fields/Properties //////
@@ -39,6 +45,7 @@ namespace ThinkInvisible.TinkersSatchel {
         internal UnlockableDef unlockable;
         internal RoR2.Stats.StatDef whiffsStatDef;
         public GameObject idrPrefab { get; private set; }
+        public GameObject projectilePrefab { get; private set; }
 
 
 
@@ -178,6 +185,8 @@ namespace ThinkInvisible.TinkersSatchel {
             itemDef.unlockableDef = unlockable;
 
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
+
+            projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/MugProjectile.prefab");
         }
 
         public override void Install() {
@@ -187,6 +196,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
 
             //blacklist
             On.EntityStates.Huntress.ArrowRain.DoFireArrowRain += ArrowRain_DoFireArrowRain;
@@ -245,6 +255,39 @@ namespace ThinkInvisible.TinkersSatchel {
             ignoreStack++;
             orig(self, damageInfo, victim);
             ignoreStack--;
+        }
+
+        private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, System.Collections.Generic.List<HurtBox> hitResults) {
+            var retv = orig(self, hitResults);
+            if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
+                var count = GetCount(attackerBody);
+                if(count > 0) {
+                    ignoreStack++;
+
+                    var totalChance = count * procChance;
+                    int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+                    var origRot = Quaternion.LookRotation(attackerBody.characterDirection.forward, attackerBody.transform.up);
+                    for(var i = 0; i < procCount; i++) {
+                        ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
+                            crit = attackerBody.RollCrit(),
+                            damage = self.damage * meleeProjectileDamage,
+                            damageColorIndex = DamageColorIndex.Item,
+                            force = 0f,
+                            owner = self.attacker,
+                            rotation = origRot * Quaternion.Euler(
+                                (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                                (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                                (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
+                            position = attackerBody.corePosition,
+                            procChainMask = self.procChainMask,
+                            projectilePrefab = null
+                        });
+                    }
+
+                    ignoreStack--;
+                }
+            }
+            return retv;
         }
 
         private void BaseThrowBombState_Fire(On.EntityStates.Mage.Weapon.BaseThrowBombState.orig_Fire orig, EntityStates.Mage.Weapon.BaseThrowBombState self) {
