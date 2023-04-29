@@ -36,10 +36,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			expansionDef = TinkersSatchelPlugin.resources.LoadAsset<ExpansionDef>("Assets/TinkersSatchel/TinkersSatchelExpansion.asset");
 			voidExpansionDef = TinkersSatchelPlugin.resources.LoadAsset<ExpansionDef>("Assets/TinkersSatchel/TinkersSatchelVoidExpansion.asset");
 
+			var disabIcon = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texUnlockIcon.png").WaitForCompletion();
+			expansionDef.disabledIconSprite = disabIcon;
+			voidExpansionDef.disabledIconSprite = disabIcon;
+			voidExpansionDef.requiredEntitlement = Addressables.LoadAssetAsync<EntitlementDef>("RoR2/DLC1/Common/entitlementDLC1.asset").WaitForCompletion();
+
 			ContentAddition.AddExpansionDef(expansionDef);
 			ContentAddition.AddExpansionDef(voidExpansionDef);
-
-			voidExpansionDef.requiredEntitlement = Addressables.LoadAssetAsync<EntitlementDef>("RoR2/DLC1/Common/entitlementDLC1.asset").WaitForCompletion();
 		}
 
 		void _SetupDisabledSkill() {
