@@ -258,7 +258,7 @@
 
 		"TINKERSSATCHEL_TIMELOSTRUM_NAME": "Timelost Rum",
 		"TINKERSSATCHEL_TIMELOSTRUM_PICKUP": "Chance to shoot temporal echoes of projectiles. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
-		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
+		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. Melee attacks gain an equal chance to hit after a delay for {2} of the attack damage. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
 		"TINKERSSATCHEL_TIMELOSTRUM_LORE": "What's left of the label reads: \"『?ROC??K」 and 【S?TO?NE』!\"",
 		
 

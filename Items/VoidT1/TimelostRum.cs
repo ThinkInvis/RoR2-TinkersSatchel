@@ -8,6 +8,9 @@ using RoR2.Projectile;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
 using System.Linq;
+using MonoMod.Cil;
+using System;
+using Mono.Cecil.Cil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class TimelostRum : Item<TimelostRum> {
@@ -18,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            procChance.ToString("0%"), delayTime.ToString("N0")
+            procChance.ToString("0%"), delayTime.ToString("N0"), meleeDamage.ToString("0%")
         };
 
 
@@ -27,13 +30,18 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Delay per extra projectile.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Delay per extra hit.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float delayTime { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Extra projectile chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Extra hit chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float procChance { get; private set; } = 0.1f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Damage modifier for melee attacks.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float meleeDamage { get; private set; } = 0.25f;
 
 
 
@@ -42,6 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public int ignoreStack = 0;
         public List<(BulletAttack bi, float timestamp, float delay)> delayedBulletAttacks = new();
         public List<(FireProjectileInfo fpi, float timestamp, float delay)> delayedProjectiles = new();
+        public List<(DamageInfo di, HealthComponent victim, float timestamp, float delay)> delayedMeleeHits = new();
         public GameObject idrPrefab { get; private set; }
 		
 		
@@ -199,6 +208,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
             On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
+            IL.RoR2.OverlapAttack.PerformDamage += OverlapAttack_PerformDamage;
 
             //blacklist
             On.EntityStates.Huntress.ArrowRain.DoFireArrowRain += ArrowRain_DoFireArrowRain;
@@ -269,6 +279,12 @@ namespace ThinkInvisible.TinkersSatchel {
                     delayedProjectiles.RemoveAt(i);
                 }
             }
+            for(var i = delayedMeleeHits.Count - 1; i >= 0; i--) {
+                if(Time.fixedTime - delayedMeleeHits[i].timestamp > delayedMeleeHits[i].delay) {
+                    delayedMeleeHits[i].victim.TakeDamage(delayedMeleeHits[i].di);
+                    delayedMeleeHits.RemoveAt(i);
+                }
+            }
             ignoreStack--;
         }
 
@@ -314,6 +330,47 @@ namespace ThinkInvisible.TinkersSatchel {
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             for(var i = 1; i <= procCount; i++)
                 delayedProjectiles.Add((fireProjectileInfo, Time.fixedTime, i * delayTime));
+        }
+
+        private void OverlapAttack_PerformDamage(ILContext il) {
+            ILCursor c = new(il);
+
+            c.GotoNext(MoveType.Before,
+                i => i.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.TakeDamage)));
+
+            c.Index--;
+            c.Emit(OpCodes.Dup);
+
+            c.GotoNext(MoveType.Before,
+                i => i.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.TakeDamage)));
+
+            c.EmitDelegate<Func<HealthComponent, DamageInfo, DamageInfo>>((victim, di) => {
+                if(ignoreStack == 0 && di.attacker && di.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
+                    var count = GetCount(attackerBody);
+                    if(count > 0) {
+                        var totalChance = count * procChance;
+                        int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+
+                        var ndi = new DamageInfo {
+                            attacker = di.attacker,
+                            inflictor = di.inflictor,
+                            force = di.force,
+                            damage = di.damage * meleeDamage,
+                            crit = di.crit,
+                            position = di.position,
+                            procChainMask = di.procChainMask,
+                            procCoefficient = di.procCoefficient,
+                            damageColorIndex = di.damageColorIndex,
+                            damageType = di.damageType
+                        };
+
+                        for(var i = 1; i <= procCount; i++)
+                            delayedMeleeHits.Add((ndi, victim, Time.fixedTime, i * delayTime));
+                    }
+                }
+
+                return di;
+            });
         }
 
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
