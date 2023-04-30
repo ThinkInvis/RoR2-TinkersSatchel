@@ -83,7 +83,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     boostVec = slot.inputBank.moveVector;
                 boostVec.y = 0f;
                 boostVec = boostVec.normalized;
-                slot.characterBody.characterMotor.velocity += boostVec * evadeBurstSpeed;
+                slot.characterBody.characterMotor.velocity = boostVec * evadeBurstSpeed;
             }
 
             slot.characterBody.RemoveBuff(RoR2Content.Buffs.HiddenInvincibility);
