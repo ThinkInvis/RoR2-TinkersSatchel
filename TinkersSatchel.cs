@@ -31,6 +31,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         internal static AssetBundle resources;
 
+        T2Module[] earlyLoad;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void Awake() {
             _logger = Logger;
@@ -55,7 +57,7 @@ namespace ThinkInvisible.TinkersSatchel {
             };
             allModules = T2Module.InitAll<T2Module>(modInfo);
 
-            var earlyLoad = new[] { CommonCode.instance };
+            earlyLoad = new T2Module[] { CommonCode.instance, TauntDebuffModule.instance, TimedSkillDisableModule.instance };
             T2Module.SetupAll_PluginAwake(earlyLoad);
             T2Module.SetupAll_PluginAwake(allModules.Except(earlyLoad));
 
@@ -83,10 +85,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void Start() {
-            CommonCode.instance.RefreshPermanentLanguage();
-            CommonCode.instance.InstallLanguage();
-            CommonCode.instance.Install();
-            T2Module.SetupAll_PluginStart(allModules);
+            T2Module.SetupAll_PluginStart(earlyLoad);
+            T2Module.SetupAll_PluginStart(allModules.Except(earlyLoad));
         }
     }
 }

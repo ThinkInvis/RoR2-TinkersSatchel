@@ -3,8 +3,33 @@ using UnityEngine;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using TILER2;
+using RoR2.Skills;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
+	public class TimedSkillDisableModule : T2Module<TimedSkillDisableModule> {
+		public override bool managedEnable => false;
+
+		public static SkillDef disabledSkillDef;
+
+		public override void SetupAttributes() {
+			base.SetupAttributes();
+
+			var captainSD = LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CaptainSkillUsedUp");
+
+			disabledSkillDef = SkillUtil.CloneSkillDef(captainSD);
+			disabledSkillDef.skillNameToken = "TKSAT_DISABLED_SKILL_NAME";
+			disabledSkillDef.skillDescriptionToken = "TKSAT_DISABLED_SKILL_DESCRIPTION";
+			disabledSkillDef.dontAllowPastMaxStocks = false;
+			disabledSkillDef.beginSkillCooldownOnSkillEnd = true;
+
+			ContentAddition.AddSkillDef(disabledSkillDef);
+			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgApply>();
+			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgRemove>();
+		}
+	}
+
 	[RequireComponent(typeof(CharacterBody))]
 	public class ServerTimedSkillDisable : MonoBehaviour {
 		readonly List<float> primaryDisablers = new();

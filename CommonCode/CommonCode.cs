@@ -3,21 +3,22 @@ using RoR2;
 using RoR2.Skills;
 using TILER2;
 using UnityEngine;
-using R2API.Networking.Interfaces;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 using RoR2.CharacterAI;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
 using RoR2.EntitlementManagement;
+using System;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class CommonCode : T2Module<CommonCode> {
         public override bool managedEnable => false;
 
-		public static SkillDef disabledSkillDef;
-		public static BuffDef tauntDebuff;
+		[Obsolete("Replaced by TimedSkillDisableModule.disabledSkillDef.")]
+		public static SkillDef disabledSkillDef => TimedSkillDisableModule.disabledSkillDef;
+		[Obsolete("Replaced by TauntDebuffModule.tauntDebuff.")]
+		public static BuffDef tauntDebuff => TauntDebuffModule.tauntDebuff;
 
 		public static ExpansionDef expansionDef;
 		public static ExpansionDef voidExpansionDef;
@@ -43,31 +44,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			ContentAddition.AddExpansionDef(expansionDef);
 			ContentAddition.AddExpansionDef(voidExpansionDef);
-		}
-
-		void _SetupDisabledSkill() {
-			var captainSD = LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CaptainSkillUsedUp");
-
-			disabledSkillDef = SkillUtil.CloneSkillDef(captainSD);
-			disabledSkillDef.skillNameToken = "TKSAT_DISABLED_SKILL_NAME";
-			disabledSkillDef.skillDescriptionToken = "TKSAT_DISABLED_SKILL_DESCRIPTION";
-			disabledSkillDef.dontAllowPastMaxStocks = false;
-			disabledSkillDef.beginSkillCooldownOnSkillEnd = true;
-
-			ContentAddition.AddSkillDef(disabledSkillDef);
-			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgApply>();
-			R2API.Networking.NetworkingAPI.RegisterMessageType<ServerTimedSkillDisable.MsgRemove>();
-		}
-
-		void _SetupTauntDebuff() {
-			tauntDebuff = ScriptableObject.CreateInstance<BuffDef>();
-			tauntDebuff.buffColor = Color.white;
-			tauntDebuff.canStack = false;
-			tauntDebuff.isDebuff = true;
-			tauntDebuff.name = "TKSATTaunt";
-			tauntDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texAttackIcon.png")
-				.WaitForCompletion();
-			ContentAddition.AddBuffDef(tauntDebuff);
 		}
 
 		void _SetupInteractablesCategory() {
@@ -110,17 +86,12 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
 
 			_SetupExpansions();
-			_SetupDisabledSkill();
-			_SetupTauntDebuff();
 			_SetupInteractablesCategory();
 		}
 
         public override void SetupBehavior() {
             base.SetupBehavior();
 
-            On.RoR2.Util.CleanseBody += Util_CleanseBody;
-            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.BulletAttack.FireSingle += BulletAttack_FireSingle;
         }
 
@@ -128,50 +99,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(self.weapon == worldSpaceWeaponDummy)
 				self.weapon = null; //force tracer effect to happen in worldspace. BulletAttack.Fire sets weapon to owner if null, even if you set it to null on purpose >:(
 			orig(self, normal, muzzleIndex);
-		}
-
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-			if(self && self.body && damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var atkb) && atkb.master) {
-				bool shouldApplyTauntPenalty = true;
-				bool foundAnyActiveTaunts = false;
-				foreach(var aic in atkb.master.aiComponents) {
-					if(!aic || !aic.isActiveAndEnabled || !aic.TryGetComponent<TauntDebuffController>(out var tdc)) continue;
-					if(tdc.isTaunted) {
-						foundAnyActiveTaunts = true;
-						shouldApplyTauntPenalty &= tdc.ShouldApplyTauntPenalty(self.body);
-					}
-                }
-				shouldApplyTauntPenalty &= foundAnyActiveTaunts;
-				if(shouldApplyTauntPenalty)
-					damageInfo.damage *= 0.5f;
-            }
-			orig(self, damageInfo);
-        }
-
-        private void Util_CleanseBody(On.RoR2.Util.orig_CleanseBody orig, CharacterBody characterBody, bool removeDebuffs, bool removeBuffs, bool removeCooldownBuffs, bool removeDots, bool removeStun, bool removeNearbyProjectiles) {
-			orig(characterBody, removeDebuffs, removeBuffs, removeCooldownBuffs, removeDots, removeStun, removeNearbyProjectiles);
-			if(removeDebuffs && characterBody) {
-				if(characterBody.TryGetComponent<ServerTimedSkillDisable>(out var stsd))
-					stsd.ServerCleanse();
-				if(characterBody.master) {
-					foreach(var aic in characterBody.master.aiComponents) {
-						if(!aic || !aic.isActiveAndEnabled || !aic.TryGetComponent<TauntDebuffController>(out var tdc)) continue;
-						tdc.Cleanse();
-					}
-				}
-            }
-		}
-
-		private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS) {
-			var retv = orig(self, maxDistance, full360Vision, filterByLoS);
-			if(self && self.TryGetComponent<TauntDebuffController>(out var tdc) && tdc.isTaunted) {
-				var taunters = tdc.GetTaunters();
-				var priority = self.enemySearch.GetResults().Where(x => x && x.healthComponent && taunters.Contains(x.healthComponent.body)).FirstOrDefault();
-				if(priority == default(HurtBox))
-					return retv;
-				else return priority;
-			}
-			return retv;
 		}
 
 		internal static void RetrieveDefaultMaterials(ItemDisplay disp) {
