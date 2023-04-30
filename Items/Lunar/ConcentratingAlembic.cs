@@ -100,7 +100,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
-            if(self && fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody)) {
+            if(self && fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && fireProjectileInfo.useSpeedOverride) {
                 fireProjectileInfo.speedOverride /= 1f + GetCount(ownerBody) * speedReduc;
             }
             orig(self, fireProjectileInfo);
