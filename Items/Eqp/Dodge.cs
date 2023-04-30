@@ -2,6 +2,8 @@
 using UnityEngine;
 using TILER2;
 using R2API;
+using MonoMod.Cil;
+using System;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Dodge : Equipment<Dodge> {
@@ -59,11 +61,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             On.RoR2.Inventory.GetEquipmentSlotMaxCharges += Inventory_GetEquipmentSlotMaxCharges;
+            IL.RoR2.Inventory.UpdateEquipment += Inventory_UpdateEquipment;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             On.RoR2.Inventory.GetEquipmentSlotMaxCharges -= Inventory_GetEquipmentSlotMaxCharges;
+            IL.RoR2.Inventory.UpdateEquipment -= Inventory_UpdateEquipment;
         }
 
 
@@ -71,7 +75,18 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private int Inventory_GetEquipmentSlotMaxCharges(On.RoR2.Inventory.orig_GetEquipmentSlotMaxCharges orig, Inventory self, byte slot) {
-            return orig(self, slot) * (self.GetEquipment(slot).equipmentDef == equipmentDef ? 3 : 1);
+            //note: unused, UpdateEquipment has it hardcoded
+            return orig(self, slot) * ((self.GetEquipment(slot).equipmentDef == equipmentDef) ? 3 : 1);
+        }
+
+        private void Inventory_UpdateEquipment(ILContext il) {
+            ILCursor c = new(il);
+
+            c.GotoNext(MoveType.After,
+                i => i.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
+                i => i.MatchAdd());
+
+            c.EmitDelegate<Func<int, int>>(charges => charges * 3);
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
