@@ -137,8 +137,8 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             pdtf.lookCone += count * rangedAmount;
 
-            if(!self.TryGetComponent<RoR2.Projectile.ProjectileSteerTowardTarget>(out var pstt)) {
-                pstt = self.gameObject.AddComponent<RoR2.Projectile.ProjectileSteerTowardTarget>();
+            if(!self.TryGetComponent<RoR2.Projectile.ProjectileSteerTowardTarget>(out _)) {
+                var pstt = self.gameObject.AddComponent<RoR2.Projectile.ProjectileSteerTowardTarget>();
                 pstt.rotationSpeed = 90f;
                 pstt.yAxisOnly = false;
             }

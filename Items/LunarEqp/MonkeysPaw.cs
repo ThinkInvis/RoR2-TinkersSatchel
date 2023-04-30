@@ -229,7 +229,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(self.currentTarget.rootObject != null) {
                 var purch = res.GetComponent<PurchaseInteraction>();
-                var ch = res.GetComponent<ChestBehavior>();
                 if(!purch || purch.available) {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
                 } else {
