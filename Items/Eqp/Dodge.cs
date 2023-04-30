@@ -39,8 +39,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        internal static UnlockableDef unlockable;
-
 
 
         ////// TILER2 Module Setup //////

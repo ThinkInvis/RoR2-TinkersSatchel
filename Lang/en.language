@@ -22,8 +22,6 @@
 		"TINKERSSATCHEL_DODGE_PICKUP": "Perform up to 3 dodge rolls.",
 		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{0} m/s</style> and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>. This equipment <style=cIsUtility>holds 3 times as many charges</style>.",
 		"TINKERSSATCHEL_DODGE_LORE": "",
-		"ACHIEVEMENT_TKSAT_DODGE_NAME": "Smooth Moves",
-		"ACHIEVEMENT_TKSAT_DODGE_DESCRIPTION": "Take no hits from enemies within 50 meters for 30 seconds, while keeping at least 10 enemies in range.",
 
 		"TINKERSSATCHEL_LODESTONE_NAME": "Lodestone",
 		"TINKERSSATCHEL_LODESTONE_PICKUP": "Pull nearby enemies and allied item effects.",
