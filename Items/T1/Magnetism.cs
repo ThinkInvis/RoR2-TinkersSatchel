@@ -23,12 +23,12 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N0}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Projectile magnetism angle (deg) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float rangedAmount { get; private set; } = 0.5f;
+        public float rangedAmount { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Melee draw-in range (m) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float meleeAmount { get; private set; } = 4f;
+        public float meleeAmount { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
         [AutoConfig("Maximum melee draw-in pull speed (m/s).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
