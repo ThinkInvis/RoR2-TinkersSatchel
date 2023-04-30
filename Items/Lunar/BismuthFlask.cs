@@ -12,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            debuffReduction.ToString("P1"), buffReduction.ToString("P1")
+            (1f - debuffReduction).ToString("P1"), (1f - buffReduction).ToString("P1")
         };
 
 
