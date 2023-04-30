@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            rangedAmount.ToString("0%"), meleeAmount.ToString("N1"), critAmount.ToString("0.0%")
+            rangedAmount.ToString("N0"), meleeAmount.ToString("N1"), critAmount.ToString("N1")
         };
 
 
