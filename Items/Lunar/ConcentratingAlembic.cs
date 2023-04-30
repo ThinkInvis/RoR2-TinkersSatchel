@@ -76,11 +76,10 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
             On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileController.Awake += ProjectileController_Awake;
             On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
             On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float_int += CharacterBody_AddTimedBuff_BuffDef_float_int;
             On.RoR2.DotController.InflictDot_refInflictDotInfo += DotController_InflictDot_refInflictDotInfo;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.Projectile.ProjectileManager.InitializeProjectile += ProjectileManager_InitializeProjectile;
         }
 
         public override void Uninstall() {
@@ -88,22 +87,43 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
             On.RoR2.BlastAttack.Fire -= BlastAttack_Fire;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileController.Awake -= ProjectileController_Awake;
             On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float -= CharacterBody_AddTimedBuff_BuffDef_float;
             On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float_int -= CharacterBody_AddTimedBuff_BuffDef_float_int;
             On.RoR2.DotController.InflictDot_refInflictDotInfo -= DotController_InflictDot_refInflictDotInfo;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.Projectile.ProjectileManager.InitializeProjectile -= ProjectileManager_InitializeProjectile;
         }
 
 
 
         ////// Hooks //////
 
-        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
-            if(self && fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && fireProjectileInfo.useSpeedOverride) {
-                fireProjectileInfo.speedOverride /= 1f + GetCount(ownerBody) * speedReduc;
+        private void ProjectileManager_InitializeProjectile(On.RoR2.Projectile.ProjectileManager.orig_InitializeProjectile orig, RoR2.Projectile.ProjectileController projectileController, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
+            orig(projectileController, fireProjectileInfo);
+
+            if(fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && GetCount(ownerBody) > 0) {
+                float speedDiv = 1f + GetCount(ownerBody) * speedReduc;
+
+                if(projectileController.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
+                    ps.desiredForwardSpeed /= speedDiv;
+                    ps.oscillateSpeed /= speedDiv;
+                    ps.oscillateMagnitude /= speedDiv;
+                    var vol = ps.velocityOverLifetime;
+                    if(vol != null) {
+                        for(var i = 0; i < vol.length; i++) {
+                            vol.keys[i].value /= speedDiv;
+                        }
+                    }
+                }
+
+                if(projectileController.TryGetComponent<RoR2.Projectile.BoomerangProjectile>(out var bp)) {
+                    bp.travelSpeed /= speedDiv;
+                }
+
+                if(projectileController.TryGetComponent<RoR2.Projectile.MissileController>(out var mc)) {
+                    mc.maxVelocity /= speedDiv;
+                    mc.acceleration /= speedDiv;
+                }
             }
-            orig(self, fireProjectileInfo);
         }
 
         private void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo) {
@@ -163,36 +183,6 @@ namespace ThinkInvisible.TinkersSatchel {
             self.maxDistance /= mdDiv;
             orig(self);
             self.maxDistance *= mdDiv;
-        }
-
-        private void ProjectileController_Awake(On.RoR2.Projectile.ProjectileController.orig_Awake orig, RoR2.Projectile.ProjectileController self) {
-            orig(self);
-            if(!self.owner || !self.owner.TryGetComponent<CharacterBody>(out var cb)) return;
-            var count = GetCount(cb);
-            if(count == 0) return;
-
-            float speedDiv = 1f + count * speedReduc;
-
-            if(self.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
-                ps.desiredForwardSpeed /= speedDiv;
-                ps.oscillateSpeed /= speedDiv;
-                ps.oscillateMagnitude /= speedDiv;
-                var vol = ps.velocityOverLifetime;
-                if(vol != null) {
-                    for(var i = 0; i < vol.length; i++) {
-                        vol.keys[i].value /= speedDiv;
-                    }
-                }
-            }
-
-            if(self.TryGetComponent<RoR2.Projectile.BoomerangProjectile>(out var bp)) {
-                bp.travelSpeed /= speedDiv;
-            }
-
-            if(self.TryGetComponent<RoR2.Projectile.MissileController>(out var mc)) {
-                mc.maxVelocity /= speedDiv;
-                mc.acceleration /= speedDiv;
-            }
         }
     }
 }

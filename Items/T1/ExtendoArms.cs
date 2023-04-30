@@ -202,8 +202,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileController.Awake += ProjectileController_Awake;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.Projectile.ProjectileManager.InitializeProjectile += ProjectileManager_InitializeProjectile;
         }
 
         public override void Uninstall() {
@@ -212,8 +211,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.BlastAttack.Fire -= BlastAttack_Fire;
             R2API.RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileController.Awake -= ProjectileController_Awake;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.Projectile.ProjectileManager.InitializeProjectile -= ProjectileManager_InitializeProjectile;
         }
 
 
@@ -236,12 +234,34 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Hooks //////
-        
-        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
-            if(self && fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody)) {
-                fireProjectileInfo.speedOverride *= 1f + GetCount(ownerBody) * speedAmount;
+
+        private void ProjectileManager_InitializeProjectile(On.RoR2.Projectile.ProjectileManager.orig_InitializeProjectile orig, RoR2.Projectile.ProjectileController projectileController, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
+            orig(projectileController, fireProjectileInfo);
+
+            if(fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && GetCount(ownerBody) > 0) {
+                float speedMult = 1f + GetCount(ownerBody) * speedAmount;
+
+                if(projectileController.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
+                    ps.desiredForwardSpeed *= speedMult;
+                    ps.oscillateSpeed *= speedMult;
+                    ps.oscillateMagnitude *= speedMult;
+                    var vol = ps.velocityOverLifetime;
+                    if(vol != null) {
+                        for(var i = 0; i < vol.length; i++) {
+                            vol.keys[i].value *= speedMult;
+                        }
+                    }
+                }
+
+                if(projectileController.TryGetComponent<RoR2.Projectile.BoomerangProjectile>(out var bp)) {
+                    bp.travelSpeed *= speedMult;
+                }
+
+                if(projectileController.TryGetComponent<RoR2.Projectile.MissileController>(out var mc)) {
+                    mc.maxVelocity *= speedMult;
+                    mc.acceleration *= speedMult;
+                }
             }
-            orig(self, fireProjectileInfo);
         }
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self) {
@@ -279,36 +299,6 @@ namespace ThinkInvisible.TinkersSatchel {
             self.maxDistance *= mdMult;
             orig(self);
             self.maxDistance /= mdMult;
-        }
-
-        private void ProjectileController_Awake(On.RoR2.Projectile.ProjectileController.orig_Awake orig, RoR2.Projectile.ProjectileController self) {
-            orig(self);
-            if(!self.owner || !self.owner.TryGetComponent<CharacterBody>(out var cb)) return;
-            var count = GetCount(cb);
-            if(count == 0) return;
-
-            float speedMult = 1f + count * speedAmount;
-
-            if(self.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
-                ps.desiredForwardSpeed *= speedMult;
-                ps.oscillateSpeed *= speedMult;
-                ps.oscillateMagnitude *= speedMult;
-                var vol = ps.velocityOverLifetime;
-                if(vol != null) {
-                    for(var i = 0; i < vol.length; i++) {
-                        vol.keys[i].value *= speedMult;
-                    }
-                }
-            }
-
-            if(self.TryGetComponent<RoR2.Projectile.BoomerangProjectile>(out var bp)) {
-                bp.travelSpeed *= speedMult;
-            }
-
-            if(self.TryGetComponent<RoR2.Projectile.MissileController>(out var mc)) {
-                mc.maxVelocity *= speedMult;
-                mc.acceleration *= speedMult;
-            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args) {
