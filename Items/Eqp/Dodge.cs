@@ -25,11 +25,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N1} m/s", 0f, 50f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Instant speed to add on equipment activation.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float evadeBurstSpeed { get; private set; } = 60f;
+        public float evadeBurstSpeed { get; private set; } = 45f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfig("Duration of the invulnerability effect.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
-        public float invulnTime { get; private set; } = 1f;
+        public float invulnTime { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfig("Minimum cooldown between equipment activations.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
