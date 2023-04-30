@@ -228,7 +228,8 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport) {
-            if(damageReport.attackerMaster && GetCount(damageReport.attackerMaster) > 0) {
+            if(damageReport.attackerMaster && GetCount(damageReport.attackerMaster) > 0
+                && (damageReport.victimIsBoss || damageReport.victimIsChampion || damageReport.victimIsElite)) {
                 var body = damageReport.attackerMaster.GetBody();
                 if(body) {
                     body.AddTimedBuff(RoR2Content.Buffs.Cloak, buffDuration);
