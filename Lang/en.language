@@ -5,6 +5,11 @@
 		"TKSAT_KEYWORD_TAUNT": "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style> targets that have inflicted Taunt on them, unless no other option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is halved. Taunt is removed if the source of Taunt dies.</style>",
 		"TKSAT_KEYWORD_SUPPRESS": "<style=cKeywordName>Suppressed</style><style=cSub>A Suppressed skill cannot be used and has its cooldowns frozen.</style>",
 
+		"TINKERSSATCHEL_EXPANSION_NAME": "Tinker's Satchel",
+		"TINKERSSATCHEL_EXPANSION_DESCRIPTION": "Adds standalone content from the 'Tinker's Satchel' mod to the game.",
+		"TINKERSSATCHEL_VOIDEXPANSION_NAME": "Tinker's Satchel (SotV)",
+		"TINKERSSATCHEL_VOIDEXPANSION_DESCRIPTION": "Adds content from the 'Tinker's Satchel' mod to the game which also requires the 'Survivors of the Void' expansion to be active.",
+
 
 
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_NAME": "Scavenger's Rucksack",
@@ -133,15 +138,15 @@
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "Fully charge a Teleporter without killing the boss or dying.",
 		
 		"TINKERSSATCHEL_MOUSTACHE_NAME": "Macho Moustache",
-		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "The bigger the fight, the higher your damage.",
-		"TINKERSSATCHEL_MOUSTACHE_DESC": "Gain <style=cIsDamage>+{0} damage <style=cStack>(+{0} per stack, linear)</style></style> per in-combat or in-danger enemy within <style=cIsDamage>{1} m</style>. Elites count as {2} enemies, bosses count as {3} enemies, and elite bosses count as {4} enemies.",
+		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "Chance to Taunt on hit. Resist Taunted enemies.",
+		"TINKERSSATCHEL_MOUSTACHE_DESC": "<style=cIsUtility>{0} <style=cStack>(+{0} per stack)</style> chance on hit to <style=cIsUtility>Taunt</style> enemies for <style=cIsUtility>{1} seconds</style>. Also receive <style=cIsHealing>{2} reduced damage</style> and <style=cIsHealing>{3} reduced knockback</style> from <style=cIsUtility>Taunted</style> enemies.",
 		"TINKERSSATCHEL_MOUSTACHE_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_NAME": "Big Brawl",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_DESCRIPTION": "Participate in a very busy fight.",
 
 		"TINKERSSATCHEL_MUG_NAME": "Sturdy Mug",
 		"TINKERSSATCHEL_MUG_PICKUP": "Chance to shoot extra, unpredictable projectiles.",
-		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>.",
+		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>. Melee attacks gain an equal chance to fire a weak projectile for {2} of the attack damage.",
 		"TINKERSSATCHEL_MUG_LORE": "An inscription around the base reads: \"Rock and Stone!\"",
 		"ACHIEVEMENT_TKSAT_MUG_NAME": "...So I Fired Again",
 		"ACHIEVEMENT_TKSAT_MUG_DESCRIPTION": "Miss 1,000 TOTAL projectile attacks.",
@@ -240,7 +245,7 @@
 		
 		"TINKERSSATCHEL_PINBALL_NAME": "Pinball Wizard",
 		"TINKERSSATCHEL_PINBALL_PICKUP": "Projectiles may bounce and home.",
-		"TINKERSSATCHEL_PINBALL_DESC": "All your projectile attacks have a {0} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{1} of their original damage</style>. Can happen up to <style=cIsDamage>{2} times <style=cStack>(+{3} per stack)</style></style> per projectile.",
+		"TINKERSSATCHEL_PINBALL_DESC": "All your projectile attacks have a {0} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{1} of their original damage</style>. Can happen up to <style=cIsDamage>{2} times <style=cStack>(+{3} per stack)</style></style> per projectile. Melee attacks gain an equal chance to fire a weak projectile for {4} of the attack damage.",
 		"TINKERSSATCHEL_PINBALL_LORE": "Ding! Ding! Ding! Ding!",
 		"ACHIEVEMENT_TKSAT_PINBALL_NAME": "Woe, Explosions Be Upon Ye",
 		"ACHIEVEMENT_TKSAT_PINBALL_DESCRIPTION": "Item Set: Damage-on-kill. Have 3 or more (of 6) at once.",
@@ -264,8 +269,8 @@
 
 
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_NAME": "Villainous Visage",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Deal more damage when given time to plot. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "While out of combat, build up a <style=cIsDamage>damage buff</style> that will last <style=cIsDamage>{0} seconds</style> once in combat. Builds <style=cIsDamage>{1} damage per second <style=cStack>(+{1} per stack)</style></style>, up to <style=cIsDamage>{2} <style=cStack>(+{2} per stack)</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
+		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Briefly stealth for a damage boost after killing powerful opponents. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
+		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "Killing an elite enemy or a boss causes you to gain <style=cIsUtility>invisibility</style> for <style=cIsUtility>{0} seconds</style>. Attacking while <style=cIsUtility>invisible</style> due to this item breaks stealth and deals <style=cIsDamage>+{1} damage <style=cStack>(+{1} per stack)</style></style>",
 		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_LORE": "",
 		
 		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "Obsidian Brooch",
@@ -275,7 +280,7 @@
 
 		"TINKERSSATCHEL_TIMELOSTRUM_NAME": "Timelost Rum",
 		"TINKERSSATCHEL_TIMELOSTRUM_PICKUP": "Chance to shoot temporal echoes of projectiles. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
-		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
+		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. Melee attacks gain an equal chance to hit after a delay for {2} of the attack damage. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
 		"TINKERSSATCHEL_TIMELOSTRUM_LORE": "What's left of the label reads: \"『?ROC??K」 and 【S?TO?NE』!\"",
 		
 

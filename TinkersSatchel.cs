@@ -58,6 +58,19 @@ namespace ThinkInvisible.TinkersSatchel {
             var earlyLoad = new[] { CommonCode.instance };
             T2Module.SetupAll_PluginAwake(earlyLoad);
             T2Module.SetupAll_PluginAwake(allModules.Except(earlyLoad));
+
+            foreach(var mod in allModules.Except(earlyLoad)) {
+                if(mod is Item item) {
+                    item.itemDef.requiredExpansion = item.itemTier switch {
+                        RoR2.ItemTier.VoidTier1 or RoR2.ItemTier.VoidTier2 or RoR2.ItemTier.VoidTier3 => CommonCode.voidExpansionDef,
+                        _ => CommonCode.expansionDef,
+                    };
+                } else if(mod is Equipment equipment) {
+                    equipment.equipmentDef.requiredExpansion = CommonCode.expansionDef;
+                } else if(mod is Artifact artifact) {
+                    artifact.artifactDef.requiredExpansion = CommonCode.expansionDef;
+                }
+            }
         }
 
         private void UnstubShaders() {

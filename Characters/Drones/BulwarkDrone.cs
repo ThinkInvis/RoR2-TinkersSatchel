@@ -15,13 +15,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        public GameObject bulwarkDroneInteractablePrefab;
-        public GameObject bulwarkDroneBodyPrefab;
-        public GameObject bulwarkDroneMasterPrefab;
-        public InteractableSpawnCard bulwarkDroneSpawnCard;
-        public DirectorCard bulwarkDroneDirectorCard;
-        public GameObject bulwarkDronePanelPrefab;
-        public DirectorAPI.DirectorCardHolder bulwarkDroneDCH;
+        public GameObject bulwarkDroneInteractablePrefab { get; private set; }
+        public GameObject bulwarkDroneBodyPrefab { get; private set; }
+        public GameObject bulwarkDroneMasterPrefab { get; private set; }
+        public InteractableSpawnCard bulwarkDroneSpawnCard { get; private set; }
+        public DirectorCard bulwarkDroneDirectorCard { get; private set; }
+        public DirectorAPI.DirectorCardHolder bulwarkDroneDCH { get; private set; }
+        internal CommonCode.ConditionalDirectorCardHolder bulwarkDroneCDCH { get; private set; }
 
 
 
@@ -38,11 +38,11 @@ namespace ThinkInvisible.TinkersSatchel {
             bulwarkDroneInteractablePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Characters/BulwarkDrone/BulwarkDroneBroken.prefab");
             ModifyInteractablePrefabWithVanillaAssets();
 
+            SetupSpawnCard();
+
             ContentAddition.AddBody(bulwarkDroneBodyPrefab);
             ContentAddition.AddMaster(bulwarkDroneMasterPrefab);
             ContentAddition.AddNetworkedObject(bulwarkDroneInteractablePrefab);
-
-            SetupSpawnCard();
         }
 
         public override void SetupBehavior() {
@@ -57,7 +57,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             On.EntityStates.Drone.DeathState.OnImpactServer += DeathState_OnImpactServer;
 
-            DirectorAPI.Helpers.AddNewInteractable(bulwarkDroneDCH);
+            CommonCode.dchList.Add(bulwarkDroneCDCH);
             if(ClassicStageInfo.instance)
                 DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -67,7 +67,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             On.EntityStates.Drone.DeathState.OnImpactServer -= DeathState_OnImpactServer;
 
-            DirectorAPI.Helpers.RemoveExistingInteractable(bulwarkDroneDirectorCard.spawnCard.name);
+            CommonCode.dchList.Remove(bulwarkDroneCDCH);
             if(ClassicStageInfo.instance)
                 DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -170,7 +170,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 spawnCard = bulwarkDroneSpawnCard,
                 minimumStageCompletions = 0,
                 preventOverhead = false,
-                selectionWeight = 4, //equip drone is 2, normal drones are 7
+                selectionWeight = 9999,//4, //equip drone is 2, normal drones are 7
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             bulwarkDroneDCH = new DirectorAPI.DirectorCardHolder {
@@ -178,6 +178,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 InteractableCategory = DirectorAPI.InteractableCategory.Drones,
                 MonsterCategory = DirectorAPI.MonsterCategory.Invalid
             };
+            bulwarkDroneCDCH = new(bulwarkDroneDCH, CommonCode.expansionDef);
         }
 
 
