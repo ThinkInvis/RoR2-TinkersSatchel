@@ -48,7 +48,7 @@ namespace ThinkInvisible.TinkersSatchel {
         internal RoR2.Stats.StatDef whiffsStatDef;
         public GameObject idrPrefab { get; private set; }
         public GameObject projectilePrefab { get; private set; }
-        HashSet<System.WeakReference<OverlapAttack>> firedAttacks = new();
+        readonly HashSet<System.WeakReference<OverlapAttack>> firedAttacks = new();
         const float GC_INTERVAL = 2f;
         float _gcStopwatch;
 
@@ -225,6 +225,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
 
             On.EntityStates.Huntress.ArrowRain.DoFireArrowRain -= ArrowRain_DoFireArrowRain;
             On.EntityStates.AimThrowableBase.FireProjectile -= AimThrowableBase_FireProjectile;
