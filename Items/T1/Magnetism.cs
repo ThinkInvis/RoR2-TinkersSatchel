@@ -25,10 +25,14 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Projectile magnetism angle (deg) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float rangedAmount { get; private set; } = 0.5f;
 
-        [AutoConfigRoOSlider("{0:P0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Melee lunge speed (m/s) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float meleeAmount { get; private set; } = 2f;
+        [AutoConfig("Melee draw-in range (m) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float meleeAmount { get; private set; } = 4f;
+
+        [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
+        [AutoConfig("Maximum melee draw-in pull speed (m/s).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float meleeForce { get; private set; } = 30f;
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -61,7 +65,7 @@ namespace ThinkInvisible.TinkersSatchel {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileController.Awake += ProjectileController_Awake;
+            On.RoR2.Projectile.ProjectileManager.InitializeProjectile += ProjectileManager_InitializeProjectile;
         }
 
         public override void Uninstall() {
@@ -69,7 +73,7 @@ namespace ThinkInvisible.TinkersSatchel {
             R2API.RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileController.Awake -= ProjectileController_Awake;
+            On.RoR2.Projectile.ProjectileManager.InitializeProjectile -= ProjectileManager_InitializeProjectile;
         }
 
 
@@ -84,10 +88,15 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             averageHitboxCentroid /= self.hitBoxGroup.hitBoxes.Length;
             if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var ownerBody) && (ownerBody.coreTransform.position - averageHitboxCentroid).sqrMagnitude < 25f && ownerBody.characterMotor && ownerBody.characterDirection) {
-                var boostVec = ownerBody.characterDirection.forward;
-                boostVec.z = 0f;
-                boostVec = boostVec.normalized;
-                ownerBody.characterMotor.velocity += boostVec * GetCount(ownerBody) * meleeAmount;
+                var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
+                var maxRange = meleeAmount * GetCount(ownerBody);
+                foreach(var t in targets) {
+                    if(!t.body || !t.body.characterMotor) continue;
+                    var towardsVec = t.body.corePosition - averageHitboxCentroid;
+                    if(towardsVec.magnitude < maxRange && t.body) {
+                        t.body.characterMotor.velocity += meleeForce * towardsVec.normalized * (towardsVec.magnitude / maxRange);
+                    }
+                }
             }
             return retv;
         }
@@ -117,36 +126,68 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
         }
 
-        private void ProjectileController_Awake(On.RoR2.Projectile.ProjectileController.orig_Awake orig, RoR2.Projectile.ProjectileController self) {
-            orig(self);
-            if(!self.owner || !self.owner.TryGetComponent<CharacterBody>(out var cb) || !self.TryGetComponent<TeamFilter>(out _) || self.TryGetComponent<RoR2.Projectile.MissileController>(out _)) return;
+        private void ProjectileManager_InitializeProjectile(On.RoR2.Projectile.ProjectileManager.orig_InitializeProjectile orig, RoR2.Projectile.ProjectileController projectileController, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
+            orig(projectileController, fireProjectileInfo);
+
+            if(!fireProjectileInfo.owner || !fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var cb) || projectileController.TryGetComponent<RoR2.Projectile.MissileController>(out _)) return;
             var count = GetCount(cb);
             if(count == 0) return;
 
-            if(!self.TryGetComponent<RoR2.Projectile.ProjectileTargetComponent>(out _))
-                self.gameObject.AddComponent<RoR2.Projectile.ProjectileTargetComponent>();
+            var bs = new BullseyeSearch {
+                maxAngleFilter = count * rangedAmount,
+                maxDistanceFilter = 500f,
+                teamMaskFilter = TeamMask.allButNeutral,
+                filterByLoS = true,
+                searchOrigin = fireProjectileInfo.position,
+                searchDirection = fireProjectileInfo.rotation * Vector3.forward,
+                sortMode = BullseyeSearch.SortMode.Angle
+            };
+            bs.teamMaskFilter.RemoveTeam(cb.teamComponent.teamIndex);
+            bs.RefreshCandidates();
+            var res = bs.GetResults();
+            if(!res.Any()) return;
+            var magTarget = res.First();
 
-            if(!self.TryGetComponent<RoR2.Projectile.ProjectileDirectionalTargetFinder>(out var pdtf)) {
-                pdtf = self.gameObject.AddComponent<RoR2.Projectile.ProjectileDirectionalTargetFinder>();
-                pdtf.lookRange = 500f;
-                pdtf.lookCone = 0f;
-                pdtf.onlySearchIfNoTarget = false;
-                pdtf.allowTargetLoss = true;
-                pdtf.testLoS = true;
-                pdtf.ignoreAir = false;
+            if(!projectileController.TryGetComponent<TeamFilter>(out _)) {
+                var tf = projectileController.gameObject.AddComponent<TeamFilter>();
+                tf.teamIndex = cb.teamComponent.teamIndex;
             }
-            pdtf.lookCone += count * rangedAmount;
 
-            if(!self.TryGetComponent<RoR2.Projectile.ProjectileSteerTowardTarget>(out _)) {
-                var pstt = self.gameObject.AddComponent<RoR2.Projectile.ProjectileSteerTowardTarget>();
-                pstt.rotationSpeed = 90f;
-                pstt.yAxisOnly = false;
-            }
+            if(!projectileController.TryGetComponent<RoR2.Projectile.ProjectileTargetComponent>(out var ptc))
+                ptc = projectileController.gameObject.AddComponent<RoR2.Projectile.ProjectileTargetComponent>();
+            ptc.target = magTarget.transform;
+
+            projectileController.gameObject.AddComponent<ProjectileForceTowardsTarget>();
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args) {
             if(!sender) return;
             args.critAdd += GetCount(sender) * critAmount;
+        }
+    }
+
+    [RequireComponent(typeof(RoR2.Projectile.ProjectileController))]
+    [RequireComponent(typeof(RoR2.Projectile.ProjectileTargetComponent))]
+    public class ProjectileForceTowardsTarget : MonoBehaviour {
+        RoR2.Projectile.ProjectileController controller;
+        RoR2.Projectile.ProjectileTargetComponent target;
+
+        public float minSpeed = 30f;
+        public float angularAccel = 360f;
+
+        void Awake() {
+            controller = GetComponent<RoR2.Projectile.ProjectileController>();
+            target = GetComponent<RoR2.Projectile.ProjectileTargetComponent>();
+        }
+
+        void FixedUpdate() {
+            if(target.target) {
+                var currentSpeed = controller.rigidbody.velocity.magnitude;
+                if(currentSpeed < minSpeed) {
+                    controller.rigidbody.velocity *= currentSpeed / minSpeed;
+                }
+                controller.rigidbody.velocity = Vector3.RotateTowards(controller.rigidbody.velocity, (target.target.position - controller.rigidbody.position).normalized * minSpeed, angularAccel * Mathf.PI / 180f, 0f);
+            }
         }
     }
 }
