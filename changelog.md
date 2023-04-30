@@ -2,6 +2,46 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.0**
+
+- New content:
+	- Items
+		- Ferrofluid (T1): Your attacks become slightly magnetic and gain crit chance.
+		- Concentrating Alembic (Lunar): Gain debuff strength and duration... BUT lose reach.
+	- Equipments
+		- Stamina Bar: Perform up to 3 dodge rolls.
+- Balance pass:
+	- Macho Moustache
+		- Reworked. *Boring and completely non-situational global-damage-for-free item, meet woefully unexplored debuff mechanic!*
+			- New behavior: Chance to Taunt enemies on hit. Receive less knockback and slightly less damage from Taunted enemies.
+			- Old behavior: Deal more global damage based on number of enemies in combat.
+	- Villainous Visage
+		- Reworked.
+			- New behavior: Brief stealth after killing Elites and Bosses; attacking breaks this stealth and adds a stacking damage bonus to the attack.
+			- Old behavior: Brief damage bonus after entering combat, recharges out of combat.
+	- Bismuth Tonic
+		- Reworked.
+			- New behavior: Reduce duration of both debuffs and buffs.
+			- Old behavior: Take less damage from one of normal, elite, or boss enemies after being struck, but more from the other types.
+	- Lemurian's Claw
+		- Now reduces cost by 50% (configurable) instead of making purchases free.
+	- *The following changes are intended to give some specialized items weak effects on otherwise incompatible builds.*
+		- Extendo-Arms
+			- Reduced damage bonus to 6.25% (was 7.5%).
+			- Damage bonus now applies to all attacks (previously melee-only).
+			- Now applies a 7.5% speed increase to projectile attacks per stack.
+			- Now applies a 7.5% range increase to hitscan attacks per stack.
+		- Sturdy Mug
+			- Now adds a chance (equal to multishot chance) for melee swings to fire an inaccurate projectile for 25% relative damage.
+		- Timelost Rum
+			- Now adds a chance (equal to multishot chance) for melee hits to hit again after a delay for 25% relative damage.
+		- Pinball Wizard
+			- Now adds a chance (equal to projectile ricochet chance) for melee hits to fire a pinball projectile for 50% relative damage.
+- Tinker's Satchel now exposes expansion entries in lobby UI, which control whether ALL mod content (except skills) appears per run.
+- Cardboard Box, Quantum Recombobulator, and Lemurian's Claw now work on tier-2 category chests.
+- Slightly improved the icons for Artifact of Reconfiguration.
+- Backend: Some of the CommonCode file has been split into separate files.
+
 **3.9.1**
 
 - Fixed Scavenger's Rucksack (equipment slot swapping), RC Controller (ping AI override), and Nautilus Protocol (ping detonation) not working for clients in multiplayer.

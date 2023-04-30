@@ -14,13 +14,13 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 42 items/equipments:
-	- 7 tier-1,
+- 45 items/equipments:
+	- 8 tier-1,
 	- 8 tier-2,
 	- 7 tier-3,
 	- 1 boss item,
-	- 5 equipments,
-	- 4 lunar items,
+	- 6 equipments,
+	- 5 lunar items,
 	- 4 lunar equipments,
 	- 3 tier-1 void,
 	- 3 tier-2 void,
@@ -53,14 +53,21 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extendoArmsIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Extendo-Arms</b><br>
-				Close-range attacks reach farther and deal slightly more damage.
+				Attacks reach farther and deal slightly more damage.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/magnetismIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Ferrofluid</b><br>
+				Your attacks become slightly magnetic and gain crit chance.
 			</td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/moustacheIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Macho Moustache</b><br>
-				The bigger the fight, the higher your damage.
+				Chance to Taunt on hit. Resist Taunted enemies.
 			</td>
 		</tr>
 		<tr>
@@ -258,13 +265,20 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/dodgeIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Stamina Bar</b><br>
+				Perform up to 3 dodge rolls. <small>[Cooldown: 10 s]</small>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Lunar Items</h3></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/bismuthFlaskIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Bismuth Tonic</b><br>
-				Gain resistance when hit by one enemy type... <i>BUT gain weakness to the others.</i>
+				Reduce duration of debuffs... <i>BUT also reduce duration of buffs.</i>
 			</td>
 		</tr>
 		<tr>
@@ -272,6 +286,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Celestial Gambit</b><br>
 				Gain an extra item reward from teleporters... <i>BUT jumping for too long gives the item to enemies instead.</i>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/concentratingAlembicIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Concentrating Alembic</b><br>
+				Gain debuff strength and duration... <i>BUT lose reach.</i>
 			</td>
 		</tr>
 		<tr>
@@ -361,7 +382,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/timelostRumIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Timelost Rum</b> (T1)<br>
-				Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.
+				Chance to cause temporal echoes of attacks. Corrupts all Sturdy Mugs.
 			</td>
 		</tr>
 		<tr>
@@ -375,7 +396,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/enterCombatDamageIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Villainous Visage</b> (T1)<br>
-				Deal more damage when given time to plot. Corrupts all Macho Moustaches.
+				Briefly stealth for a damage boost after killing powerful opponents. Corrupts all Macho Moustaches.
 			</td>
 		</tr>
 		<tr>
@@ -559,6 +580,46 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.0**
+
+- New content:
+	- Items
+		- Ferrofluid (T1): Your attacks become slightly magnetic and gain crit chance.
+		- Concentrating Alembic (Lunar): Gain debuff strength and duration... BUT lose reach.
+	- Equipments
+		- Stamina Bar: Perform up to 3 dodge rolls.
+- Balance pass:
+	- Macho Moustache
+		- Reworked. *Boring and completely non-situational global-damage-for-free item, meet woefully unexplored debuff mechanic!*
+			- New behavior: Chance to Taunt enemies on hit. Receive less knockback and slightly less damage from Taunted enemies.
+			- Old behavior: Deal more global damage based on number of enemies in combat.
+	- Villainous Visage
+		- Reworked.
+			- New behavior: Brief stealth after killing Elites and Bosses; attacking breaks this stealth and adds a stacking damage bonus to the attack.
+			- Old behavior: Brief damage bonus after entering combat, recharges out of combat.
+	- Bismuth Tonic
+		- Reworked.
+			- New behavior: Reduce duration of both debuffs and buffs.
+			- Old behavior: Take less damage from one of normal, elite, or boss enemies after being struck, but more from the other types.
+	- Lemurian's Claw
+		- Now reduces cost by 50% (configurable) instead of making purchases free.
+	- *The following changes are intended to give some specialized items weak effects on otherwise incompatible builds.*
+		- Extendo-Arms
+			- Reduced damage bonus to 6.25% (was 7.5%).
+			- Damage bonus now applies to all attacks (previously melee-only).
+			- Now applies a 7.5% speed increase to projectile attacks per stack.
+			- Now applies a 7.5% range increase to hitscan attacks per stack.
+		- Sturdy Mug
+			- Now adds a chance (equal to multishot chance) for melee swings to fire an inaccurate projectile for 25% relative damage.
+		- Timelost Rum
+			- Now adds a chance (equal to multishot chance) for melee hits to hit again after a delay for 25% relative damage.
+		- Pinball Wizard
+			- Now adds a chance (equal to projectile ricochet chance) for melee hits to fire a pinball projectile for 50% relative damage.
+- Tinker's Satchel now exposes expansion entries in lobby UI, which control whether ALL mod content (except skills) appears per run.
+- Cardboard Box, Quantum Recombobulator, and Lemurian's Claw now work on tier-2 category chests.
+- Slightly improved the icons for Artifact of Reconfiguration.
+- Backend: Some of the CommonCode file has been split into separate files.
+
 **3.9.1**
 
 - Fixed Scavenger's Rucksack (equipment slot swapping), RC Controller (ping AI override), and Nautilus Protocol (ping detonation) not working for clients in multiplayer.
@@ -657,16 +718,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed an issue where Item Drone was not respecting the FakeInventory item blacklist under some circumstances. Resolves a bug with Standalone Ancient Scepter et al.
 - Implemented a slightly cleaner solution to keeping Timelost Rum projectile tracer effects in worldspace (also used in Old War Lidar rework).
 - Updated TILER2 dependency to 7.3.4.
-
-**3.6.0**
-
-- Balance pass:
-	- Fudge Dice now provides 10 luck (configurable) on affected rolls, instead of guaranteeing a success. This is intended to prevent an inordinate effect this item was having on very-low-chance events, such as Aspect equipment drops.
-	- Kintsugi now counts itself as a broken/consumed item by default (so it will never have zero effect).
-	- Gup Ray now also debuffs its targets' move and attack speed by 50% per split (configurable, exponential).
-- Restored missing chunks of the Taunt effect description.
-- 🌧︎ Fixed a typo that was preventing the Scavenger's Rucksack movement grace period from working.
-- Fixed Timelost Rum proc chance displaying in its description as 1/100 of the actual value.
-- Updated R2API dependency to 5.0.6 (now using split assembly).
-- Updated TILER2 dependency to 7.3.3.
-- Updated BepInExPack dependency to 5.4.2103.

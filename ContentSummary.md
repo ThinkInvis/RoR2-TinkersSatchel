@@ -34,7 +34,7 @@
 				<b>Sturdy Mug</b><br>
 				<details>
 					<summary>Chance to shoot extra, unpredictable projectiles.</summary>
-					<small>All projectile attacks gain a 10% (+10% per stack) chance to fire an extra copy with 17.5&deg; of inaccuracy.</small>
+					<small>All projectile attacks gain a 10% (+10% per stack) chance to fire an extra copy with 17.5&deg; of inaccuracy. Melee attacks gain an equal chance to fire a weak projectile for 25% of the attack damage.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -63,12 +63,12 @@
 			<td>
 				<b>Macho Moustache</b><br>
 				<details>
-					<summary>The bigger the fight, the higher your damage.</summary>
-					<small>Gain 1% damage (+1% per stack, linear) per in-combat or in-danger enemy within 100 m. Elites count as 2 enemies, bosses count as 3 enemies, and elite bosses count as 4 enemies.</small>
+					<summary>Chance to Taunt on hit. Resist Taunted enemies.</summary>
+					<small>4% (+4% per stack) chance on hit to Taunt enemies for 5 seconds. Also receive 15% reduced damage and 50% reduced knockback from Taunted enemies.</small>
 				</details>
 			</td>
 			<td><ul>
-				<li><details><summary>Unlock (spoilers!):</summary>Be in a fight with a score of 30 or more (scored as if you had 1 stack of this item).</details></li>
+				<li><details><summary>Unlock (spoilers!):</summary>Be within 100 m of 30+ in-combat and/or in-danger enemies.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -103,11 +103,24 @@
 			<td>
 				<b>Extendo-Arms</b><br>
 				<details>
-					<summary>Close-range attacks reach farther and deal slightly more damage.</summary>
-					<small>All your melee attacks, as well as AoEs centered within 5.0 meters of you, gain 12.5% range (+12.5% per stack) and 6.25% damage (+6.25% per stack).</small>
+					<summary>Attacks reach farther and deal slightly more damage.</summary>
+					<small>Gain 12.5% range/radius (+12.5% per stack) for melee attacks and AoEs within 5 meters of you, 7.5% speed (+7.5% per stack) for projectile attacks, and 7.5% maximum range (+7.5% per stack) for hitscan attacks. Also gain 5% damage (+5% per stack).</small>
 				</details>
 			</td>
 			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/magnetismIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Ferrofluid</b><br>
+				<details>
+					<summary>Your attacks become slightly magnetic and gain crit chance.</summary>
+					<small>Your projectile attacks track towards enemies within 0.25&deg; (+0.25&deg; per stack). Your melee attacks pull in enemies within 2 m (+2 per stack). Also gain 2.5% crit chance (+2.5% per stack).</small>
+				</details>
+			</td>
+			<td><ul>
+				<li>Melee pull strength is fixed at 30 m/s with linear falloff.</li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -242,7 +255,7 @@
 				<b>Pinball Wizard</b><br>
 				<details>
 					<summary>Projectiles may bounce and home.</summary>
-					<small>All your projectile attacks have a 15% chance to bounce, exploding one extra time and homing towards a random enemy with 50% of their original damage. Can happen up to 3 times (+2 per stack) per projectile.</small>
+					<small>All your projectile attacks have a 15% chance to bounce, exploding one extra time and homing towards a random enemy with 50% of their original damage. Can happen up to 3 times (+2 per stack) per projectile. Melee attacks gain an equal chance to fire a weak projectile for 50% of the attack damage.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -410,6 +423,17 @@
 			</ul></td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/dodgeIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Stamina Bar</b><br>
+				<details>
+					<summary>Perform up to 3 dodge rolls. <small>[Cooldown: 10 s]</small></summary>
+					<small>Perform a horizontal dodge, gaining a burst of speed of 45 m/s and becoming invulnerable for 0.5 second(s). This equipment holds 3 times as many charges.</small>
+				</details>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Lunar Items</h3></td>
 		</tr>
 		<tr>
@@ -417,8 +441,8 @@
 			<td>
 				<b>Bismuth Tonic</b><br>
 				<details>
-					<summary>Gain resistance when hit by one enemy type... <i>BUT gain weakness to the others.</i></summary>
-					<small>On being hit by one type of enemy: take 12.5% less damage from subsequent attacks from that type, but 12.5% more damage from all other types. Wears off after 10 seconds.</small>
+					<summary>Reduce duration of debuffs... <i>BUT also reduce duration of buffs.</i></summary>
+					<small>Any debuffs inflicted on you last 87.5% as long. Any buffs inflicted on you last 90% as long.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -431,6 +455,18 @@
 				<details>
 					<summary>Gain an extra item reward from teleporters... <i>BUT jumping for too long gives the item to enemies instead.</i></summary>
 					<small>The teleporter boss drops 1 extra item when killed (+1 per stack). As long as you remain in midair while the teleporter is charging, these extra items will gradually be lost and given to all enemies within the teleporter zone. All extra items will be lost after 20 seconds.</small>
+				</details>
+			</td>
+			<td><ul>
+			</ul></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/concentratingAlembicIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Concentrating Alembic</b><br>
+				<details>
+					<summary>Gain debuff strength and duration... <i>BUT lose reach.</i></summary>
+					<small>Your ignites and bleeds deal +25% damage, and all debuffs inflicted on enemies last 25% longer. Your melee attacks and blast attacks have 10% reduced range/radius, your projectiles move 10% slower, and your hitscan attacks have 10% reduced range.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -520,8 +556,8 @@
 			<td>
 				<b>Villainous Visage</b> (T1)<br>
 				<details>
-				<summary>Deal more damage when given time to plot. Corrupts all Macho Moustaches.</summary>
-				<small>While out of combat, build up a damage buff that will last 2 seconds once in combat. Builds 3% damage per second (+3% per stack), up to 15% (+15% per stack). Corrupts all Macho Moustaches.</small>
+				<summary>Briefly stealth for a damage boost after killing powerful opponents. Corrupts all Macho Moustaches.</summary>
+				<small>Killing an elite enemy or a boss causes you to gain invisibility for 1.3 seconds. Attacking while invisible due to this item breaks stealth and deals +13% damage (+13% per stack). Corrupts all Macho Moustaches.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -533,8 +569,8 @@
 			<td>
 				<b>Timelost Rum</b> (T1)<br>
 				<details>
-				<summary>Chance to shoot temporal echoes of projectiles. Corrupts all Sturdy Mugs.</summary>
-				<small>All projectile attacks gain a 10% (+10% per stack) chance to fire an extra copy with 0.5 s of delay. Corrupts all Sturdy Mugs.</small>
+				<summary>Chance to cause temporal echoes of attacks. Corrupts all Sturdy Mugs.</summary>
+				<small>All projectile attacks gain a 10% (+10% per stack) chance to fire an extra copy with 0.5 s of delay. Melee attacks gain an equal chance to hit after a delay for 25% of the attack damage. Corrupts all Sturdy Mugs.</small>
 				</details>
 			</td>
 			<td><ul>
