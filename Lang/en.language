@@ -263,10 +263,10 @@
 		"TINKERSSATCHEL_WRANGLER_LORE": "",
 
 
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_NAME": "Villainous Visage",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_PICKUP": "Briefly stealth for a damage boost after killing powerful opponents. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_DESC": "Killing an elite enemy or a boss causes you to gain <style=cIsUtility>invisibility</style> for <style=cIsUtility>{0} seconds</style>. Attacking while <style=cIsUtility>invisible</style> due to this item breaks stealth and deals <style=cIsDamage>+{1} damage <style=cStack>(+{1} per stack)</style></style>",
-		"TINKERSSATCHEL_ENTERCOMBATDAMAGE_LORE": "",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_NAME": "Villainous Visage",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_PICKUP": "Briefly stealth for a damage boost after killing powerful opponents. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_DESC": "Killing an elite enemy or a boss causes you to gain <style=cIsUtility>invisibility</style> for <style=cIsUtility>{0} seconds</style>. Attacking while <style=cIsUtility>invisible</style> due to this item breaks stealth and deals <style=cIsDamage>+{1} damage <style=cStack>(+{1} per stack)</style></style>",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_LORE": "",
 		
 		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "Obsidian Brooch",
 		"TINKERSSATCHEL_OBSIDIANBROOCH_PICKUP": "Chance to spread DoTs on hit. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.",
