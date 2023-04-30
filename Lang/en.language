@@ -223,7 +223,7 @@
 		
 		"TINKERSSATCHEL_PINBALL_NAME": "Pinball Wizard",
 		"TINKERSSATCHEL_PINBALL_PICKUP": "Projectiles may bounce and home.",
-		"TINKERSSATCHEL_PINBALL_DESC": "All your projectile attacks have a {0} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{1} of their original damage</style>. Can happen up to <style=cIsDamage>{2} times <style=cStack>(+{3} per stack)</style></style> per projectile.",
+		"TINKERSSATCHEL_PINBALL_DESC": "All your projectile attacks have a {0} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{1} of their original damage</style>. Can happen up to <style=cIsDamage>{2} times <style=cStack>(+{3} per stack)</style></style> per projectile. Melee attacks gain an equal chance to fire a weak projectile for {4} of the attack damage.",
 		"TINKERSSATCHEL_PINBALL_LORE": "Ding! Ding! Ding! Ding!",
 		"ACHIEVEMENT_TKSAT_PINBALL_NAME": "Woe, Explosions Be Upon Ye",
 		"ACHIEVEMENT_TKSAT_PINBALL_DESCRIPTION": "Item Set: Damage-on-kill. Have 3 or more (of 6) at once.",

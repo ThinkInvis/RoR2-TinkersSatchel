@@ -19,7 +19,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
 		protected override string[] GetDescStringArgs(string langID = null) => new[] {
-			(bounceChance/100f).ToString("0%"), bounceDamageFrac.ToString("0%"), baseBounces.ToString("N0"), stackBounces.ToString("N0")
+			(bounceChance/100f).ToString("0%"), bounceDamageFrac.ToString("0%"), baseBounces.ToString("N0"), stackBounces.ToString("N0"), meleeProjectileDamage.ToString("0%")
 		};
 
 
@@ -56,6 +56,11 @@ namespace ThinkInvisible.TinkersSatchel {
 			AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
 		public string blacklistedProjectiles { get; private set; } = "TreebotFlower1, TreebotFlower2, TreebotFlowerSeed";
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+		[AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		public float meleeProjectileDamage { get; private set; } = 0.5f;
+
 
 
 		////// Other Fields/Properties //////
@@ -65,6 +70,10 @@ namespace ThinkInvisible.TinkersSatchel {
 		internal static UnlockableDef unlockable;
 		public HashSet<string> projectileNameBlacklist { get; private set; } = new HashSet<string>();
 		public GameObject idrPrefab { get; private set; }
+		public GameObject projectilePrefab { get; private set; }
+		readonly HashSet<System.WeakReference<OverlapAttack>> firedAttacks = new();
+		const float GC_INTERVAL = 2f;
+		float _gcStopwatch;
 
 
 
@@ -194,6 +203,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void SetupAttributes() {
 			base.SetupAttributes();
 
+			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/PinballProjectile.prefab");
+
 			bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
 				.WaitForCompletion();
 
@@ -235,6 +246,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact += ProjectileSingleTargetImpact_OnProjectileImpact;
             On.RoR2.Projectile.ProjectileExplosion.Detonate += ProjectileExplosion_Detonate;
             On.RoR2.BulletAttack.ProcessHitList += BulletAttack_ProcessHitList;
+            On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
+            On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
 		}
 
         public override void Uninstall() {
@@ -244,11 +257,48 @@ namespace ThinkInvisible.TinkersSatchel {
 			On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact -= ProjectileSingleTargetImpact_OnProjectileImpact;
 			On.RoR2.Projectile.ProjectileExplosion.Detonate -= ProjectileExplosion_Detonate;
 			On.RoR2.BulletAttack.ProcessHitList -= BulletAttack_ProcessHitList;
+			On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
+			On.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
 		}
 
 
 
 		////// Hooks //////
+
+		private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
+			orig(self);
+			_gcStopwatch -= Time.fixedDeltaTime;
+			if(_gcStopwatch <= 0f) {
+				firedAttacks.RemoveWhere(r => !r.TryGetTarget(out _));
+				_gcStopwatch = GC_INTERVAL;
+			}
+		}
+
+		private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HurtBox> hitResults) {
+			var retv = orig(self, hitResults);
+			if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
+				&& !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
+				var count = GetCount(attackerBody);
+				if(count > 0) {
+					if(Util.CheckRoll(bounceChance, attackerBody.master)) {
+						ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
+							crit = attackerBody.RollCrit(),
+							damage = self.damage * meleeProjectileDamage,
+							damageColorIndex = DamageColorIndex.Item,
+							force = 0f,
+							owner = self.attacker,
+							rotation = Quaternion.Euler(rng.nextNormalizedFloat * 360f, rng.nextNormalizedFloat * 360f, rng.nextNormalizedFloat * 360f),
+							position = attackerBody.corePosition,
+							procChainMask = self.procChainMask,
+							projectilePrefab = projectilePrefab
+						});
+					}
+
+					firedAttacks.Add(new(self));
+				}
+			}
+			return retv;
+		}
 
 		private GameObject BulletAttack_ProcessHitList(On.RoR2.BulletAttack.orig_ProcessHitList orig, BulletAttack self, List<BulletAttack.BulletHit> hits, ref Vector3 endPosition, List<GameObject> ignoreList) {
 			var retv = orig(self, hits, ref endPosition, ignoreList);
