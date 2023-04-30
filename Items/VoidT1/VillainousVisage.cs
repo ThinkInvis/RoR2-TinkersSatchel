@@ -38,6 +38,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         public BuffDef activeBuff { get; private set; }
+        public BuffDef minStealthBuff { get; private set; }
         public Sprite buffIconResource;
         public GameObject idrPrefab { get; private set; }
 
@@ -184,6 +185,13 @@ namespace ThinkInvisible.TinkersSatchel {
             activeBuff.iconSprite = buffIconResource;
             ContentAddition.AddBuffDef(activeBuff);
 
+            minStealthBuff = ScriptableObject.CreateInstance<BuffDef>();
+            minStealthBuff.canStack = false;
+            minStealthBuff.isDebuff = false;
+            minStealthBuff.name = "TKSATVillainousVisageIcd";
+            minStealthBuff.isHidden = true;
+            ContentAddition.AddBuffDef(minStealthBuff);
+
             itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
                 .WaitForCompletion();
 
@@ -220,16 +228,20 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport) {
-            if(damageReport.attackerBody && GetCount(damageReport.attackerBody) > 0) {
-                damageReport.attackerBody.AddTimedBuff(RoR2Content.Buffs.Cloak, buffDuration);
-                damageReport.attackerBody.AddTimedBuff(activeBuff, buffDuration);
+            if(damageReport.attackerMaster && GetCount(damageReport.attackerMaster) > 0) {
+                var body = damageReport.attackerMaster.GetBody();
+                if(body) {
+                    body.AddTimedBuff(RoR2Content.Buffs.Cloak, buffDuration);
+                    body.AddTimedBuff(activeBuff, buffDuration);
+                    body.AddTimedBuff(minStealthBuff, 0.13f);
+                }
             }
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && attackerBody.HasBuff(activeBuff)) {
-                attackerBody.RemoveBuff(activeBuff);
-                attackerBody.RemoveBuff(RoR2Content.Buffs.Cloak);
+            if(damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && attackerBody.HasBuff(activeBuff) && !attackerBody.HasBuff(minStealthBuff)) {
+                attackerBody.ClearTimedBuffs(activeBuff);
+                attackerBody.ClearTimedBuffs(RoR2Content.Buffs.Cloak);
                 damageInfo.damage *= 1f + GetCount(attackerBody) * damageFrac;
             }
             orig(self, damageInfo);
