@@ -2,6 +2,12 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.1**
+
+- Added the Moddable Equipment Slot Max Charges Patch, which allows easier change of maximum equipment charges per slot.
+	- Fixes Stamina Bar applying triple max charges to ALL equipments while enabled.
+- Added Sturdy Mug custom projectiles to some ranged skills which did not previously support the item.
+
 **4.0.0**
 
 - New content:

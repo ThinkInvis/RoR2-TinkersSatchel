@@ -860,5 +860,9 @@
 			<td><b>Equipment Drone Labels</b></td>
 			<td>If enabled, this module will apply the same naming scheme that Item Drones have ("Item Drone (colored name of item)") to vanilla Equipment Drones ("Equipment Drone (colored name of equipment)").</td>
 		</tr>
+		<tr>
+			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
+			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; cannot be disabled.</td>
+		</tr>
 	</tbody>
 </table>
