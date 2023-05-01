@@ -144,7 +144,7 @@
 
 		"TINKERSSATCHEL_MUG_NAME": "Sturdy Mug",
 		"TINKERSSATCHEL_MUG_PICKUP": "Chance to shoot extra, unpredictable projectiles.",
-		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>. Melee attacks gain an equal chance to fire a weak projectile for {2} of the attack damage.",
+		"TINKERSSATCHEL_MUG_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1}° of inaccuracy</style>. Melee or homing-projectile attacks gain an equal chance to fire a weak projectile for {2} or {3} of the attack damage.",
 		"TINKERSSATCHEL_MUG_LORE": "An inscription around the base reads: \"Rock and Stone!\"",
 		"ACHIEVEMENT_TKSAT_MUG_NAME": "...So I Fired Again",
 		"ACHIEVEMENT_TKSAT_MUG_DESCRIPTION": "Miss 1,000 TOTAL projectile attacks.",

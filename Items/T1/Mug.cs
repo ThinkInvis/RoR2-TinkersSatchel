@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            procChance.ToString("0%"), spreadConeHalfAngleDegr.ToString("N1"), meleeProjectileDamage.ToString("0%")
+            procChance.ToString("0%"), spreadConeHalfAngleDegr.ToString("N1"), meleeProjectileDamage.ToString("0%"), missileProjectileDamage.ToString("0%")
         };
 
 
@@ -38,6 +38,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float meleeProjectileDamage { get; private set; } = 0.25f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proportion of missile/orb attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float missileProjectileDamage { get; private set; } = 0.25f;
 
 
 
@@ -267,34 +272,37 @@ namespace ThinkInvisible.TinkersSatchel {
             ignoreStack--;
         }
 
+        void FireCustomProjectiles(CharacterBody attackerBody, float damage, ProcChainMask procChainMask) {
+            var count = GetCount(attackerBody);
+            var totalChance = count * procChance;
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.characterDirection.forward, attackerBody.transform.up);
+            for(var i = 0; i < procCount; i++) {
+                ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
+                    crit = attackerBody.RollCrit(),
+                    damage = damage,
+                    damageColorIndex = DamageColorIndex.Item,
+                    force = 0f,
+                    owner = attackerBody.gameObject,
+                    rotation = origRot * Quaternion.Euler(
+                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
+                    position = attackerBody.corePosition,
+                    procChainMask = procChainMask,
+                    projectilePrefab = projectilePrefab
+                });
+            }
+        }
+
         private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HurtBox> hitResults) {
             var retv = orig(self, hitResults);
             if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
                 && !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
-                var count = GetCount(attackerBody);
-                if(count > 0) {
+                if(GetCount(attackerBody) > 0) {
                     ignoreStack++;
 
-                    var totalChance = count * procChance;
-                    int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-                    var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.characterDirection.forward, attackerBody.transform.up);
-                    for(var i = 0; i < procCount; i++) {
-                        ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
-                            crit = attackerBody.RollCrit(),
-                            damage = self.damage * meleeProjectileDamage,
-                            damageColorIndex = DamageColorIndex.Item,
-                            force = 0f,
-                            owner = self.attacker,
-                            rotation = origRot * Quaternion.Euler(
-                                (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                                (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                                (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
-                            position = attackerBody.corePosition,
-                            procChainMask = self.procChainMask,
-                            projectilePrefab = projectilePrefab
-                        });
-                    }
-
+                    FireCustomProjectiles(attackerBody, self.damage * meleeProjectileDamage, self.procChainMask);
                     firedAttacks.Add(new(self));
 
                     ignoreStack--;
@@ -307,7 +315,10 @@ namespace ThinkInvisible.TinkersSatchel {
             var doIgnore = self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary || self is EntityStates.Mage.Weapon.ThrowIcebomb;
             if(doIgnore) ignoreStack++;
             orig(self);
-            if(doIgnore) ignoreStack--;
+            if(doIgnore) {
+                FireCustomProjectiles(self.characterBody, self.damageStat, default);
+                ignoreStack--;
+            }
         }
 
         private void FireMainBeamState_OnExit(On.EntityStates.LaserTurbine.FireMainBeamState.orig_OnExit orig, EntityStates.LaserTurbine.FireMainBeamState self) {
@@ -325,18 +336,21 @@ namespace ThinkInvisible.TinkersSatchel {
         private void FireFlower2_OnEnter(On.EntityStates.FireFlower2.orig_OnEnter orig, EntityStates.FireFlower2 self) {
             ignoreStack++;
             orig(self);
+            FireCustomProjectiles(self.characterBody, self.damageStat, default);
             ignoreStack--;
         }
 
         private void AimFlower_FireProjectile(On.EntityStates.Treebot.Weapon.AimFlower.orig_FireProjectile orig, EntityStates.Treebot.Weapon.AimFlower self) {
             ignoreStack++;
             orig(self);
+            FireCustomProjectiles(self.characterBody, self.damageStat, default);
             ignoreStack--;
         }
 
         private void TreebotFireFruitSeed_OnEnter(On.EntityStates.Treebot.TreebotFireFruitSeed.orig_OnEnter orig, EntityStates.Treebot.TreebotFireFruitSeed self) {
             ignoreStack++;
             orig(self);
+            FireCustomProjectiles(self.characterBody, self.damageStat, default);
             ignoreStack--;
         }
 
@@ -361,6 +375,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void MissileUtils_FireMissile_MyKingdomForAStruct(On.RoR2.MissileUtils.orig_FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool orig, Vector3 position, CharacterBody attackerBody, ProcChainMask procChainMask, GameObject victim, float missileDamage, bool isCrit, GameObject projectilePrefab, DamageColorIndex damageColorIndex, Vector3 initialDirection, float force, bool addMissileProc) {
             ignoreStack++;
             orig(position, attackerBody, procChainMask, victim, missileDamage, isCrit, projectilePrefab, damageColorIndex, initialDirection, force, addMissileProc);
+            FireCustomProjectiles(attackerBody, missileDamage * missileProjectileDamage, procChainMask);
             ignoreStack--;
         }
 
@@ -368,12 +383,16 @@ namespace ThinkInvisible.TinkersSatchel {
             var doIgnore = self is EntityStates.Treebot.Weapon.AimMortar2 || self is EntityStates.Captain.Weapon.CallAirstrikeBase;
             if(doIgnore) ignoreStack++;
             orig(self);
-            if(doIgnore) ignoreStack--;
+            if(doIgnore) {
+                FireCustomProjectiles(self.characterBody, self.damageStat, default);
+                ignoreStack--;
+            }
         }
 
         private void FireMortar2_Fire(On.EntityStates.Treebot.Weapon.FireMortar2.orig_Fire orig, EntityStates.Treebot.Weapon.FireMortar2 self) {
             ignoreStack++;
             orig(self);
+            FireCustomProjectiles(self.characterBody, self.damageStat, default);
             ignoreStack--;
         }
 
