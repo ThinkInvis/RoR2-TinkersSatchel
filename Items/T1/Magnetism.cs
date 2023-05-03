@@ -13,17 +13,27 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            rangedAmount.ToString("N2"), meleeAmount.ToString("N1"), critAmount.ToString("N1")
+            rangedAmountBase.ToString("N2"), rangedAmountMax.ToString("N2"), rangedAmountLambda.ToString("N0"), meleeAmount.ToString("N1"), critAmount.ToString("N1")
         };
 
 
 
         ////// Config //////
         
-        [AutoConfigRoOSlider("{0:N0}", 0f, 3f)]
+        [AutoConfigRoOSlider("{0:N0}", 0f, 5f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Projectile magnetism angle (deg) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float rangedAmount { get; private set; } = 0.25f;
+        [AutoConfig("Projectile magnetism angle (deg) at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
+        public float rangedAmountBase { get; private set; } = 1f;
+
+        [AutoConfigRoOSlider("{0:N0}", 0f, 180f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Projectile magnetism angle (deg) cap.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
+        public float rangedAmountMax { get; private set; } = 30f;
+
+        [AutoConfigRoOIntSlider("{0:N0}", 1, 200)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Number of item stacks over which projectile magnetism angle approaches its cap by half.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        public int rangedAmountLambda { get; private set; } = 50;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -106,7 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var count = GetCount(ownerBody);
                 if(count > 0) {
                     var bs = new BullseyeSearch {
-                        maxAngleFilter = count * rangedAmount,
+                        maxAngleFilter = CalculateMagnetismAngle(count),
                         maxDistanceFilter = self.maxDistance,
                         teamMaskFilter = TeamMask.allButNeutral,
                         filterByLoS = true,
@@ -134,7 +144,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(count == 0) return;
 
             var bs = new BullseyeSearch {
-                maxAngleFilter = count * rangedAmount,
+                maxAngleFilter = CalculateMagnetismAngle(count),
                 maxDistanceFilter = 500f,
                 teamMaskFilter = TeamMask.allButNeutral,
                 filterByLoS = true,
@@ -163,6 +173,14 @@ namespace ThinkInvisible.TinkersSatchel {
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args) {
             if(!sender) return;
             args.critAdd += GetCount(sender) * critAmount;
+        }
+
+
+
+        ////// Private API //////
+
+        float CalculateMagnetismAngle(int stacks) {
+            return Mathf.Lerp(rangedAmountBase, rangedAmountMax, 1f - Mathf.Pow(2, -(stacks - 1f) / rangedAmountLambda));
         }
     }
 
