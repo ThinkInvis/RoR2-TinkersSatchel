@@ -584,6 +584,16 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.2**
+
+- Balance pass:
+	- Ferrofluid
+		- Aim magnetism angle now stacks logarithmically, starting at 1 degree and approaching halfway to 30 degrees after 50 stacks. (Previously: linear, 0.25 degrees per stack).
+- Fixed Ferrofluid applying its melee push force backwards and for every frame of a melee attack, causing enemies to be flung into the stratosphere. Ferrofluid now applies a continuous vortex force while a melee hitbox is active, which is *meant* to be applied every frame.
+- Fixed Ferrofluid melee effect unintentionally working on corpses.
+- Fixed Ferrofluid melee effect unintentionally *not* working on Wisps.
+- Fixed a missing chunk of description text for Commando: Pulse Grenade.
+
 **4.0.1**
 
 - Added the Moddable Equipment Slot Max Charges Patch, which allows easier change of maximum equipment charges per slot.
@@ -654,15 +664,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - RC Controller now suppresses vanilla ping behavior while triggering an AI override (may be reverted in config).
 - Potential fix for Scavenger's Rucksack slot swapping not working in multiplayer.
 - Fixed missing Risk of Options integration on `Tinker's Satchel/Items.FudgeDice/BoostAmount`.
-
-**3.8.0**
-
-- Balance pass:
-	- Celestial Gambit:
-		- Partial rework.
-			- No longer debuffs health nor prevents jumping.
-			- Now gradually removes bonus items from the teleporter pool and gives them to enemies while the player carrying Celestial Gambit remains in midair. After 20 seconds of airtime (configurable), all bonus items will have been given to enemies.
-			- The more stacks of Celestial Gambit an airborne player has, the faster bonus items will be given to enemies.
-- Fixed Kintsugi not counting itself as a valid item.
-- Fixed Kintsugi granting 1/100 of the intended armor and crit chance bonuses.
-- Kintsugi now uses internal item names by default, but may also accept name tokens if prefixed with "@".

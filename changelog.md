@@ -2,6 +2,16 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.2**
+
+- Balance pass:
+	- Ferrofluid
+		- Aim magnetism angle now stacks logarithmically, starting at 1 degree and approaching halfway to 30 degrees after 50 stacks. (Previously: linear, 0.25 degrees per stack).
+- Fixed Ferrofluid applying its melee push force backwards and for every frame of a melee attack, causing enemies to be flung into the stratosphere. Ferrofluid now applies a continuous vortex force while a melee hitbox is active, which is *meant* to be applied every frame.
+- Fixed Ferrofluid melee effect unintentionally working on corpses.
+- Fixed Ferrofluid melee effect unintentionally *not* working on Wisps.
+- Fixed a missing chunk of description text for Commando: Pulse Grenade.
+
 **4.0.1**
 
 - Added the Moddable Equipment Slot Max Charges Patch, which allows easier change of maximum equipment charges per slot.
