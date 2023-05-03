@@ -106,7 +106,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var maxRange = meleeAmount * GetCount(ownerBody);
                 foreach(var t in targets) {
                     if(!t.body || !t.body.characterMotor) continue;
-                    var towardsVec = t.body.corePosition - averageHitboxCentroid;
+                    var towardsVec = averageHitboxCentroid - t.body.corePosition;
                     if(towardsVec.magnitude < maxRange && t.body) {
                         var falloffFactor = (towardsVec.magnitude / maxRange);
                         var targetSpeed = falloffFactor * meleeForce;
