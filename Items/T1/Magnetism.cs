@@ -105,17 +105,22 @@ namespace ThinkInvisible.TinkersSatchel {
                 var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
                 var maxRange = meleeAmount * GetCount(ownerBody);
                 foreach(var t in targets) {
-                    if(!t.body || !t.body.characterMotor) continue;
+                    if(!t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;
                     var towardsVec = averageHitboxCentroid - t.body.corePosition;
                     if(towardsVec.magnitude < maxRange && t.body) {
                         var falloffFactor = (towardsVec.magnitude / maxRange);
                         var targetSpeed = falloffFactor * meleeForce;
-                        var currentSpeed = t.body.characterMotor.velocity.magnitude;
+                        var currentVelocity = t.body.characterMotor ? t.body.characterMotor.velocity : t.body.rigidbody.velocity;
+                        var currentSpeed = currentVelocity.magnitude;
                         var angularAccel = meleeTurnForce * Mathf.PI * 2 * falloffFactor;
                         if(currentSpeed < targetSpeed) {
-                            t.body.characterMotor.velocity *= targetSpeed / currentSpeed;
+                            currentVelocity *= targetSpeed / currentSpeed;
                         }
-                        t.body.characterMotor.velocity = Vector3.RotateTowards(t.body.characterMotor.velocity, towardsVec.normalized * targetSpeed, angularAccel * Time.fixedDeltaTime, 0f);
+                        var newVelocity = Vector3.RotateTowards(currentVelocity, towardsVec.normalized * targetSpeed, angularAccel * Time.fixedDeltaTime, 0f);
+                        if(t.body.characterMotor)
+                            t.body.characterMotor.velocity = newVelocity;
+                        else
+                            t.body.rigidbody.velocity = newVelocity;
                     }
                 }
             }
