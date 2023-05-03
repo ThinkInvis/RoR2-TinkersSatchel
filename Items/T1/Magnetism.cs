@@ -213,7 +213,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(target.target) {
                 var currentSpeed = controller.rigidbody.velocity.magnitude;
                 if(currentSpeed < minSpeed) {
-                    controller.rigidbody.velocity *= currentSpeed / minSpeed;
+                    controller.rigidbody.velocity *= minSpeed / currentSpeed;
                 }
                 controller.rigidbody.velocity = Vector3.RotateTowards(controller.rigidbody.velocity, (target.target.position - controller.rigidbody.position).normalized * minSpeed, angularAccel * Mathf.PI / 180f, 0f);
             }
