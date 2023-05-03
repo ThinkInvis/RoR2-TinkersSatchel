@@ -120,7 +120,7 @@
 
 		"TINKERSSATCHEL_MAGNETISM_NAME": "Ferrofluid",
 		"TINKERSSATCHEL_MAGNETISM_PICKUP": "Your attacks become slightly magnetic and gain crit chance.",
-		"TINKERSSATCHEL_MAGNETISM_DESC": "Your projectile attacks <style=cIsUtility>track</style> towards enemies within <style=cIsUtility>{0}° (increases halfway to {1}° every {2} stacks)</style>. Your melee attacks pull in enemies within <style=cIsUtility>{3} m <style=cStack>(+{4} per stack)</style></style>. Also gain <style=cIsDamage>{5}% crit chance <style=cStack>(+{5}% per stack)</style></style>.",
+		"TINKERSSATCHEL_MAGNETISM_DESC": "Your projectile attacks <style=cIsUtility>track</style> towards enemies within <style=cIsUtility>{0}° (increases halfway to {1}° every {2} stacks)</style>. Your melee attacks pull in enemies within <style=cIsUtility>{3} m <style=cStack>(+{3} per stack)</style></style>. Also gain <style=cIsDamage>{4}% crit chance <style=cStack>(+{4}% per stack)</style></style>.",
 		"TINKERSSATCHEL_MAGNETISM_LORE": "",
 
 		"TINKERSSATCHEL_MIMIC_NAME": "Mostly-Tame Mimic",
