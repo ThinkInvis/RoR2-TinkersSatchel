@@ -44,6 +44,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Maximum melee draw-in pull speed (m/s).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float meleeForce { get; private set; } = 30f;
 
+        [AutoConfigRoOSlider("{0:N0}", 0f, 10f)]
+        [AutoConfig("Maximum melee draw-in pull angular speed (rotations/sec).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float meleeTurnForce { get; private set; } = 4f;
+
         [AutoConfigRoOSlider("{0:N0}%", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Global critical chance increase (percentage 0-100) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -104,7 +108,14 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!t.body || !t.body.characterMotor) continue;
                     var towardsVec = t.body.corePosition - averageHitboxCentroid;
                     if(towardsVec.magnitude < maxRange && t.body) {
-                        t.body.characterMotor.velocity += meleeForce * towardsVec.normalized * (towardsVec.magnitude / maxRange);
+                        var falloffFactor = (towardsVec.magnitude / maxRange);
+                        var targetSpeed = falloffFactor * meleeForce;
+                        var currentSpeed = t.body.characterMotor.velocity.magnitude;
+                        var angularAccel = meleeTurnForce * Mathf.PI * 2 * falloffFactor;
+                        if(currentSpeed < targetSpeed) {
+                            t.body.characterMotor.velocity *= targetSpeed / currentSpeed;
+                        }
+                        t.body.characterMotor.velocity = Vector3.RotateTowards(t.body.characterMotor.velocity, towardsVec.normalized * targetSpeed, angularAccel * Time.fixedDeltaTime, 0f);
                     }
                 }
             }
