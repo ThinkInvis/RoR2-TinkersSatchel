@@ -57,6 +57,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Minimum time between detonations on a single drone.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float detIcd { get; private set; } = 5f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of the void detonation attack.", AutoConfigFlags.None, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 1f;
+
 
 
         ////// Other Fields/Properties //////
@@ -246,7 +251,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 inflictor = body.gameObject,
                 position = body.corePosition,
                 procChainMask = default,
-                procCoefficient = 1f,
+                procCoefficient = NautilusProtocol.instance.procCoefficient,
                 radius = NautilusProtocol.instance.detRange,
                 teamIndex = body.teamComponent.teamIndex
             }.Fire();

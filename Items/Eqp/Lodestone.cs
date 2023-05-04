@@ -28,6 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Fraction of base damage to inflict.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float baseDamageFrac { get; private set; } = 4f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of the equipment attack.", AutoConfigFlags.None, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 1f;
+
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfig("Range for pulling enemies.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float enemyRange { get; private set; } = 40f;
@@ -340,7 +345,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         force = (vInitial - ((mcpt != null) ? mcpt.velocity : Vector3.zero)) * ((mcpt != null) ? mcpt.mass : 1f),
                         position = tcpt.body.corePosition,
                         procChainMask = default,
-                        procCoefficient = 1f
+                        procCoefficient = procCoefficient
                     });
                 }
             }

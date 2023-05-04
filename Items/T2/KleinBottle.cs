@@ -60,6 +60,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 1f;
+
 
 
         ////// Other Fields/Properties //////
@@ -307,7 +312,7 @@ namespace ThinkInvisible.TinkersSatchel {
                                         inflictor = null,
                                         position = tcpt.body.corePosition,
                                         procChainMask = default,
-                                        procCoefficient = 1f
+                                        procCoefficient = procCoefficient
                                     };
                                     debuff.InflictFloat();
                                 }

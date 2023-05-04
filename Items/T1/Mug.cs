@@ -34,6 +34,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Extra projectile chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float procChance { get; private set; } = 0.1f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient on melee projectiles.", AutoConfigFlags.DeferForever, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 0.25f;
+
         [AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -196,6 +201,8 @@ namespace ThinkInvisible.TinkersSatchel {
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
 
             projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/MugProjectile.prefab");
+
+            projectilePrefab.GetComponent<ProjectileImpactExplosion>().blastProcCoefficient = procCoefficient;
         }
 
         public override void Install() {

@@ -32,10 +32,15 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float vsPlayerScaling { get; private set; } = 0.25f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of the retaliation attack.", AutoConfigFlags.None, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 0f;
+
 
 
         ////// Other Fields/Properties //////
-        
+
         public DamageAPI.ModdedDamageType damageType;
         public GameObject idrPrefab { get; private set; }
 
@@ -215,7 +220,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     force = Vector3.zero,
                     position = attackerHC.body ? attackerHC.body.corePosition : attackerHC.transform.position,
                     procChainMask = damageInfo.procChainMask,
-                    procCoefficient = 0f
+                    procCoefficient = procCoefficient
                 };
                 di.AddModdedDamageType(damageType);
                 attackerHC.TakeDamage(di);

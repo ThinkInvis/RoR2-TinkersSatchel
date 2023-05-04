@@ -38,6 +38,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Fixed cooldown reduction per attack hit, per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float cdrPerHit { get; private set; } = 0.025f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 1f;
+
 
 
         ////// Other Fields/Properties //////
@@ -118,7 +123,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 damage = attackerBody.damage * EnPassant.instance.attackDamage * EnPassant.instance.GetCount(attackerBody),
                 hitEffectPrefab = EnPassant.instance.hitEffectPrefab,
                 isCrit = attackerBody.RollCrit(),
-                hitBoxGroup = GetComponent<HitBoxGroup>()
+                hitBoxGroup = GetComponent<HitBoxGroup>(),
+                procCoefficient = EnPassant.instance.procCoefficient
             };
         }
 

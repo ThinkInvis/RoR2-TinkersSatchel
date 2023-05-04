@@ -52,10 +52,15 @@ namespace ThinkInvisible.TinkersSatchel {
 			AutoConfigFlags.None, 1, int.MaxValue)]
 		public int stackProcCount { get; private set; } = 3;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+		[AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
+		public float procCoefficient { get; private set; } = 1f;
+
 
 
 		////// Other Fields/Properties //////
-		
+
 		public BuffDef headsetBuff { get; private set; }
 
 		internal UnlockableDef unlockable;
@@ -274,7 +279,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					damageColorIndex = DamageColorIndex.Item,
 					damageType = DamageType.Generic,
 					force = Vector3.zero,
-					procCoefficient = 1f
+					procCoefficient = procCoefficient
 				};
 
 				foreach(var hit in res) {

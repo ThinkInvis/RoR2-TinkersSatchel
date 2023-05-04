@@ -61,6 +61,11 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float meleeProjectileDamage { get; private set; } = 0.5f;
 
+		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+		[AutoConfig("Proc coefficient for melee projectiles.", AutoConfigFlags.DeferForever, 0f, 1f)]
+		public float procCoefficient { get; private set; } = 0.5f;
+
 
 
 		////// Other Fields/Properties //////
@@ -204,6 +209,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			base.SetupAttributes();
 
 			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/PinballProjectile.prefab");
+			projectilePrefab.GetComponent<ProjectileImpactExplosion>().blastProcCoefficient = procCoefficient;
 
 			bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
 				.WaitForCompletion();

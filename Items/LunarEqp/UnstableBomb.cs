@@ -29,6 +29,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Percentage of base damage to deal.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 80f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of the equipment attack.", AutoConfigFlags.DeferForever, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 1f;
+
 
 
         ////// Other Fields/Properties //////
@@ -61,6 +66,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 .WaitForCompletion();
             projectilePrefab.GetComponent<SphereCollider>().material = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
                 .WaitForCompletion();
+            expl.blastProcCoefficient = procCoefficient;
 
             var ghost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/UnstableBombShellGhost.prefab");
             var ghostPart = ghost.GetComponent<ParticleSystemRenderer>();

@@ -50,6 +50,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Internal cooldown on primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float primaryCooldown { get; private set; } = 6f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Proc coefficient of wisp attacks.", AutoConfigFlags.None, 0f, 1f)]
+        public float procCoefficient { get; private set; } = 0.1f;
+
 
 
         ////// Other Fields/Properties //////
@@ -470,7 +475,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     teamIndex = teamFilter.teamIndex,
                     attacker = owner ? owner.gameObject : gameObject,
                     target = Util.FindBodyMainHurtBox(tgtBody),
-                    procCoefficient = 0.1f,
+                    procCoefficient = VoidwispHive.instance.procCoefficient,
                     procChainMask = default,
                     range = _attackRange + 5f,
                     damageColorIndex = DamageColorIndex.Item
