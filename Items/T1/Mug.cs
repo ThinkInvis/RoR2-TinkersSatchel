@@ -201,8 +201,8 @@ namespace ThinkInvisible.TinkersSatchel {
             whiffsStatDef = RoR2.Stats.StatDef.Register("tksatMugAchievementProgress", RoR2.Stats.StatRecordType.Sum, RoR2.Stats.StatDataType.ULong, 0);
 
             projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/MugProjectile.prefab");
-
             projectilePrefab.GetComponent<ProjectileImpactExplosion>().blastProcCoefficient = procCoefficient;
+            ContentAddition.AddProjectile(projectilePrefab);
         }
 
         public override void Install() {

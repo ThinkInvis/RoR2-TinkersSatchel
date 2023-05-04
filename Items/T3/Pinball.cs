@@ -210,6 +210,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/PinballProjectile.prefab");
 			projectilePrefab.GetComponent<ProjectileImpactExplosion>().blastProcCoefficient = procCoefficient;
+			ContentAddition.AddProjectile(projectilePrefab);
 
 			bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
 				.WaitForCompletion();
