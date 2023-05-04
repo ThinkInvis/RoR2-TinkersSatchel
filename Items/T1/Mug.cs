@@ -222,6 +222,9 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Mage.Weapon.BaseThrowBombState.Fire += BaseThrowBombState_Fire;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             On.RoR2.EquipmentSlot.FireGummyClone += EquipmentSlot_FireGummyClone;
+
+            //custom impl
+            On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.FireOrbArrow += FireSeekingArrow_FireOrbArrow;
         }
 
         public override void Uninstall() {
@@ -246,6 +249,8 @@ namespace ThinkInvisible.TinkersSatchel {
             On.EntityStates.Mage.Weapon.BaseThrowBombState.Fire -= BaseThrowBombState_Fire;
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
             On.RoR2.EquipmentSlot.FireGummyClone -= EquipmentSlot_FireGummyClone;
+
+            On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.FireOrbArrow += FireSeekingArrow_FireOrbArrow;
         }
         #endregion
 
@@ -270,6 +275,12 @@ namespace ThinkInvisible.TinkersSatchel {
             ignoreStack++;
             orig(self, damageInfo, victim);
             ignoreStack--;
+        }
+
+        private void FireSeekingArrow_FireOrbArrow(On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.orig_FireOrbArrow orig, EntityStates.Huntress.HuntressWeapon.FireSeekingArrow self) {
+            orig(self);
+            if(self.characterBody)
+                FireCustomProjectiles(self.characterBody, self.characterBody.damage * self.orbDamageCoefficient, default);
         }
 
         void FireCustomProjectiles(CharacterBody attackerBody, float damage, ProcChainMask procChainMask) {
