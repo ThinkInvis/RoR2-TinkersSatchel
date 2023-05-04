@@ -60,6 +60,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Internal cooldown on primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float primaryCooldown { get; private set; } = 6f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, stacking spawns stronger wisps instead of more.", AutoConfigFlags.PreventNetMismatch)]
+        public bool performanceMerge { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -337,11 +341,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Private Methods //////
 
-        void SpawnWisp(Vector3 pos, TeamIndex team) {
+        void SpawnWisp(Vector3 pos, TeamIndex team, int stacks = 1) {
             var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 15f);
             var orb = Object.Instantiate(rng.NextElementUniform(prefabs), pos, UnityEngine.Random.rotation);
             orb.GetComponent<TeamFilter>().teamIndex = team;
             orb.GetComponent<Rigidbody>().velocity = vvec;
+            orb.GetComponent<EffectlessBuffPickup>().stacks = stacks;
             NetworkServer.Spawn(orb);
         }
 
@@ -361,8 +366,13 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!pts)
                     pts = self.gameObject.AddComponent<PixieTubeStopwatch>();
                 if(!pts.CheckProc(self.skillLocator.FindSkillSlot(skill))) return;
-                for(var i = 0; i < count; i++) {
-                    SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
+
+                if(performanceMerge) {
+                    SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None, count);
+                } else {
+                    for(var i = 0; i < count; i++) {
+                        SpawnWisp(self.corePosition, self.teamComponent ? self.teamComponent.teamIndex : TeamIndex.None);
+                    }
                 }
             }
         }
@@ -590,7 +600,9 @@ namespace ThinkInvisible.TinkersSatchel {
             if(TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex) {
                 var tgtBody = other.GetComponent<CharacterBody>();
                 if(!tgtBody) return;
-                tgtBody.AddTimedBuff(buffDef.buffIndex, buffDuration);
+                for(var i = 0; i < stacks; i++) {
+                    tgtBody.AddTimedBuff(buffDef.buffIndex, buffDuration);
+                }
                 UnityEngine.Object.Destroy(baseObject);
             }
         }
@@ -598,5 +610,6 @@ namespace ThinkInvisible.TinkersSatchel {
         public TeamFilter teamFilter;
         public BuffDef buffDef;
         public float buffDuration;
+        public int stacks = 1;
     }
 }
