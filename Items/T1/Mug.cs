@@ -257,7 +257,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Hooks //////
-        #region Hooks
+        
         private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
             orig(self);
             if(ignoreStack > 0) {
@@ -268,41 +268,6 @@ namespace ThinkInvisible.TinkersSatchel {
             if(_gcStopwatch <= 0f) {
                 firedAttacks.RemoveWhere(r => !r.TryGetTarget(out _));
                 _gcStopwatch = GC_INTERVAL;
-            }
-        }
-
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
-            ignoreStack++;
-            orig(self, damageInfo, victim);
-            ignoreStack--;
-        }
-
-        private void FireSeekingArrow_FireOrbArrow(On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.orig_FireOrbArrow orig, EntityStates.Huntress.HuntressWeapon.FireSeekingArrow self) {
-            orig(self);
-            if(self.characterBody)
-                FireCustomProjectiles(self.characterBody, self.characterBody.damage * self.orbDamageCoefficient, default);
-        }
-
-        void FireCustomProjectiles(CharacterBody attackerBody, float damage, ProcChainMask procChainMask) {
-            var count = GetCount(attackerBody);
-            var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-            var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.characterDirection.forward, attackerBody.transform.up);
-            for(var i = 0; i < procCount; i++) {
-                ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
-                    crit = attackerBody.RollCrit(),
-                    damage = damage,
-                    damageColorIndex = DamageColorIndex.Item,
-                    force = 0f,
-                    owner = attackerBody.gameObject,
-                    rotation = origRot * Quaternion.Euler(
-                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
-                    position = attackerBody.corePosition,
-                    procChainMask = procChainMask,
-                    projectilePrefab = projectilePrefab
-                });
             }
         }
 
@@ -320,6 +285,55 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
             return retv;
+        }
+
+        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
+            orig(self);
+            if(ignoreStack > 0 || !self.owner) return;
+            var cpt = self.owner.GetComponent<CharacterBody>();
+            if(!cpt) return;
+            var count = GetCount(cpt);
+            if(count <= 0) return;
+            var totalChance = count * procChance;
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            if(procCount <= 0) return;
+            self.bulletCount = (uint)procCount;
+            self.maxSpread += spreadConeHalfAngleDegr;
+            self.spreadPitchScale = 1f;
+            self.spreadYawScale = 1f;
+            orig(self);
+        }
+
+        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
+            orig(self, fireProjectileInfo);
+            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
+            var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
+            if(!cpt) return;
+            var count = GetCount(cpt);
+            if(count <= 0) return;
+            var totalChance = count * procChance;
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            var origRot = fireProjectileInfo.rotation;
+            for(var i = 0; i < procCount; i++) {
+                fireProjectileInfo.rotation = origRot * Quaternion.Euler(
+                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr);
+                orig(self, fireProjectileInfo);
+            }
+        }
+
+        #region Ignore / Custom Impl Hooks
+        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
+            ignoreStack++;
+            orig(self, damageInfo, victim);
+            ignoreStack--;
+        }
+
+        private void FireSeekingArrow_FireOrbArrow(On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.orig_FireOrbArrow orig, EntityStates.Huntress.HuntressWeapon.FireSeekingArrow self) {
+            orig(self);
+            if(self.characterBody)
+                FireCustomProjectiles(self.characterBody, self.characterBody.damage * self.orbDamageCoefficient, default);
         }
 
         private void BaseThrowBombState_Fire(On.EntityStates.Mage.Weapon.BaseThrowBombState.orig_Fire orig, EntityStates.Mage.Weapon.BaseThrowBombState self) {
@@ -413,43 +427,34 @@ namespace ThinkInvisible.TinkersSatchel {
             ignoreStack--;
             return retv;
         }
+        #endregion
 
-        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
-            orig(self);
-            if(ignoreStack > 0 || !self.owner) return;
-            var cpt = self.owner.GetComponent<CharacterBody>();
-            if(!cpt) return;
-            var count = GetCount(cpt);
-            if(count <= 0) return;
-            var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-            if(procCount <= 0) return;
-            self.bulletCount = (uint)procCount;
-            self.maxSpread += spreadConeHalfAngleDegr;
-            self.spreadPitchScale = 1f;
-            self.spreadYawScale = 1f;
-            orig(self);
-        }
 
-        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
-            orig(self, fireProjectileInfo);
-            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
-            var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
-            if(!cpt) return;
-            var count = GetCount(cpt);
-            if(count <= 0) return;
+
+        ////// Private API //////
+
+        void FireCustomProjectiles(CharacterBody attackerBody, float damage, ProcChainMask procChainMask) {
+            var count = GetCount(attackerBody);
             var totalChance = count * procChance;
-            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-            var origRot = fireProjectileInfo.rotation;
+            int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
+            var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.characterDirection.forward, attackerBody.transform.up);
             for(var i = 0; i < procCount; i++) {
-                fireProjectileInfo.rotation = origRot * Quaternion.Euler(
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr);
-                orig(self, fireProjectileInfo);
+                ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
+                    crit = attackerBody.RollCrit(),
+                    damage = damage,
+                    damageColorIndex = DamageColorIndex.Item,
+                    force = 0f,
+                    owner = attackerBody.gameObject,
+                    rotation = origRot * Quaternion.Euler(
+                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
+                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
+                    position = attackerBody.corePosition,
+                    procChainMask = procChainMask,
+                    projectilePrefab = projectilePrefab
+                });
             }
         }
-        #endregion
     }
 
     [RegisterAchievement("TkSat_Mug", "TkSat_MugUnlockable", "")]
