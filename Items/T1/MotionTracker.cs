@@ -293,10 +293,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
+            if(!ownerBody || ownerBody.healthComponent && !ownerBody.healthComponent.alive) return;
+
             var frozenCombatants = activeCombatants.ToArray();
             foreach(var kvp in frozenCombatants) {
                 var nsw = kvp.Value.stopwatch - Time.fixedDeltaTime;
-                if(nsw <= 0f || !kvp.Key) {
+                if(nsw <= 0f || !kvp.Key || !kvp.Key.TryGetComponent<HealthComponent>(out var targetHC) || !targetHC.alive) {
                     activeCombatants.Remove(kvp.Key);
                     if(kvp.Value.indicator != null)
                         kvp.Value.indicator.active = false;
@@ -304,7 +306,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     var nt = kvp.Value.duration + Time.fixedDeltaTime;
                     if(nt >= MotionTracker.instance.damageTime) {
                         nt = 0;
-                        Fire(kvp.Key);
+                        Fire(targetHC);
                         ResetIndicator(kvp.Value.indicator, kvp.Key);
                     }
                     activeCombatants[kvp.Key] = (nsw, nt, kvp.Value.indicator);
@@ -312,13 +314,11 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public void Fire(GameObject targetObject) {
-            var hc = targetObject.GetComponent<HealthComponent>();
-            if(!hc) return;
+        public void Fire(HealthComponent targetHC) {
             new BulletAttack {
                 owner = gameObject,
                 weapon = CommonCode.worldSpaceWeaponDummy,
-                origin = targetObject.transform.position + Vector3.up * 10,
+                origin = targetHC.transform.position + Vector3.up * 10,
                 aimVector = -Vector3.up,
                 minSpread = 0,
                 maxSpread = 0,
