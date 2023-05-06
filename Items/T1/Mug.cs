@@ -7,6 +7,7 @@ using R2API;
 using RoR2.Projectile;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mug : Item<Mug> {
@@ -339,7 +340,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void FireSeekingArrow_FireOrbArrow(On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.orig_FireOrbArrow orig, EntityStates.Huntress.HuntressWeapon.FireSeekingArrow self) {
             orig(self);
-            if(self.characterBody)
+            if(NetworkServer.active && self.characterBody && self.firedArrowCount < self.maxArrowCount && self.arrowReloadTimer <= 0f && self.initialOrbTarget)
                 FireCustomProjectiles(self.characterBody, self.characterBody.damage * self.orbDamageCoefficient, default);
         }
 
