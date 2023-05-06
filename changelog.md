@@ -2,6 +2,16 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.3**
+
+- Ferrofluid no longer affects deployable projectiles, such as Engineer's mines.
+- Fixed Sturdy Mug and Pinball Wizard custom projectiles not being added to networking catalog.
+- Sturdy Mug now affects Huntress' primary attacks.
+- Added proc coefficient configs to Lodestone, Faulty Mortar Tube, Sturdy Mug, En Passant, Unstable Klein Bottle, H3AD-53T, Pinball Wizard, Bramble Ring, Voidwisp Hive, and Nautilus Protocol.
+- For performance reasons, Pixie Tube now stacks buff strength in one wisp, instead of count of individual wisps spawned. Previous behavior may be restored via config.
+- Added missing corruption text to Villainous Visage description.
+- Possibly fixed some errors causing Old-War Lidar to fire rapidly against dead enemies.
+
 **4.0.2**
 
 - Balance pass:

@@ -584,6 +584,16 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.3**
+
+- Ferrofluid no longer affects deployable projectiles, such as Engineer's mines.
+- Fixed Sturdy Mug and Pinball Wizard custom projectiles not being added to networking catalog.
+- Sturdy Mug now affects Huntress' primary attacks.
+- Added proc coefficient configs to Lodestone, Faulty Mortar Tube, Sturdy Mug, En Passant, Unstable Klein Bottle, H3AD-53T, Pinball Wizard, Bramble Ring, Voidwisp Hive, and Nautilus Protocol.
+- For performance reasons, Pixie Tube now stacks buff strength in one wisp, instead of count of individual wisps spawned. Previous behavior may be restored via config.
+- Added missing corruption text to Villainous Visage description.
+- Possibly fixed some errors causing Old-War Lidar to fire rapidly against dead enemies.
+
 **4.0.2**
 
 - Balance pass:
@@ -645,22 +655,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed Scavenger's Rucksack (equipment slot swapping), RC Controller (ping AI override), and Nautilus Protocol (ping detonation) not working for clients in multiplayer.
 - Fixed En Passant VFX not appearing for clients in multiplayer.
 - Due to difficulty of netcode implementation, RC Controller and Nautilus Protocol are no longer able to suppress vanilla ping behavior.
-
-**3.9.0**
-
-- New content:
-	- Items:
-		- En Passant (T2): Melee strike with your Utility skill to recharge it.
-		- Wax Feather (Lunar): Staying airborne ignites your attacks and lowers gravity... BUT also weakens your armor and speed.
-		- Nautilus Protocol (T3 Void): All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. Corrupts all RC Controllers.
-- Balance pass:
-	- Lemurian's Claw:
-		- Partial rework.
-			- New behavior: targets a chest, which it will open for free and add an extra drop to. Will also grant enemies copies of an item from the same drop table, with count dependent on rarity (more common items grant more stacks).
-			- Old behavior: targets an item, which it will duplicate one copy of to each ally, and one copy per ally to enemies.
-			- *This item had too much cheese potential, between allowing saving it for "useless for enemies" items & being able to use it with an item discard mod. This change should make Lemurian's Claw harder to abuse, while also giving it some use in singleplayer.*
-- Lemurian's Claw now displays an animation for granting items to enemies, instead of granting instantly and silently.
-- Fixed Celestial Gambit being able to grant items to enemies after the teleporter boss dies.
-- RC Controller now suppresses vanilla ping behavior while triggering an AI override (may be reverted in config).
-- Potential fix for Scavenger's Rucksack slot swapping not working in multiplayer.
-- Fixed missing Risk of Options integration on `Tinker's Satchel/Items.FudgeDice/BoostAmount`.
