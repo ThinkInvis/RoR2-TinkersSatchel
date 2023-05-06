@@ -346,7 +346,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var orb = Object.Instantiate(rng.NextElementUniform(prefabs), pos, UnityEngine.Random.rotation);
             orb.GetComponent<TeamFilter>().teamIndex = team;
             orb.GetComponent<Rigidbody>().velocity = vvec;
-            orb.GetComponent<EffectlessBuffPickup>().stacks = stacks;
+            orb.transform.Find("PickupTrigger").gameObject.GetComponent<EffectlessBuffPickup>().stacks = stacks;
             NetworkServer.Spawn(orb);
         }
 
