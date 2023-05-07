@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.4** *The Other Drones Not Found Update**
+
+- Removed a debug setting which was inadvertently left in the build, causing almost exclusively Bulwark Drones to spawn.
+
 **4.0.3**
 
 - Ferrofluid no longer affects deployable projectiles, such as Engineer's mines.

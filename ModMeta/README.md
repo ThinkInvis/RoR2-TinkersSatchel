@@ -584,6 +584,10 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.0.4** *The Other Drones Not Found Update**
+
+- Removed a debug setting which was inadvertently left in the build, causing almost exclusively Bulwark Drones to spawn.
+
 **4.0.3**
 
 - Ferrofluid no longer affects deployable projectiles, such as Engineer's mines.
@@ -649,9 +653,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Cardboard Box, Quantum Recombobulator, and Lemurian's Claw now work on tier-2 category chests.
 - Slightly improved the icons for Artifact of Reconfiguration.
 - Backend: Some of the CommonCode file has been split into separate files.
-
-**3.9.1**
-
-- Fixed Scavenger's Rucksack (equipment slot swapping), RC Controller (ping AI override), and Nautilus Protocol (ping detonation) not working for clients in multiplayer.
-- Fixed En Passant VFX not appearing for clients in multiplayer.
-- Due to difficulty of netcode implementation, RC Controller and Nautilus Protocol are no longer able to suppress vanilla ping behavior.
