@@ -208,7 +208,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void SetupAttributes() {
 			base.SetupAttributes();
 
-			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/PinballProjectile.prefab");
+			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/PinballProjectile.prefab");
 			projectilePrefab.GetComponent<ProjectileImpactExplosion>().blastProcCoefficient = procCoefficient;
 			ContentAddition.AddProjectile(projectilePrefab);
 

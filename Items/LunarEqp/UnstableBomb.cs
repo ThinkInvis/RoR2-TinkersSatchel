@@ -60,7 +60,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/UnstableBombShell.prefab");
+            projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/UnstableBombShell.prefab");
             var expl = projectilePrefab.GetComponent<ProjectileExplosion>();
             expl.explosionEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/FusionCellDestructible/FusionCellExplosion.prefab")
                 .WaitForCompletion();
@@ -68,7 +68,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 .WaitForCompletion();
             expl.blastProcCoefficient = procCoefficient;
 
-            var ghost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/UnstableBombShellGhost.prefab");
+            var ghost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/Ghosts/UnstableBombShellGhost.prefab");
             var ghostPart = ghost.GetComponent<ParticleSystemRenderer>();
             ghostPart.material = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matOpaqueDustLargeDirectional.mat")
                 .WaitForCompletion();

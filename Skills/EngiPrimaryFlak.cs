@@ -39,10 +39,10 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
 
 			//load custom assets
-			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/EngiFlakProjectile.prefab");
-			projectileGhost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/EngiFlakGhost.prefab");
-			subProjectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/EngiFlakSubProjectile.prefab");
-			subProjectileGhost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/EngiFlakSubGhost.prefab");
+			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/EngiFlakProjectile.prefab");
+			projectileGhost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/Ghosts/EngiFlakGhost.prefab");
+			subProjectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/EngiFlakSubProjectile.prefab");
+			subProjectileGhost = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/Ghosts/EngiFlakSubGhost.prefab");
 			skillDef = ScriptableObject.CreateInstance<SteppedSkillDef>();
 			skillDef.activationStateMachineName = "Weapon";
 			skillDef.skillNameToken = "TKSAT_ENGI_PRIMARY_FLAK_NAME";

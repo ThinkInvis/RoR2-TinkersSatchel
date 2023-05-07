@@ -40,10 +40,10 @@ namespace ThinkInvisible.TinkersSatchel {
 			//load custom assets
 			skillDef = TinkersSatchelPlugin.resources.LoadAsset<SkillDef>("Assets/TinkersSatchel/SkillDefs/CommandoSpecialPlasmaGrenade.asset");
 			scepterSkillDef = TinkersSatchelPlugin.resources.LoadAsset<SkillDef>("Assets/TinkersSatchel/SkillDefs/CIScepter/CommandoSpecialPlasmaGrenadeScep.asset");
-			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeProjectile.prefab");
-			var ghostPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeGhost.prefab");
-			scepterProjectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeProjectileScep.prefab");
-			var scepterGhostPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Misc/CommandoPlasmaGrenadeGhostScep.prefab");
+			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/CommandoPlasmaGrenadeProjectile.prefab");
+			var ghostPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/Ghosts/CommandoPlasmaGrenadeGhost.prefab");
+			scepterProjectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/CommandoPlasmaGrenadeProjectileScep.prefab");
+			var scepterGhostPrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/Ghosts/CommandoPlasmaGrenadeGhostScep.prefab");
 
 			//load vanilla assets
 			targetSkillFamily = Addressables.LoadAssetAsync<SkillFamily>("RoR2/Base/Commando/CommandoBodySpecialFamily.asset")
