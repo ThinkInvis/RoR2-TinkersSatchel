@@ -265,6 +265,11 @@
 		"TINKERSSATCHEL_VILLAINOUSVISAGE_PICKUP": "Briefly stealth for a damage boost after killing powerful opponents. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
 		"TINKERSSATCHEL_VILLAINOUSVISAGE_DESC": "Killing an elite enemy or a boss causes you to gain <style=cIsUtility>invisibility</style> for <style=cIsUtility>{0} seconds</style>. Attacking while <style=cIsUtility>invisible</style> due to this item breaks stealth and deals <style=cIsDamage>+{1} damage <style=cStack>(+{1} per stack)</style></style>. <style=cIsVoid>Corrupts all Macho Moustaches</style>.",
 		"TINKERSSATCHEL_VILLAINOUSVISAGE_LORE": "",
+
+		"TINKERSSATCHEL_CHAOTICEFFIGY_NAME": "Chaotic Effigy",
+		"TINKERSSATCHEL_CHAOTICEFFIGY_PICKUP": "Chance to create temporary item totems on kills. <style=cIsVoid>Corrupts all Mostly-Tame Mimics</style>.",
+		"TINKERSSATCHEL_CHAOTICEFFIGY_DESC": "Killing an enemy has a <style=cIsUtility>{0} chance <style>(+{0} per stack, hyperbolic)</style></style> to create an <style=cIsUtility>item totem</style>, granting survivors within {1} m an item from the tier-1 chest table <style=cStack>(tier-2 for elites, tier-3 for bosses)</style> for {2} seconds.<style=cIsVoid>Corrupts all Mostly-Tame Mimics</style>.",
+		"TINKERSSATCHEL_CHAOTICEFFIGY_LORE": "",
 		
 		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "Obsidian Brooch",
 		"TINKERSSATCHEL_OBSIDIANBROOCH_PICKUP": "Chance to spread DoTs on hit. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.",
