@@ -137,7 +137,7 @@
 		
 		"TINKERSSATCHEL_MOUSTACHE_NAME": "Macho Moustache",
 		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "Chance to Taunt on hit. Resist Taunted enemies.",
-		"TINKERSSATCHEL_MOUSTACHE_DESC": "<style=cIsUtility>{0} <style=cStack>(+{0} per stack)</style> chance on hit to <style=cIsUtility>Taunt</style> enemies for <style=cIsUtility>{1} seconds</style>. Also receive <style=cIsHealing>{2} reduced damage</style> and <style=cIsHealing>{3} reduced knockback</style> from <style=cIsUtility>Taunted</style> enemies.",
+		"TINKERSSATCHEL_MOUSTACHE_DESC": "<style=cIsUtility>{0} <style=cStack>(+{0} per stack)</style></style> chance on hit to <style=cIsUtility>Taunt</style> enemies for <style=cIsUtility>{1} seconds</style>. Also receive <style=cIsHealing>{2} reduced damage</style> and <style=cIsHealing>{3} reduced knockback</style> from <style=cIsUtility>Taunted</style> enemies.",
 		"TINKERSSATCHEL_MOUSTACHE_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_NAME": "Big Brawl",
 		"ACHIEVEMENT_TKSAT_MOUSTACHE_DESCRIPTION": "Participate in a very busy fight.",
