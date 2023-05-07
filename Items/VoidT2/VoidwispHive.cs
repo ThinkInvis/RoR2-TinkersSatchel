@@ -249,9 +249,6 @@ namespace ThinkInvisible.TinkersSatchel {
             wispPrefab = tmpPrefab.InstantiateClone("TkSatVoidWisp", true);
             GameObject.Destroy(tmpPrefab);
 
-            itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
-                .WaitForCompletion();
-
             On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
                 var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
                 isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;
