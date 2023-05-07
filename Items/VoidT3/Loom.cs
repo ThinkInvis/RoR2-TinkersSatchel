@@ -189,9 +189,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			loomBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/loomBuffIcon.png");
 			ContentAddition.AddBuffDef(loomBuff);
 
-			itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
-				.WaitForCompletion();
-
 			On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
 				var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
 				isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;

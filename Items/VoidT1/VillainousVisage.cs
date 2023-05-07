@@ -192,9 +192,6 @@ namespace ThinkInvisible.TinkersSatchel {
             minStealthBuff.isHidden = true;
             ContentAddition.AddBuffDef(minStealthBuff);
 
-            itemDef.requiredExpansion = Addressables.LoadAssetAsync<ExpansionDef>("RoR2/DLC1/Common/DLC1.asset")
-                .WaitForCompletion();
-
             On.RoR2.ItemCatalog.SetItemRelationships += (orig, providers) => {
                 var isp = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
                 isp.relationshipType = DLC1Content.ItemRelationshipTypes.ContagiousItem;
