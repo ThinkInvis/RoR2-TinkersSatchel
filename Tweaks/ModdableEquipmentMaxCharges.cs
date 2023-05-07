@@ -6,7 +6,7 @@ using TILER2;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class ModdableEquipmentMaxCharges : T2Module<ModdableEquipmentMaxCharges> {
-		public override bool managedEnable => false;
+        public override bool managedEnable => true;
 
         public override void Install() {
             base.Install();
