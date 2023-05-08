@@ -30,6 +30,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Time spent in midair after which all bonus item stacks will have been removed and granted to enemies. Bonus items decay linearly over this timespan.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float maxUngroundedTime { get; private set; } = 20f;
 
+        [AutoConfigRoOSlider("{0:N0}", 0f, 600f)]
+        [AutoConfig("Amount of extra monster credits to assign to the teleporter event per stack (scales with time).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float difficultyBonus { get; private set; } = 100f;
+
 
 
         ////// Other Fields/Properties //////
@@ -61,6 +65,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             IL.RoR2.BossGroup.DropRewards += BossGroup_DropRewards;
             On.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
+            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter_IL;
 
         }
 
@@ -69,6 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             IL.RoR2.BossGroup.DropRewards -= BossGroup_DropRewards;
             On.RoR2.TeleporterInteraction.ChargingState.OnEnter -= ChargingState_OnEnter;
+            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter -= ChargingState_OnEnter_IL;
         }
 
 
@@ -104,6 +110,21 @@ namespace ThinkInvisible.TinkersSatchel {
             } else {
                 TinkersSatchelPlugin._logger.LogError("MountainToken: Failed to apply IL hook (BossGroup_DropRewards), item will not provide extra teleporter rewards");
             }
+        }
+
+        private void ChargingState_OnEnter_IL(ILContext il) {
+            var c = new ILCursor(il);
+            c.GotoNext(MoveType.Before,
+                i => i.MatchStfld<RoR2.CombatDirector>(nameof(CombatDirector.monsterCredit)));
+            c.EmitDelegate<Func<float, float>>((origCredits) => {
+                int msBonusCount = 0;
+                foreach(var nu in NetworkUser.readOnlyInstancesList) {
+                    if(!nu.isParticipating) continue;
+                    var body = nu.GetCurrentBody();
+                    msBonusCount += GetCount(body);
+                }
+                return origCredits + msBonusCount * difficultyBonus * Mathf.Pow(Run.instance.compensatedDifficultyCoefficient, 0.5f);
+            });
         }
 
         private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, BaseState self) {
