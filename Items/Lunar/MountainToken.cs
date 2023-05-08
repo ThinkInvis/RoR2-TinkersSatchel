@@ -140,13 +140,14 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!TeleporterInteraction.instance || !TeleporterInteraction.instance.bossGroup || !TeleporterInteraction.instance.bossGroup.dropTable) return;
             PickupIndex pickupIndex = PickupIndex.none;
 
-            if(TeleporterInteraction.instance.bossGroup.dropTable) {
-                pickupIndex = TeleporterInteraction.instance.bossGroup.dropTable.GenerateDrop(instance.rng);
-            } else {
-                pickupIndex = instance.rng.NextElementUniform<PickupIndex>(
-                    TeleporterInteraction.instance.bossGroup.forceTier3Reward
+            var fallback = TeleporterInteraction.instance.bossGroup.forceTier3Reward
                     ? Run.instance.availableTier3DropList
-                    : Run.instance.availableTier2DropList);
+                    : Run.instance.availableTier2DropList;
+
+            if(TeleporterInteraction.instance.bossGroup.dropTable) {
+                pickupIndex = CommonCode.GenerateAISafePickup(MountainToken.instance.rng, TeleporterInteraction.instance.bossGroup.dropTable, fallback);
+            } else {
+                pickupIndex = CommonCode.GenerateAISafePickup(MountainToken.instance.rng, fallback);
             }
 
             if(pickupIndex == PickupIndex.none) return;

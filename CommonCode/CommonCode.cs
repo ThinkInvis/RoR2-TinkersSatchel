@@ -190,7 +190,33 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 
 			if(aiSafeSelector.choices.Length == 0) {
-				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup (droptable and fallback): both normal and fallback selections contained 0 valid items");
+				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup (droptable and weighted fallback): both normal and fallback selections contained 0 valid items");
+				return PickupIndex.none;
+			}
+
+			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
+		}
+
+		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, PickupDropTable dropTable, List<PickupIndex> fallback) {
+			var aiSafeSelector = new WeightedSelection<PickupIndex>();
+
+			if(dropTable is BasicPickupDropTable bpdt) {
+				foreach(var ch in bpdt.selector.choices.Where(c => PickupIndexIsAISafe(c.value)))
+					aiSafeSelector.AddChoice(ch);
+			} else if(dropTable is ExplicitPickupDropTable epdt) {
+				foreach(var ch in epdt.weightedSelection.choices.Where(c => PickupIndexIsAISafe(c.value)))
+					aiSafeSelector.AddChoice(ch);
+			}
+
+			if(aiSafeSelector.choices.Length == 0) {
+				foreach(var pind in fallback) {
+					if(!PickupIndexIsAISafe(pind)) continue;
+					aiSafeSelector.AddChoice(pind, 1f);
+				}
+			}
+
+			if(aiSafeSelector.choices.Length == 0) {
+				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup (droptable and uniform fallback): both normal and fallback selections contained 0 valid items");
 				return PickupIndex.none;
 			}
 
