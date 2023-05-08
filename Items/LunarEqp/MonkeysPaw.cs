@@ -279,12 +279,12 @@ namespace ThinkInvisible.TinkersSatchel {
             if(purch)
                 purch.SetAvailable(false);
 
-            var pind = cb.dropTable.GenerateDrop(this.rng);
-            var pdef = PickupCatalog.GetPickupDef(pind);
-            var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-            var tdef = ItemTierCatalog.GetItemTierDef(idef.tier);
+            var aiSafePind = CommonCode.GenerateAISafePickup(this.rng, cb.dropTable, Run.instance.smallChestDropTierSelector);
+            var aiSafePdef = PickupCatalog.GetPickupDef(aiSafePind);
+            var aiSafeIdef = ItemCatalog.GetItemDef(aiSafePdef.itemIndex);
+            var aiSafeTdef = ItemTierCatalog.GetItemTierDef(aiSafeIdef.tier);
 
-            var grantCount = idef.tier switch {
+            var grantCount = aiSafeIdef.tier switch {
                 ItemTier.Tier2 or ItemTier.VoidTier2 => 3,
                 ItemTier.Tier3 or ItemTier.VoidTier3 or ItemTier.Boss or ItemTier.VoidBoss => 1,
                 _ => 5
@@ -292,15 +292,15 @@ namespace ThinkInvisible.TinkersSatchel {
 
             Chat.SendBroadcastChat(new ColoredTokenChatMessage {
                 baseToken = "TKSAT_MONKEYSPAW_ITEMGRANT",
-                paramTokens = new[] { Language.GetString(idef.nameToken), grantCount.ToString() },
-                paramColors = new[] { ColorCatalog.GetColor(tdef.colorIndex), new Color32(255, 255, 255, 255) }
+                paramTokens = new[] { Language.GetString(aiSafeIdef.nameToken), grantCount.ToString() },
+                paramColors = new[] { ColorCatalog.GetColor(aiSafeTdef.colorIndex), new Color32(255, 255, 255, 255) }
             });
 
             var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
                 .Where(e => e.body && e.body.inventory);
 
             foreach(var enemy in enemies)
-                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(slot.currentTarget.rootObject.transform.position, enemy.body.inventory, pdef.itemIndex, grantCount);
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(slot.currentTarget.rootObject.transform.position, enemy.body.inventory, aiSafePdef.itemIndex, grantCount);
 
             slot.InvalidateCurrentTarget();
             return true;

@@ -75,7 +75,7 @@
 
 		"TINKERSSATCHEL_MOUNTAINTOKEN_NAME": "Celestial Gambit",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_PICKUP": "Gain an extra item reward from teleporters... <color=#FF7F7F>BUT jumping for too long gives the item to enemies instead.</color>",
-		"TINKERSSATCHEL_MOUNTAINTOKEN_DESC": "The teleporter boss drops 1 <style=cIsUtility>extra item</style> when killed <style=cStack>(+1 per stack)</style>. As long as you remain in midair while the teleporter is charging, these extra items will gradually be <color=#FF7F7F>lost</color> and <color=#FF7F7F>given to all enemies</color> within the teleporter zone. All extra items will be lost after {0} seconds.",
+		"TINKERSSATCHEL_MOUNTAINTOKEN_DESC": "The teleporter boss drops 1 <style=cIsUtility>extra item</style> when killed <style=cStack>(+1 per stack)</style>. As long as you remain in midair while the teleporter is charging, these extra items will gradually be <color=#FF7F7F>lost</color> and <color=#FF7F7F>given to all enemies</color> within the teleporter zone. All extra items will be lost after {0} seconds. The teleporter event will also become <color=#FF7F7F>slightly more difficult</color> per stack.",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_LORE": "This monument dedicated to those / Who perished in the storm",
 		
 		"TINKERSSATCHEL_WAXFEATHER_NAME": "Wax Feather",
