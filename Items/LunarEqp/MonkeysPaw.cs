@@ -279,39 +279,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(purch)
                 purch.SetAvailable(false);
 
-            var aiSafeSelector = new WeightedSelection<PickupIndex>();
-
-            if(cb.dropTable is BasicPickupDropTable bpdt) {
-                foreach(var ch in bpdt.selector.choices.Where((c) => {
-                    var pdef = PickupCatalog.GetPickupDef(c.value);
-                    if(pdef.itemIndex == ItemIndex.None) return false;
-                    var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-                    if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) return false;
-                    return true;
-                }))
-                    aiSafeSelector.AddChoice(ch);
-            } else if(cb.dropTable is ExplicitPickupDropTable epdt) {
-                foreach(var ch in epdt.weightedSelection.choices.Where((c) => {
-                    var pdef = PickupCatalog.GetPickupDef(c.value);
-                    if(pdef.itemIndex == ItemIndex.None) return false;
-                    var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-                    if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) return false;
-                    return true;
-                }))
-                    aiSafeSelector.AddChoice(ch);
-            } else {
-                foreach(var tier in Run.instance.smallChestDropTierSelector.choices) {
-                    foreach(var pind in tier.value) {
-                        var pdef = PickupCatalog.GetPickupDef(pind);
-                        if(pdef.itemIndex == ItemIndex.None) continue;
-                        var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-                        if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) continue;
-                        aiSafeSelector.AddChoice(pind, tier.weight);
-                    }
-                }
-            }
-
-            var aiSafePind = aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
+            var aiSafePind = CommonCode.GenerateAISafePickup(this.rng, cb.dropTable, Run.instance.smallChestDropTierSelector);
             var aiSafePdef = PickupCatalog.GetPickupDef(aiSafePind);
             var aiSafeIdef = ItemCatalog.GetItemDef(aiSafePdef.itemIndex);
             var aiSafeTdef = ItemTierCatalog.GetItemTierDef(aiSafeIdef.tier);
