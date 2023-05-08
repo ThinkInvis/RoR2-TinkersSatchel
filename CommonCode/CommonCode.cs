@@ -132,43 +132,65 @@ namespace ThinkInvisible.TinkersSatchel {
 			return retv;
 		}
 
-		internal static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, PickupDropTable dropTable, WeightedSelection<List<PickupIndex>> fallback) {
+		public static bool PickupIndexIsAISafe(PickupIndex pind) {
+			var pdef = PickupCatalog.GetPickupDef(pind);
+			if(pdef.itemIndex == ItemIndex.None) return false;
+			var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
+			if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) return false;
+			return true;
+		}
+
+		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, List<PickupIndex> selection) {
+			var aiSafeSelector = selection.Where(pind => PickupIndexIsAISafe(pind));
+
+			if(aiSafeSelector.Count() == 0) {
+				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup (single uniform list): selection contained 0 valid items");
+				return PickupIndex.none;
+			}
+
+			return rng.NextElementUniform(aiSafeSelector.ToArray());
+		}
+
+		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, WeightedSelection<List<PickupIndex>> selection) {
+			var aiSafeSelector = new WeightedSelection<PickupIndex>();
+
+			foreach(var tier in selection.choices) {
+				foreach(var pind in tier.value) {
+					if(!PickupIndexIsAISafe(pind)) continue;
+					aiSafeSelector.AddChoice(pind, tier.weight);
+				}
+			}
+
+			if(aiSafeSelector.choices.Length == 0) {
+				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup (single selection): selection contained 0 valid items");
+				return PickupIndex.none;
+			}
+
+			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
+		}
+
+		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, PickupDropTable dropTable, WeightedSelection<List<PickupIndex>> fallback) {
 			var aiSafeSelector = new WeightedSelection<PickupIndex>();
 
 			if(dropTable is BasicPickupDropTable bpdt) {
-				foreach(var ch in bpdt.selector.choices.Where((c) => {
-					var pdef = PickupCatalog.GetPickupDef(c.value);
-					if(pdef.itemIndex == ItemIndex.None) return false;
-					var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-					if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) return false;
-					return true;
-				}))
+				foreach(var ch in bpdt.selector.choices.Where(c => PickupIndexIsAISafe(c.value)))
 					aiSafeSelector.AddChoice(ch);
 			} else if(dropTable is ExplicitPickupDropTable epdt) {
-				foreach(var ch in epdt.weightedSelection.choices.Where((c) => {
-					var pdef = PickupCatalog.GetPickupDef(c.value);
-					if(pdef.itemIndex == ItemIndex.None) return false;
-					var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-					if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) return false;
-					return true;
-				}))
+				foreach(var ch in epdt.weightedSelection.choices.Where(c => PickupIndexIsAISafe(c.value)))
 					aiSafeSelector.AddChoice(ch);
 			} 
 			
 			if(aiSafeSelector.choices.Length == 0) {
 				foreach(var tier in fallback.choices) {
 					foreach(var pind in tier.value) {
-						var pdef = PickupCatalog.GetPickupDef(pind);
-						if(pdef.itemIndex == ItemIndex.None) continue;
-						var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-						if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) continue;
+						if(!PickupIndexIsAISafe(pind)) continue;
 						aiSafeSelector.AddChoice(pind, tier.weight);
 					}
 				}
 			}
 
 			if(aiSafeSelector.choices.Length == 0) {
-				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup: both normal and fallback selectors contained 0 valid items");
+				TinkersSatchelPlugin._logger.LogError("GenerateAISafePickup (droptable and fallback): both normal and fallback selections contained 0 valid items");
 				return PickupIndex.none;
 			}
 
