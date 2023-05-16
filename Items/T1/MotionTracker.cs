@@ -261,6 +261,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public void SetInCombat(GameObject with) {
             if(!with) return;
+            if(TeamComponent.GetObjectTeam(with) == ownerBody.teamComponent.teamIndex) return;
             if(activeCombatants.ContainsKey(with))
                 activeCombatants[with] = (COMBAT_TIMER, activeCombatants[with].duration, activeCombatants[with].indicator);
             else {

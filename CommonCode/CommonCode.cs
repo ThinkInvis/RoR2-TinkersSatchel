@@ -133,11 +133,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		public static bool PickupIndexIsAISafe(PickupIndex pind) {
-			var pdef = PickupCatalog.GetPickupDef(pind);
-			if(pdef.itemIndex == ItemIndex.None) return false;
-			var idef = ItemCatalog.GetItemDef(pdef.itemIndex);
-			if(!idef || idef.ContainsTag(ItemTag.AIBlacklist)) return false;
-			return true;
+			return CatalogUtil.TryGetItemDef(pind, out var idef) && !idef.ContainsTag(ItemTag.AIBlacklist);
 		}
 
 		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, List<PickupIndex> selection) {

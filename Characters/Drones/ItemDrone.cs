@@ -299,21 +299,20 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         public void HandlePurchase(int pind) {
-            if(!NetworkServer.active) return;
+            if(!NetworkServer.active || !currentInteractor) return;
 
-            PickupDef pickupDef = PickupCatalog.GetPickupDef(new PickupIndex(pind));
-            if(pickupDef == null || !currentInteractor) return;
+            if(!CatalogUtil.TryGetItemDef(new PickupIndex(pind), out var itemDef)) return;
             var body = currentInteractor.GetComponent<CharacterBody>();
             if(!body || !body.inventory)
                 return;
-            var count = body.inventory.GetItemCount(pickupDef.itemIndex);
+            var count = body.inventory.GetItemCount(itemDef.itemIndex);
             if(count <= 0) return;
 
-            int remCount = 1;
-            if(pickupDef.itemTier == ItemTier.Tier2 || pickupDef.itemTier == ItemTier.VoidTier2)
-                remCount = 3;
-            if(pickupDef.itemTier == ItemTier.Tier1 || pickupDef.itemTier == ItemTier.VoidTier1)
-                remCount = 5;
+            int remCount = itemDef.tier switch {
+                ItemTier.Tier1 or ItemTier.VoidTier1 => 5,
+                ItemTier.Tier2 or ItemTier.VoidTier2 => 3,
+                _ => 1
+            };
 
             remCount = Mathf.Min(count, remCount);
 
@@ -322,7 +321,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(Compat_Dronemeld.enabled && (extantMaster = Compat_Dronemeld.TryApply(body.master, "ItemDroneMaster")) != null) {
                 var persist = extantMaster.GetComponent<ItemDroneWardPersist>();
                 if(!persist) return;
-                persist.AddItems(pickupDef.itemIndex, remCount);
+                persist.AddItems(itemDef.itemIndex, remCount);
                 effectTarget = extantMaster.GetBodyObject();
             } else {
                 var summon = GetComponent<SummonMasterBehavior>();
@@ -330,8 +329,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 var persist = cm.GetComponent<ItemDroneWardPersist>();
                 if(!summon || !persist)
                     return;
-                body.inventory.RemoveItem(pickupDef.itemIndex, remCount);
-                persist.AddItems(pickupDef.itemIndex, remCount);
+                body.inventory.RemoveItem(itemDef.itemIndex, remCount);
+                persist.AddItems(itemDef.itemIndex, remCount);
                 effectTarget = cm.GetBodyObject();
             }
 
@@ -340,7 +339,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     var effectData = new EffectData {
                         origin = body.corePosition,
                         genericFloat = Mathf.Lerp(1.5f, 2.5f, (float)i / (float)remCount),
-                        genericUInt = (uint)(pickupDef.itemIndex + 1)
+                        genericUInt = (uint)(itemDef.itemIndex + 1)
                     };
                     effectData.SetNetworkedObjectReference(effectTarget);
                     EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);
