@@ -147,11 +147,11 @@ namespace ThinkInvisible.TinkersSatchel {
 		GameObject primaryTargetRoot; //sync
 		CharacterBody attackerBody; //sync
 		const float REEL_SPEED = 10f;
-		const float TICK_INTERVAL = 1f;
+		const float TICK_INTERVAL = 0.5f;
 		const float ATTACH_TIME = 0.5f;
-		const int TICK_COUNT = 4;
+		const int TICK_COUNT = 8;
 		const float RADIUS = 25f;
-		const float DAMAGE_PER_TICK = 0.75f;
+		const float DAMAGE_PER_TICK = 0.375f;
 		float tickStopwatch = 0f;
 		int ticksRemaining = TICK_COUNT;
 		float fixedAge = 0f;
