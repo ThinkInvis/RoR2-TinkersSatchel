@@ -2,6 +2,24 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.0** *The Skillful Update, Part Huntress*
+
+- New content:
+	- Skills
+		- Huntress: MK7b Rockeye Mini (Primary): Fire a non-seeking arrow which sticks and explodes, dealing damage and inflicting procs twice.
+		- Huntress: Laser Bola (Secondary): Throw a seeking hard-light net which tethers groups of enemies for damage over time.
+- Balance pass:
+	- Celestial Gambit
+		- Now adds ~1/6 the extra difficulty of a Shrine of the Mountain to the teleporter event per stack.
+- Old-War Lidar now performs a team check before applying to a target, meaning self damage should no longer cause it to self-target.
+- Lemurian's Claw and Celestial Gambit will no longer select AI-blacklisted items to give to enemies.
+- Reorganized projectile prefab assets into their own folders (separate subfolder for ghosts).
+- Fixed the Equipment Max Charges tweak not ever being applied. It may also now be enabled/disabled in config.
+- Fixed a formatting error in the Macho Moustache description.
+- Fixed a possible issue where void items may have depended on the vanilla SotV expansion, instead of the SotV+TS combo expansion.
+- Fixed inverted normals on one side of the Stamina Bar model.
+- Updated TILER2 dependency to 7.4.0 (required update).
+
 **4.0.4** *The Other Drones Not Found Update*
 
 - Removed a debug setting which was inadvertently left in the build, causing almost exclusively Bulwark Drones to spawn.

@@ -702,6 +702,23 @@
 			</td>
 		</tr>
 		<tr>
+			<td colspan="2" align="center"><h3>Huntress</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/HuntressPrimaryBombArrow.png?raw=true" width=128></td>
+			<td>
+				<b>MK7b Rockeye Mini</b> (Primary)<br>
+				Agile. Quickly fire a non-seeking arrow which sticks for 100% damage, then explodes for 50% after a short delay. Both hits trigger on-hit effects.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/HuntressSecondaryBola.png?raw=true" width=128></td>
+			<td>
+				<b>Laser Bola</b> (Secondary)<br>
+				Throw a seeking hard-light net which slows and pulls groups of targets, and deals 300% damage over time.
+			</td>
+		</tr>
+		<tr>
 			<td colspan="3" align="center"><h3>Engineer</h3></td>
 		</tr>
 		<tr>
@@ -862,7 +879,7 @@
 		</tr>
 		<tr>
 			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
-			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; cannot be disabled.</td>
+			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; Stamina Bar may not work correctly if disabled.</td>
 		</tr>
 	</tbody>
 </table>

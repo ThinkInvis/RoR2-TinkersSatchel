@@ -27,8 +27,9 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 3 tier-3 void;
 - 2 interactables:
 	- 2 drones;
-- 6 skill variants:
-	- 3 for Commando
+- 8 skill variants:
+	- 3 for Commando,
+	- 2 for Huntress,
 	- and 3 for Engineer;
 - 6 artifacts;
 - and 1 other feature:
@@ -444,6 +445,23 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td colspan="2" align="center"><h3>Huntress</h3></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/HuntressPrimaryBombArrow.png?raw=true" width=128></td>
+			<td>
+				<b>MK7b Rockeye Mini</b> (Primary)<br>
+				Agile. Quickly fire a non-seeking arrow which sticks for 100% damage, then explodes for 50% after a short delay. Both hits trigger on-hit effects.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/HuntressSecondaryBola.png?raw=true" width=128></td>
+			<td>
+				<b>Laser Bola</b> (Secondary)<br>
+				Throw a seeking hard-light net which slows and pulls groups of targets, and deals 300% damage over time.
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><h3>Engineer</h3></td>
 		</tr>
 		<tr>
@@ -560,7 +578,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 		</tr>
 		<tr>
 			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
-			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; cannot be disabled.</td>
+			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; Stamina Bar may not work correctly if disabled.</td>
 		</tr>
 	</tbody>
 </table>
@@ -583,6 +601,24 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**4.1.0** *The Skillful Update, Part Huntress*
+
+- New content:
+	- Skills
+		- Huntress: MK7b Rockeye Mini (Primary): Fire a non-seeking arrow which sticks and explodes, dealing damage and inflicting procs twice.
+		- Huntress: Laser Bola (Secondary): Throw a seeking hard-light net which tethers groups of enemies for damage over time.
+- Balance pass:
+	- Celestial Gambit
+		- Now adds ~1/6 the extra difficulty of a Shrine of the Mountain to the teleporter event per stack.
+- Old-War Lidar now performs a team check before applying to a target, meaning self damage should no longer cause it to self-target.
+- Lemurian's Claw and Celestial Gambit will no longer select AI-blacklisted items to give to enemies.
+- Reorganized projectile prefab assets into their own folders (separate subfolder for ghosts).
+- Fixed the Equipment Max Charges tweak not ever being applied. It may also now be enabled/disabled in config.
+- Fixed a formatting error in the Macho Moustache description.
+- Fixed a possible issue where void items may have depended on the vanilla SotV expansion, instead of the SotV+TS combo expansion.
+- Fixed inverted normals on one side of the Stamina Bar model.
+- Updated TILER2 dependency to 7.4.0 (required update).
 
 **4.0.4** *The Other Drones Not Found Update**
 
@@ -613,43 +649,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Added the Moddable Equipment Slot Max Charges Patch, which allows easier change of maximum equipment charges per slot.
 	- Fixes Stamina Bar applying triple max charges to ALL equipments while enabled.
 - Added Sturdy Mug custom projectiles to some ranged skills which did not previously support the item.
-
-**4.0.0**
-
-- New content:
-	- Items
-		- Ferrofluid (T1): Your attacks become slightly magnetic and gain crit chance.
-		- Concentrating Alembic (Lunar): Gain debuff strength and duration... BUT lose reach.
-	- Equipments
-		- Stamina Bar: Perform up to 3 dodge rolls.
-- Balance pass:
-	- Macho Moustache
-		- Reworked. *Boring and completely non-situational global-damage-for-free item, meet woefully unexplored debuff mechanic!*
-			- New behavior: Chance to Taunt enemies on hit. Receive less knockback and slightly less damage from Taunted enemies.
-			- Old behavior: Deal more global damage based on number of enemies in combat.
-	- Villainous Visage
-		- Reworked.
-			- New behavior: Brief stealth after killing Elites and Bosses; attacking breaks this stealth and adds a stacking damage bonus to the attack.
-			- Old behavior: Brief damage bonus after entering combat, recharges out of combat.
-	- Bismuth Tonic
-		- Reworked.
-			- New behavior: Reduce duration of both debuffs and buffs.
-			- Old behavior: Take less damage from one of normal, elite, or boss enemies after being struck, but more from the other types.
-	- Lemurian's Claw
-		- Now reduces cost by 50% (configurable) instead of making purchases free.
-	- *The following changes are intended to give some specialized items weak effects on otherwise incompatible builds.*
-		- Extendo-Arms
-			- Reduced damage bonus to 6.25% (was 7.5%).
-			- Damage bonus now applies to all attacks (previously melee-only).
-			- Now applies a 7.5% speed increase to projectile attacks per stack.
-			- Now applies a 7.5% range increase to hitscan attacks per stack.
-		- Sturdy Mug
-			- Now adds a chance (equal to multishot chance) for melee swings to fire an inaccurate projectile for 25% relative damage.
-		- Timelost Rum
-			- Now adds a chance (equal to multishot chance) for melee hits to hit again after a delay for 25% relative damage.
-		- Pinball Wizard
-			- Now adds a chance (equal to projectile ricochet chance) for melee hits to fire a pinball projectile for 50% relative damage.
-- Tinker's Satchel now exposes expansion entries in lobby UI, which control whether ALL mod content (except skills) appears per run.
-- Cardboard Box, Quantum Recombobulator, and Lemurian's Claw now work on tier-2 category chests.
-- Slightly improved the icons for Artifact of Reconfiguration.
-- Backend: Some of the CommonCode file has been split into separate files.
