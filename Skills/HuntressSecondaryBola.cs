@@ -226,6 +226,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			age += Time.deltaTime;
 			var primaryPos = GetPrimaryTargetRootPosition();
 			var targetPos = GetTargetRootPosition();
+			bezierCurveLine.transform.position = primaryPos;
 			bezierCurveLine.endTransform.position = beginSiphon ? targetPos : Vector3.Lerp(primaryPos, targetPos, age / ATTACH_TIME);
 		}
 
