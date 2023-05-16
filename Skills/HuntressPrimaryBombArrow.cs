@@ -96,6 +96,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			public static float baseDuration = 0.6f;
 			public const string ATTACK_SOUND_STRING = "Play_huntress_m1_ready";
 			public const string MUZZLE_STRING = "Muzzle";
+			bool hasFired = false;
+			Animator animator;
 
 			float duration;
 
@@ -120,6 +122,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				base.OnEnter();
 				Util.PlayAttackSpeedSound(ATTACK_SOUND_STRING, gameObject, attackSpeedStat);
 				duration = baseDuration / attackSpeedStat;
+				var modelTransform = base.GetModelTransform();
+				if(modelTransform)
+					animator = modelTransform.GetComponent<Animator>();
 				if(characterBody)
 					StartAimMode(GetAimRay(), duration + 1f, false); //characterBody.SetAimTimer(duration + 1f);
 
@@ -129,11 +134,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
 			public override void OnExit() {
 				base.OnExit();
-				FireProjectile();
 			}
 
 			public override void FixedUpdate() {
 				base.FixedUpdate();
+				if(!hasFired && animator.GetFloat("FireSeekingShot.fire") > 0f) {
+					hasFired = true;
+					FireProjectile();
+				}
 				if(fixedAge > duration && isAuthority) {
 					outer.SetNextStateToMain();
 					return;
