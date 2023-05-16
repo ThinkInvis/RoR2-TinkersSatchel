@@ -191,7 +191,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void DoDamageTick() {
 			if(!targetHealthComponent) targetHealthComponent = targetRoot.GetComponent<HealthComponent>();
-			if(!primaryTargetHealthComponent) primaryTargetHealthComponent = primaryTargetRoot.GetComponent<HealthComponent>();
 			if(primaryTargetRoot) {
 				DamageInfo damageInfo = new DamageInfo {
 					position = targetRoot.transform.position,
@@ -220,6 +219,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		private Vector3 GetPrimaryTargetRootPosition() {
+			if(!primaryTargetHealthComponent && primaryTargetRoot) primaryTargetHealthComponent = primaryTargetRoot.GetComponent<HealthComponent>();
 			if(primaryTargetHealthComponent) return primaryTargetHealthComponent.body.corePosition;
 			else if(primaryTargetRoot) return primaryTargetRoot.transform.position;
 			else return transform.position;
@@ -235,7 +235,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void FixedUpdate() {
 			fixedAge += Time.fixedDeltaTime;
-			if(!targetRoot || targetHealthComponent && !targetHealthComponent.alive) {
+			if(!targetRoot || (targetHealthComponent && !targetHealthComponent.alive)) {
 				if(NetworkServer.active)
 					UnityEngine.Object.Destroy(base.gameObject);
 				return;
