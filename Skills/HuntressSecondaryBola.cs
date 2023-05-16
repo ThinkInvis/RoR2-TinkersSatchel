@@ -135,8 +135,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void OnArrival() {
             base.OnArrival();
-			if(target.healthComponent.body && attacker.TryGetComponent<CharacterBody>(out var attackerBody))
+
+			if(target.healthComponent.body && attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
 				BolaTetherController.Inflict(target.healthComponent.body, attackerBody);
+				Util.PlaySound("Play_item_proc_whip", target.gameObject);
+			}
         }
     }
 
