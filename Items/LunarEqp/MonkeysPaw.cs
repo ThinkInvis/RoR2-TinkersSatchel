@@ -280,8 +280,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 purch.SetAvailable(false);
 
             var aiSafePind = CommonCode.GenerateAISafePickup(this.rng, cb.dropTable, Run.instance.smallChestDropTierSelector);
-            var aiSafePdef = PickupCatalog.GetPickupDef(aiSafePind);
-            var aiSafeIdef = ItemCatalog.GetItemDef(aiSafePdef.itemIndex);
+            CatalogUtil.TryGetItemDef(aiSafePind, out var aiSafeIdef);
             var aiSafeTdef = ItemTierCatalog.GetItemTierDef(aiSafeIdef.tier);
 
             var grantCount = aiSafeIdef.tier switch {
@@ -300,7 +299,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 .Where(e => e.body && e.body.inventory);
 
             foreach(var enemy in enemies)
-                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(slot.currentTarget.rootObject.transform.position, enemy.body.inventory, aiSafePdef.itemIndex, grantCount);
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(slot.currentTarget.rootObject.transform.position, enemy.body.inventory, aiSafeIdef.itemIndex, grantCount);
 
             slot.InvalidateCurrentTarget();
             return true;

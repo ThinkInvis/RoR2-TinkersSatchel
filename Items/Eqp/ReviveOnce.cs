@@ -269,21 +269,23 @@ namespace ThinkInvisible.TinkersSatchel {
                 obj = summon.GetBodyObject();
                 if(!obj) return false;
                 if(obj.name == "EquipmentDroneBody(Clone)" && obj.TryGetComponent<CharacterBody>(out var droneBody) && droneBody.master) {
-                    var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(Run.instance.availableEquipmentDropList)).equipmentIndex;
+                    var validEqp = Run.instance.availableEquipmentDropList.Where(
+                        pind => CatalogUtil.TryGetEquipmentDef(pind, out var edef) && edef.canBeRandomlyTriggered
+                        ).ToArray();
+                    var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(validEqp)).equipmentIndex;
                     droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
                 } else if(which == ItemDrone.instance.itemDroneMasterPrefab) {
                     var wardPersist = summon.GetComponent<ItemDroneWardPersist>();
 
                     var drops = LegacyResourcesAPI.Load<BasicPickupDropTable>("DropTables/dtSmallChest");
                     var drop = drops.GenerateDrop(rng);
-                    var pdef = PickupCatalog.GetPickupDef(drop);
-                    if(wardPersist && pdef != null && pdef.itemIndex != ItemIndex.None) {
+                    if(wardPersist && CatalogUtil.TryGetItemDef(drop, out var idef)) {
                         int remCount = 1;
-                        if(pdef.itemTier == ItemTier.Tier2 || pdef.itemTier == ItemTier.VoidTier2)
+                        if(idef.tier == ItemTier.Tier2 || idef.tier == ItemTier.VoidTier2)
                             remCount = 3;
-                        if(pdef.itemTier == ItemTier.Tier1 || pdef.itemTier == ItemTier.VoidTier1)
+                        if(idef.tier == ItemTier.Tier1 || idef.tier == ItemTier.VoidTier1)
                             remCount = 5;
-                        wardPersist.AddItems(pdef.itemIndex, remCount);
+                        wardPersist.AddItems(idef.itemIndex, remCount);
                     }
                 }
             }

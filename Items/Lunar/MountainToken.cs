@@ -150,14 +150,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 pickupIndex = CommonCode.GenerateAISafePickup(MountainToken.instance.rng, fallback);
             }
 
-            if(pickupIndex == PickupIndex.none) return;
-            var pickup = PickupCatalog.GetPickupDef(pickupIndex);
-            if(pickup == null || pickup.itemIndex == ItemIndex.None) return;
+            if(!CatalogUtil.TryGetItemDef(pickupIndex, out var itemDef)) return;
 
             var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
                 .Where(e => e.body && e.body.inventory && TeleporterInteraction.instance.holdoutZoneController.IsBodyInChargingRadius(e.body));
             foreach(var enemy in enemies)
-                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(TeleporterInteraction.instance.holdoutZoneController.transform.position, enemy.body.inventory, pickup.itemIndex, 1);
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(TeleporterInteraction.instance.holdoutZoneController.transform.position, enemy.body.inventory, itemDef.itemIndex, 1);
         }
     }
 
