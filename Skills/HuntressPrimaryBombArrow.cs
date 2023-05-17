@@ -93,7 +93,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Skill States //////
 
 		public class Fire : BaseSkillState {
-			public static float baseDuration = 0.6f;
+			public static float baseDuration = 0.45f;
+			public static float damageModifier = 1f;
 			public const string ATTACK_SOUND_STRING = "Play_huntress_m1_ready";
 			public const string MUZZLE_STRING = "Muzzle";
 			bool hasFired = false;
@@ -114,7 +115,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					ProjectileManager.instance.FireProjectile(
 						HuntressPrimaryBombArrow.instance.projectilePrefab, aim.origin,
 						Util.QuaternionSafeLookRotation(aim.direction),
-						gameObject, damageStat, 0f, characterBody.RollCrit());
+						gameObject, damageStat * damageModifier, 0f, characterBody.RollCrit());
 				}
 			}
 
