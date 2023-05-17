@@ -451,7 +451,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/HuntressPrimaryBombArrow.png?raw=true" width=128></td>
 			<td>
 				<b>MK7b Rockeye Mini</b> (Primary)<br>
-				Agile. Quickly fire a non-seeking arrow which sticks for 100% damage, then explodes for 50% after a short delay. Both hits trigger on-hit effects.
+				Agile. Quickly fire a non-seeking arrow which sticks for 100% damage, then explodes for another 100% after a short delay. Both hits trigger on-hit effects.
 			</td>
 		</tr>
 		<tr>
@@ -602,6 +602,17 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.1**
+
+- Balance pass:
+	- Huntress: Mk7b Rockeye Mini (Primary):
+		- Reduced base duration from 0.6s to 0.45s.
+		- Increased explosion proc coefficient from 0.5 to 1.
+		- Increased explosion damage coefficient from 0.5 to 1 due to falloff.
+		- Explosion now uses linear falloff (was erroneously using sweet-spot).
+		- Increased explosion radius from 4 to 7.
+		- Increased projectile speed from 80 to 135.
+
 **4.1.0** *The Skillful Update, Part Huntress*
 
 - New content:
@@ -643,9 +654,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed Ferrofluid melee effect unintentionally working on corpses.
 - Fixed Ferrofluid melee effect unintentionally *not* working on Wisps.
 - Fixed a missing chunk of description text for Commando: Pulse Grenade.
-
-**4.0.1**
-
-- Added the Moddable Equipment Slot Max Charges Patch, which allows easier change of maximum equipment charges per slot.
-	- Fixes Stamina Bar applying triple max charges to ALL equipments while enabled.
-- Added Sturdy Mug custom projectiles to some ranged skills which did not previously support the item.

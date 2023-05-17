@@ -2,6 +2,17 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.1**
+
+- Balance pass:
+	- Huntress: Mk7b Rockeye Mini (Primary):
+		- Increased explosion proc coefficient from 0.5 to 1.
+		- Increased explosion damage coefficient from 0.5 to 1 due to falloff.
+		- Explosion now uses linear falloff (was erroneously using sweet-spot).
+		- Increased explosion radius from 4 to 7.
+		- Reduced base duration from 0.6s to 0.45s.
+		- Increased projectile speed from 80 to 135.
+
 **4.1.0** *The Skillful Update, Part Huntress*
 
 - New content:
