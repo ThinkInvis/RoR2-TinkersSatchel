@@ -22,6 +22,14 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Item tiers to prevent giving to Item Drones, as a comma-delimited list of internal names (will be automatically trimmed).", AutoConfigFlags.PreventNetMismatch)]
         public string itemTierNameBlacklist { get; private set; } = "LunarTierDef, VoidTier1Def, VoidTier2Def, VoidTier3Def, VoidBossDef";
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, items placed in item drones will be dropped if the item drone dies. If false, items will be destroyed.", AutoConfigFlags.PreventNetMismatch)]
+        public bool dropItemsOnDeath { get; private set; } = true;
+
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, items dropped by DropItemsOnDeath will never be Command droplets even if Artifact of Command is enabled.", AutoConfigFlags.PreventNetMismatch)]
+        public bool forceNoCommand { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -360,7 +368,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         public void OnKilledServer(DamageReport damageReport) {
-            if(!body || !body.master || !body.master.IsDeadAndOutOfLivesServer()) return;
+            if(!ItemDrone.instance.dropItemsOnDeath || !body || !body.master || !body.master.IsDeadAndOutOfLivesServer()) return;
             var idwp = body.master.GetComponent<ItemDroneWardPersist>();
             if(!idwp) return;
 
@@ -372,7 +380,16 @@ namespace ThinkInvisible.TinkersSatchel {
             for(int i = 0; i < idwp.stacks.Length; i++) {
                 for(int j = 0; j < idwp.stacks[i]; j++) {
                     var vel = Quaternion.AngleAxis((float)i * thetaCurr, Vector3.up) * new Vector3(5f, 5f);
-                    PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex((ItemIndex)i), transform.position, vel);
+                    var pind = PickupCatalog.FindPickupIndex((ItemIndex)i);
+                    if(ItemDrone.instance.forceNoCommand) {
+                        GenericPickupController.CreatePickup(new GenericPickupController.CreatePickupInfo {
+                            rotation = Quaternion.identity,
+                            position = transform.position + vel / 2f,
+                            pickupIndex = pind
+                        });
+                    } else {
+                        PickupDropletController.CreatePickupDroplet(pind, transform.position, vel);
+                    }
                     thetaCurr += thetaStep;
                 }
             }
