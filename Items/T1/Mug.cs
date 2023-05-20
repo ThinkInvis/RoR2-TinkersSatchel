@@ -442,10 +442,11 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Private API //////
 
         void FireCustomProjectiles(CharacterBody attackerBody, float damage, ProcChainMask procChainMask) {
+            if(!attackerBody) return;
             var count = GetCount(attackerBody);
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-            var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.characterDirection.forward, attackerBody.transform.up);
+            var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : (attackerBody.characterDirection ? attackerBody.characterDirection.forward : attackerBody.transform.forward), attackerBody.transform.up);
             for(var i = 0; i < procCount; i++) {
                 ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
                     crit = attackerBody.RollCrit(),
