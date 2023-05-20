@@ -30,6 +30,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("If true, items dropped by DropItemsOnDeath will never be Command droplets even if Artifact of Command is enabled.", AutoConfigFlags.PreventNetMismatch)]
         public bool forceNoCommand { get; private set; } = true;
 
+        [AutoConfigRoOSlider("{0:N0} m", 10f, 1000f)]
+        [AutoConfig("Range of Item Drone itemsharing.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float range { get; private set; } = 1000f;
+
 
 
         ////// Other Fields/Properties //////
@@ -429,8 +433,8 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!body) return;
             var ward = body.GetComponent<ItemWard>();
             if(!ward) return;
-            if(ward.radius != 100f)
-                ward.radius = 100f;
+            if(ward.radius != ItemDrone.instance.range)
+                ward.radius = ItemDrone.instance.range;
             for(var i = 0; i < stacks.Length; i++)
                 CheckItemCount((ItemIndex)i);
         }
