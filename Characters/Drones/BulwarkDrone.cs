@@ -5,6 +5,7 @@ using System.Linq;
 using TILER2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class BulwarkDrone : T2Module<BulwarkDrone> {
@@ -222,6 +223,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
+            if(!NetworkServer.active) return;
             stopwatch -= Time.fixedDeltaTime;
             if(stopwatch <= 0f) {
                 var rangeSq = range * range;
