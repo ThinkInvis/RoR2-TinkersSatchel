@@ -602,6 +602,23 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.2**
+
+- Balance pass:
+	- Increased Item Drone range to 1000 m (was 100 m). Range is now configurable.
+	- Item Drones no longer drop command droplets on death if Artifact of Command is enabled (configurable).
+	- Huntress: MK7b Rockeye Mini:
+		- Increased projectile stick radius to 0.4 m (was 0.25 m).
+		- Increased base damage of both impacts to 150% (was 100%).
+		- Increased blast radius to 8.5 m (was 7 m).
+- Fixed some console spam caused by running server-only code on clients in Bulwark Drone, Sturdy Mug, Pinball Wizard, and Pulse Monitor.
+- Item Drone dropping items on death is now configurable (remains on by default).
+- Visual tweaks to Huntress: MK7b Rockeye Mini:
+	- Added a tracer effect.
+	- Increased model size.
+	- Reduced size and speed of fuse particles.
+	- Switched to a softer explosion effect.
+
 **4.1.1**
 
 - Balance pass:
@@ -644,13 +661,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - For performance reasons, Pixie Tube now stacks buff strength in one wisp, instead of count of individual wisps spawned. Previous behavior may be restored via config.
 - Added missing corruption text to Villainous Visage description.
 - Possibly fixed some errors causing Old-War Lidar to fire rapidly against dead enemies.
-
-**4.0.2**
-
-- Balance pass:
-	- Ferrofluid
-		- Aim magnetism angle now stacks logarithmically, starting at 1 degree and approaching halfway to 30 degrees after 50 stacks. (Previously: linear, 0.25 degrees per stack).
-- Fixed Ferrofluid applying its melee push force backwards and for every frame of a melee attack, causing enemies to be flung into the stratosphere. Ferrofluid now applies a continuous vortex force while a melee hitbox is active, which is *meant* to be applied every frame.
-- Fixed Ferrofluid melee effect unintentionally working on corpses.
-- Fixed Ferrofluid melee effect unintentionally *not* working on Wisps.
-- Fixed a missing chunk of description text for Commando: Pulse Grenade.

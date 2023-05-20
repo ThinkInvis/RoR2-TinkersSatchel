@@ -708,7 +708,7 @@
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/HuntressPrimaryBombArrow.png?raw=true" width=128></td>
 			<td>
 				<b>MK7b Rockeye Mini</b> (Primary)<br>
-				Agile. Quickly fire a non-seeking arrow which sticks for 100% damage, then explodes for 50% after a short delay. Both hits trigger on-hit effects.
+				Agile. Quickly fire a non-seeking arrow which sticks for 150% damage, then explodes for 150% after a short delay. Both hits trigger on-hit effects.
 			</td>
 		</tr>
 		<tr>
