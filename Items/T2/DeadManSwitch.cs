@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class DeadManSwitch : Item<DeadManSwitch> {
@@ -105,7 +106,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
-            if(!body.healthComponent.alive) return;
+            if(!NetworkServer.active || !body.healthComponent.alive) return;
             if(icd > 0f) {
                 icd -= Time.fixedDeltaTime;
             }
