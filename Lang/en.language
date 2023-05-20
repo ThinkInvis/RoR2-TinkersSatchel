@@ -360,7 +360,7 @@
 
 		
 		"TKSAT_HUNTRESS_PRIMARY_BOMBARROW_NAME": "MK7b Rockeye Mini",
-        "TKSAT_HUNTRESS_PRIMARY_BOMBARROW_DESCRIPTION": "<style=cIsUtility>Agile</style>. Quickly fire a non-seeking arrow which sticks for <style=cIsDamage>100% damage</style>, then explodes for another <style=cIsDamage>100%</style> after a short delay. Both hits trigger on-hit effects.",
+        "TKSAT_HUNTRESS_PRIMARY_BOMBARROW_DESCRIPTION": "<style=cIsUtility>Agile</style>. Quickly fire a non-seeking arrow which sticks for <style=cIsDamage>150% damage</style>, then explodes for another <style=cIsDamage>150%</style> after a short delay. Both hits trigger on-hit effects.",
 
 		"TKSAT_HUNTRESS_SECONDARY_BOLA_NAME": "Laser Bola",
         "TKSAT_HUNTRESS_SECONDARY_BOLA_DESCRIPTION": "Throw a seeking hard-light net which <style=cIsUtility>slows and pulls</style> groups of targets, and deals <style=cIsDamage>300% damage</style> over time.",

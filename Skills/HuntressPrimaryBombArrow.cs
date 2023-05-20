@@ -50,7 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				.WaitForCompletion();
 			var tracerMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Firework/matFireworkSparkle.mat")
 				.WaitForCompletion();
-			var explosionPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/OmniExplosionVFXQuick.prefab")
+			var explosionPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Huntress/OmniImpactVFXHuntress.prefab")
 				.WaitForCompletion();
 
 			//modify
@@ -94,7 +94,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public class Fire : BaseSkillState {
 			public static float baseDuration = 0.45f;
-			public static float damageModifier = 1f;
+			public static float damageModifier = 1.5f;
 			public const string ATTACK_SOUND_STRING = "Play_huntress_m1_ready";
 			public const string MUZZLE_STRING = "Muzzle";
 			bool hasFired = false;
