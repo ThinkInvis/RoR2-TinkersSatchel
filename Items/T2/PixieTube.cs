@@ -342,6 +342,10 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Private Methods //////
 
         void SpawnWisp(Vector3 pos, TeamIndex team, int stacks = 1) {
+            if(!NetworkServer.active) {
+                TinkersSatchelPlugin._logger.LogWarning("Server-only function TinkersSatchel.PixieTube.SpawnWisp called on client");
+                return;
+            }
             var vvec = Quaternion.AngleAxis(UnityEngine.Random.value * 360f, Vector3.up) * (new Vector3(1f, 1f, 0f).normalized * 15f);
             var orb = Object.Instantiate(rng.NextElementUniform(prefabs), pos, UnityEngine.Random.rotation);
             orb.GetComponent<TeamFilter>().teamIndex = team;
@@ -379,7 +383,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef) {
             var retv = orig(self, equipmentDef);
-            if(self && self.characterBody) {
+            if(NetworkServer.active && self && self.characterBody) {
                 var count = GetCount(self.characterBody);
                 if(count <= 0) return retv;
                 var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
