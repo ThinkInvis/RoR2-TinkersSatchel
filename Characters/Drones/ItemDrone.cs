@@ -433,8 +433,10 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!body) return;
             var ward = body.GetComponent<ItemWard>();
             if(!ward) return;
-            if(ward.radius != ItemDrone.instance.range)
+            if(ward.radius != ItemDrone.instance.range) {
                 ward.radius = ItemDrone.instance.range;
+                ward.displayRadiusFracH = 0.005f * (100f / ward.radius);
+            }
             for(var i = 0; i < stacks.Length; i++)
                 CheckItemCount((ItemIndex)i);
         }
