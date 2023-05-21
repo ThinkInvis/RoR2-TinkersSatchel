@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = false;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            healingRatio.ToString("0%"), (1f/extraConversionMalus).ToString("N2"), triggerBigHitFrac.ToString("0%"), (maxStoredDamageRatio + 1).ToString("N0")
+            healingRatio.ToString("0%"), activationRatio.ToString("0%"), buffDuration.ToString("N0"), (1f - overhealMalus).ToString("0%")
         };
 
 
@@ -26,29 +26,58 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Fraction of healing to absorb.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Fraction of healing to absorb, stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float healingRatio { get; private set; } = 0.5f;
 
-        [AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Extra multiplier on incoming damage buffer before converting into outgoing bonus damage.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float extraConversionMalus { get; private set; } = 0.5f;
+        [AutoConfig("Additional multiplier to HealingRatio for overheal.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float overhealMalus { get; private set; } = 0.25f;
 
-        [AutoConfigRoOSlider("x{0:N0}", 0f, 1000f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum amount of outgoing bonus damage to store as a fraction of base damage.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float maxStoredDamageRatio { get; private set; } = 99f;
+        [AutoConfig("Absorbed healing required to activate the buff, relative to max health.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float activationRatio { get; private set; } = 3f;
 
-        [AutoConfigRoOSlider("{0:P1}", 0f, 50f)]
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Minimum fraction of damage stat required to proc on hit.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float triggerBigHitFrac { get; private set; } = 4f;
+        [AutoConfig("Duration of the buff, once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffDuration { get; private set; } = 10f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base attack speed to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeAttackSpeed { get; private set; } = 5f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base damage to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeDamage { get; private set; } = 5f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base move speed to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeMoveSpeed { get; private set; } = 3f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base jump power to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeJumpPower { get; private set; } = 3f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base health regen to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeRegen { get; private set; } = 0f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base crit chance to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeCrit { get; private set; } = 10f;
+
+        [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
+        [AutoConfig("Base armor to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeArmor { get; private set; } = 5f;
 
 
 
         ////// Other Fields/Properties //////
 
         public BuffDef damageBonusDisplayBuff { get; private set; }
+        public BuffDef statBuff { get; private set; }
         public GameObject idrPrefab { get; private set; }
 
 
@@ -183,55 +212,53 @@ namespace ThinkInvisible.TinkersSatchel {
             damageBonusDisplayBuff.buffColor = Color.red;
             damageBonusDisplayBuff.canStack = true;
             damageBonusDisplayBuff.isDebuff = false;
-            damageBonusDisplayBuff.name = modInfo.shortIdentifier + "HealsToDamage";
+            damageBonusDisplayBuff.isCooldown = true;
+            damageBonusDisplayBuff.name = modInfo.shortIdentifier + "HealsToDamageCharging";
             damageBonusDisplayBuff.iconSprite = iconResource;
             ContentAddition.AddBuffDef(damageBonusDisplayBuff);
+
+            statBuff = ScriptableObject.CreateInstance<BuffDef>();
+            statBuff.buffColor = Color.green;
+            statBuff.canStack = true;
+            statBuff.isDebuff = false;
+            statBuff.name = modInfo.shortIdentifier + "HealsToDamageActive";
+            statBuff.iconSprite = iconResource;
+            ContentAddition.AddBuffDef(statBuff);
         }
 
         public override void Install() {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
+            R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
-            On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
             IL.RoR2.HealthComponent.Heal -= HealthComponent_Heal;
+            R2API.RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
 
 
 
         ////// Hooks //////
-        
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
+            if(!sender) return;
+            var stacks = sender.GetBuffCount(statBuff);
+            args.baseAttackSpeedAdd += stacks * buffMagnitudeAttackSpeed;
+            args.baseDamageAdd += stacks * buffMagnitudeDamage;
+            args.baseMoveSpeedAdd += stacks * buffMagnitudeMoveSpeed;
+            args.baseJumpPowerAdd += stacks * buffMagnitudeJumpPower;
+            args.baseRegenAdd += stacks * buffMagnitudeRegen;
+            args.critAdd += stacks * buffMagnitudeCrit;
+            args.armorAdd += stacks * buffMagnitudeArmor;
+        }
+
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             if(GetCount(body) > 0 && !body.GetComponent<HealDamageConversionTracker>())
                 body.gameObject.AddComponent<HealDamageConversionTracker>();
-        }
-
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
-            orig(self, damageInfo, victim);
-
-            if(!damageInfo.rejected && damageInfo.attacker && victim && victim.TryGetComponent<HealthComponent>(out var victimHealth) && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && damageInfo.attacker.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
-                var damageFrac = damageInfo.damage / attackerBody.damage;
-                if(damageFrac >= triggerBigHitFrac) {
-                    victimHealth.TakeDamage(new DamageInfo {
-                        attacker = damageInfo.attacker,
-                        canRejectForce = true,
-                        crit = false,
-                        damage = damageFrac * hdct.EmptyDamageBuffer(),
-                        damageColorIndex = DamageColorIndex.Item,
-                        damageType = DamageType.Silent | DamageType.BypassArmor | DamageType.BypassBlock,
-                        force = Vector3.zero,
-                        inflictor = damageInfo.inflictor,
-                        position = damageInfo.position,
-                        procChainMask = damageInfo.procChainMask,
-                        procCoefficient = 0f
-                    });
-                }
-            }
         }
 
         private void HealthComponent_Heal(ILContext il) {
@@ -253,9 +280,17 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(self && self.body && self.body.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
                         var count = GetCount(self.body);
                         if(count > 0) {
-                            var totalWouldHeal = Mathf.Min(origAmount, self.fullHealth - self.health);
-                            var stolenHealth = totalWouldHeal * (1f - Mathf.Pow(1f - healingRatio, count));
-                            hdct.ReceiveHealing(stolenHealth);
+                            var missingHealth = self.fullHealth - self.health;
+                            var totalWouldHeal = origAmount;
+                            var totalOverheal = 0f;
+                            if(origAmount > missingHealth) {
+                                totalWouldHeal = missingHealth;
+                                totalOverheal = origAmount - missingHealth;
+                            }
+                            var stackedHealingRatio = (1f - Mathf.Pow(1f - healingRatio, count));
+                            var stolenHealth = totalWouldHeal * stackedHealingRatio;
+                            var stolenOverheal = totalOverheal * stackedHealingRatio * overhealMalus;
+                            hdct.ReceiveHealing(stolenHealth + stolenOverheal);
                             return origAmount - stolenHealth;
                         }
                     }
@@ -273,7 +308,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterBody))]
     public class HealDamageConversionTracker : MonoBehaviour {
-        float storedDamageOut = 0f;
+        float storedHealingRatio = 0f;
         CharacterBody body;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
@@ -281,23 +316,16 @@ namespace ThinkInvisible.TinkersSatchel {
             body = GetComponent<CharacterBody>();
         }
 
-        public void ReceiveHealing(float healing) {
-            storedDamageOut += healing * HealsToDamage.instance.extraConversionMalus;
-            storedDamageOut = Mathf.Min(storedDamageOut, HealsToDamage.instance.maxStoredDamageRatio * body.damage);
-            UpdateBuffs();
-        }
-
-        public float EmptyDamageBuffer() {
-            var sdo = storedDamageOut;
-            storedDamageOut = 0;
-            UpdateBuffs();
-            return sdo;
-        }
-
-        void UpdateBuffs() {
+        public void ReceiveHealing(float healingRatio) {
+            storedHealingRatio += healingRatio;
+            if(storedHealingRatio >= HealsToDamage.instance.activationRatio) {
+                var stacks = Mathf.FloorToInt(storedHealingRatio / HealsToDamage.instance.activationRatio);
+                storedHealingRatio %= HealsToDamage.instance.activationRatio;
+                for(var i = 0; i < stacks; i++)
+                    body.AddTimedBuff(HealsToDamage.instance.statBuff.buffIndex, HealsToDamage.instance.buffDuration);
+            }
             body.SetBuffCount(HealsToDamage.instance.damageBonusDisplayBuff.buffIndex, Mathf.FloorToInt(
-                storedDamageOut * 100f
-                / (HealsToDamage.instance.maxStoredDamageRatio * body.damage)));
+                (storedHealingRatio / HealsToDamage.instance.activationRatio) * 100f));
         }
     }
 }
