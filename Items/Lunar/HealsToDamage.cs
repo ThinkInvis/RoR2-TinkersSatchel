@@ -62,7 +62,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
         [AutoConfig("Health regen multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeRegen { get; private set; } = 0f;
+        public float buffMagnitudeRegen { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
         [AutoConfig("Base crit chance to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
