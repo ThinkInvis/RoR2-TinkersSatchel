@@ -281,8 +281,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.Index += 2;
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldarg, amtArgIndex);
-                c.EmitDelegate<Func<HealthComponent, float, float>>((self, origAmount) => {
-                    if(self && self.body && self.body.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
+                c.Emit(OpCodes.Ldarg_3);
+                c.EmitDelegate<Func<HealthComponent, float, bool, float>>((self, origAmount, nonRegen) => {
+                    if(nonRegen && self && self.body && self.body.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
                         var count = GetCount(self.body);
                         if(count > 0) {
                             var missingHealth = self.fullHealth - self.health;
