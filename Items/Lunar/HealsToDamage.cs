@@ -45,32 +45,32 @@ namespace ThinkInvisible.TinkersSatchel {
         public float buffDuration { get; private set; } = 10f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base attack speed to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeAttackSpeed { get; private set; } = 5f;
+        [AutoConfig("Attack speed multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeAttackSpeed { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base damage to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeDamage { get; private set; } = 5f;
+        [AutoConfig("Damage multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeDamage { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base move speed to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeMoveSpeed { get; private set; } = 3f;
+        [AutoConfig("Move speed multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeMoveSpeed { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base jump power to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeJumpPower { get; private set; } = 3f;
+        [AutoConfig("Jump power multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float buffMagnitudeJumpPower { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base health regen to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Health regen multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float buffMagnitudeRegen { get; private set; } = 0f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
         [AutoConfig("Base crit chance to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeCrit { get; private set; } = 10f;
+        public float buffMagnitudeCrit { get; private set; } = 20f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
         [AutoConfig("Base armor to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float buffMagnitudeArmor { get; private set; } = 5f;
+        public float buffMagnitudeArmor { get; private set; } = 20f;
 
 
 
@@ -247,11 +247,16 @@ namespace ThinkInvisible.TinkersSatchel {
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
             if(!sender) return;
             var stacks = sender.GetBuffCount(statBuff);
-            args.baseAttackSpeedAdd += stacks * buffMagnitudeAttackSpeed;
-            args.baseDamageAdd += stacks * buffMagnitudeDamage;
-            args.baseMoveSpeedAdd += stacks * buffMagnitudeMoveSpeed;
-            args.baseJumpPowerAdd += stacks * buffMagnitudeJumpPower;
-            args.baseRegenAdd += stacks * buffMagnitudeRegen;
+            args.baseAttackSpeedAdd += stacks * buffMagnitudeAttackSpeed
+                * (sender.baseAttackSpeed + sender.levelAttackSpeed * sender.level);
+            args.baseDamageAdd += stacks * buffMagnitudeDamage
+                * (sender.baseDamage + sender.levelDamage * sender.level);
+            args.baseMoveSpeedAdd += stacks * buffMagnitudeMoveSpeed
+                * (sender.baseMoveSpeed + sender.levelMoveSpeed * sender.level);
+            args.baseJumpPowerAdd += stacks * buffMagnitudeJumpPower
+                * (sender.baseJumpPower + sender.levelJumpPower * sender.level);
+            args.baseRegenAdd += stacks * buffMagnitudeRegen
+                * (sender.baseRegen + sender.levelRegen * sender.level);
             args.critAdd += stacks * buffMagnitudeCrit;
             args.armorAdd += stacks * buffMagnitudeArmor;
         }
