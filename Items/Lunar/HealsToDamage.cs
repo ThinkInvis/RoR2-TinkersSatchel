@@ -296,7 +296,7 @@ namespace ThinkInvisible.TinkersSatchel {
                             var stackedHealingRatio = (1f - Mathf.Pow(1f - healingRatio, count));
                             var stolenHealth = totalWouldHeal * stackedHealingRatio;
                             var stolenOverheal = totalOverheal * stackedHealingRatio * overhealMalus;
-                            hdct.ReceiveHealing(stolenHealth + stolenOverheal);
+                            hdct.ReceiveHealing((stolenHealth + stolenOverheal) / self.fullHealth);
                             return origAmount - stolenHealth;
                         }
                     }
