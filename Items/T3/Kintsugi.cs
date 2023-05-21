@@ -43,6 +43,10 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Items to count towards Kintsugi, as a comma-delimited list of name tokens or internal names (will be automatically trimmed, prefix name tokens with @).", AutoConfigFlags.PreventNetMismatch)]
 		public string validItemNameTokens { get; private set; } = "ScrapWhite, ScrapGreen, ScrapRed, ScrapYellow, RegeneratingScrap, RegeneratingScrapConsumed, HealingPotionConsumed, FragileDamageBonusConsumed, ExtraLifeVoidConsumed, ExtraLifeConsumed, TKSATKintsugi";
 
+		[AutoConfigRoOIntSlider("{0:B7}", 0, 127)]
+		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+		[AutoConfig("Binary flag determining which stats to effect. 1: Attack Speed, 2: Damage, 4: Move Speed, 8: Jump Power, 16: Regen Mult., 32: Crit Chance, 64: Armor", AutoConfigFlags.PreventNetMismatch, 0, 127)]
+		public int buffEffectFlags { get; private set; } = 127;
 
 
 		////// Other Fields/Properties //////
@@ -282,13 +286,13 @@ namespace ThinkInvisible.TinkersSatchel {
                 };
             }
 			totalBonus *= multCount;
-			args.attackSpeedMultAdd += totalBonus;
-			args.damageMultAdd += totalBonus;
-			args.moveSpeedMultAdd += totalBonus;
-			args.jumpPowerMultAdd += totalBonus;
-			args.regenMultAdd += totalBonus;
-			args.critAdd += totalBonus * 100;
-			args.armorAdd += totalBonus * 100;
+			if((buffEffectFlags & 1) != 0) args.attackSpeedMultAdd += totalBonus;
+			if((buffEffectFlags & 2) != 0) args.damageMultAdd += totalBonus;
+			if((buffEffectFlags & 4) != 0) args.moveSpeedMultAdd += totalBonus;
+			if((buffEffectFlags & 8) != 0) args.jumpPowerMultAdd += totalBonus;
+			if((buffEffectFlags & 16) != 0) args.regenMultAdd += totalBonus;
+			if((buffEffectFlags & 32) != 0) args.critAdd += totalBonus * 100;
+			if((buffEffectFlags & 64) != 0) args.armorAdd += totalBonus * 100;
 		}
 
 		private void CharacterMaster_OnInventoryChanged(On.RoR2.CharacterMaster.orig_OnInventoryChanged orig, CharacterMaster self) {
