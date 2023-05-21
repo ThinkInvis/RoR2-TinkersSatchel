@@ -226,7 +226,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			vfx.vfxPriority = VFXAttributes.VFXPriority.Medium;
 			vfx.vfxIntensity = VFXAttributes.VFXIntensity.Medium;
 			tsp.AddComponent<NetworkIdentity>();
-			effectPrefab = tsp.InstantiateClone("TkSatPinballSFXHandler");
+			effectPrefab = tsp.InstantiateClone("TkSatPinballSFXHandler", false);
 			GameObject.Destroy(tsp);
 			ContentAddition.AddEffect(effectPrefab);
 
