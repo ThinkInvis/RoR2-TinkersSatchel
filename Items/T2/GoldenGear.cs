@@ -5,6 +5,8 @@ using TILER2;
 using static R2API.RecalculateStatsAPI;
 using R2API;
 using UnityEngine.AddressableAssets;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class GoldenGear : Item<GoldenGear> {
@@ -15,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Healing});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            goldAmt.ToString("N0"), goldReduc.ToString("0%"), goldExp.ToString("0%")
+            goldAmt.ToString("N0"), goldExp.ToString("0%"), duration.ToString("N1")
         };
 
 
@@ -25,28 +27,17 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOIntSlider("${0:N0}", 1, 1000)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
         [AutoConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
-        public int goldAmt { get; private set; } = 10;
+        public int goldAmt { get; private set; } = 2;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Exponential factor of GoldAmt scaling per additional point of armor.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float goldExp { get; private set; } = 0.075f;
+        [AutoConfig("Exponential reduction to points of armor past the first.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float goldExp { get; private set; } = 0.01f;
 
-        [AutoConfigRoOSlider("{0:P1}", 0f, 0.999f)]
+        [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Inverse-exponential multiplier for reduced GoldAmt per stack (higher = more powerful).", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
-        public float goldReduc { get; private set; } = 0.1f;
-
-        [AutoConfigRoOSlider("{0:N4}", float.Epsilon, 1f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Minimum possible goldAmt as affected by item stacking.", AutoConfigFlags.PreventNetMismatch, float.Epsilon, float.MaxValue)]
-        public float goldMin { get; private set; } = 0.0001f;
-
-        [AutoConfigRoOCheckbox()]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("If true, deployables (e.g. Engineer turrets) with Armor Crystal will benefit from their master's money.",
-            AutoConfigFlags.PreventNetMismatch)]
-        public bool inclDeploys { get; private set; } = true;
+        [AutoConfig("Duration of each point of armor.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float duration { get; private set; } = 5f;
 
 
 
@@ -89,14 +80,14 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
 
-            On.RoR2.CharacterBody.FixedUpdate += On_CBFixedUpdate;
+            On.RoR2.CharacterMaster.GiveMoney += CharacterMaster_GiveMoney;
             GetStatCoefficients += Evt_TILER2GetStatCoefficients;
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
-            On.RoR2.CharacterBody.FixedUpdate -= On_CBFixedUpdate;
+            On.RoR2.CharacterMaster.GiveMoney -= CharacterMaster_GiveMoney;
             GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
         }
 
@@ -104,78 +95,51 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
         
-        private void On_CBFixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self) {
-            orig(self);
-            UpdateGGBuff(self);
-        }
-
         private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
             var cpt = sender.GetComponent<GoldenGearComponent>();
-            if(cpt) args.armorAdd += cpt.calculatedArmorBonus;
+            if(cpt) {
+                var armorBonus = Mathf.Log(cpt.totalBuff * goldExp + 1f) / Mathf.Log(goldExp + 1f) * GetCount(sender);
+                sender.SetBuffCount(GoldenGear.instance.goldenGearBuff.buffIndex, Mathf.FloorToInt(armorBonus));
+                args.armorAdd += armorBonus;
+            }
         }
 
+        private void CharacterMaster_GiveMoney(On.RoR2.CharacterMaster.orig_GiveMoney orig, CharacterMaster self, uint amount) {
+            orig(self, amount);
+            if(!self.hasBody) return;
+            var stacks = GetCount(self);
+            if(stacks == 0) return;
 
-
-        ////// Public Methods //////
-
-        public float CalculateArmor(uint money, int stacks) {
-            if(money == 0 || stacks <= 0) return 0;
-            var baseCost = Mathf.Max(Run.instance.GetDifficultyScaledCost(goldAmt) * Mathf.Pow(1f - goldReduc, stacks - 1f),
-                goldMin);
-            return Mathf.Log(money * goldExp / baseCost + 1f) / Mathf.Log(goldExp + 1f);
-        }
-
-
-
-        ////// Non-Public Methods //////
-
-        void UpdateGGBuff(CharacterBody cb) {
-            if(!cb) return;
+            var cb = self.GetBody();
 
             var cpt = cb.GetComponent<GoldenGearComponent>();
             if(!cpt) cpt = cb.gameObject.AddComponent<GoldenGearComponent>();
 
-            uint newMoney = 0;
-            if(cb.master)
-                newMoney = cb.master.money;
-            if(inclDeploys) {
-                var dplc = cb.GetComponent<Deployable>();
-                if(dplc && dplc.ownerMaster) newMoney += dplc.ownerMaster.money;
-            }
-            var newDiff = Run.instance.difficultyCoefficient;
-            var newIcnt = GetCount(cb);
-
-            bool didChange = false;
-            if(cpt.cachedMoney != newMoney) {
-                didChange = true;
-                cpt.cachedMoney = newMoney;
-            }
-            if(cpt.cachedDiff != newDiff) {
-                didChange = true;
-                cpt.cachedDiff = newDiff;
-            }
-            if(cpt.cachedIcnt != newIcnt) {
-                didChange = true;
-                cpt.cachedIcnt = newIcnt;
-            }
-            if(!didChange) return;
-
-            cpt.calculatedArmorBonus = CalculateArmor(cpt.cachedMoney, cpt.cachedIcnt);
-
-            var tgtBuffStacks = Mathf.FloorToInt(cpt.calculatedArmorBonus);
-
-            int currBuffStacks = cb.GetBuffCount(goldenGearBuff);
-            if(tgtBuffStacks != currBuffStacks)
-                cb.SetBuffCount(goldenGearBuff.buffIndex, tgtBuffStacks);
+            cpt.cachedMoney += amount;
         }
     }
 
     public class GoldenGearComponent : MonoBehaviour {
         public uint cachedMoney = 0u;
-        public int cachedIcnt = 0;
-        public float cachedDiff = 0f;
-        public float calculatedArmorBonus = 0;
+        readonly List<(int count, float timestamp)> stacks = new();
+        public int totalBuff { get; private set; }
+
+        void FixedUpdate() {
+            var moneyPerStack = Run.instance.GetDifficultyScaledCost(GoldenGear.instance.goldAmt);
+            var newStacks = Mathf.FloorToInt(cachedMoney / moneyPerStack);
+
+            if(newStacks > 0) {
+                cachedMoney -= (uint)(newStacks * moneyPerStack);
+                stacks.Add((newStacks, Time.fixedTime));
+            }
+
+            stacks.RemoveAll(stack => (Time.fixedTime - stack.timestamp) > GoldenGear.instance.duration);
+            var newTotalBuff = stacks.Sum(stack => stack.count);
+            if(TryGetComponent<CharacterBody>(out var cb) && newTotalBuff != totalBuff)
+                cb.statsDirty = true;
+            totalBuff = newTotalBuff;
+        }
     }
 
 
