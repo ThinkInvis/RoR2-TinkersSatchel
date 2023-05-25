@@ -27,7 +27,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fraction of healing to absorb, stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float healingRatio { get; private set; } = 0.5f;
+        public float healingRatio { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
