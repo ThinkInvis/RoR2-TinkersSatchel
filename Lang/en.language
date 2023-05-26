@@ -69,7 +69,7 @@
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_LORE": "",
 		
 		"TINKERSSATCHEL_HEALSTODAMAGE_NAME": "Hydroponic Cell",
-		"TINKERSSATCHEL_HEALSTODAMAGE_PICKUP": "Half your healed health grows a plant which boosts base stats... <color=#FF7F7F>BUT you don't receive the converted healing.</color>",
+		"TINKERSSATCHEL_HEALSTODAMAGE_PICKUP": "Some healed health grows a plant which boosts base stats... <color=#FF7F7F>BUT you don't receive the converted healing.</color>",
 		"TINKERSSATCHEL_HEALSTODAMAGE_DESC": "Whenever you receive <style=cIsHealing>healing</style> that applies to your <style=cIsHealth>health</style> <style=cStack>(regen, barrier, and shield do not count, overheal is reduced by {3})</style>, {0} <style=cStack>(+{0} per stack, hyperbolic)</style> of this <style=cIsHealing>healing</style> will be <color=#FF7F7F>converted</color>. For every {1} of your maximum health in converted healing, gain {2} seconds of <style=cIsUtility>20% BASE stat increases</style> to attack speed, move speed, damage, health regen, and jump power, as well as a flat 20% crit chance and 20 armor.",
 		"TINKERSSATCHEL_HEALSTODAMAGE_LORE": "",
 
