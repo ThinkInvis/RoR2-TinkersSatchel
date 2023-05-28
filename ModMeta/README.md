@@ -32,8 +32,9 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 2 for Huntress,
 	- and 3 for Engineer;
 - 6 artifacts;
-- and 1 other feature:
-	- a UI tweak.
+- and 2 other features:
+	- a UI tweak,
+	- and a module allowing easy changes to equipment max charges.
 
 Short summaries are provided below. For a full description of each item, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ContentSummary.md
 
@@ -113,7 +114,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/goldenGearIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Chestplate</b><br>
-				Gain armor by hoarding money.
+				Collecting money grants temporary armor.
 			</td>
 		</tr>
 		<tr>
@@ -300,7 +301,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/healsToDamageIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Hydroponic Cell</b><br>
-				Half your healed health grows a plant that provides a single-use damage bonus... <i>BUT you don't receive the converted healing.</i>
+				Some healed health grows a plant which boosts base stats... <i>BUT you don't receive the converted healing.</i>
 			</td>
 		</tr>
 		<tr>
@@ -602,6 +603,20 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.3**
+
+- Balance pass:
+	- Hydroponic Cell: Reworked.
+		- New behavior: consumes 25% of healing, and provides a temporary buff for every 100% max health in consumed healing: +20% to all BASE stats (includes level bonuses) for 10 seconds.
+		- Old behavior: consumes 50% of healing, and up to 10x max health in consumed healing is turned into a damage buff to heavy hits (400%+ base damage).
+		- Now allows 25% of overheal to count as consumed healing (was 0%).
+	- Chestplate: Reworked.
+		- New behavior: provides a temporary armor buff based on gold income, with diminishing returns on gold amount only.
+		- Old behavior: provides armor based on total gold held, with heavy diminishing returns on both item stacks and gold amount.
+- Slightly clarified Ferrofluid melee attack description.
+- Kintsugi now exposes a config for selecting which stats are affected.
+- Fixed a duplicate effect prefab registration in Pinball Wizard.
+
 **4.1.2**
 
 - Balance pass:
@@ -651,13 +666,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **4.0.4** *The Other Drones Not Found Update**
 
 - Removed a debug setting which was inadvertently left in the build, causing almost exclusively Bulwark Drones to spawn.
-
-**4.0.3**
-
-- Ferrofluid no longer affects deployable projectiles, such as Engineer's mines.
-- Fixed Sturdy Mug and Pinball Wizard custom projectiles not being added to networking catalog.
-- Sturdy Mug now affects Huntress' primary attacks.
-- Added proc coefficient configs to Lodestone, Faulty Mortar Tube, Sturdy Mug, En Passant, Unstable Klein Bottle, H3AD-53T, Pinball Wizard, Bramble Ring, Voidwisp Hive, and Nautilus Protocol.
-- For performance reasons, Pixie Tube now stacks buff strength in one wisp, instead of count of individual wisps spawned. Previous behavior may be restored via config.
-- Added missing corruption text to Villainous Visage description.
-- Possibly fixed some errors causing Old-War Lidar to fire rapidly against dead enemies.

@@ -2,6 +2,20 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.3**
+
+- Balance pass:
+	- Hydroponic Cell: Reworked.
+		- New behavior: consumes 25% of healing, and provides a temporary buff for every 100% max health in consumed healing: +20% to all BASE stats (includes level bonuses) for 10 seconds.
+		- Old behavior: consumes 50% of healing, and up to 10x max health in consumed healing is turned into a damage buff to heavy hits (400%+ base damage).
+		- Now allows 25% of overheal to count as consumed healing (was 0%).
+	- Chestplate: Reworked.
+		- New behavior: provides a temporary armor buff based on gold income, with diminishing returns on gold amount only.
+		- Old behavior: provides armor based on total gold held, with heavy diminishing returns on both item stacks and gold amount.
+- Slightly clarified Ferrofluid melee attack description.
+- Kintsugi now exposes a config for selecting which stats are affected.
+- Fixed a duplicate effect prefab registration in Pinball Wizard.
+
 **4.1.2**
 
 - Balance pass:
