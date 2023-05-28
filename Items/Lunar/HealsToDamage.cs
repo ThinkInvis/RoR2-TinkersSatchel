@@ -37,7 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Absorbed healing required to activate the buff, relative to max health.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float activationRatio { get; private set; } = 3f;
+        public float activationRatio { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
