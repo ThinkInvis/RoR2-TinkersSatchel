@@ -13,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
     public class MountainToken : Item<MountainToken> {
 
         ////// Item Data //////
-        
+
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.HoldoutZoneRelated });
 
@@ -24,7 +24,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Config //////
-        
+
         [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time spent in midair after which all bonus item stacks will have been removed and granted to enemies. Bonus items decay linearly over this timespan.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -119,8 +119,9 @@ namespace ThinkInvisible.TinkersSatchel {
             c.EmitDelegate<Func<float, float>>((origCredits) => {
                 int msBonusCount = 0;
                 foreach(var nu in NetworkUser.readOnlyInstancesList) {
-                    if(!nu.isParticipating) continue;
+                    if(!nu || !nu.isParticipating) continue;
                     var body = nu.GetCurrentBody();
+                    if(!body) continue;
                     msBonusCount += GetCount(body);
                 }
                 return origCredits + msBonusCount * difficultyBonus * Mathf.Pow(Run.instance.compensatedDifficultyCoefficient, 0.5f);
