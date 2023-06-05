@@ -603,6 +603,10 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.4**
+
+- Fixed a potential NRE in Celestial Gambit causing the Teleporter to sometimes drop zero items.
+
 **4.1.3**
 
 - Balance pass:
@@ -662,7 +666,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Fixed a possible issue where void items may have depended on the vanilla SotV expansion, instead of the SotV+TS combo expansion.
 - Fixed inverted normals on one side of the Stamina Bar model.
 - Updated TILER2 dependency to 7.4.0 (required update).
-
-**4.0.4** *The Other Drones Not Found Update**
-
-- Removed a debug setting which was inadvertently left in the build, causing almost exclusively Bulwark Drones to spawn.
