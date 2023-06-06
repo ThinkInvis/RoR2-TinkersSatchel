@@ -1,0 +1,382 @@
+﻿{
+	"strings": {
+		"TKSAT_DISABLED_SKILL_NAME": "被禁用的技能",
+		"TKSAT_DISABLED_SKILL_DESCRIPTION": "某些原因暂时阻止您使用该技能！",
+		"TKSAT_KEYWORD_TAUNT": "<style=cKeywordName>嘲讽</style><style=cSub>除非没有其他选择,被嘲讽的AI只会<style=cIsDamage>攻击</style>那些对其使用了嘲讽的目标。在AI和幸存者身上，对非嘲讽目标造成的任何<style=cIsDamage>伤害</style>减半。如果嘲讽的源头死亡，嘲讽效果会被移除。</style>",
+		"TKSAT_KEYWORD_SUPPRESS": "<style=cKeywordName>禁用</style><style=cSub>被禁用的技能无法使用，并且其冷却时间被冻结。</style>",
+
+		"TINKERSSATCHEL_EXPANSION_NAME": "工匠背囊",
+		"TINKERSSATCHEL_EXPANSION_DESCRIPTION": "将来自\"工匠背囊\"模组的独立内容添加到游戏中。",
+		"TINKERSSATCHEL_VOIDEXPANSION_NAME": "工匠背囊 (虚空幸存者)",
+		"TINKERSSATCHEL_VOIDEXPANSION_DESCRIPTION": "将来自\"工匠背囊\"模组的需要\"虚空幸存者\"的独立内容添加到游戏中",
+
+
+
+		"TINKERSSATCHEL_EXTRAEQUIPMENT_NAME": "清道夫的背囊",
+		"TINKERSSATCHEL_EXTRAEQUIPMENT_PICKUP": "多一个装备槽。打开记分板时激活以搜索背囊中的物品。",
+		"TINKERSSATCHEL_EXTRAEQUIPMENT_DESC": "获得1个<style=cIsUtility>额外的装备槽</style><style=cStack>(每层增加1个)</style>。当记分板打开时激活装备将循环切换装备槽。",
+		"TINKERSSATCHEL_EXTRAEQUIPMENT_LORE": "",
+		
+		
+		"TINKERSSATCHEL_DODGE_NAME": "耐力槽",
+		"TINKERSSATCHEL_DODGE_PICKUP": "进行最多3次闪避翻滚。",
+		"TINKERSSATCHEL_DODGE_DESC": "进行一次水平闪避翻滚，获得一次短暂的速度提升，速度增加 <style=cIsUtility>{0}米/秒</style>，并在 <style=cIsUtility>{1}秒内变得无敌</style>。该装备具有 <style=cIsUtility>3次的充能次数</style>。",
+		"TINKERSSATCHEL_DODGE_LORE": "",
+
+		"TINKERSSATCHEL_LODESTONE_NAME": "磁石",
+		"TINKERSSATCHEL_LODESTONE_PICKUP": "吸引附近的敌人和友方物品效果。",
+		"TINKERSSATCHEL_LODESTONE_DESC": "将{0}米范围内的敌人向自己<style=cIsUtility>吸引</style>，并造成 <style=cIsDamage>{1}基础伤害</style>。将{2}米范围内友方物品造成的掉落物、球体和投射物<style=cIsUtility>吸引</style>到离自己最近的位置。",
+		"TINKERSSATCHEL_LODESTONE_LORE": "",
+		"ACHIEVEMENT_TKSAT_LODESTONE_NAME": "更近一些",
+		"ACHIEVEMENT_TKSAT_LODESTONE_DESCRIPTION": "物品套装：近距离。同时拥有（15件中的）6件或更多。",
+		"TKSAT_LODESTONE_CI_EMBRYO_APPEND": "\n<style=cStack>跳动的胚胎: 使范围与伤害翻倍</style>",
+
+		"TINKERSSATCHEL_PACKBOX_NAME": "纸盒",
+		"TINKERSSATCHEL_PACKBOX_PICKUP": "打包带走。",
+		"TINKERSSATCHEL_PACKBOX_DESC": "使用一次将一个 <style=cIsDamage>炮台</style>、<style=cIsHealing>森林神龛</style>或其他大部分可交互物品<style=cIsUtility>打包</style>。再次使用来<style=cIsUtility>放置</style>被打包的物品并将纸盒进入冷却。",
+		"TINKERSSATCHEL_PACKBOX_LORE": "",
+		"TKSAT_PACKBOX_CI_EMBRYO_APPEND": "\n<style=cStack>跳动的胚胎: 有50%的几率在放置时不消耗层数。</style>",
+		
+		"TINKERSSATCHEL_RECOMBOBULATOR_NAME": "量子重塑器",
+		"TINKERSSATCHEL_RECOMBOBULATOR_PICKUP": "重新塑造一个可交互物品。",
+		"TINKERSSATCHEL_RECOMBOBULATOR_DESC": "<style=cIsUtility>重塑</style>一个可交互物品，以生成当前阶段有效的不同物品。每个可交互物品<style=cIsUtility>只能使用一次</style>。",
+		"TINKERSSATCHEL_RECOMBOBULATOR_LORE": "",
+		"ACHIEVEMENT_TKSAT_RECOMBOBULATOR_NAME": "冒险家",
+		"ACHIEVEMENT_TKSAT_RECOMBOBULATOR_DESCRIPTION": "回收一个传奇或首领物品。",
+        "TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND": "\n<style=cStack>跳动的胚胎:重塑两次并选择较稀有的结果。</style>",
+		
+		"TINKERSSATCHEL_REVIVEONCE_NAME": "指挥终端",
+		"TINKERSSATCHEL_REVIVEONCE_PICKUP": "复活一名队友或召唤无人机。使用后消耗。",
+		"TINKERSSATCHEL_REVIVEONCE_DESC": "随机<style=cIsHealing>复活</style>一名幸存者，通过降落舱召唤他们。如果没有幸存者死亡，降落舱中将包含一个<style=cIsUtility>随机无人机</style>。<color=#FF7F7F>使用后将被消耗</style>。",
+		"TINKERSSATCHEL_REVIVEONCE_LORE": "",
+		"TKSAT_REVIVEONCE_CI_EMBRYO_APPEND": "\n<style=cStack>跳动的胚胎: 同时触发两次。</style>",
+
+		"TINKERSSATCHEL_REWIND_NAME": "因果相机",
+		"TINKERSSATCHEL_REWIND_PICKUP": "短暂相位并倒回10秒。",
+		"TINKERSSATCHEL_REWIND_DESC": "消失于时间中，持续 <style=cIsUtility>{0} 秒</style>。将自己的 <style=cIsUtility>位置</style>、<style=cIsHealth>生命值</style>和 <style=cIsUtility>技能冷却时间 <style=cStack>（不包括装备）</style></style> <style=cIsUtility>倒回</style>到最多<style=cIsUtility>{1} 秒前</style>的状态。 <style=cStack>需要保存时间不少于 {2} 秒方可使用。</style>",
+		"TINKERSSATCHEL_REWIND_LORE": "运单: TIL-1.8c时空成像镜头原型\r\n单号: 88***********\r\n预计送达时间: {0} 秒后\r\n运送方式: 封闭时间曲线\r\n送货地址: 琼泥V\r\n运动详情： \r\n\r\n修复了慢速异常（< 0.01c）在照片中模糊的问题。希望我们现在能在这些方面取得更好的结果。\r\n\r\n不要摇晃——我不得不牺牲一些稳定场的完整性。当UES的设备自动检测到局部时间旅行时，我已经两次打电话给物流部门更正了清单。\r\n",
+		"TKSAT_REWIND_CI_EMBRYO_APPEND": "\n<style=cStack>跳动的胚胎: 有50%几率不消耗库存。</style>",
+
+
+		"TINKERSSATCHEL_BISMUTHFLASK_NAME": "铋之药剂",
+		"TINKERSSATCHEL_BISMUTHFLASK_PICKUP": "减少负面效果的持续时间...... <color=#FF7F7F>但同时也减少正面效果的持续时间。</color>",
+		"TINKERSSATCHEL_BISMUTHFLASK_DESC": "施加在你身上的任何负面效果 <style=cIsUtility>持续时间缩短为原来的 {0}</style>。施加在你身上的任何正面效果 <color=#FF7F7F>持续时间缩短为原来的 {1}</color>。",
+		"TINKERSSATCHEL_BISMUTHFLASK_LORE": "",
+
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_NAME": "浓缩蒸馏器",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_PICKUP": "增加负面效果的强度和持续时间... <color=#FF7F7F>但减少范围。</color>",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_DESC": "你的点燃和流血效果造成额外的<style=cIsDamage>+{0}伤害</style>，并且对敌人施加的所有负面效果持续时间<style=cIsUtility>延长{1}</style>。你的近战攻击和爆炸攻击<color=#FF7F7F>减少{2}射程/范围</color>，你的投射物的速度 <color=#FF7F7F>减慢 {3}</color>，你的直射攻击的射程 <color=#FF7F7F>减少 {4}</color>。",
+		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_LORE": "",
+		
+		"TINKERSSATCHEL_HEALSTODAMAGE_NAME": "水培细胞",
+		"TINKERSSATCHEL_HEALSTODAMAGE_PICKUP": "将一部分要恢复的生命值用于种植植物，提升基础属性......<color=#FF7F7F>但你不会受到被转化了的治疗。</color>",
+		"TINKERSSATCHEL_HEALSTODAMAGE_DESC": "每当你接收到应用于你的<style=cIsHealth>生命值</style>的<style=cIsHealing>治疗</style> <style=cStack>（不包括再生、屏障和护盾，过量治疗减少 {3}）</style>，其中的 {0} <style=cStack>（每层+{0}，双曲线比例）</style>将被<color=#FF7F7F>转化</color>。对于每个转化的治疗量达到你最大生命值的 {1}，你获得 {2} 秒的<style=cIsUtility>20% 基础属性提升</style>，包括攻击速度、移动速度、伤害、生命值回复和跳跃能力，以及固定的 20% 暴击几率和 20 护甲。",
+		"TINKERSSATCHEL_HEALSTODAMAGE_LORE": "",
+
+		"TINKERSSATCHEL_MOUNTAINTOKEN_NAME": "天体冒险",
+		"TINKERSSATCHEL_MOUNTAINTOKEN_PICKUP": "从传送器获得额外物品奖励......<color=#FF7F7F>但是长时间悬空会将物品给予敌人。</color>",
+		"TINKERSSATCHEL_MOUNTAINTOKEN_DESC": "只要在传送器充能期间保持空中状态，这些额外的物品将逐渐<color=#FF7F7F>丢失</color>并<color=#FF7F7F>分配给传送器区域内的所有敌人</color>。所有额外物品将在 {0} 秒后丢失。每增加一层，传送器事件也会变得<color=#FF7F7F>稍微更加困难</color>。",
+		"TINKERSSATCHEL_MOUNTAINTOKEN_LORE": "谨以此碑/悼念于狂风暴雨中殒命之士。",
+		
+		"TINKERSSATCHEL_WAXFEATHER_NAME": "蜡羽",
+		"TINKERSSATCHEL_WAXFEATHER_PICKUP": "在空中时点燃攻击，减轻重力......<color=#FF7F7F>但也削弱护甲和速度。</color>...",
+		"TINKERSSATCHEL_WAXFEATHER_DESC": "在空中停留时，每{0}秒获得一个混合增益/减益，最多可叠加{1}<style=cStack>(每层+{1}，双曲线比例)</style>。每层使你的攻击有{2}的几率<style=cIsDamage>点燃敌人</style>，造成<style=cIsDamage>每层{3}的伤害</style>，并<style=cIsUtility>减轻你的{4}重力</style><style=cStack>（双曲线比例）</style>。每层还<color=#FF7F7F>削弱你的护甲{5}（线性）和速度{6}（线性）</color>。在地面上时，你以{7}的速度失去增益层。",
+		"TINKERSSATCHEL_WAXFEATHER_LORE": "",
+
+
+		"TINKERSSATCHEL_COMPASS_NAME": "白银指南针",
+		"TINKERSSATCHEL_COMPASS_PICKUP": "指引你前进......<style=cDeath>但其中充满危险。</style>",
+		"TINKERSSATCHEL_COMPASS_DESC": "<style=cIsUtility>立即显露传送器的位置</style>。同时增加一个<style=cShrine>山之挑战</style>给当前阶段{0}.{1}",
+		"TINKERSSATCHEL_COMPASS_LORE": "",
+		"TINKERSSATCHEL_COMPASS_DESC_PUNISH": ",<style=cDeath>难度是神龛的两倍</style>",
+		"TINKERSSATCHEL_COMPASS_DESC_PERSTAGE": "每关仅可使用{0}次。",
+		"TINKERSSATCHEL_COMPASS_DESC_PERPLAYER": "每名玩家每关仅可使用{0}次。",
+		"TKSAT_COMPASS_USE_MESSAGE": "<style=cDeath>{0}寻找到一条道路......</style>",
+        "TKSAT_COMPASS_USE_MESSAGE_2P": "<style=cDeath>你寻找到一条道路......</style>",
+
+		"TINKERSSATCHEL_EMP_NAME": "电磁脉冲装置",
+		"TINKERSSATCHEL_EMP_PICKUP": "禁用敌人的技能......<style=cDeath>但同时也禁用幸存者的非主要技能。</style>",
+		"TINKERSSATCHEL_EMP_DESC": "持续{0}秒，<color=#FF7F7F>禁用</color>{1}米范围内敌人的<style=cIsUtility>所有技能</style>以及幸存者的<style=cIsUtility>非主要技能</style>。同时在使用时清除<style=cIsDamage>敌方投射物</style>。",
+		"TINKERSSATCHEL_EMP_LORE": "",
+		
+		"TINKERSSATCHEL_MONKEYSPAW_NAME": "利莫里亚之爪",
+		"TINKERSSATCHEL_MONKEYSPAW_PICKUP": "以更低的花费打开宝箱并获得额外物品...<style=cDeath>但存活的敌人也会获得物品。</style>",
+		"TINKERSSATCHEL_MONKEYSPAW_DESC": "对一个宝箱使用该物品以<style=cIsUtility>低{0}的花费打开宝箱</style>并<style=cIsUtility>额外获得一个物品</style>。同时，<style=cDeath>所有存活的敌人也会获得物品</style>，数量取决于物品的稀有度（5个普通、3个稀有或1个传奇）。",
+		"TINKERSSATCHEL_MONKEYSPAW_LORE": "",
+        "TKSAT_MONKEYSPAW_ACTIVATED": "<style=cEvent>{0}的<color=#307FFF>利莫里亚之爪</color>扭曲起来......</style>",
+        "TKSAT_MONKEYSPAW_ACTIVATED_2P": "<style=cEvent>你的<color=#307FFF>利莫里亚之爪</color>扭曲起来......</style>",
+        "TKSAT_MONKEYSPAW_ITEMGRANT": "<style=cEvent>存活的敌人获得了{1}x{2}。</style>",
+
+		"TINKERSSATCHEL_UNSTABLEBOMB_NAME": "故障迫击炮管",
+		"TINKERSSATCHEL_UNSTABLEBOMB_PICKUP": "投掷一枚炸弹，受到伤害时引爆......<style=cDeath>但可能也会伤害到幸存者。</style>",
+		"TINKERSSATCHEL_UNSTABLEBOMB_DESC": "投掷一颗<style=cIsDamage>活跃的迫击炮弹</style>，它会嵌入地面。在受到任何伤害或经过10秒后，炮弹会对范围内的<style=cDeath>所有角色</style><style=cIsDamage>造成{0}点伤害</style>。",
+		"TINKERSSATCHEL_UNSTABLEBOMB_LORE": "",
+
+
+		"TINKERSSATCHEL_EXTENDOARMS_NAME": "延伸臂",
+		"TINKERSSATCHEL_EXTENDOARMS_PICKUP": "攻击距离更远，略微增加造成的伤害。",
+		"TINKERSSATCHEL_EXTENDOARMS_DESC": "使你的近战攻击和以你为中心{0}米的范围攻击增加<style=cIsUtility>{1}距离<style=cStack>(每层+{1})</style></style>, 投射物攻击增加<style=cIsUtility>{3} 速度 <style=cStack>(每层+{3})</style></style>, 并且远程射击增加 <style=cIsUtility>{4}最大范围 <style=cStack>(每层+{4})</style></style>。同时增加 <style=cIsDamage>{2} 伤害 <style=cStack>(+{2} 每层)</style></style>。",
+		"TINKERSSATCHEL_EXTENDOARMS_LORE": "",
+		
+		"TINKERSSATCHEL_MAGNETISM_NAME": "铁磁流体",
+		"TINKERSSATCHEL_MAGNETISM_PICKUP": "你的攻击具有轻微的磁性，并获得暴击几率。",
+		"TINKERSSATCHEL_MAGNETISM_DESC": "你的投射物攻击会 <style=cIsUtility>追踪</style> <style=cIsUtility>{0}° (每{2}层逐渐增加{1}°)</style>以内的敌人。 你的近战攻击会创造一个范围<style=cIsUtility>{3}米 <style=cStack>(+{3} 每层)</style></style>的持续吸引的漩涡. 同时增加 <style=cIsDamage>{4}% 暴击几率 <style=cStack>(+{4}% 每层)</style></style>.",
+		"TINKERSSATCHEL_MAGNETISM_LORE": "",
+
+		"TINKERSSATCHEL_MIMIC_NAME": "基本被驯服的拟态怪",
+		"TINKERSSATCHEL_MIMIC_PICKUP": "随机模仿你的其他物品。",
+		"TINKERSSATCHEL_MIMIC_DESC": "选择一个你的其他物品来 <style=cIsUtility>模仿</style> <style=cStack>（每个层级都分别跟踪）</style>，从每个等级的 {0} 种物品类型中按权重选择。每隔 <style=cIsUtility>{1} 秒</style>，所有拟态怪将 <style=cIsUtility>重新选择</style> 一个新的物品。",
+		"TINKERSSATCHEL_MIMIC_LORE": "事态就要失控了。\n\n几个星期前，詹姆森发现这些拟态怪是可以被驯服的......但只是足够让它们不再咬断我们的手指而已。对于大多数船员来说，这已经足够了。其中一些人甚至觉得它们有点可爱——当然指那些在行星上不会想杀死我们的。\n\n所以我们开始把它们当作宠物养了起来。直到事情发展到无法挽回的地步，我们才意识到一个问题：它们的模仿和隐藏本能？根本<i>无法</i>摆脱。所以......现在我们的飞船里充满了那些不确定本应是什么样子的东西。\n\n我发誓，如果我的最爱的那个杯子因为咖啡太烫而<i>再</i>跑掉的话......",
+
+		"TINKERSSATCHEL_MOTIONTRACKER_NAME": "老旧战争雷达",
+		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "周期性地向所有敌人发射弱投射物。",
+		"TINKERSSATCHEL_MOTIONTRACKER_DESC": "在击中敌人或被敌人击中后的6秒内，每隔 {1} 秒发射一次轨道激光，造成 <style=cIsDamage>{0} 伤害</style> <style=cStack>(每层增加{2} )</style>。",
+		"TINKERSSATCHEL_MOTIONTRACKER_LORE": "",
+		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_NAME": "为什么还不死？！",
+		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "在不杀死首领或死亡的情况下完全充能一个传送器。",
+		
+		"TINKERSSATCHEL_MOUSTACHE_NAME": "硬汉胡子",
+		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "击中时有一定几率嘲讽敌人。抵抗被嘲讽的敌人。",
+		"TINKERSSATCHEL_MOUSTACHE_DESC": "每次攻击有 <style=cIsUtility>{0} 的几率</style> <style=cStack>(每层+{0})</style> 对敌人进行 <style=cIsUtility>嘲讽</style>，持续 <style=cIsUtility>{1} 秒</style>。同时受到来自被嘲讽敌人的 <style=cIsHealing>{2} 伤害减免</style> 和 <style=cIsHealing>{3} 减少击退</style>。",
+		"TINKERSSATCHEL_MOUSTACHE_LORE": "",
+		"ACHIEVEMENT_TKSAT_MOUSTACHE_NAME": "大混战",
+		"ACHIEVEMENT_TKSAT_MOUSTACHE_DESCRIPTION": "参与一场非常激烈的战斗。",
+
+		"TINKERSSATCHEL_MUG_NAME": "坚固的马克杯",
+		"TINKERSSATCHEL_MUG_PICKUP": "攻击时有一定几率射出额外的、不可预测的投射物。",
+		"TINKERSSATCHEL_MUG_DESC": "所有投射物攻击获得 <style=cIsDamage>{0} 的几率</style> <style=cStack>(每层+{0}的几率)</style> 射出 <style=cIsDamage>一个额外的复制品</style>，具有 <color=#FF7F7F>{1}° 的不准确度</style>。近战或追踪投射物攻击具有相等的几率射出一个弱投射物，造成攻击伤害的 {2} 或 {3}。",
+		"TINKERSSATCHEL_MUG_LORE": "基座上有一行铭文：\"坚守和团结！\"",
+		"ACHIEVEMENT_TKSAT_MUG_NAME": "......所以我又开火了",
+		"ACHIEVEMENT_TKSAT_MUG_DESCRIPTION": "总共失误1,000次投射物攻击。",
+		
+		"TINKERSSATCHEL_SHOOTTOHEAL_NAME": "鼓击保养",
+		"TINKERSSATCHEL_SHOOTTOHEAL_PICKUP": "攻击盟友可治疗他们。",
+		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "使用直接攻击击中盟友，为他们治疗 <style=cIsHealing>{0} 的最大生命值</style> <style=cStack>(每层+{0})</style></style>，并为自己治疗相同数值的 {1}。治疗效果与攻击伤害系数和触发系数相关。",
+		"TINKERSSATCHEL_SHOOTTOHEAL_LORE": "",
+		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_NAME": "独奏乐队",
+		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_DESCRIPTION": "物品套装：乐器。同时拥有（5件中的）3件或更多。",
+		
+		"TINKERSSATCHEL_TRIBROOCH_NAME": "三螺旋胸针",
+		"TINKERSSATCHEL_TRIBROOCH_PICKUP": "有几率同时引燃、冰冻和眩晕敌人。",
+		"TINKERSSATCHEL_TRIBROOCH_DESC": "<style=cIsDamage>引燃</style>、<style=cIsDamage>冰冻</style>和<style=cIsDamage>眩晕</style>有 {0} 的概率附加其他列出的效果之一，造成<style=cIsDamage>{1}基础伤害</style><style=cStack>（每层+{2}）</style></style>。<style=cStack>冻结效果变为80%的减速效果。</style>",
+		"TINKERSSATCHEL_TRIBROOCH_LORE": "",
+		"ACHIEVEMENT_TKSAT_TRIBROOCH_NAME": "拉斯普京",
+		"ACHIEVEMENT_TKSAT_TRIBROOCH_DESCRIPTION": "团队合作：在 3 秒内依次对同一敌人施加眩晕、冰冻和引燃效果。",
+		
+
+		"TINKERSSATCHEL_DAMAGEBUFFER_NAME": "负反馈循环",
+		"TINKERSSATCHEL_DAMAGEBUFFER_PICKUP": "受到的部分伤害会逐渐生效。",
+		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "受到的 <style=cIsDamage>{0} <style=cStack>(每层+{0}，双曲线比例)</style></style>伤害会在 {1} 秒内逐渐生效，每隔 {2} 进行一次计算。超过<style=cIsHealth>最大生命值</style>的 <style=cIsHealing>治疗</style> 将<style=cIsHealing>应用于</style>延迟伤害。",
+		"TINKERSSATCHEL_DAMAGEBUFFER_LORE": "",
+		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK": "持续生效",
+		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK": "每隔 {0} 秒",
+		
+		"TINKERSSATCHEL_DEADMANSWITCH_NAME": "心跳监测器",
+		"TINKERSSATCHEL_DEADMANSWITCH_PICKUP": "在生命值较低时自动免费激活你的装备。",
+		"TINKERSSATCHEL_DEADMANSWITCH_DESC": "当降至 <style=cIsHealth>{1}生命值</style> 以下时，激活你的 <style=cIsUtility>装备</style>，且不会触发冷却。这个效果有自己的冷却时间，等于被激活装备的冷却时间 <style=cStack>(每层-{0}，叠加)</style>。",
+		"TINKERSSATCHEL_DEADMANSWITCH_LORE": "",
+		"ACHIEVEMENT_TKSAT_DEADMANSWITCH_NAME": "九条命",
+		"ACHIEVEMENT_TKSAT_DEADMANSWITCH_DESCRIPTION": "在同一次游戏中生命值九次降至较低水平并成功存活（每次必须恢复到50%以上的生命值）",
+		
+		"TINKERSSATCHEL_DEFIB_NAME": "除颤器",
+		"TINKERSSATCHEL_DEFIB_PICKUP": "你的治疗可以暴击。",
+		"TINKERSSATCHEL_DEFIB_DESC": "由你造成的任何 <style=cIsHealing>治疗</style> 都有一定的几率进行 <style=cIsHealing>暴击治疗</style>，几率等于你的 <style=cIsDamage>暴击几率</style>。 <style=cIsHealing>暴击治疗</style> 会额外治疗 <style=cIsHealth>+{0} <style=cStack>(每层+{0})</style> 生命值</style>。",
+		"TINKERSSATCHEL_DEFIB_LORE": "",
+		"ACHIEVEMENT_TKSAT_DEFIB_NAME": "医护兵！",
+		"ACHIEVEMENT_TKSAT_DEFIB_DESCRIPTION": "物品套装：可共享的治疗。同时拥有（7件中的）4件或更多。",
+		
+		"TINKERSSATCHEL_ENPASSANT_NAME": "吃过路兵",
+		"TINKERSSATCHEL_ENPASSANT_PICKUP": "使用你的辅助技能以充能进行近战打击。",
+		"TINKERSSATCHEL_ENPASSANT_DESC": "在激活你的辅助技能后，发动一次水平的 <style=cIsDamage>近战攻击</style>，持续 {1} 秒并造成 <style=cIsDamage>{0} 伤害</style> <style=cStack>(每层+{0})</style>。每次命中此攻击将 <style=cIsUtility>恢复辅助技能冷却{2}秒</style> <style=cStack>(每层+{2} 秒)</style>。",
+		"TINKERSSATCHEL_ENPASSANT_LORE": "",
+
+		"TINKERSSATCHEL_FUDGEDICE_NAME": "胡扯骰",
+		"TINKERSSATCHEL_FUDGEDICE_PICKUP": "定期保证运气。",
+		"TINKERSSATCHEL_FUDGEDICE_DESC": "每隔{0}秒 <style=cStack>(每层减少 {1} 秒，双曲线比例)</style>，你的下一个随机效果将<style=cIsUtility>以 +{2} 运气进行判定</style>。",
+		"TINKERSSATCHEL_FUDGEDICE_LORE": "别告诉主持人。",
+		
+		"TINKERSSATCHEL_GOLDENGEAR_NAME": "黄金甲",
+		"TINKERSSATCHEL_GOLDENGEAR_PICKUP": "收集金钱会提供临时护甲。",
+		"TINKERSSATCHEL_GOLDENGEAR_DESC": "收集 <style=cIsUtility>${0}</style> <style=cStack>（随着难度增加）</style>，获得 <style=cIsHealing>1 点护甲</style> <style=cStack>（每层+1，每点护甲在叠加前-{1}）</style>，持续 {2} 秒。",
+		"TINKERSSATCHEL_GOLDENGEAR_LORE": "退回：P-2W 催化装甲系统\r\n单号：09******\r\n预计送达时间：2056年8月7日\r\n运送方式：标准\r\n送货地址：木卫三，马福港，第13系统警察局\r\n退货原因：\n\n你是认真的吗？首先，这不是我订购的东西。其次，让这种UES的鬼扯东西滚出我的辖区。\n\n\"因未缴纳必要维护费用的物理数字版权管理封锁\"，真的，到底是谁想出这种东西的......\n\n退款：\n替换物品： X",
+		"ACHIEVEMENT_TKSAT_GOLDENGEAR_NAME": "那么代价呢？",
+		"ACHIEVEMENT_TKSAT_GOLDENGEAR_DESCRIPTION": "在机遇神龛多次未掉落物品的情况下购买最终的物品（至少4次）。",
+
+		"TINKERSSATCHEL_KLEINBOTTLE_NAME": "不稳定的克莱因瓶",
+		"TINKERSSATCHEL_KLEINBOTTLE_PICKUP": "受到伤害时有机会对附近敌人施加重力打击。",
+		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "受到伤害后，有{0}<style=cStack>(每层+{0},叠加。)</style>的几率 <style=cIsUtility>眩晕</style> {1} 米内的敌人，持续 {2} 秒。被影响的敌人在眩晕期间悬停在空中，然后以 <style=cIsDamage>{3} 的伤害</style> 撞击到地面。<style=cStack>内置冷却时间为 {4} 秒。</style>",
+		"TINKERSSATCHEL_KLEINBOTTLE_LORE": "运单： \u201C不稳定的克莱因瓶\u201D\r\n单号；23******\r\n预计送达时间；2056年9月4日\r\n运送方式：易碎品\r\n送货地址： 金星, 崩坏塔43层\r\n运送详情：\r\n\r\n这一个真是不得了。在这个概念验证的最后阶段，它几乎吞噬了我们其中一位工匠。但是你的公式起作用了！我们已经把它送过去供你检验。\r\n\r\n小心别摔坏了。理论上，构造的时间亚稳定性应该在玻璃破碎时导致它回到原态，我们认为在爆炸期间，它的拓扑结构将在中间留下一个安全的气泡...但我们中没有人敢去测试。如果失去了它，我们的进展可能会倒退数周，更不用说即使我们正确的话，还可能造成伤害和损失。",
+		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_NAME": "别碰这个",
+		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_DESCRIPTION": "在连续的三次攻击中格挡或受到最多1点伤害",
+		
+		"TINKERSSATCHEL_PIXIETUBE_NAME": "灵光管",
+		"TINKERSSATCHEL_PIXIETUBE_PICKUP": "使用技能时会获得随机增益效果。",
+		"TINKERSSATCHEL_PIXIETUBE_DESC": "当你 <style=cIsUtility>使用任何技能</style> <style=cStack>（每个技能独立冷却时间为{0}秒，主要技能为 {1} 秒）</style>时，你会掉落1个<style=cStack>（每层+1）</style>随机<style=cIsUtility>元素小精灵</style>。任何队友可以在{2}秒内捡起 <style=cIsUtility>元素小精灵</style>，获得小的可叠加增益效果： <color=#ffaa77>+{3}伤害</color>，<color=#9999ff>+{4}移动速度</color>，<color=#eeff55>+{5}攻击速度</color>，或者<color=#997755>{6}护甲</color>。",
+		"TINKERSSATCHEL_PIXIETUBE_LORE": "<style=cMono>欢迎使用数据铲（测试版v3.1.53）\n$ 正在抓取内存......完成。\n$ 正在解析......完成。\n$ $ 正在统合关联数据......完成。\n完成！</style>\n\n数据表：EE555 元素感知随机计时器\r\n\r\n特点：\r\n - 毫秒至秒级定时\r\n - 非常不稳定的操作\r\n - 感应魔网占空比\r\n - TTL 不兼容的输出会为非奥术主动回路提供高达 200 TA 的电源\r\n\r\n应用领域：\r\n - 灵魂生物识别\r\n - 预言引擎\r\n - 二级元素召唤装置\r\n\r\n<style=cMono>文档继续（33 页中的第 1 页）。按任意键翻页。</style>",
+		
+
+		"TINKERSSATCHEL_GOFASTER_NAME": "加速条纹",
+		"TINKERSSATCHEL_GOFASTER_PICKUP": "提升辅助技能的移动性。",
+		"TINKERSSATCHEL_GOFASTER_DESC": "升级你的辅助技能，大幅提高其移动性。",
+		"TINKERSSATCHEL_GOFASTER_LORE": "<style=cMono>//--从UES[已编校]自动转录--//</style>\n\n\"......你在做什么？\"\n\n\"给我的盔甲上色。\"\n\n\"为什么！？\"\n\n\"让它跑得更快。\"\n\n\"什么！？那\u2019只是个迷信！而且——而且它\u2019本来是用在汽车上的！你难道没有\u2019你难道没有注意到我们现在正处于战区吗？我们没有\u2019时间去......\"\n\n\"红色条纹能让事物跑得更快。更快的速度意味着更多的时间。你\u2019会看到的。\"",
+		"ACHIEVEMENT_TKSAT_GOFASTER_NAME": "比建议的更快",
+		"ACHIEVEMENT_TKSAT_GOFASTER_DESCRIPTION": "突进。",
+		
+		"TINKERSSATCHEL_HEADSET_NAME": "H3AD-53T",
+		"TINKERSSATCHEL_HEADSET_PICKUP": "你的辅助技能会积累惊人的静电能量。",
+		"TINKERSSATCHEL_HEADSET_DESC": "在激活你的<style=cIsUtility>辅助技能</style>后,接下来经过的{0}个敌人<style=cStack>(每层+{1})</style>会<style=cIsDamage>受到{2}伤害</style><style=cStack>(每层+{3})</style>并被<style=cIsUtility>眩晕{4}秒</style>。",
+		"TINKERSSATCHEL_HEADSET_LORE": "你终于遇到了一次对你的长距离坠落靴来说太长的坠落。虽然你可以将零件重新组装成原本的用途，但这是一个完美的机会...进行创新。\r\n\r\n动动脑筋吧。",
+		"ACHIEVEMENT_TKSAT_HEADSET_NAME": "你把它弄坏了",
+		"ACHIEVEMENT_TKSAT_HEADSET_DESCRIPTION": "用最大伤害的H3AD-5T v2爆炸击败一个首领。",
+		
+		"TINKERSSATCHEL_KINTSUGI_NAME": "金继",
+		"TINKERSSATCHEL_KINTSUGI_PICKUP": "你的损坏/消耗/报废的物品增加你的所有属性。",
+		"TINKERSSATCHEL_KINTSUGI_DESC": "每一个你损坏、消耗或报废的物品根据它的品质增加所有属性：普通物品增加{0}，稀有物品增加{1}，传奇/首领物品增加{2}。",
+		"TINKERSSATCHEL_KINTSUGI_LORE": "",
+		"ACHIEVEMENT_TKSAT_KINTSUGI_NAME": "计划式陈旧",
+		"ACHIEVEMENT_TKSAT_KINTSUGI_DESCRIPTION": "拥有至少20个物品，其中至少一半是损坏/消耗/报废的物品。",
+		
+		"TINKERSSATCHEL_PINBALL_NAME": "弹球巫师",
+		"TINKERSSATCHEL_PINBALL_PICKUP": "投射物可能会反弹并追踪敌人。",
+		"TINKERSSATCHEL_PINBALL_DESC": "你所有的投射物攻击有 {0} 的几率反弹, 额外<style=cIsDamage>爆炸</style>一次并且<style=cIsUtility>追踪</style>一个随机敌人，造成<style=cIsDamage>{1}的原始伤害</style>. 每个投射物最多可以发生<style=cIsDamage>{2}次<style=cStack>(每层+{3})</style></style>。近战攻击获得相等几率发射一个弱小投射物，造成攻击伤害的{4}。",
+		"TINKERSSATCHEL_PINBALL_LORE": "叮！叮！叮！叮！",
+		"ACHIEVEMENT_TKSAT_PINBALL_NAME": "啊，爆炸降临于你",
+		"ACHIEVEMENT_TKSAT_PINBALL_DESCRIPTION": "物品套装：击杀伤害。同时拥有（6件中的）3件或更多。",
+		
+		"TINKERSSATCHEL_SHRINKRAY_NAME": "缩小射线",
+		"TINKERSSATCHEL_SHRINKRAY_PICKUP": "抑制单个目标的伤害和非主要技能。",
+		"TINKERSSATCHEL_SHRINKRAY_DESC": "每隔{0}秒，攻击敌人会使其失去 <style=cIsUtility>非主要技能</style>，并降低他们{1}<style=cIsDamage>伤害</style> ，持续{2}秒<style=cStack>(每层+{2}秒)</style>。",
+		"TINKERSSATCHEL_SHRINKRAY_LORE": "",
+
+		"TINKERSSATCHEL_SKEIN_NAME": "时空织布",
+		"TINKERSSATCHEL_SKEIN_PICKUP": "静止时增加质量。移动时减少质量。",
+		"TINKERSSATCHEL_SKEIN_DESC": "站立不动时，你所承受的所有 <style=cIsDamage>伤害和击退</style> 最多减少 <style=cIsDamage>{0} <style=cStack>(每层+{0}，双曲线比例)</style></style>。移动时，你的 <style=cIsUtility>移动和攻击速度</style>最多增加<style=cIsUtility>{1}<style=cStack>(每层+{1}，线性)</style></style>。每种效果在{2}秒内逐渐增加，而另一种效果会以{3}的速度消失。受到伤害会迫使移动效果充能{4}秒。",
+		"TINKERSSATCHEL_SKEIN_LORE": "",
+		"ACHIEVEMENT_TKSAT_SKEIN_NAME": "非凡的宇宙力量",
+		"ACHIEVEMENT_TKSAT_SKEIN_DESCRIPTION": "完成工匠背囊模组中的所有4个套装成就。",
+
+		"TINKERSSATCHEL_WRANGLER_NAME": "遥控器",
+		"TINKERSSATCHEL_WRANGLER_PICKUP": "附近的炮塔和无人机获得攻击速度。使用标记键来控制。",
+		"TINKERSSATCHEL_WRANGLER_DESC": "你拥有的<style=cIsUtility>在{0}米范围内</style>的所有<style=cIsDamage>炮塔和无人机</style>将获得<style=cIsDamage>+{1}攻击速度<style=cStack>(每层+{2})</style></style>。对炮塔或无人机进行标记选择操作，将覆盖其目标AI，持续 <style=cIsUtility>{3}秒</style>。被覆盖的友方<style=cIsUtility>不再自动选择目标、自动攻击或追击敌人</style>，但可以通过按住你的<style=cIsUtility>主要技能</style>绑定键来命令它们攻击你的目标。",
+		"TINKERSSATCHEL_WRANGLER_LORE": "",
+
+
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_NAME": "邪恶之颜",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_PICKUP": "在消灭强大的敌人后短暂隐身并获得伤害提升。<style=cIsVoid>使所有的硬汉胡子无效化</style>。",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_DESC": "消灭一名精英敌人或首领使你获得<style=cIsUtility>隐身</style>，持续 <style=cIsUtility>{0}秒</style>。在由该物品引起的<style=cIsUtility>隐身</style>期间进行攻击会打破隐身并造成 <style=cIsDamage>+{1}伤害<style=cStack>(每堆叠增加 {1})</style></style>。<style=cIsVoid>使所有的大胆胡子无效化</style>。",
+		"TINKERSSATCHEL_VILLAINOUSVISAGE_LORE": "",
+
+		"TINKERSSATCHEL_CHAOTICEFFIGY_NAME": "混乱雕像",
+		"TINKERSSATCHEL_CHAOTICEFFIGY_PICKUP": "击杀敌人时有机会创建临时物品雕像。<style=cIsVoid>使所有的基本被驯服的拟态怪无效化</style>。",
+		"TINKERSSATCHEL_CHAOTICEFFIGY_DESC": "击杀敌人有<style=cIsUtility>{0}几率<style>(每层+{0}，双曲线比例)</style></style>创建一个<style=cIsUtility>物品雕像</style>，为 {1} 米范围内的幸存者提供来自一级宝箱表格的物品 <style=cStack>(精英敌人为二级，首领为三级)</style>，持续{2}秒。<style=cIsVoid>使所有的基本被驯服的拟态怪无效化</style>。",
+		"TINKERSSATCHEL_CHAOTICEFFIGY_LORE": "",
+		
+		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "黑曜石胸针",
+		"TINKERSSATCHEL_OBSIDIANBROOCH_PICKUP": "有几率在攻击时传播持续伤害效果。 <style=cIsVoid>使所有三叉戟胸针无效化</style>。",
+		"TINKERSSATCHEL_OBSIDIANBROOCH_DESC": "每当你攻击敌人时，有{0}的几率<style=cStack>(每层触发一次)</style> 将他们的一种<style=cIsDamage>持续伤害效果</style>复制到另一个随机敌人身上，范围为{1}米。<style=cIsVoid>使所有三螺旋胸针无效化</style>。",
+		"TINKERSSATCHEL_OBSIDIANBROOCH_LORE": "",
+
+		"TINKERSSATCHEL_TIMELOSTRUM_NAME": "遗失时光朗姆酒",
+		"TINKERSSATCHEL_TIMELOSTRUM_PICKUP": "攻击有几率造成的时空回响效果。<style=cIsVoid>使所有坚固的马克杯无效化</style>。",
+		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "所有的投射物攻击有{0}的几率 <style=cStack>(每层+{0})</style>额外发射一枚<color=#FF7F7F>延迟{1}秒</style>的<style=cIsDamage>复制弹</style>。近战攻击有相等的几率在延迟后造成{2}攻击伤害。使所有坚固马克杯无效化。",
+		"TINKERSSATCHEL_TIMELOSTRUM_LORE": "标签上残留着：\"『?摇??K」 和 【S?石?NE』!\"",
+		
+
+		"TINKERSSATCHEL_BRAMBLERING_NAME": "荆棘戒指",
+		"TINKERSSATCHEL_BRAMBLERING_PICKUP": "将部分伤害反弹给攻击者。<style=cIsVoid>使所有的负反馈循环无效化</style>。",
+		"TINKERSSATCHEL_BRAMBLERING_DESC": "<style=cIsDamage>所承受的伤害的{0}<style=cStack>（每层+{0}，双曲线比例）</style></style> 也会反弹给伤害源。<style=cIsVoid>所有的负反馈循环无效化</style>。",
+		"TINKERSSATCHEL_BRAMBLERING_LORE": "",
+		
+		"TINKERSSATCHEL_ORDEREDARMOR_NAME": "秩序之镜",
+		"TINKERSSATCHEL_ORDEREDARMOR_PICKUP": "通过专注于物品构建来获得大量护甲。<style=cIsVoid>使所有黄金甲无效化</style>。",
+		"TINKERSSATCHEL_ORDEREDARMOR_DESC": "根据你当前持有的<style=cIsUtility>物品类型</style>（持有越少越好）获得<style=cIsHealing>护甲</style>。只持有<style=cIsVoid>秩序之镜</style>时，获得<style=cIsHealing>{0}护甲</style><style=cStack>（每层+{1}，线性）</style>；每增加一种物品类型，<style=cIsUtility>护甲加成减少{2}</style>。<style=cIsVoid>使所有的黄金甲无效化</style>。",
+		"TINKERSSATCHEL_ORDEREDARMOR_LORE": "",
+		
+		"TINKERSSATCHEL_VOIDWISPHIVE_NAME": "虚空幽魂巢",
+		"TINKERSSATCHEL_VOIDWISPHIVE_PICKUP": "使用技能时释放具有伤害的虚空幽魂盟友。<style=cIsVoid>使所有的灵光管无效化</style>.",
+		"TINKERSSATCHEL_VOIDWISPHIVE_DESC": "<style=cIsUtility>使用任何技能</style>时，你会释放一个<style=cIsDamage>虚空幽魂</style><style=cStack>（每个技能具有{0}秒的独立冷却时间，主要技能具有{1}秒的冷却时间）</style>。 <style=cIsDamage>虚空幽魂</style> 存活{2}秒，追踪附近的敌人并对其造成每秒<style=cIsDamage>{3}x{4}的伤害<style=cStack>（伤害每层线性增加）</style></style>。 <style=cIsVoid>使所有的灵光管无效化</style>。",
+		"TINKERSSATCHEL_VOIDWISPHIVE_LORE": "",
+		
+
+		"TINKERSSATCHEL_GUPRAY_NAME": "分裂射线",
+		"TINKERSSATCHEL_GUPRAY_PICKUP": "将敌人分裂成两个更弱的复制品。<style=cIsVoid>使所有的缩小射线无效化</style>。",
+		"TINKERSSATCHEL_GUPRAY_DESC": "每隔{0}秒，击中非Boss敌人时，会将其<style=cIsUtility>分裂</style>为两个副本，每个副本具有{1}点<style=cIsHealth>生命值</style>和<style=cIsDamage>伤害</style>，以及{2}<style=cIsUtility>移动速度</style>和<style=cIsUtility>攻击速度</style>。<style=cStack>每层可以将敌人分裂1次。</style><style=cIsVoid>使所有的缩小射线无效化</style>。",
+		"TINKERSSATCHEL_GUPRAY_LORE": "",
+		
+		"TINKERSSATCHEL_LOOM_NAME": "解构织机",
+		"TINKERSSATCHEL_LOOM_PICKUP": "所有攻击逐渐变慢但更强大。 <style=cIsVoid>使所有的时空织布无效化</style>。",
+		"TINKERSSATCHEL_LOOM_DESC": "每次使用<style=cIsDamage>战斗技能</style>后<style=cIsDamage>-{0}攻击速度，+{1}伤害</style>，持续 {2} 秒 <style=cStack>(每层+{2}秒)</style>，最多叠加{3}次 <style=cStack>(每层+{3})</style>。<style=cIsVoid>使所有的时空织布无效化</style>。",
+		"TINKERSSATCHEL_LOOM_LORE": "",
+
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_NAME": "鹦鹉螺协议",
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_PICKUP": "所有炮塔和无人机获得固定护甲和回复，并略微增加伤害。按下标记键进行引爆。<style=cIsVoid>使所有遥控器无效化</style>。",
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_DESC": "你所拥有的所有<style=cIsDamage>炮塔和无人机</style>获得<style=cIsUtility>{0}护甲<style=cStack>（每层+{0}）</style></style>，<style=cIsHealing>{1}生命回复<style=cStack>（每层+{1}）</style></style>和<style=cIsDamage>{2}伤害<style=cStack>（每层+{2}）</style></style>。<style=cIsUtility>标记</style>炮塔或无人机（每架无人机{5}秒冷却），造成大规模的<style=cIsDamage>虚空引爆</style>，对该单位造成<style=cDeath>50%最大生命值</style>伤害，并对{3}米范围内的敌人造成<style=cIsDamage>{4}</style>自身承受伤害。 <style=cIsVoid>使所有遥控器无效化</style>。",
+		"TINKERSSATCHEL_NAUTILUSPROTOCOL_LORE": "",
+		
+
+
+		"TINKERSSATCHEL_ANTIAIR_NAME": "镇压神器",
+		"TINKERSSATCHEL_ANTIAIR_DESC": "玩家在空中时受到的伤害大幅增加。",
+
+		"TINKERSSATCHEL_BUTTERKNIFE_NAME": "急速神器",
+		"TINKERSSATCHEL_BUTTERKNIFE_DESC": "所有战斗者的攻击速度提高10倍，但造成的伤害降低为1/20。",
+		
+		"TINKERSSATCHEL_DANGER_NAME": "危险神器",
+		"TINKERSSATCHEL_DANGER_DESC": "玩家会一击被杀。",
+
+		"TINKERSSATCHEL_DELAYLOOT_NAME": "守护神器",
+		"TINKERSSATCHEL_DELAYLOOT_DESC": "所有物品掉落都被传送门首领接收并保护，当首领被击杀时，它会爆炸并掉落大量物品。",
+		
+		"TINKERSSATCHEL_DISPOSABLEEQUIP_NAME": "重构神器",
+		"TINKERSSATCHEL_DISPOSABLEEQUIP_DESC": "初始拥有{0}个装备槽。装备更加常见，并在使用后消耗而不是进入冷却。",
+		
+		"TINKERSSATCHEL_PACKTACTICS_NAME": "战术神器",
+		"TINKERSSATCHEL_PACKTACTICS_DESC": "所有战斗者给予附近队友小型、可叠加的加速、伤害和护甲提升。",
+
+
+
+		"TKSAT_BULWARKDRONE_NAME": "坚壁无人机",
+        "TKSAT_BULWARKDRONE_BODY_NAME": "坚壁无人机",
+        "TKSAT_BULWARKDRONE_CONTEXT": "修复坚壁无人机",
+
+        "TKSAT_ITEMDRONE_NAME": "物品无人机",
+        "TKSAT_ITEMDRONE_BODY_NAME": "物品无人机",
+        "TKSAT_ITEMDRONE_POPUP_TEXT": "<b>物品无人机</b>\r\n<i>选择一个物品插入......</i>",
+        "TKSAT_ITEMDRONE_CONTEXT": "给予物品",
+
+
+		
+		"TKSAT_COMMANDO_PRIMARY_PULSE_NAME": "脉冲",
+		"TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION_MAIN": "用高后坐力快速向敌人射击4次。每次射击的<style=cIsDamage>伤害</style>从<style=cIsDamage>75%增加到150%</style>。",
+		"TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION_ALT": "快速向敌人射击4次。每次射击的<style=cIsDamage>伤害</style>从起初的<style=cIsDamage>75%</style>逐渐增加到最高的<style=cIsDamage>150%</style>，当对同一目标连续命中20次且没有失误时，伤害会进一步增加。",
+
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME": "等离子手雷",
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION": "<style=cIsDamage>点燃</style>。投掷一枚具有极近距离自动追踪的粘性手雷，爆炸造成<style=cIsDamage>500%的伤害</style>。最多可持有2个。<style=cStack>在矮墙附近要注意瞄准。</style>",
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_NAME_SCEP": "巨他M【??』大手雷",
+		"TKSAT_COMMANDO_SPECIAL_PLASMAGRENADE_DESCRIPTION_SCEP": "<style=cIsDamage>点燃</style>。投掷一枚具有极近距离自动追踪的粘性手雷，爆炸造成<style=cIsDamage>500%的伤害</style>。最多可持有2个。<style=cStack>在低墙附近要注意瞄准。</style>\n<color=#d299ff>权杖效果：爆炸半径和伤害翻倍。</color>",
+
+		"TKSAT_COMMANDO_UTILITY_JINKJET_NAME": "机动喷射",
+		"TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION": "向你的<style=cIsUtility>瞄准方向</style>进行小范围的喷气助推水平跳跃。最多可连续使用3次。",
+
+		
+		"TKSAT_HUNTRESS_PRIMARY_BOMBARROW_NAME": "MK7b迷你爆石箭",
+        "TKSAT_HUNTRESS_PRIMARY_BOMBARROW_DESCRIPTION": "<style=cIsUtility>灵巧</style>。快速射出一支非追踪的箭矢，造成<style=cIsDamage>150%的伤害</style>，然后在短暂延迟后引爆，再次造成<style=cIsDamage>150%</style>的伤害。两次击中都会触发击中效果。",
+
+		"TKSAT_HUNTRESS_SECONDARY_BOLA_NAME": "激光投网",
+        "TKSAT_HUNTRESS_SECONDARY_BOLA_DESCRIPTION": "投掷一个追踪的硬光束网，可以对一组目标进行<style=cIsUtility>减速和拉扯</style>，并造成随时间递增的<style=cIsDamage>300%的伤害</style>。",
+
+
+		"TKSAT_ENGI_PRIMARY_FLAK_NAME": "智能榴弹",
+        "TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION": "持续发射接近爆裂炮弹。直接命中造成<style=cIsDamage>50%伤害</style>。弹片可追踪敌人，最多造成<style=cIsDamage>8x25%的伤害<style=cStack>（对单个目标最多5x25%伤害）</style></style>。",
+
+		"TKSAT_ENGI_SECONDARY_CHAFF_NAME": "干扰烟幕",
+        "TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION": "在前方锥形范围内造成<style=cIsDamage>4x75%的伤害</style>，并且<style=cIsUtility>清除敌方投射物</style>。被击中的敌人若在任意一个您的炮塔的视线范围内，则会被一个炮塔<style=cIsUtility>嘲讽</style>6秒。",
+
+		"TKSAT_ENGI_SPEEDISPENSER_BODY_NAME": "速度供应器",
+		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT": "获得速度提升",
+		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_ALREADY_HAVE": "无法加速\n(不要太贪心！)",
+		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_CHARGING": "无法加速\n(正在酝酿......)",
+		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME": "速度供应器",
+        "TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION": "部署一个<style=cIsUtility>静止的装置</style>，可储存最多4个美味的、咖啡因浓缩的<style=cIsUtility>奔跑速度</style>和<style=cIsUtility>跳跃高度</style>。<style=cIsUtility>继承你的所有物品</style>。"
+	}
+}
