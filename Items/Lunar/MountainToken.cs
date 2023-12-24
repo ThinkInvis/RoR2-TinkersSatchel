@@ -98,6 +98,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(var nu in NetworkUser.readOnlyInstancesList) {
                         if(!nu.isParticipating) continue;
                         var body = nu.GetCurrentBody();
+                        if(!body) continue;
                         if(body.TryGetComponent<MountainTokenTracker>(out var mtt)) {
                             extraRewardsSingular += mtt.Stacks;
                             mtt.Unset();
