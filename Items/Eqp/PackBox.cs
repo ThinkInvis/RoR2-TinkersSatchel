@@ -349,7 +349,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!cpt) cpt = slot.characterBody.gameObject.AddComponent<PackBoxTracker>();
 
             if(cpt.packedObject == null) {
-                if(cpt.targetObject && validObjectNames.Contains(cpt.targetObject.name)) {
+                if(cpt.targetObject != null && validObjectNames.Contains(cpt.targetObject.name)) {
                     var shopcpt = slot.currentTarget.rootObject.GetComponent<ShopTerminalBehavior>();
                     if(shopcpt && shopcpt.serverMultiShopController)
                         cpt.targetObject = shopcpt.serverMultiShopController.transform.root.gameObject;
