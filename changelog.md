@@ -2,6 +2,17 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.5**
+
+- Fixed fatal errors caused by the base game Devotion Update.
+- 🌧︎ Fixed Celestial Gambit preventing all teleporter drops if a player is dead when the teleporter boss dies.
+- Fixed Bismuth Tonic applying the inverse of the expected buff duration change.
+- Fixed Cardboard Box alternate icon path being incorrect, causing console log spam while an object is packed.
+- Fixed very incorrect filters on Kintsugi item name checker (Kintsugi should now work at all and be unlockable under default settings).
+- Made all strings used in Artifact of Safekeeping localizable.
+	- This forced a removal of the AnnounceDropMode ItemTierCount setting, and a change in how item tiers display for pickups (color only, words removed).
+- Made string used in Command Terminal revivals localizable.
+
 **4.1.4**
 
 - Fixed a potential NRE in Celestial Gambit causing the Teleporter to sometimes drop zero items.

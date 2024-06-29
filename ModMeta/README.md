@@ -603,6 +603,17 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.1.5**
+
+- Fixed fatal errors caused by the base game Devotion Update.
+- 🌧︎ Fixed Celestial Gambit preventing all teleporter drops if a player is dead when the teleporter boss dies.
+- Fixed Bismuth Tonic applying the inverse of the expected buff duration change.
+- Fixed Cardboard Box alternate icon path being incorrect, causing console log spam while an object is packed.
+- Fixed very incorrect filters on Kintsugi item name checker (Kintsugi should now work at all and be unlockable under default settings).
+- Made all strings used in Artifact of Safekeeping localizable.
+	- This forced a removal of the AnnounceDropMode ItemTierCount setting, and a change in how item tiers display for pickups (color only, words removed).
+- Made string used in Command Terminal revivals localizable.
+
 **4.1.4**
 
 - Fixed a potential NRE in Celestial Gambit causing the Teleporter to sometimes drop zero items.
@@ -648,21 +659,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 		- Explosion now uses linear falloff (was erroneously using sweet-spot).
 		- Increased explosion radius from 4 to 7.
 		- Increased projectile speed from 80 to 135.
-
-**4.1.0** *The Skillful Update, Part Huntress*
-
-- New content:
-	- Skills
-		- Huntress: MK7b Rockeye Mini (Primary): Fire a non-seeking arrow which sticks and explodes, dealing damage and inflicting procs twice.
-		- Huntress: Laser Bola (Secondary): Throw a seeking hard-light net which tethers groups of enemies for damage over time.
-- Balance pass:
-	- Celestial Gambit
-		- Now adds ~1/6 the extra difficulty of a Shrine of the Mountain to the teleporter event per stack.
-- Old-War Lidar now performs a team check before applying to a target, meaning self damage should no longer cause it to self-target.
-- Lemurian's Claw and Celestial Gambit will no longer select AI-blacklisted items to give to enemies.
-- Reorganized projectile prefab assets into their own folders (separate subfolder for ghosts).
-- Fixed the Equipment Max Charges tweak not ever being applied. It may also now be enabled/disabled in config.
-- Fixed a formatting error in the Macho Moustache description.
-- Fixed a possible issue where void items may have depended on the vanilla SotV expansion, instead of the SotV+TS combo expansion.
-- Fixed inverted normals on one side of the Stamina Bar model.
-- Updated TILER2 dependency to 7.4.0 (required update).
