@@ -22,10 +22,10 @@ namespace ThinkInvisible.TinkersSatchel {
         public AnnounceItemsMode announceItems { get; private set; } = AnnounceItemsMode.ItemName;
 
         public enum AnnounceDropMode {
-            Nothing, TotalItemCount, ItemTierCounts
+            Nothing, TotalItemCount
         }
         [AutoConfig("What to display in chat when the teleporter boss is killed.")]
-        public AnnounceDropMode announceDrop { get; private set; } = AnnounceDropMode.ItemTierCounts;
+        public AnnounceDropMode announceDrop { get; private set; } = AnnounceDropMode.TotalItemCount;
 
 
 
@@ -125,57 +125,11 @@ namespace ThinkInvisible.TinkersSatchel {
                         TinkersSatchelPlugin._logger.LogWarning("DelayLoot: couldn't find enough free navnodes to drop items at from any source, some items will stack");
                     }
                 }
-
-                if(announceDrop == AnnounceDropMode.ItemTierCounts) {
-                    Dictionary<ItemTier, int> totalItemTiers = new();
-                    int totalEquipments = 0;
-                    int totalLunarEquipments = 0;
-                    int totalOther = 0;
-                    foreach(var drop in deferredDrops) {
-                        if(drop && drop.TryGetComponent<PickupDropletController>(out var pickup)) {
-                            var pdef = PickupCatalog.GetPickupDef(pickup.pickupIndex);
-                            if(pdef != null) {
-                                if(pdef.itemIndex != ItemIndex.None && pdef.itemTier != ItemTier.NoTier) {
-                                    if(!totalItemTiers.ContainsKey(pdef.itemTier)) {
-                                        totalItemTiers[pdef.itemTier] = 0;
-                                    }
-                                    totalItemTiers[pdef.itemTier]++;
-                                } else if(pdef.equipmentIndex != EquipmentIndex.None) {
-                                    if(pdef.isLunar)
-                                        totalLunarEquipments++;
-                                    else
-                                        totalEquipments++;
-                                } else totalOther++;
-                            } else totalOther++;
-                        } else totalOther++;
-                    }
-                    List<string> displays = new();
-                    if(totalItemTiers.ContainsKey(ItemTier.Tier1)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier1Item)}>{totalItemTiers[ItemTier.Tier1]} tier-1 item{NPlur(totalItemTiers[ItemTier.Tier1])}</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Tier2)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier2Item)}>{totalItemTiers[ItemTier.Tier2]} tier-2 item{NPlur(totalItemTiers[ItemTier.Tier2])}</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Tier3)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Tier3Item)}>{totalItemTiers[ItemTier.Tier3]} tier-3 item{NPlur(totalItemTiers[ItemTier.Tier3])}</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Lunar)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalItemTiers[ItemTier.Lunar]} lunar item{NPlur(totalItemTiers[ItemTier.Lunar])}</color>");
-                    if(totalItemTiers.ContainsKey(ItemTier.Boss)) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.BossItem)}>{totalItemTiers[ItemTier.Boss]} boss item{NPlur(totalItemTiers[ItemTier.Boss])}</color>");
-                    if(totalEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.Equipment)}>{totalEquipments} equipment{NPlur(totalEquipments)}</color>");
-                    if(totalLunarEquipments > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem)}>{totalLunarEquipments} lunar equipment{NPlur(totalLunarEquipments)}</color>");
-                    int totalVoidCount = 0;
-                    if(totalItemTiers.ContainsKey(ItemTier.VoidTier1)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier1]; }
-                    if(totalItemTiers.ContainsKey(ItemTier.VoidTier2)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier2]; }
-                    if(totalItemTiers.ContainsKey(ItemTier.VoidTier3)) { totalVoidCount += totalItemTiers[ItemTier.VoidTier3]; }
-                    if(totalItemTiers.ContainsKey(ItemTier.VoidBoss)) { totalVoidCount += totalItemTiers[ItemTier.VoidBoss]; }
-                    if(totalVoidCount > 0) displays.Add($"<color=#{ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.VoidItem)}>{totalVoidCount} void item{NPlur(totalVoidCount)}</color>");
-                    if(totalOther > 0) displays.Add($"{totalOther} other drop{NPlur(totalOther)}");
-
-                    if(displays.Count == 0) {
-                    } else if(displays.Count == 1) {
-                        NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {displays[0]} is yours.");
-                    } else if(displays.Count == 2) {
-                        NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {String.Join(" and ", displays)} is yours.");
-                    } else {
-                        displays[displays.Count - 1] = "and " + displays[displays.Count - 1];
-                        NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {String.Join(", ", displays)} is yours.");
-                    }
-                } else if(announceDrop == AnnounceDropMode.TotalItemCount && deferredDrops.Count > 0) {
-                    NetUtil.ServerSendGlobalChatMsg($"The boss's hoard of {deferredDrops.Count} drop{NPlur(deferredDrops.Count)} is yours.");
+                if(announceDrop == AnnounceDropMode.TotalItemCount && deferredDrops.Count > 0) {
+                    Chat.SendBroadcastChat(new Chat.SimpleChatMessage {
+                        paramTokens = new[] { deferredDrops.Count.ToString() },
+                        baseToken = "TKSAT_DELAYLOOT_MSG_KILL"
+                    });
                 }
             }
         }
@@ -204,28 +158,13 @@ namespace ThinkInvisible.TinkersSatchel {
             var pdef = PickupCatalog.GetPickupDef(pctrl.pickupIndex);
 
             if(pdef != null && announceItems != AnnounceItemsMode.Nothing) {
-                string displayName = "Something";
-                if(announceItems == AnnounceItemsMode.ItemName) {
-                    displayName = $"<color=#{Util.RGBToHex(pdef.baseColor)}>{Language.GetString(pdef.nameToken)}</color>";
-                } else if(announceItems == AnnounceItemsMode.ItemTier) {
-                    var tierString = "Something strange";
-                    if(pdef.itemTier == ItemTier.Tier1)
-                        tierString = "A tier-1 item";
-                    if(pdef.itemTier == ItemTier.Tier2)
-                        tierString = "A tier-2 item";
-                    if(pdef.itemTier == ItemTier.Tier3)
-                        tierString = "A tier-3 item";
-                    if(pdef.itemTier == ItemTier.Lunar)
-                        tierString = "A lunar item";
-                    if(pdef.itemTier == ItemTier.Boss)
-                        tierString = "A boss item";
-                    if(pdef.itemTier == ItemTier.VoidTier1 || pdef.itemTier == ItemTier.VoidTier2 || pdef.itemTier == ItemTier.VoidTier3 || pdef.itemTier == ItemTier.VoidBoss)
-                        tierString = "A void item";
-                    if(pdef.equipmentIndex != EquipmentIndex.None)
-                        tierString = pdef.isLunar ? "A lunar equipment" : "An equipment";
-                    displayName = $"<color=#{Util.RGBToHex(pdef.baseColor)}>{tierString}</color>";
-                }
-                NetUtil.ServerSendGlobalChatMsg($"{displayName} has been taken for safekeeping.");
+                string displayName = Language.GetString((announceItems == AnnounceItemsMode.ItemName) ? pdef.nameToken : "TKSAT_DELAYLOOT_MSG_DELAY_VAGUE");
+                if(announceItems != AnnounceItemsMode.Vague)
+                    displayName = $"<color=#{Util.RGBToHex(pdef.baseColor)}>{displayName}</color>";
+                Chat.SendBroadcastChat(new Chat.SimpleChatMessage {
+                    paramTokens = new[] { displayName },
+                    baseToken = "TKSAT_DELAYLOOT_MSG_DELAY"
+                });
                 /*var effectData = new EffectData {
                     origin = droplet.transform.position,
                     genericFloat = 1f,

@@ -16,8 +16,8 @@
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_PICKUP": "Hold an extra Equipment. Activate with scoreboard open to rummage through the rucksack.",
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_DESC": "Gain 1 <style=cIsUtility>extra Equipment slot</style> <style=cStack>(+1 per stack)</style>. Activating your Equipment while the scoreboard is open will cycle through equipment slots instead.",
 		"TINKERSSATCHEL_EXTRAEQUIPMENT_LORE": "",
-		
-		
+
+
 		"TINKERSSATCHEL_DODGE_NAME": "Stamina Bar",
 		"TINKERSSATCHEL_DODGE_PICKUP": "Perform up to 3 dodge rolls.",
 		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{0} m/s</style> and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>. This equipment <style=cIsUtility>holds 3 times as many charges</style>.",
@@ -36,15 +36,15 @@
 		"TINKERSSATCHEL_PACKBOX_DESC": "Use once to <style=cIsUtility>pack up</style> a <style=cIsDamage>turret</style>, <style=cIsHealing>healing shrine</style>, or <style=cIsUtility>most other interactables</style>. Use again to <style=cIsUtility>place</style> the packed object and put the Cardboard Box on cooldown.",
 		"TINKERSSATCHEL_PACKBOX_LORE": "",
 		"TKSAT_PACKBOX_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: 50% chance to not consume stock on place.</style>",
-		
+
 		"TINKERSSATCHEL_RECOMBOBULATOR_NAME": "Quantum Recombobulator",
 		"TINKERSSATCHEL_RECOMBOBULATOR_PICKUP": "Reroll an interactable once.",
 		"TINKERSSATCHEL_RECOMBOBULATOR_DESC": "<style=cIsUtility>Reroll</style> an interactable into a different one which is valid for the current stage. <style=cIsUtility>Only works once per interactable</style>.",
 		"TINKERSSATCHEL_RECOMBOBULATOR_LORE": "",
 		"ACHIEVEMENT_TKSAT_RECOMBOBULATOR_NAME": "Risktaker",
 		"ACHIEVEMENT_TKSAT_RECOMBOBULATOR_DESCRIPTION": "Recycle a rare or boss item.",
-        "TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: Roll twice and choose the rarer result.</style>",
-		
+		"TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: Roll twice and choose the rarer result.</style>",
+
 		"TINKERSSATCHEL_REVIVEONCE_NAME": "Command Terminal",
 		"TINKERSSATCHEL_REVIVEONCE_PICKUP": "Revive an ally or summon a drone. Consumed on use.",
 		"TINKERSSATCHEL_REVIVEONCE_DESC": "<style=cIsHealing>Revives</style> one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a <style=cIsUtility>random drone</style> instead. <color=#FF7F7F>Will be consumed on use</style>.",
@@ -67,7 +67,7 @@
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_PICKUP": "Gain debuff strength and duration... <color=#FF7F7F>BUT lose reach.</color>",
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_DESC": "Your ignites and bleeds deal <style=cIsDamage>+{0} damage</style>, and all debuffs inflicted on enemies last <style=cIsUtility>{1} longer</style>. Your melee attacks and blast attacks have <color=#FF7F7F>{2} reduced range/radius</color>, your projectiles <color=#FF7F7F>move {3} slower</color>, and your hitscan attacks have <color=#FF7F7F>{4} reduced range</color>.",
 		"TINKERSSATCHEL_CONCENTRATINGALEMBIC_LORE": "",
-		
+
 		"TINKERSSATCHEL_HEALSTODAMAGE_NAME": "Hydroponic Cell",
 		"TINKERSSATCHEL_HEALSTODAMAGE_PICKUP": "Some healed health grows a plant which boosts base stats... <color=#FF7F7F>BUT you don't receive the converted healing.</color>",
 		"TINKERSSATCHEL_HEALSTODAMAGE_DESC": "Whenever you receive <style=cIsHealing>healing</style> that applies to your <style=cIsHealth>health</style> <style=cStack>(regen, barrier, and shield do not count, overheal is reduced by {3})</style>, {0} <style=cStack>(+{0} per stack, hyperbolic)</style> of this <style=cIsHealing>healing</style> will be <color=#FF7F7F>converted</color>. For every {1} of your maximum health in converted healing, gain {2} seconds of <style=cIsUtility>20% BASE stat increases</style> to attack speed, move speed, damage, health regen, and jump power, as well as a flat 20% crit chance and 20 armor.",
@@ -77,7 +77,7 @@
 		"TINKERSSATCHEL_MOUNTAINTOKEN_PICKUP": "Gain an extra item reward from teleporters... <color=#FF7F7F>BUT jumping for too long gives the item to enemies instead.</color>",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_DESC": "The teleporter boss drops 1 <style=cIsUtility>extra item</style> when killed <style=cStack>(+1 per stack)</style>. As long as you remain in midair while the teleporter is charging, these extra items will gradually be <color=#FF7F7F>lost</color> and <color=#FF7F7F>given to all enemies</color> within the teleporter zone. All extra items will be lost after {0} seconds. The teleporter event will also become <color=#FF7F7F>slightly more difficult</color> per stack.",
 		"TINKERSSATCHEL_MOUNTAINTOKEN_LORE": "This monument dedicated to those / Who perished in the storm",
-		
+
 		"TINKERSSATCHEL_WAXFEATHER_NAME": "Wax Feather",
 		"TINKERSSATCHEL_WAXFEATHER_PICKUP": "Staying airborne ignites your attacks and reduces gravity... <color=#FF7F7F>BUT also weakens your armor and speed.</color>",
 		"TINKERSSATCHEL_WAXFEATHER_DESC": "While ungrounded, you build charges of a combination buff/debuff at 1 charge per {0} seconds, up to {1} <style=cStack>(+{1} per stack)</style>. Having any charges adds a {2} chance to <style=cIsDamage>ignite your attacks</style> for <style=cIsDamage>{3} damage per charge</style>, and each charge <style=cIsUtility>reduces your gravity by {4}</style> <style=cStack>(hyperbolic)</style>. Each charge also <color=#FF7F7F>reduces your armor by {5} (linear) and speed by {6} (linear divisor)</color>. While grounded, you lose charges {7} as fast as they are gained.",
@@ -92,20 +92,20 @@
 		"TINKERSSATCHEL_COMPASS_DESC_PERSTAGE": " Works only {0} time(s) per stage.",
 		"TINKERSSATCHEL_COMPASS_DESC_PERPLAYER": " Works only {0} time(s) per player per stage.",
 		"TKSAT_COMPASS_USE_MESSAGE": "<style=cDeath>{0} seeks a path...</style>",
-        "TKSAT_COMPASS_USE_MESSAGE_2P": "<style=cDeath>You seek a path...</style>",
+		"TKSAT_COMPASS_USE_MESSAGE_2P": "<style=cDeath>You seek a path...</style>",
 
 		"TINKERSSATCHEL_EMP_NAME": "EMP Device",
 		"TINKERSSATCHEL_EMP_PICKUP": "Disable skills on enemies... <style=cDeath>BUT disable non-primary skills on survivors.</style>",
 		"TINKERSSATCHEL_EMP_DESC": "For {0} seconds, <style=cIsUtility>all skills</style> on enemies and <style=cIsUtility>non-primary skills</style> on survivors within {1} m will be <color=#FF7F7F>disabled</color>. Also clears <style=cIsDamage>enemy projectiles</style> when used.",
 		"TINKERSSATCHEL_EMP_LORE": "",
-		
+
 		"TINKERSSATCHEL_MONKEYSPAW_NAME": "Lemurian's Claw",
 		"TINKERSSATCHEL_MONKEYSPAW_PICKUP": "Open a chest for cheap and drop an extra item... <style=cDeath>BUT living enemies also receive items.</style>",
 		"TINKERSSATCHEL_MONKEYSPAW_DESC": "Use on a chest to <style=cIsUtility>open the chest for {0} reduced cost</style> and add <style=cIsUtility>one extra item</style> to its drops. <style=cDeath>All living enemies will also gain items</style>, with count dependent on rarity (5 Common, 3 Uncommon, or 1 Rare).",
 		"TINKERSSATCHEL_MONKEYSPAW_LORE": "",
-        "TKSAT_MONKEYSPAW_ACTIVATED": "<style=cEvent>{0}'s <color=#307FFF>Lemurian's Claw</color> curls...</style>",
-        "TKSAT_MONKEYSPAW_ACTIVATED_2P": "<style=cEvent>Your <color=#307FFF>Lemurian's Claw</color> curls...</style>",
-        "TKSAT_MONKEYSPAW_ITEMGRANT": "<style=cEvent>Living enemies received {1} x{2}.</style>",
+		"TKSAT_MONKEYSPAW_ACTIVATED": "<style=cEvent>{0}'s <color=#307FFF>Lemurian's Claw</color> curls...</style>",
+		"TKSAT_MONKEYSPAW_ACTIVATED_2P": "<style=cEvent>Your <color=#307FFF>Lemurian's Claw</color> curls...</style>",
+		"TKSAT_MONKEYSPAW_ITEMGRANT": "<style=cEvent>Living enemies received {1} x{2}.</style>",
 
 		"TINKERSSATCHEL_UNSTABLEBOMB_NAME": "Faulty Mortar Tube",
 		"TINKERSSATCHEL_UNSTABLEBOMB_PICKUP": "Throw a bomb that will detonate when damaged... <style=cDeath>BUT it may damage survivors too.</style>",
@@ -134,7 +134,7 @@
 		"TINKERSSATCHEL_MOTIONTRACKER_LORE": "",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_NAME": "Why Won't You Die?!",
 		"ACHIEVEMENT_TKSAT_MOTIONTRACKER_DESCRIPTION": "Fully charge a Teleporter without killing the boss or dying.",
-		
+
 		"TINKERSSATCHEL_MOUSTACHE_NAME": "Macho Moustache",
 		"TINKERSSATCHEL_MOUSTACHE_PICKUP": "Chance to Taunt on hit. Resist Taunted enemies.",
 		"TINKERSSATCHEL_MOUSTACHE_DESC": "<style=cIsUtility>{0} <style=cStack>(+{0} per stack)</style></style> chance on hit to <style=cIsUtility>Taunt</style> enemies for <style=cIsUtility>{1} seconds</style>. Also receive <style=cIsHealing>{2} reduced damage</style> and <style=cIsHealing>{3} reduced knockback</style> from <style=cIsUtility>Taunted</style> enemies.",
@@ -148,21 +148,21 @@
 		"TINKERSSATCHEL_MUG_LORE": "An inscription around the base reads: \"Rock and Stone!\"",
 		"ACHIEVEMENT_TKSAT_MUG_NAME": "...So I Fired Again",
 		"ACHIEVEMENT_TKSAT_MUG_DESCRIPTION": "Miss 1,000 TOTAL projectile attacks.",
-		
+
 		"TINKERSSATCHEL_SHOOTTOHEAL_NAME": "Percussive Maintenance",
 		"TINKERSSATCHEL_SHOOTTOHEAL_PICKUP": "Hit allies to heal them.",
 		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "Hitting an ally with a direct attack heals them for <style=cIsHealing>{0} maximum health <style=cStack>(+{0} per stack)</style></style> and you for {1} as much. Scales with attack damage coefficient and proc coefficient.",
 		"TINKERSSATCHEL_SHOOTTOHEAL_LORE": "",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_NAME": "One-Man Band",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_DESCRIPTION": "Item Set: Musical instruments. Have 3 or more (of 5) at once.",
-		
+
 		"TINKERSSATCHEL_TRIBROOCH_NAME": "Triskelion Brooch",
 		"TINKERSSATCHEL_TRIBROOCH_PICKUP": "Chance to combine ignite, freeze, and stun.",
 		"TINKERSSATCHEL_TRIBROOCH_DESC": "<style=cIsDamage>Ignites</style>, <style=cIsDamage>freezes</style>, and <style=cIsUtility>stuns</style> have a {0} chance to also cause one of the other effects listed for <style=cIsDamage>{1} base damage <style=cStack>(+{2} per stack)</style></style>. <style=cStack>Inflicts an 80% slow instead of freeze.</style>",
 		"TINKERSSATCHEL_TRIBROOCH_LORE": "",
 		"ACHIEVEMENT_TKSAT_TRIBROOCH_NAME": "Rasputin",
 		"ACHIEVEMENT_TKSAT_TRIBROOCH_DESCRIPTION": "As a team: stun, then freeze, then ignite the same enemy within 3 seconds.",
-		
+
 
 		"TINKERSSATCHEL_DAMAGEBUFFER_NAME": "Negative Feedback Loop",
 		"TINKERSSATCHEL_DAMAGEBUFFER_PICKUP": "Some incoming damage is dealt over time.",
@@ -170,21 +170,21 @@
 		"TINKERSSATCHEL_DAMAGEBUFFER_LORE": "",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK": "continuously",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK": "every {0} second(s)",
-		
+
 		"TINKERSSATCHEL_DEADMANSWITCH_NAME": "Pulse Monitor",
 		"TINKERSSATCHEL_DEADMANSWITCH_PICKUP": "Auto-activate your equipment for free at low health.",
 		"TINKERSSATCHEL_DEADMANSWITCH_DESC": "Falling below <style=cIsHealth>{1} health</style> activates your <style=cIsUtility>equipment</style> without putting it on cooldown. This effect has its own cooldown equal to the cooldown of the activated equipment <style=cStack>(-{0} per stack, mult.)</style>.",
 		"TINKERSSATCHEL_DEADMANSWITCH_LORE": "",
 		"ACHIEVEMENT_TKSAT_DEADMANSWITCH_NAME": "Nine Lives",
 		"ACHIEVEMENT_TKSAT_DEADMANSWITCH_DESCRIPTION": "Survive falling to low health 9 times in the same run (must return to above 50% health each time).",
-		
+
 		"TINKERSSATCHEL_DEFIB_NAME": "Defibrillator",
 		"TINKERSSATCHEL_DEFIB_PICKUP": "Your heals can crit.",
 		"TINKERSSATCHEL_DEFIB_DESC": "Any <style=cIsHealing>healing</style> caused by you has a chance to <style=cIsHealing>critically heal</style> equal to your <style=cIsDamage>crit chance</style>. <style=cIsHealing>Critical heals</style> heal for <style=cIsHealth>+{0} <style=cStack>(+{0} per stack)</style> more HP</style>.",
 		"TINKERSSATCHEL_DEFIB_LORE": "",
 		"ACHIEVEMENT_TKSAT_DEFIB_NAME": "Medic!",
 		"ACHIEVEMENT_TKSAT_DEFIB_DESCRIPTION": "Item Set: Shareable healing. Have 4 or more (of 7) at once.",
-		
+
 		"TINKERSSATCHEL_ENPASSANT_NAME": "En Passant",
 		"TINKERSSATCHEL_ENPASSANT_PICKUP": "Melee strike with your Utility skill to recharge it.",
 		"TINKERSSATCHEL_ENPASSANT_DESC": "After activating your Utility skill, fire a horizontal <style=cIsDamage>melee attack</style> which lasts {1} seconds and deals <style=cIsDamage>{0} damage</style> <style=cStack>(+{0} per stack)</style>. Each hit with this attack <style=cIsUtility>recharges your Utility skill by {2} seconds</style> <style=cStack>(+{2} s per stack)</style>.",
@@ -194,7 +194,7 @@
 		"TINKERSSATCHEL_FUDGEDICE_PICKUP": "Periodically guarantee luck.",
 		"TINKERSSATCHEL_FUDGEDICE_DESC": "Once every {0} seconds <style=cStack>(-{1} per stack, hyperbolic)</style>, your next random effect is <style=cIsUtility>rolled with +{2} luck</style>.",
 		"TINKERSSATCHEL_FUDGEDICE_LORE": "Don't tell the DM.",
-		
+
 		"TINKERSSATCHEL_GOLDENGEAR_NAME": "Chestplate",
 		"TINKERSSATCHEL_GOLDENGEAR_PICKUP": "Collecting money grants temporary armor.",
 		"TINKERSSATCHEL_GOLDENGEAR_DESC": "For every <style=cIsUtility>${0}</style> collected <style=cStack>(scales with difficulty)</style>, gain <style=cIsHealing>1 armor</style> <style=cStack>(+1 per stack, -{1} per point of armor before stacking)</style> for {2} seconds.",
@@ -208,12 +208,12 @@
 		"TINKERSSATCHEL_KLEINBOTTLE_LORE": "Order: \u201CUnstable Klein Bottle\u201D\r\nTracking Number: 23******\r\nEstimated Delivery: 09\/04\/2056\r\nShipping Method: Fragile\r\nShipping Address: 43rd Floor, Crumbling Tower, Venus\r\nShipping Details:\r\n\r\nThis one was a doozy. Damn near sucked in one of our artificers during final construction of this proof-of-concept. But your formula worked! We've sent it over for your examination.\r\n\r\nCareful not to drop it. In theory, the construct's temporal metastability should cause it to revert when the glass is broken, and we think its topology would leave a bubble of safety in the middle during detonation... but none of us were brave enough to test that. Losing this could set us back weeks, let alone the potential for injury and damage even if we're right.",
 		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_NAME": "Can't Touch This",
 		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_DESCRIPTION": "Block, or take 1 or less points of damage from, 3 attacks in a row.",
-		
+
 		"TINKERSSATCHEL_PIXIETUBE_NAME": "Pixie Tube",
 		"TINKERSSATCHEL_PIXIETUBE_PICKUP": "Drop random buffs on using skills.",
 		"TINKERSSATCHEL_PIXIETUBE_DESC": "You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({0} s individual cooldown on each skill, {1} s on primary skill)</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {2} seconds: <color=#ffaa77>+{3} damage</color>, <color=#9999ff>+{4} movement speed</color>, <color=#eeff55>+{5} attack speed</color>, or <color=#997755>{6} armor</color>.",
 		"TINKERSSATCHEL_PIXIETUBE_LORE": "<style=cMono>Welcome to DataScraper (v3.1.53 – beta branch)\n$ Scraping memory... done.\n$ Resolving... done.\n$ Combing for relevant data... done.\nComplete!</style>\n\nDatasheet: EE555 Elementally Sensitive Randomized Timer\r\n\r\nFeatures:\r\n - Timing From Milliseconds to Seconds\r\n - Very Unstable Operation\r\n - Ley-Responsive Duty Cycle\r\n - TTL-Incompatible Output WILL Source Up to 200 TA in Non-Arcanically-Primed Circuits\r\n\r\nApplications:\r\n - Soul Biometrics\r\n - Prophecy Engine\r\n - Second-Tier Elemental Summoning Device\r\n\r\n<style=cMono>Document continues (page 1 of 33). Press any key to advance page.</style>",
-		
+
 
 		"TINKERSSATCHEL_GOFASTER_NAME": "Go-Faster Stripes",
 		"TINKERSSATCHEL_GOFASTER_PICKUP": "Your Utility skill gains more mobility.",
@@ -221,28 +221,28 @@
 		"TINKERSSATCHEL_GOFASTER_LORE": "<style=cMono>//--AUTO-TRANSCRIPTION FROM UES [Redacted] --//</style>\n\n\"...What are you doing?\"\n\n\"Painting my armor.\"\n\n\"Why!?\"\n\n\"To make it go faster.\"\n\n\"What!? That\u2019s just a myth! And-- and it\u2019s supposed to be for cars! And in case you haven\u2019t noticed, we are -in the middle of a warzone-! We don\u2019t have -time- for--\"\n\n\"Red stripes make things go faster. More speed means more time. You\u2019ll see.\"",
 		"ACHIEVEMENT_TKSAT_GOFASTER_NAME": "Faster Than Recommended",
 		"ACHIEVEMENT_TKSAT_GOFASTER_DESCRIPTION": "Trimp.",
-		
+
 		"TINKERSSATCHEL_HEADSET_NAME": "H3AD-53T",
 		"TINKERSSATCHEL_HEADSET_PICKUP": "Your Utility skill builds a stunning static charge.",
 		"TINKERSSATCHEL_HEADSET_DESC": "After activating your <style=cIsUtility>Utility skill</style>, the next {0} enemies <style=cStack>(+{1} per stack)</style> your path crosses will <style=cIsDamage>take {2} damage</style> <style=cStack>(+{3} per stack)</style> and be <style=cIsUtility>stunned for {4} seconds</style>.",
 		"TINKERSSATCHEL_HEADSET_LORE": "You finally found a fall too long for your long fall boots. While you could probably jury-rig the parts back together for their original purpose, this is the perfect opportunity for... innovation.\r\n\r\nUse your head.",
 		"ACHIEVEMENT_TKSAT_HEADSET_NAME": "You Broke It",
 		"ACHIEVEMENT_TKSAT_HEADSET_DESCRIPTION": "Kill a boss with a maximum damage H3AD-5T v2 explosion.",
-		
+
 		"TINKERSSATCHEL_KINTSUGI_NAME": "Kintsugi",
 		"TINKERSSATCHEL_KINTSUGI_PICKUP": "Your broken/consumed/scrapped items increase all your stats.",
 		"TINKERSSATCHEL_KINTSUGI_DESC": "Each of your broken, consumed, or scrapped items increases <style=cIsUtility>ALL stats</style> based on its tier <style=cStack>(stacks linearly)</style>: {0} for Common items, {1} for Uncommon items, and {2} for Rare/Boss items.",
 		"TINKERSSATCHEL_KINTSUGI_LORE": "",
 		"ACHIEVEMENT_TKSAT_KINTSUGI_NAME": "Planned Obsolescence",
 		"ACHIEVEMENT_TKSAT_KINTSUGI_DESCRIPTION": "Have at least 20 items, at least half of which are broken/consumed/scrapped.",
-		
+
 		"TINKERSSATCHEL_PINBALL_NAME": "Pinball Wizard",
 		"TINKERSSATCHEL_PINBALL_PICKUP": "Projectiles may bounce and home.",
 		"TINKERSSATCHEL_PINBALL_DESC": "All your projectile attacks have a {0} chance to bounce, <style=cIsDamage>exploding</style> one extra time and <style=cIsUtility>homing</style> towards a random enemy with <style=cIsDamage>{1} of their original damage</style>. Can happen up to <style=cIsDamage>{2} times <style=cStack>(+{3} per stack)</style></style> per projectile. Melee attacks gain an equal chance to fire a weak projectile for {4} of the attack damage.",
 		"TINKERSSATCHEL_PINBALL_LORE": "Ding! Ding! Ding! Ding!",
 		"ACHIEVEMENT_TKSAT_PINBALL_NAME": "Woe, Explosions Be Upon Ye",
 		"ACHIEVEMENT_TKSAT_PINBALL_DESCRIPTION": "Item Set: Damage-on-kill. Have 3 or more (of 6) at once.",
-		
+
 		"TINKERSSATCHEL_SHRINKRAY_NAME": "Shrink Ray",
 		"TINKERSSATCHEL_SHRINKRAY_PICKUP": "Suppress a single target's damage and non-primary skills.",
 		"TINKERSSATCHEL_SHRINKRAY_DESC": "Once every {0} seconds, hitting an enemy disables their <style=cIsUtility>non-primary skills</style> and reduces their <style=cIsDamage>damage</style> by {1} for {2} seconds <style=cStack>(+{2} seconds per stack)</style>.",
@@ -270,7 +270,7 @@
 		"TINKERSSATCHEL_CHAOTICEFFIGY_PICKUP": "Chance to create temporary item totems on kills. <style=cIsVoid>Corrupts all Mostly-Tame Mimics</style>.",
 		"TINKERSSATCHEL_CHAOTICEFFIGY_DESC": "Killing an enemy has a <style=cIsUtility>{0} chance <style>(+{0} per stack, hyperbolic)</style></style> to create an <style=cIsUtility>item totem</style>, granting survivors within {1} m an item from the tier-1 chest table <style=cStack>(tier-2 for elites, tier-3 for bosses)</style> for {2} seconds.<style=cIsVoid>Corrupts all Mostly-Tame Mimics</style>.",
 		"TINKERSSATCHEL_CHAOTICEFFIGY_LORE": "",
-		
+
 		"TINKERSSATCHEL_OBSIDIANBROOCH_NAME": "Obsidian Brooch",
 		"TINKERSSATCHEL_OBSIDIANBROOCH_PICKUP": "Chance to spread DoTs on hit. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.",
 		"TINKERSSATCHEL_OBSIDIANBROOCH_DESC": "Whenever you hit an enemy, {0} chance <style=cStack>(rolls once per stack)</style> to mirror one of their <style=cIsDamage>damage-over-time effects</style> to another random enemy within {1} m. <style=cIsVoid>Corrupts all Triskelion Brooches</style>.",
@@ -280,29 +280,29 @@
 		"TINKERSSATCHEL_TIMELOSTRUM_PICKUP": "Chance to cause temporal echoes of attacks. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
 		"TINKERSSATCHEL_TIMELOSTRUM_DESC": "All projectile attacks gain a <style=cIsDamage>{0} <style=cStack>(+{0} per stack)</style></style> chance to fire <style=cIsDamage>an extra copy</style> with <color=#FF7F7F>{1} s of delay</style>. Melee attacks gain an equal chance to hit after a delay for {2} of the attack damage. <style=cIsVoid>Corrupts all Sturdy Mugs</style>.",
 		"TINKERSSATCHEL_TIMELOSTRUM_LORE": "What's left of the label reads: \"『?ROC??K」 and 【S?TO?NE』!\"",
-		
+
 
 		"TINKERSSATCHEL_BRAMBLERING_NAME": "Bramble Ring",
 		"TINKERSSATCHEL_BRAMBLERING_PICKUP": "Return some damage to sender. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
 		"TINKERSSATCHEL_BRAMBLERING_DESC": "<style=cIsDamage>{0} of damage taken <style=cStack>(+{0} per stack, hyperbolic)</style></style> is also taken by the inflictor. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
 		"TINKERSSATCHEL_BRAMBLERING_LORE": "",
-		
+
 		"TINKERSSATCHEL_ORDEREDARMOR_NAME": "Lens of Order",
 		"TINKERSSATCHEL_ORDEREDARMOR_PICKUP": "Gain massive armor by focusing your item build. <style=cIsVoid>Corrupts all Chestplates</style>.",
 		"TINKERSSATCHEL_ORDEREDARMOR_DESC": "Gain <style=cIsHealing>armor</style> based on your currently held <style=cIsUtility>types of item</style> (fewer is better). Having only <style=cIsVoid>Lenses of Order</style> gives <style=cIsHealing>{0} armor</style> <style=cStack>(+{1} per stack, linear)</style>; each subsequent item type <style=cIsUtility>reduces armor bonus by {2}</style>. <style=cIsVoid>Corrupts all Chestplates</style>.",
 		"TINKERSSATCHEL_ORDEREDARMOR_LORE": "",
-		
+
 		"TINKERSSATCHEL_VOIDWISPHIVE_NAME": "Voidwisp Hive",
 		"TINKERSSATCHEL_VOIDWISPHIVE_PICKUP": "Drop damaging wisp allies on using skills. <style=cIsVoid>Corrupts all Pixie Tubes</style>.",
 		"TINKERSSATCHEL_VOIDWISPHIVE_DESC": "You drop a <style=cIsDamage>voidwisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({0} s individual cooldown on each skill, {1} s on primary skill)</style>. <style=cIsDamage>Voidwisps</style> live for {2} seconds, tracking nearby enemies and zapping them for <style=cIsDamage>{3}x{4} damage per second <style=cStack>(damage increases linearly per stack)</style></style>. <style=cIsVoid>Corrupts all Pixie Tubes</style>.",
 		"TINKERSSATCHEL_VOIDWISPHIVE_LORE": "",
-		
+
 
 		"TINKERSSATCHEL_GUPRAY_NAME": "Gup Ray",
 		"TINKERSSATCHEL_GUPRAY_PICKUP": "Split enemies into two much weaker copies. <style=cIsVoid>Corrupts all Shrink Rays</style>.",
 		"TINKERSSATCHEL_GUPRAY_DESC": "Once every {0} seconds, hitting a non-final-boss enemy <style=cIsUtility>splits</style> them into 2 copies with {1} <style=cIsHealth>health</style> and <style=cIsDamage>damage</style>, as well as {2} <style=cIsUtility>speed</style> and <style=cIsUtility>attack speed</style>. <style=cStack>Enemies can be split 1 time per stack.</style> <style=cIsVoid>Corrupts all Shrink Rays</style>.",
 		"TINKERSSATCHEL_GUPRAY_LORE": "",
-		
+
 		"TINKERSSATCHEL_LOOM_NAME": "Unraveling Loom",
 		"TINKERSSATCHEL_LOOM_PICKUP": "All your attacks become progressively slower and more powerful. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.",
 		"TINKERSSATCHEL_LOOM_DESC": "Each <style=cIsDamage>combat skill</style> use gives you <style=cIsDamage>-{0} attack speed and +{1} damage</style> for {2} seconds <style=cStack>(+{2} s per stack)</style>, up to {3} times <style=cStack>(+{3} per stack)</style>. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.",
@@ -312,7 +312,7 @@
 		"TINKERSSATCHEL_NAUTILUSPROTOCOL_PICKUP": "All turrets and drones gain flat armor and regen, and a slight damage bonus. Ping to detonate. <style=cIsVoid>Corrupts all RC Controllers</style>.",
 		"TINKERSSATCHEL_NAUTILUSPROTOCOL_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership gain <style=cIsUtility>{0} armor <style=cStack>(+{0} per stack)</style></style>, <style=cIsHealing>{1} health regen <style=cStack>(+{1} per stack)</style></style>, and <style=cIsDamage>{2} damage <style=cStack>(+{2} per stack)</style></style>. <style=cIsUtility>Ping</style> a turret or drone ({5} s cooldown per drone) to cause a massive <style=cIsDamage>void detonation</style>, damaging the ally for <style=cDeath>50% MAXIMUM health</style> and enemies within {3} m for <style=cIsDamage>{4}</style> of the inflicted self-damage. <style=cIsVoid>Corrupts all RC Controllers</style>.",
 		"TINKERSSATCHEL_NAUTILUSPROTOCOL_LORE": "",
-		
+
 
 
 		"TINKERSSATCHEL_ANTIAIR_NAME": "Artifact of Suppression",
@@ -320,32 +320,35 @@
 
 		"TINKERSSATCHEL_BUTTERKNIFE_NAME": "Artifact of Haste",
 		"TINKERSSATCHEL_BUTTERKNIFE_DESC": "All combatants attack 10x faster and deal 1/20x damage.",
-		
+
 		"TINKERSSATCHEL_DANGER_NAME": "Artifact of Danger",
 		"TINKERSSATCHEL_DANGER_DESC": "Players can be killed in one hit.",
 
 		"TINKERSSATCHEL_DELAYLOOT_NAME": "Artifact of Safekeeping",
 		"TINKERSSATCHEL_DELAYLOOT_DESC": "All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.",
-		
+		"TINKERSSATCHEL_DELAYLOOT_MSG_KILL": "The boss's hoard of {0} drops is yours.",
+		"TINKERSSATCHEL_DELAYLOOT_MSG_DELAY": "{0} has been taken for safekeeping.",
+		"TINKERSSATCHEL_DELAYLOOT_MSG_DELAY_VAGUE": "Something",
+
 		"TINKERSSATCHEL_DISPOSABLEEQUIP_NAME": "Artifact of Reconfiguration",
 		"TINKERSSATCHEL_DISPOSABLEEQUIP_DESC": "Start with {0} equipment slots. Equipment is more common, and is consumed instead of going on cooldown.",
-		
+
 		"TINKERSSATCHEL_PACKTACTICS_NAME": "Artifact of Tactics",
 		"TINKERSSATCHEL_PACKTACTICS_DESC": "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.",
 
 
 
 		"TKSAT_BULWARKDRONE_NAME": "Bulwark Drone",
-        "TKSAT_BULWARKDRONE_BODY_NAME": "Bulwark Drone",
-        "TKSAT_BULWARKDRONE_CONTEXT": "Repair Bulwark Drone",
+		"TKSAT_BULWARKDRONE_BODY_NAME": "Bulwark Drone",
+		"TKSAT_BULWARKDRONE_CONTEXT": "Repair Bulwark Drone",
 
-        "TKSAT_ITEMDRONE_NAME": "Item Drone",
-        "TKSAT_ITEMDRONE_BODY_NAME": "Item Drone",
-        "TKSAT_ITEMDRONE_POPUP_TEXT": "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>",
-        "TKSAT_ITEMDRONE_CONTEXT": "Give Item",
+		"TKSAT_ITEMDRONE_NAME": "Item Drone",
+		"TKSAT_ITEMDRONE_BODY_NAME": "Item Drone",
+		"TKSAT_ITEMDRONE_POPUP_TEXT": "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>",
+		"TKSAT_ITEMDRONE_CONTEXT": "Give Item",
 
 
-		
+
 		"TKSAT_COMMANDO_PRIMARY_PULSE_NAME": "Pulse",
 		"TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION_MAIN": "Rapidly shoot an enemy 4 times with high recoil. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75% to 150%</style> over the course of the burst.",
 		"TKSAT_COMMANDO_PRIMARY_PULSE_DESCRIPTION_ALT": "Rapidly shoot an enemy 4 times. <style=cIsDamage>Damage</style> per shot ramps from <style=cIsDamage>75%</style> to a maximum of <style=cIsDamage>150%</style> over the course of the burst, increasing over the course of 20 hits to the same target without missing.",
@@ -358,25 +361,25 @@
 		"TKSAT_COMMANDO_UTILITY_JINKJET_NAME": "Jink Jet",
 		"TKSAT_COMMANDO_UTILITY_JINKJET_DESCRIPTION": "Perform a small jet-assisted horizontal jump in your <style=cIsUtility>aim direction</style>. Hold up to 3.",
 
-		
+
 		"TKSAT_HUNTRESS_PRIMARY_BOMBARROW_NAME": "MK7b Rockeye Mini",
-        "TKSAT_HUNTRESS_PRIMARY_BOMBARROW_DESCRIPTION": "<style=cIsUtility>Agile</style>. Quickly fire a non-seeking arrow which sticks for <style=cIsDamage>150% damage</style>, then explodes for another <style=cIsDamage>150%</style> after a short delay. Both hits trigger on-hit effects.",
+		"TKSAT_HUNTRESS_PRIMARY_BOMBARROW_DESCRIPTION": "<style=cIsUtility>Agile</style>. Quickly fire a non-seeking arrow which sticks for <style=cIsDamage>150% damage</style>, then explodes for another <style=cIsDamage>150%</style> after a short delay. Both hits trigger on-hit effects.",
 
 		"TKSAT_HUNTRESS_SECONDARY_BOLA_NAME": "Laser Bola",
-        "TKSAT_HUNTRESS_SECONDARY_BOLA_DESCRIPTION": "Throw a seeking hard-light net which <style=cIsUtility>slows and pulls</style> groups of targets, and deals <style=cIsDamage>300% damage</style> over time.",
+		"TKSAT_HUNTRESS_SECONDARY_BOLA_DESCRIPTION": "Throw a seeking hard-light net which <style=cIsUtility>slows and pulls</style> groups of targets, and deals <style=cIsDamage>300% damage</style> over time.",
 
 
 		"TKSAT_ENGI_PRIMARY_FLAK_NAME": "Smart Flak",
-        "TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION": "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.",
+		"TKSAT_ENGI_PRIMARY_FLAK_DESCRIPTION": "Continuously fire proximity fragmentation shells. Direct hits deal <style=cIsDamage>50% damage</style>. Shrapnel tracks enemies for up to <style=cIsDamage>8x25% damage <style=cStack>(maximum 5x25% on a single target)</style></style>.",
 
 		"TKSAT_ENGI_SECONDARY_CHAFF_NAME": "Decoy Chaff",
-        "TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION": "Deal <style=cIsDamage>4x75% damage</style> and <style=cIsUtility>clear enemy projectiles</style> in a frontal cone. Struck enemies within line of sight of any of your turrets will be <style=cIsUtility>Taunted</style> by a turret for 6 seconds.",
+		"TKSAT_ENGI_SECONDARY_CHAFF_DESCRIPTION": "Deal <style=cIsDamage>4x75% damage</style> and <style=cIsUtility>clear enemy projectiles</style> in a frontal cone. Struck enemies within line of sight of any of your turrets will be <style=cIsUtility>Taunted</style> by a turret for 6 seconds.",
 
 		"TKSAT_ENGI_SPEEDISPENSER_BODY_NAME": "Speed Dispenser",
 		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT": "Take speed boost",
 		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_ALREADY_HAVE": "Can't take speed boost\n(Don't be greedy!)",
 		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_CHARGING": "Can't take speed boost\n(Still brewing...)",
 		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME": "Speed Dispenser",
-        "TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION": "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>."
+		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION": "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>."
 	}
 }
