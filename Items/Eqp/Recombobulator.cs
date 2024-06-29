@@ -358,7 +358,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
             var shopcpt = targetObj.GetComponent<ShopTerminalBehavior>();
             if(shopcpt && shopcpt.serverMultiShopController) {
+                //update root AND ALL RELEVANT INFO to root of entire multishop instead of single terminal; also destroy terminals, which are not children of multishop itself
                 targetObj = shopcpt.serverMultiShopController.transform.root.gameObject;
+                targetTsf = targetObj.transform;
+                targetPos = targetTsf.position;
+                targetName = targetObj.name.Replace("(Clone)", "");
                 foreach(var term in shopcpt.serverMultiShopController.terminalGameObjects)
                     GameObject.Destroy(term);
             }
