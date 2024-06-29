@@ -309,50 +309,29 @@ namespace ThinkInvisible.TinkersSatchel {
                 return;
             }
 
+            //clear vanilla targeting info, in case we're swapping from another equipment
+            self.currentTarget = default(EquipmentSlot.UserTargetInfo);
+            self.targetIndicator.targetTransform = null;
+            
             var cpt = self.characterBody.GetComponent<PackBoxTracker>();
             if(!cpt) cpt = self.characterBody.gameObject.AddComponent<PackBoxTracker>();
 
-            GameObject indPrefab;
-
             if(cpt.packedObject) {
-                indPrefab = placeIndicatorPrefab;
                 bool didPlace = TryGetBoxablePlacePos(self.GetAimRay(), out Vector3 loc, out bool didHitGround);
                 if(didPlace || didHitGround) {
-                    if(!didPlace) indPrefab = placeIndicatorBadPrefab;
+                    if(!didPlace) self.targetIndicator.visualizerPrefab = placeIndicatorBadPrefab;
+                    else self.targetIndicator.visualizerPrefab = placeIndicatorPrefab;
                     cpt.groundTarget.transform.position = loc;
-                    self.currentTarget = new EquipmentSlot.UserTargetInfo {
-                        transformToIndicateAt = cpt.groundTarget,
-                        pickupController = null,
-                        hurtBox = null,
-                        rootObject = cpt.groundTarget.gameObject
-                    };
+                    self.targetIndicator.targetTransform = cpt.groundTarget;
                     //todo: on-ground indicator like engi blueprints, will need to track separately?
-                } else self.currentTarget = new EquipmentSlot.UserTargetInfo {
-                        transformToIndicateAt = null,
-                        pickupController = null,
-                        hurtBox = null,
-                        rootObject = null
-                    };
+                }
             } else {
-                indPrefab = packIndicatorPrefab;
+                self.targetIndicator.visualizerPrefab = packIndicatorPrefab;
                 var res = FindNearestBoxable(self.gameObject, self.GetAimRay(), 10f, 20f, false);
-                Transform tsf = null;
-                if(res) tsf = res.transform;
-                self.currentTarget = new EquipmentSlot.UserTargetInfo {
-                    transformToIndicateAt = tsf,
-                    pickupController = null,
-                    hurtBox = null,
-                    rootObject = res
-                };
+                self.targetIndicator.targetTransform = res ? res.transform : null;
+                cpt.targetObject = res;
             }
-
-            if(self.currentTarget.rootObject != null) {
-                self.targetIndicator.visualizerPrefab = indPrefab;
-                self.targetIndicator.active = true;
-                self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
-            } else {
-                self.targetIndicator.active = false;
-            }
+            self.targetIndicator.active = self.targetIndicator.targetTransform != null;
         }
 
 
@@ -370,14 +349,14 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!cpt) cpt = slot.characterBody.gameObject.AddComponent<PackBoxTracker>();
 
             if(cpt.packedObject == null) {
-                if(slot.currentTarget.rootObject && validObjectNames.Contains(slot.currentTarget.rootObject.name)) {
+                if(cpt.targetObject && validObjectNames.Contains(cpt.targetObject.name)) {
                     var shopcpt = slot.currentTarget.rootObject.GetComponent<ShopTerminalBehavior>();
                     if(shopcpt && shopcpt.serverMultiShopController)
-                        slot.currentTarget.rootObject = shopcpt.serverMultiShopController.transform.root.gameObject;
+                        cpt.targetObject = shopcpt.serverMultiShopController.transform.root.gameObject;
 
-                    var pbh = slot.currentTarget.rootObject.GetComponent<PackBoxHandler>();
+                    var pbh = cpt.targetObject.GetComponent<PackBoxHandler>();
                     if(!pbh)
-                        pbh = slot.currentTarget.rootObject.AddComponent<PackBoxHandler>();
+                        pbh = cpt.targetObject.AddComponent<PackBoxHandler>();
 
                     pbh.TryPackServer(cpt);
 
@@ -542,6 +521,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class PackBoxTracker : MonoBehaviour {
         public GameObject packedObject;
+        public GameObject targetObject;
         public Transform groundTarget;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by UnityEngine")]

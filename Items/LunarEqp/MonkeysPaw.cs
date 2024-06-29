@@ -217,43 +217,27 @@ namespace ThinkInvisible.TinkersSatchel {
                 return;
             }
 
-            var res = CommonCode.FindNearestInteractable(self.gameObject, validObjectNames, self.GetAimRay(), 10f, 20f, false);
-            Transform tsf = null;
-            if(res) tsf = res.transform;
-            self.currentTarget = new EquipmentSlot.UserTargetInfo {
-                transformToIndicateAt = tsf,
-                pickupController = null,
-                hurtBox = null,
-                rootObject = res
-            };
+            //clear vanilla targeting info, in case we're swapping from another equipment
+            self.currentTarget = default(EquipmentSlot.UserTargetInfo);
+            self.targetIndicator.targetTransform = null;
 
-            if(self.currentTarget.rootObject != null) {
-                var purch = res.GetComponent<PurchaseInteraction>();
-                if(!purch || purch.available) {
+            var res = CommonCode.FindNearestInteractable(self.gameObject, validObjectNames, self.GetAimRay(), 10f, 20f, false);
+
+            if(res) {
+                self.targetIndicator.targetTransform = res.transform;
+                self.targetIndicator.active = true;
+                if(IsInteractableValid(res, out _, out _)) {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
                 } else {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
                 }
-
-                self.targetIndicator.active = true;
-                self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
-            } else {
-                self.targetIndicator.active = false;
-            }
-
-            if(self.currentTarget.transformToIndicateAt && IsInteractableValid(res, out _, out _)) {
-                self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
-                self.targetIndicator.active = true;
-                self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
-            } else {
-                self.targetIndicator.active = false;
-                self.targetIndicator.targetTransform = null;
-            }
+            } else self.targetIndicator.active = false;
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             slot.UpdateTargets(catalogIndex, false);
-            if(!IsInteractableValid(slot.currentTarget.rootObject, out ChestBehavior cb, out PurchaseInteraction purch)) return false;
+            var targetObj = slot.targetIndicator.targetTransform.gameObject;
+            if(!IsInteractableValid(targetObj, out ChestBehavior cb, out PurchaseInteraction purch)) return false;
 
             if(purch && refundFrac != 1f) {
                 var origCost = purch.cost;
@@ -263,7 +247,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     return false;
                 }
                 var payCostResults = CostTypeCatalog.GetCostTypeDef(purch.costType)
-                    .PayCost(purch.cost, iac, slot.currentTarget.rootObject, rng, ItemIndex.None); //paying items currently unsupported
+                    .PayCost(purch.cost, iac, targetObj, rng, ItemIndex.None); //paying items currently unsupported
                 if(slot.characterBody)
                     StatManager.OnPurchase(slot.characterBody, purch.costType, purch.purchaseStatNames.Select(new Func<string, StatDef>(StatDef.Find)));
             }
@@ -299,7 +283,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 .Where(e => e.body && e.body.inventory);
 
             foreach(var enemy in enemies)
-                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(slot.currentTarget.rootObject.transform.position, enemy.body.inventory, aiSafeIdef.itemIndex, grantCount);
+                RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(targetObj.transform.position, enemy.body.inventory, aiSafeIdef.itemIndex, grantCount);
 
             slot.InvalidateCurrentTarget();
             return true;

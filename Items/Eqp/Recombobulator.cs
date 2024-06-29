@@ -324,111 +324,102 @@ namespace ThinkInvisible.TinkersSatchel {
                 return;
             }
 
+            //clear vanilla targeting info, in case we're swapping from another equipment
+            self.currentTarget = default(EquipmentSlot.UserTargetInfo);
+            self.targetIndicator.targetTransform = null;
+
             var res = CommonCode.FindNearestInteractable(self.gameObject, validObjectNames, self.GetAimRay(), 10f, 20f, false);
-            Transform tsf = null;
-            if(res) tsf = res.transform;
-            self.currentTarget = new EquipmentSlot.UserTargetInfo {
-                transformToIndicateAt = tsf,
-                pickupController = null,
-                hurtBox = null,
-                rootObject = res
-            };
 
-            if(self.currentTarget.rootObject != null) {
-                var purch = res.GetComponent<PurchaseInteraction>();
-                if(!res.GetComponent<RecombobulatorFlag>() && (!purch || purch.available)) {
-                    self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerIndicator");
-                } else {
-                    self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
-                }
-
+            if(res) {
+                self.targetIndicator.targetTransform = res.transform;
                 self.targetIndicator.active = true;
-                self.targetIndicator.targetTransform = self.currentTarget.transformToIndicateAt;
-            } else {
-                self.targetIndicator.active = false;
-            }
+                var purch = res.GetComponent<PurchaseInteraction>();
+                if(!res.GetComponent<RecombobulatorFlag>() && (!purch || purch.available))
+                    self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerIndicator");
+                else
+                    self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
+            } else self.targetIndicator.active = false;
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
-            if(slot.currentTarget.rootObject
-                && validObjectNames.Contains(slot.currentTarget.rootObject.name.Replace("(Clone)",""))
-                && !slot.currentTarget.rootObject.GetComponent<RecombobulatorFlag>()
-                && mostRecentDeck != null
-                && Run.instance) {
+            if(mostRecentDeck == null || !Run.instance) return false;
 
-                var oldPurch = slot.currentTarget.rootObject.GetComponent<PurchaseInteraction>();
-                if(oldPurch) {
-                    if(!oldPurch.available) return false;
-                }
+            var targetTsf = slot.targetIndicator.targetTransform;
+            if(!targetTsf) return false;
 
-                var shopcpt = slot.currentTarget.rootObject.GetComponent<ShopTerminalBehavior>();
-                if(shopcpt && shopcpt.serverMultiShopController) {
-                    slot.currentTarget.rootObject = shopcpt.serverMultiShopController.transform.root.gameObject;
-                    foreach(var term in shopcpt.serverMultiShopController.terminalGameObjects)
-                        GameObject.Destroy(term);
-                }
+            var targetObj = targetTsf.gameObject;
+            var targetName = targetObj.name.Replace("(Clone)", "");
+            if(!validObjectNames.Contains(targetName) || targetTsf.gameObject.GetComponent<RecombobulatorFlag>()) return false;
 
-                GameObject.Destroy(slot.currentTarget.rootObject);
+            var oldPurch = targetObj.GetComponent<PurchaseInteraction>();
+            if(oldPurch && !oldPurch.available) return false;
 
-                var pos = slot.currentTarget.rootObject.transform.position;
+            var targetPos = targetTsf.position;
 
-                WeightedSelection<DirectorCard> filteredDeck = new(8);
-                var matchCategories = mostRecentDeckCategories.Where(kvp => kvp.Key.spawnCard.prefab.name == slot.currentTarget.rootObject.name.Replace("(Clone)","")).Select(kvp => kvp.Value);
-                for(var i = 0; i < mostRecentDeck.Count; i++) {
-                    var card = mostRecentDeck.GetChoice(i);
-                    if(card.value == null || !card.value.IsAvailable()) continue;
-                    if(!validObjectNames.Contains(card.value.spawnCard.prefab.name))
-                        continue;
-                    if(respectCategory && (
-                        !mostRecentDeckCategories.TryGetValue(card.value, out var thisCategory)
-                        || !matchCategories.Contains(thisCategory)
-                        ))
-                        continue;
-                    filteredDeck.AddChoice(card);
-                }
-                if(filteredDeck.Count == 0)
-                    return false;
-
-                var draw = filteredDeck.Evaluate(rng.nextNormalizedFloat);
-
-                if(Compat_ClassicItems.enabled) {
-                    var rerolls = Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
-                    for(var i = 0; i < rerolls; i++) {
-                        var draw2 = filteredDeck.Evaluate(rng.nextNormalizedFloat);
-                        if(draw2.selectionWeight < draw.selectionWeight)
-                            draw = draw2;
-                    }
-                }
-
-                var obj = DirectorCore.instance.TrySpawnObject(
-                    new DirectorSpawnRequest(
-                        draw.spawnCard,
-                        new DirectorPlacementRule {
-                            placementMode = DirectorPlacementRule.PlacementMode.Direct,
-                            position = pos,
-                            preventOverhead = false
-                        },
-                        this.rng
-                        ));
-                if(!obj) {
-                    TinkersSatchelPlugin._logger.LogError("Recombobulator failed to replace interactable!");
-                    return false;
-                }
-                var purch = obj.GetComponent<PurchaseInteraction>();
-                if(purch && purch.costType == CostTypeIndex.Money) {
-                    purch.Networkcost = Run.instance.GetDifficultyScaledCost(purch.cost);
-                }
-                obj.AddComponent<RecombobulatorFlag>();
-
-                var shopcpt2 = obj.GetComponent<MultiShopController>();
-                if(shopcpt2) {
-                    foreach(var term in shopcpt2.terminalGameObjects)
-                        term.AddComponent<RecombobulatorFlag>();
-                }
-
-                return true;
+            var shopcpt = targetObj.GetComponent<ShopTerminalBehavior>();
+            if(shopcpt && shopcpt.serverMultiShopController) {
+                targetObj = shopcpt.serverMultiShopController.transform.root.gameObject;
+                foreach(var term in shopcpt.serverMultiShopController.terminalGameObjects)
+                    GameObject.Destroy(term);
             }
-            return false;
+
+            GameObject.Destroy(targetObj);
+
+            WeightedSelection<DirectorCard> filteredDeck = new(8);
+            var matchCategories = mostRecentDeckCategories.Where(kvp => kvp.Key.spawnCard.prefab.name == targetName).Select(kvp => kvp.Value);
+            for(var i = 0; i < mostRecentDeck.Count; i++) {
+                var card = mostRecentDeck.GetChoice(i);
+                if(card.value == null || !card.value.IsAvailable()) continue;
+                if(!validObjectNames.Contains(card.value.spawnCard.prefab.name))
+                    continue;
+                if(respectCategory && (
+                    !mostRecentDeckCategories.TryGetValue(card.value, out var thisCategory)
+                    || !matchCategories.Contains(thisCategory)
+                    ))
+                    continue;
+                filteredDeck.AddChoice(card);
+            }
+            if(filteredDeck.Count == 0)
+                return false;
+
+            var draw = filteredDeck.Evaluate(rng.nextNormalizedFloat);
+
+            if(Compat_ClassicItems.enabled) {
+                var rerolls = Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
+                for(var i = 0; i < rerolls; i++) {
+                    var draw2 = filteredDeck.Evaluate(rng.nextNormalizedFloat);
+                    if(draw2.selectionWeight < draw.selectionWeight)
+                        draw = draw2;
+                }
+            }
+
+            var obj = DirectorCore.instance.TrySpawnObject(
+                new DirectorSpawnRequest(
+                    draw.spawnCard,
+                    new DirectorPlacementRule {
+                        placementMode = DirectorPlacementRule.PlacementMode.Direct,
+                        position = targetPos,
+                        preventOverhead = false
+                    },
+                    this.rng
+                    ));
+            if(!obj) {
+                TinkersSatchelPlugin._logger.LogError("Recombobulator failed to replace interactable!");
+                return false;
+            }
+            var purch = obj.GetComponent<PurchaseInteraction>();
+            if(purch && purch.costType == CostTypeIndex.Money) {
+                purch.Networkcost = Run.instance.GetDifficultyScaledCost(purch.cost);
+            }
+            obj.AddComponent<RecombobulatorFlag>();
+
+            var shopcpt2 = obj.GetComponent<MultiShopController>();
+            if(shopcpt2) {
+                foreach(var term in shopcpt2.terminalGameObjects)
+                    term.AddComponent<RecombobulatorFlag>();
+            }
+
+            return true;
         }
     }
 
