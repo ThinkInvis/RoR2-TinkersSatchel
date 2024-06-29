@@ -328,9 +328,9 @@
 
 		"TINKERSSATCHEL_DELAYLOOT_NAME": "Artifact of Safekeeping",
 		"TINKERSSATCHEL_DELAYLOOT_DESC": "All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.",
-		"TINKERSSATCHEL_DELAYLOOT_MSG_KILL": "The boss's hoard of {0} drops is yours.",
-		"TINKERSSATCHEL_DELAYLOOT_MSG_DELAY": "{0} has been taken for safekeeping.",
-		"TINKERSSATCHEL_DELAYLOOT_MSG_DELAY_VAGUE": "Something",
+		"TKSAT_DELAYLOOT_MSG_KILL": "The boss's hoard of {0} drops is yours.",
+		"TKSAT_DELAYLOOT_MSG_DELAY": "{0} has been taken for safekeeping.",
+		"TKSAT_DELAYLOOT_MSG_DELAY_VAGUE": "Something",
 
 		"TINKERSSATCHEL_DISPOSABLEEQUIP_NAME": "Artifact of Reconfiguration",
 		"TINKERSSATCHEL_DISPOSABLEEQUIP_DESC": "Start with {0} equipment slots. Equipment is more common, and is consumed instead of going on cooldown.",
