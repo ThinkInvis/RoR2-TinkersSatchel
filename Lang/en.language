@@ -49,6 +49,8 @@
 		"TINKERSSATCHEL_REVIVEONCE_PICKUP": "Revive an ally or summon a drone. Consumed on use.",
 		"TINKERSSATCHEL_REVIVEONCE_DESC": "<style=cIsHealing>Revives</style> one survivor at random, calling them down in a drop pod. If no survivors are dead, the drop pod will contain a <style=cIsUtility>random drone</style> instead. <color=#FF7F7F>Will be consumed on use</style>.",
 		"TINKERSSATCHEL_REVIVEONCE_LORE": "",
+		"TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE": "{0} called down a clone of {1}!",
+		"TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE_VAGUE": "Someone",
 		"TKSAT_REVIVEONCE_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: Activates twice simultaneously.</style>",
 
 		"TINKERSSATCHEL_REWIND_NAME": "Causal Camera",

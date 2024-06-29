@@ -242,11 +242,14 @@ namespace ThinkInvisible.TinkersSatchel {
                 var newBodyUser = Util.LookUpBodyNetworkUser(newBody);
                 if(newBodyUser)
                     rezTargetName = newBodyUser.userName;
-                var rezzerName = slot.characterBody ? Language.GetString(slot.characterBody.baseNameToken) : "Someone";
+                var rezzerName = slot.characterBody ? Language.GetString(slot.characterBody.baseNameToken) : Language.GetString("TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE_VAGUE");
                 var rezzerUser = Util.LookUpBodyNetworkUser(slot.characterBody);
                 if(rezzerUser)
                     rezzerName = rezzerUser.userName;
-                NetUtil.ServerSendGlobalChatMsg($"{rezzerName} called down a clone of {rezTargetName}!");
+                Chat.SendBroadcastChat(new Chat.SimpleChatMessage {
+                    paramTokens = new[] { rezzerName, rezTargetName },
+                    baseToken = "TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE"
+                });
             } else {
                 var validNames = new HashSet<string>(droneMasterPrefabNames);
                 if(!ItemDrone.instance.enabled)
