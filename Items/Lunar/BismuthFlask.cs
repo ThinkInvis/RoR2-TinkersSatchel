@@ -188,7 +188,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(inflictDotInfo.victimObject && inflictDotInfo.victimObject.TryGetComponent<CharacterBody>(out var victimBody)) {
                 var count = GetCount(victimBody);
                 if(count > 0) {
-                    inflictDotInfo.duration *= 1f - Mathf.Pow(1f - debuffReduction, count);
+                    inflictDotInfo.duration *= Mathf.Pow(1f - debuffReduction, count);
                 }
             }
             orig(ref inflictDotInfo);
@@ -198,7 +198,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self) {
                 var count = GetCount(self);
                 if(count > 0) {
-                    duration *= 1f - Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
+                    duration *= Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
                 }
             }
             orig(self, buffDef, duration, maxStacks);
@@ -208,7 +208,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self) {
                 var count = GetCount(self);
                 if(count > 0) {
-                    duration *= 1f - Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
+                    duration *= Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
                 }
             }
             orig(self, buffDef, duration);
