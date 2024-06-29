@@ -231,7 +231,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			int count = 0;
 			foreach(var idef in Kintsugi.instance.validItems) {
 				count += inventory.GetItemCount(idef);
-            }
+			}
+			TinkersSatchelPlugin._logger.LogWarning($"Kintsugi item count: {count}");
 			return count;
 		}
 
@@ -256,13 +257,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!ItemCatalog.availability.available) return;
 			var nameTokens = validItemNameTokens.Split(',').Select(x => {
 				bool isInternalName = x.Length > 0 && (x[0] == '@');
-				return (content: (isInternalName ? x : x.Substring(1)).Trim(), isInternalName);
+				return (content: (isInternalName ? x.Substring(1) : x).Trim(), isInternalName);
 				});
 			validItems.Clear();
 			validItems.UnionWith(
 				ItemCatalog.allItemDefs.Where(
 					idef => nameTokens.Any(
-						(kvp) => (kvp.isInternalName ? idef.name : idef.nameToken)
+						(kvp) => (kvp.isInternalName ? idef.nameToken : idef.name)
 						== kvp.content
 						)
 					)
