@@ -332,12 +332,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(res) {
                 self.targetIndicator.targetTransform = res.transform;
-                self.targetIndicator.active = true;
                 var purch = res.GetComponent<PurchaseInteraction>();
                 if(!res.GetComponent<RecombobulatorFlag>() && (!purch || purch.available))
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerIndicator");
                 else
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
+                self.targetIndicator.active = true;
             } else self.targetIndicator.active = false;
         }
 

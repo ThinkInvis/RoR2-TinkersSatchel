@@ -225,12 +225,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(res) {
                 self.targetIndicator.targetTransform = res.transform;
-                self.targetIndicator.active = true;
                 if(IsInteractableValid(res, out _, out _)) {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/LightningIndicator");
                 } else {
                     self.targetIndicator.visualizerPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/RecyclerBadIndicator");
                 }
+                self.targetIndicator.active = true;
             } else self.targetIndicator.active = false;
         }
 
