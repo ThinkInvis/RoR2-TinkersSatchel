@@ -257,7 +257,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 spawnCard = itemDroneSpawnCard,
                 minimumStageCompletions = 0,
                 preventOverhead = false,
-                selectionWeight = 4, //equip drone is 2, normal drones are 7
+                selectionWeight = 2, //equip drone is 2, normal drones are 7
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             itemDroneDCH = new DirectorAPI.DirectorCardHolder {
