@@ -93,14 +93,14 @@ namespace ThinkInvisible.TinkersSatchel {
 			ContentAddition.AddProjectile(projectilePrefab);
 			ContentAddition.AddProjectile(scepterProjectilePrefab);
 
-			if(Compat_ClassicItems.enabled) {
+			if(Compat_AncientScepter.enabled) {
 				if(!ContentAddition.AddSkillDef(scepterSkillDef)) {
 					scepSetupSucceeded = false;
 				} else {
-					scepSetupSucceeded = Compat_ClassicItems.RegisterScepterSkill(scepterSkillDef, "CommandoBody", SkillSlot.Special, skillDef);
+					scepSetupSucceeded = Compat_AncientScepter.RegisterScepterSkill(scepterSkillDef, "CommandoBody", SkillSlot.Special, skillDef);
 				}
 				if(!scepSetupSucceeded)
-					TinkersSatchelPlugin._logger.LogError("ClassicItems Scepter support failed for CommandoSpecialPlasmaGrenade! Ancient Scepter will not work on this skill.");
+					TinkersSatchelPlugin._logger.LogError("Ancient Scepter support failed for CommandoSpecialPlasmaGrenade! Ancient Scepter will not work on this skill.");
 			}
 		}
 

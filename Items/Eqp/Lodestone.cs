@@ -238,10 +238,6 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/lodestoneIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
             equipmentDef.unlockableDef = unlockable;
-
-            if(Compat_ClassicItems.enabled) {
-                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_LODESTONE_CI_EMBRYO_APPEND", () => "TKSAT.Lodestone");
-            }
         }
 
         public override void Install() {
@@ -273,9 +269,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void PullObjects(EquipmentSlot slot) {
             float range = objectRange;
-
-            if(Compat_ClassicItems.enabled)
-                range *= 1f + (float)Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
 
             var rbObjectsInRange = Physics.OverlapSphere(slot.characterBody.corePosition, range, Physics.AllLayers, QueryTriggerInteraction.Collide)
                 .Select(x => x.gameObject)
@@ -313,12 +306,6 @@ namespace ThinkInvisible.TinkersSatchel {
         void PullEnemies(EquipmentSlot slot) {
             float range = enemyRange;
             float damage = slot.characterBody.damage * baseDamageFrac;
-
-            if(Compat_ClassicItems.enabled) {
-                var fac = 1f + (float)Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
-                range *= fac;
-                damage *= fac;
-            }
 
             var teamMembers = new List<TeamComponent>();
             bool isFF = FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off;

@@ -92,10 +92,6 @@ namespace ThinkInvisible.TinkersSatchel {
             rewindBuff.name = "TKSATRewind";
             rewindBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/rewindBuffIcon.png");
             ContentAddition.AddBuffDef(rewindBuff);
-
-            if(Compat_ClassicItems.enabled) {
-                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_REWIND_CI_EMBRYO_APPEND", () => "TKSAT.CausalCamera");
-            }
         }
 
         public override void Install() {
@@ -131,10 +127,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 return false;
             }
             new MsgRewind(slot.characterBody).Send(R2API.Networking.NetworkDestination.Clients);
-            if(Compat_ClassicItems.enabled) {
-                if(Util.CheckRoll(Mathf.Pow(0.5f, Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef)) * 100f))
-                    return false;
-            }
             return true;
         }
 

@@ -179,10 +179,6 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
 
             UpdateDroneMasterPrefabNames();
-
-            if(Compat_ClassicItems.enabled) {
-                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_REVIVEONCE_CI_EMBRYO_APPEND", () => "TKSAT.CommandTerminal");
-            }
         }
 
         public override void Install() {
@@ -208,16 +204,6 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
-            var retv = PerformEquipmentActionInternal(slot);
-            if(Compat_ClassicItems.enabled) {
-                var count = Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
-                for(var i = 0; i < count; i++)
-                    retv |= PerformEquipmentActionInternal(slot);
-            }
-            return retv;
-        }
-
-        private bool PerformEquipmentActionInternal(EquipmentSlot slot) {
             var candidates = CharacterMaster.readOnlyInstancesList.Where(x => x.IsDeadAndOutOfLivesServer() && x.teamIndex == TeamIndex.Player);
 
             GameObject obj;

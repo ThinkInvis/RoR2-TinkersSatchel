@@ -241,10 +241,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPack>();
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgPackboxPlace>();
-
-            if(Compat_ClassicItems.enabled) {
-                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_PACKBOX_CI_EMBRYO_APPEND", () => "TKSAT.CardboardBox");
-            }
         }
 
         public override void SetupConfig() {
@@ -368,14 +364,9 @@ namespace ThinkInvisible.TinkersSatchel {
                     TinkersSatchelPlugin._logger.LogError("PackBoxTracker contains GameObject with no PackBoxHandler");
                     return false;
                 }
-                if(TryGetBoxablePlacePos(slot.GetAimRay(), out Vector3 placeLoc, out _)) {
-                    var didPlace = pbh.TryPlaceServer(cpt, placeLoc);
-                    if(Compat_ClassicItems.enabled) {
-                        if(didPlace && Util.CheckRoll(Mathf.Pow(0.5f, Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef)) * 100f))
-                            return false;
-                    }
-                    return didPlace;
-                } else return false;
+                return TryGetBoxablePlacePos(slot.GetAimRay(), out Vector3 placeLoc, out _)
+                    ? pbh.TryPlaceServer(cpt, placeLoc)
+                    : false;
             }
 
             return false;

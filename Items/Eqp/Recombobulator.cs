@@ -215,10 +215,6 @@ namespace ThinkInvisible.TinkersSatchel {
             unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/recombobulatorIcon.png");
             ContentAddition.AddUnlockableDef(unlockable);
             equipmentDef.unlockableDef = unlockable;
-
-            if(Compat_ClassicItems.enabled) {
-                Compat_ClassicItems.RegisterEmbryoHook(equipmentDef, "TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND", () => "TKSAT.QuantumRecombobulator");
-            }
         }
 
         public override void SetupConfig() {
@@ -387,15 +383,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 return false;
 
             var draw = filteredDeck.Evaluate(rng.nextNormalizedFloat);
-
-            if(Compat_ClassicItems.enabled) {
-                var rerolls = Compat_ClassicItems.CheckEmbryoProc(slot, equipmentDef);
-                for(var i = 0; i < rerolls; i++) {
-                    var draw2 = filteredDeck.Evaluate(rng.nextNormalizedFloat);
-                    if(draw2.selectionWeight < draw.selectionWeight)
-                        draw = draw2;
-                }
-            }
 
             var obj = DirectorCore.instance.TrySpawnObject(
                 new DirectorSpawnRequest(
