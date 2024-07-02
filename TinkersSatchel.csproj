@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ClassicItems">
-      <HintPath>..\ClassicItems\Build\ClassicItems\ClassicItems.dll</HintPath>
+    <Reference Include="AncientScepter">
+      <HintPath>Compat\AncientScepter.dll</HintPath>
     </Reference>
     <Reference Include="Dronemeld">
       <HintPath>..\Dronemeld\Build\Dronemeld\Dronemeld.dll</HintPath>
