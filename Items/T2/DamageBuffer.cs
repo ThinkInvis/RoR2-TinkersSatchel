@@ -304,8 +304,11 @@ namespace ThinkInvisible.TinkersSatchel {
                             }, true);
                         }
                     }
-                    if(accum > 0f)
-                        hc.Networkhealth -= accum;
+                    if(accum > 0f) {
+                        var newHealth = hc.Networkhealth - accum;
+                        if(newHealth < 1f) newHealth = 1f;
+                        hc.Networkhealth = newHealth;
+                    }
 
                     isApplying = false;
                 }
