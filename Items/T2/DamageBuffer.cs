@@ -40,6 +40,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Tick interval of the damage buffer, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float bufferRate { get; private set; } = 0f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If active, buffered damage cannot reduce a character below 1 health.", AutoConfigFlags.PreventNetMismatch)]
+        public bool nonlethal { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties
@@ -306,7 +310,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                     if(accum > 0f) {
                         var newHealth = hc.Networkhealth - accum;
-                        if(newHealth < 1f) newHealth = 1f;
+                        if(newHealth < 1f && DamageBuffer.instance.nonlethal) newHealth = 1f;
                         hc.Networkhealth = newHealth;
                     }
 
