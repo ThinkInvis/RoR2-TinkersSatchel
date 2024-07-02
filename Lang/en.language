@@ -29,13 +29,11 @@
 		"TINKERSSATCHEL_LODESTONE_LORE": "",
 		"ACHIEVEMENT_TKSAT_LODESTONE_NAME": "Drive Me Closer",
 		"ACHIEVEMENT_TKSAT_LODESTONE_DESCRIPTION": "Item Set: Close-range. Have 6 or more (of 15) at once.",
-		"TKSAT_LODESTONE_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: Double range and damage.</style>",
 
 		"TINKERSSATCHEL_PACKBOX_NAME": "Cardboard Box",
 		"TINKERSSATCHEL_PACKBOX_PICKUP": "Pack up and move.",
 		"TINKERSSATCHEL_PACKBOX_DESC": "Use once to <style=cIsUtility>pack up</style> a <style=cIsDamage>turret</style>, <style=cIsHealing>healing shrine</style>, or <style=cIsUtility>most other interactables</style>. Use again to <style=cIsUtility>place</style> the packed object and put the Cardboard Box on cooldown.",
 		"TINKERSSATCHEL_PACKBOX_LORE": "",
-		"TKSAT_PACKBOX_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: 50% chance to not consume stock on place.</style>",
 
 		"TINKERSSATCHEL_RECOMBOBULATOR_NAME": "Quantum Recombobulator",
 		"TINKERSSATCHEL_RECOMBOBULATOR_PICKUP": "Reroll an interactable once.",
@@ -43,7 +41,6 @@
 		"TINKERSSATCHEL_RECOMBOBULATOR_LORE": "",
 		"ACHIEVEMENT_TKSAT_RECOMBOBULATOR_NAME": "Risktaker",
 		"ACHIEVEMENT_TKSAT_RECOMBOBULATOR_DESCRIPTION": "Recycle a rare or boss item.",
-		"TKSAT_RECOMBOBULATOR_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: Roll twice and choose the rarer result.</style>",
 
 		"TINKERSSATCHEL_REVIVEONCE_NAME": "Command Terminal",
 		"TINKERSSATCHEL_REVIVEONCE_PICKUP": "Revive an ally or summon a drone. Consumed on use.",
@@ -51,13 +48,11 @@
 		"TINKERSSATCHEL_REVIVEONCE_LORE": "",
 		"TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE": "{0} called down a clone of {1}!",
 		"TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE_VAGUE": "Someone",
-		"TKSAT_REVIVEONCE_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: Activates twice simultaneously.</style>",
 
 		"TINKERSSATCHEL_REWIND_NAME": "Causal Camera",
 		"TINKERSSATCHEL_REWIND_PICKUP": "Phase briefly and rewind yourself 10 seconds.",
 		"TINKERSSATCHEL_REWIND_DESC": "Phase out of existence for <style=cIsUtility>{0} seconds</style>. <style=cIsUtility>Rewind</style> your <style=cIsUtility>position</style>, <style=cIsHealth>health</style>, and <style=cIsUtility>skill cooldowns <style=cStack>(except equipment)</style></style> to their states from up to <style=cIsUtility>{1} seconds ago</style>. <style=cStack>Cannot use with less than {2} seconds saved.</style>",
 		"TINKERSSATCHEL_REWIND_LORE": "Order: TIL-1.8c Temporal Imaging Lens Prototype\r\nTracking Number: 88***********\r\nEstimated Delivery: {0} seconds from now\r\nShipping Method: Closed Timelike Curve\r\nShipping Address: Petrichor V\r\nShipping Details: \r\n\r\nFixed the problem with the slow-moving anomalies (< 0.01c) coming up blurry in photos. Hopefully we'll get better results on those now.\r\n\r\nDO NOT SHAKE -- I had to sacrifice some stasis field integrity. Already called UES logistics twice to correct the manifest when their equipment auto-detected localized time travel.\r\n",
-		"TKSAT_REWIND_CI_EMBRYO_APPEND": "\n<style=cStack>Beating Embryo: 50% chance to not consume stock.</style>",
 
 
 		"TINKERSSATCHEL_BISMUTHFLASK_NAME": "Bismuth Tonic",
