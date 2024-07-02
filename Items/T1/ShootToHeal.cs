@@ -366,6 +366,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if((self.inventory.currentEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex
                 || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex)) count++;
             if(self.inventory.GetItemCount(RoR2Content.Items.Behemoth) > 0) count++;
+            if(self.inventory.GetItemCount(HurdyGurdy.instance.itemDef) > 0) count++;
             if(count >= 3)
                 Grant();
         }

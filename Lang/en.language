@@ -156,7 +156,7 @@
 		"TINKERSSATCHEL_SHOOTTOHEAL_DESC": "Hitting an ally with a direct attack heals them for <style=cIsHealing>{0} maximum health <style=cStack>(+{0} per stack)</style></style> and you for {1} as much. Scales with attack damage coefficient and proc coefficient.",
 		"TINKERSSATCHEL_SHOOTTOHEAL_LORE": "",
 		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_NAME": "One-Man Band",
-		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_DESCRIPTION": "Item Set: Musical instruments. Have 3 or more (of 5) at once.",
+		"ACHIEVEMENT_TKSAT_SHOOTTOHEAL_DESCRIPTION": "Item Set: Musical instruments. Have 3 or more (of 6) at once.",
 
 		"TINKERSSATCHEL_TRIBROOCH_NAME": "Triskelion Brooch",
 		"TINKERSSATCHEL_TRIBROOCH_PICKUP": "Chance to combine ignite, freeze, and stun.",
@@ -204,6 +204,11 @@
 		"ACHIEVEMENT_TKSAT_GOLDENGEAR_NAME": "What Did It Cost?",
 		"ACHIEVEMENT_TKSAT_GOLDENGEAR_DESCRIPTION": "Purchase the final item from a Shrine of Chance after it has dropped nothing 4 times or more.",
 
+		"TINKERSSATCHEL_HURDYGURDY_NAME": "Hurdy-Gurdy",
+		"TINKERSSATCHEL_HURDYGURDY_PICKUP": "Wind up with uninterrupted Secondary skills to fire burning projectiles.",
+		"TINKERSSATCHEL_HURDYGURDY_DESC": "Add <style=cIsUtility>{2} <style=cStack>(+{3} per stack)</style></style> charges of your <style=cIsUtility>Secondary skill</style>. After {1} or more uninterrupted uses of your Secondary skill, launch 1 <style=cStack>(+1 per stack)</style> burning strings at targets in front of you for <style=cIsDamage>{0} Ignite damage</style>.",
+		"TINKERSSATCHEL_HURDYGURDY_LORE": "...and his music was eclectic.",
+
 		"TINKERSSATCHEL_KLEINBOTTLE_NAME": "Unstable Klein Bottle",
 		"TINKERSSATCHEL_KLEINBOTTLE_PICKUP": "Chance to gravity slam nearby enemies on taking damage.",
 		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "After taking damage, {0} <style=cStack>(+{0} per stack, mult.)</style> chance to <style=cIsUtility>stun</style> enemies within {1} m for {2} seconds. Affected enemies are held in midair while stunned, then slammed into the ground for <style=cIsDamage>{3} damage</style>. <style=cStack>Has an internal cooldown of {4} s.</style>",
@@ -216,6 +221,10 @@
 		"TINKERSSATCHEL_PIXIETUBE_DESC": "You drop 1 <style=cStack>(+1 per stack)</style> random <style=cIsUtility>elemental wisp</style> when you <style=cIsUtility>use any skill</style> <style=cStack>({0} s individual cooldown on each skill, {1} s on primary skill)</style>. <style=cIsUtility>Elemental wisps</style> can be picked up by any ally as a small, stacking buff for {2} seconds: <color=#ffaa77>+{3} damage</color>, <color=#9999ff>+{4} movement speed</color>, <color=#eeff55>+{5} attack speed</color>, or <color=#997755>{6} armor</color>.",
 		"TINKERSSATCHEL_PIXIETUBE_LORE": "<style=cMono>Welcome to DataScraper (v3.1.53 – beta branch)\n$ Scraping memory... done.\n$ Resolving... done.\n$ Combing for relevant data... done.\nComplete!</style>\n\nDatasheet: EE555 Elementally Sensitive Randomized Timer\r\n\r\nFeatures:\r\n - Timing From Milliseconds to Seconds\r\n - Very Unstable Operation\r\n - Ley-Responsive Duty Cycle\r\n - TTL-Incompatible Output WILL Source Up to 200 TA in Non-Arcanically-Primed Circuits\r\n\r\nApplications:\r\n - Soul Biometrics\r\n - Prophecy Engine\r\n - Second-Tier Elemental Summoning Device\r\n\r\n<style=cMono>Document continues (page 1 of 33). Press any key to advance page.</style>",
 
+		"TINKERSSATCHEL_SWORDBREAKER_NAME": "Swordbreaker",
+		"TINKERSSATCHEL_SWORDBREAKER_PICKUP": "Retaliate with exploding sparks when your shield is struck.",
+		"TINKERSSATCHEL_SWORDBREAKER_DESC": "Gain <style=cIsHealing>{0}</style> <style=cStack>(+{0} per stack)</style> flat <style=cIsHealing>shield</style>. Recharges outside of danger. Every {5} seconds, when you take <style=cIsHealth>shield damage</style>, fire {1} <style=cStack>(+{1} per stack)</style> exploding sparks within {2}° of the attacker for <style=cIsDamage>{1}x{3} base damage</style> plus <style=cIsDamage>{1}x{4} reflected damage</style>.",
+		"TINKERSSATCHEL_SWORDBREAKER_LORE": "",
 
 		"TINKERSSATCHEL_GOFASTER_NAME": "Go-Faster Stripes",
 		"TINKERSSATCHEL_GOFASTER_PICKUP": "Your Utility skill gains more mobility.",

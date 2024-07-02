@@ -55,7 +55,7 @@
 			<td><ul>
 				<li>Higher healing and lower tier than Leeching Seed, due to the opportunity cost of dealing damage to enemies, needing to see and hit your probably-juking-very-hard teammates, etc.</li>
 				<li>AI allies may attempt to use this item if there is a valid heal target and no enemies in range, and only if Artifact of Chaos is not on.</li>
-				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Ukulele/Polylute, War Horn, Gorag's Opus, Unstable Tesla Coil, and Brilliant Behemoth at once.</details></li>
+				<li><details><summary>Unlock (spoilers!):</summary>Have any 3 of Ukulele/Polylute, War Horn, Gorag's Opus, Unstable Tesla Coil, Brilliant Behemoth, and Hurdy-Gurdy at once.</details></li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -227,6 +227,28 @@
 				<details>
 					<summary>Periodically guarantee luck.</summary>
 					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is rolled with +9 luck.</small>
+				</details>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/hurdyGurdyIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Hurdy-Gurdy</b><br>
+				<details>
+					<summary>Wind up with uninterrupted Secondary skills to fire burning projectiles.</summary>
+					<small>Add 2 (+1 per stack) charges of your Secondary skill. After 3 or more uninterrupted uses of your Secondary skill, launch 1 (+1 per stack) burning strings at targets in front of you for 200% Ignite damage.</small>
+				</details>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/swordbreakerIcon.png?raw=true" width=256></td>
+			<td>
+				<b>Swordbreaker</b><br>
+				<details>
+					<summary>Retaliate with exploding sparks when your shield is struck.</summary>
+					<small>Gain 50 (+50 per stack) flat shield. Recharges outside of danger. Every 0.5 seconds, when you take shield damage, fire 3 (+3 per stack) exploding sparks within 5.0° of the attacker for 3x50% base damage plus 3x25% reflected damage.</small>
 				</details>
 			</td>
 			<td></td>
