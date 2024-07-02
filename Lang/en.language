@@ -267,8 +267,8 @@
 		"ACHIEVEMENT_TKSAT_SKEIN_DESCRIPTION": "Complete all 4 Item Set achievements from Tinker's Satchel.",
 
 		"TINKERSSATCHEL_WRANGLER_NAME": "RC Controller",
-		"TINKERSSATCHEL_WRANGLER_PICKUP": "Nearby turrets and drones gain attack speed. Ping to take control.",
-		"TINKERSSATCHEL_WRANGLER_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {0} meters</style> will gain <style=cIsDamage>+{1} attack speed <style=cStack>(+{2} per stack)</style></style>. <style=cIsUtility>Ping</style> a turret or drone to override its targeting AI for <style=cIsUtility>{3} seconds</style>. Overridden allies <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>, but may be ordered to fire at your target by holding your <style=cIsUtility>Primary skill</style> keybind.",
+		"TINKERSSATCHEL_WRANGLER_PICKUP": "Nearby turrets and drones gain attack speed and give you armor. Ping to take control.",
+		"TINKERSSATCHEL_WRANGLER_DESC": "All <style=cIsDamage>turrets and drones</style> under your ownership <style=cIsUtility>within {0} meters</style> will gain <style=cIsDamage>+{1} attack speed <style=cStack>(+{2} per stack)</style></style> and grant you <style=cIsHealing>+{4} armor each <style=cStack>(+{4} per stack)</style></style>. <style=cIsUtility>Ping</style> a turret or drone to override its targeting AI for <style=cIsUtility>{3} seconds</style>. Overridden allies <style=cIsUtility>no longer auto-target, auto-attack, or chase enemies</style>, but may be ordered to fire at your target by holding your <style=cIsUtility>Primary skill</style> keybind.",
 		"TINKERSSATCHEL_WRANGLER_LORE": "",
 
 

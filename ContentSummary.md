@@ -354,8 +354,8 @@
 			<td>
 				<b>RC Controller</b><br>
 				<details>
-					<summary>Nearby turrets and drones gain attack speed. Ping to take control.</summary>
-					<small>All turrets and drones under your ownership within 150 meters will gain +40% attack speed (+40% per stack). Ping a turret or drone to override its targeting AI for 30 seconds. Overridden allies no longer auto-target, auto-attack, or chase enemies, but may be ordered to fire at your target by holding your Primary skill keybind.</small>
+					<summary>Nearby turrets and drones gain attack speed and give you armor. Ping to take control.</summary>
+					<small>All turrets and drones under your ownership within 150 meters will gain +40% attack speed (+40% per stack) and grant you +15 armor each (+15 per stack). Ping a turret or drone to override its targeting AI for 30 seconds. Overridden allies no longer auto-target, auto-attack, or chase enemies, but may be ordered to fire at your target by holding your Primary skill keybind.</small>
 				</details>
 			</td>
 			<td><ul>

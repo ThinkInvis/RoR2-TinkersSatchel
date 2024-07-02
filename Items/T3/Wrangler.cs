@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            wrange.ToString("N0"), baseExtraSpeed.ToString("0%"), stackExtraSpeed.ToString("0%"), duwration.ToString("N0")
+            wrange.ToString("N0"), baseExtraSpeed.ToString("0%"), stackExtraSpeed.ToString("0%"), duwration.ToString("N0"), ownerArmor.ToString("N0")
         };
 
 
@@ -35,9 +35,14 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Extra fire rate applied per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float stackExtraSpeed { get; private set; } = 0.4f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
+        [AutoConfig("Armor given to item's holder, per drone per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        public float ownerArmor { get; private set; } = 15f;
+
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum range (m) before breaking AI override.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum range (m) before breaking AI override and losing armor bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 300f)]
@@ -231,6 +236,21 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
+            var count = GetCount(sender);
+            //add armor to drone owner
+            if(count > 0 && sender.master) {
+                var minionGroup = MinionOwnership.MinionGroup.FindGroup(sender.master.netId);
+                if(minionGroup != null) {
+                    foreach(var minionOwnership in minionGroup.members) {
+                        var minionMaster = minionOwnership.GetComponent<CharacterMaster>();
+                        if(!minionMaster) continue;
+                        var minionBody = minionMaster.GetBody();
+                        if(!minionBody || !minionBody.healthComponent || !minionBody.healthComponent.alive || !validBodyNames.Contains(minionBody.name) || (minionBody.corePosition - sender.corePosition).magnitude > wrange) continue;
+                        args.armorAdd += ownerArmor * count;
+                    }
+                }
+            }
+            //add attack speed to drones
             var cpt = sender.GetComponent<WranglerReceiverComponent>();
             if(cpt && cpt.cachedWranglerCount > 0)
                 args.attackSpeedMultAdd += baseExtraSpeed + stackExtraSpeed * (cpt.cachedWranglerCount - 1);
