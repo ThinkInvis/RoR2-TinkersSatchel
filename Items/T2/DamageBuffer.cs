@@ -44,9 +44,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("If active, buffered damage cannot reduce a character below 1 health.", AutoConfigFlags.PreventNetMismatch)]
         public bool nonlethal { get; private set; } = true;
 
-        [AutoConfigRoOCheckbox()]
-        [AutoConfig("If active, cleanse effects (e.g. Blast Shower) will clear all buffered damage.", AutoConfigFlags.PreventNetMismatch)]
-        public bool cleanseable { get; private set; } = true;
+        [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
+        [AutoConfig("Cleanse effects (e.g. Blast Shower) will clear this fraction of buffered damage.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float cleanseable { get; private set; } = 1f;
 
 
 
@@ -265,9 +265,18 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void Util_CleanseBody(On.RoR2.Util.orig_CleanseBody orig, CharacterBody characterBody, bool removeDebuffs, bool removeBuffs, bool removeCooldownBuffs, bool removeDots, bool removeStun, bool removeNearbyProjectiles) {
             orig(characterBody, removeDebuffs, removeBuffs, removeCooldownBuffs, removeDots, removeStun, removeNearbyProjectiles);
-            if(cleanseable && removeDots && characterBody && characterBody.healthComponent
-                && characterBody.healthComponent.TryGetComponent<DelayedDamageBufferComponent>(out var ddbc))
+            if(cleanseable > 0f && removeDots && characterBody && characterBody.healthComponent
+                && characterBody.healthComponent.TryGetComponent<DelayedDamageBufferComponent>(out var ddbc)) {
+
                 ddbc.bufferDamage.Clear();
+                for(var i = 0; i < ddbc.bufferDamage.Count; i++) {
+                    ddbc.bufferDamage[i] = (
+                        ddbc.bufferDamage[i].curr - ddbc.bufferDamage[i].max * cleanseable,
+                        ddbc.bufferDamage[i].max
+                        );
+                }
+                ddbc.bufferDamage.RemoveAll(x => x.curr <= 0f);
+            }
         }
     }
 
