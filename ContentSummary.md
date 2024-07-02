@@ -639,7 +639,7 @@
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/brambleRingIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Bramble Ring</b> (T2)<br>
+				<b>Bramble Band</b> (T2)<br>
 				<details>
 					<summary>Taking damage creates a thorny barrier. Corrupts all Negative Feedback Loops.</summary>
 					<small>After taking damage, gain a temporary barrier for 8% (+8% per stack, hyperbolic) of the damage taken. 2x8% of damage absorbed by your barrier (+2x8% per stack, hyperbolic) is taken by the inflictor: once instantly, and once as bleed. Corrupts all Negative Feedback Loops.</small>
