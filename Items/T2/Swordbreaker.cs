@@ -116,7 +116,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(icdCpt.stopwatch > 0f) return;
             icdCpt.stopwatch = icd;
             var totalProjectiles = sparkCount * count;
-            var projDamage = dShield * retalDamage + self.body.damage * rawDamage;
+            var projDamage = -dShield * retalDamage + self.body.damage * rawDamage;
             var sourcePos = self.body.mainHurtBox ? self.body.mainHurtBox.collider.bounds.center : damageInfo.position;
             var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
             var targetPos = (attackerBody && attackerBody.mainHurtBox) ? attackerBody.mainHurtBox.collider.bounds.center : damageInfo.attacker.transform.position;
