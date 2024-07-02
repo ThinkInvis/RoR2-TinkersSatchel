@@ -294,8 +294,8 @@
 
 
 		"TINKERSSATCHEL_BRAMBLERING_NAME": "Bramble Ring",
-		"TINKERSSATCHEL_BRAMBLERING_PICKUP": "Return some damage to sender. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
-		"TINKERSSATCHEL_BRAMBLERING_DESC": "<style=cIsDamage>{0} of damage taken <style=cStack>(+{0} per stack, hyperbolic)</style></style> is also taken by the inflictor. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
+		"TINKERSSATCHEL_BRAMBLERING_PICKUP": "Taking damage creates a thorny barrier. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
+		"TINKERSSATCHEL_BRAMBLERING_DESC": "After <style=cIsDamage>taking damage</style>, gain a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>{1} <style=cStack>(+{1} per stack, hyperbolic)</style> of the damage taken</style>. <style=cIsDamage>2x{0} of damage absorbed by your <style=cIsHealing>barrier</style> <style=cStack>(+2x{0} per stack, hyperbolic)</style></style> is taken by the inflictor: once instantly, and once as <style=cIsDamage>bleed</style>. <style=cIsVoid>Corrupts all Negative Feedback Loops</style>.",
 		"TINKERSSATCHEL_BRAMBLERING_LORE": "",
 
 		"TINKERSSATCHEL_ORDEREDARMOR_NAME": "Lens of Order",

@@ -641,8 +641,8 @@
 			<td>
 				<b>Bramble Ring</b> (T2)<br>
 				<details>
-					<summary>Return some damage to sender. Corrupts all Negative Feedback Loops.</summary>
-					<small>20% of damage taken (+20% per stack, hyperbolic) is also taken by the inflictor. Corrupts all Negative Feedback Loops.</small>
+					<summary>Taking damage creates a thorny barrier. Corrupts all Negative Feedback Loops.</summary>
+					<small>After taking damage, gain a temporary barrier for 8% (+8% per stack, hyperbolic) of the damage taken. 2x8% of damage absorbed by your barrier (+2x8% per stack, hyperbolic) is taken by the inflictor: once instantly, and once as bleed. Corrupts all Negative Feedback Loops.</small>
 				</details>
 			</td>
 			<td><ul>

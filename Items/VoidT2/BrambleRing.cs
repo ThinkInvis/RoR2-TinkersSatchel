@@ -6,6 +6,7 @@ using R2API;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;
+using RoR2.Orbs;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class BrambleRing : Item<BrambleRing> {
@@ -16,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] {ItemTag.Damage});
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            damageFrac.ToString("0%")
+            damageFrac.ToString("0%"), barrierFrac.ToString("0%")
         };
 
 
@@ -25,8 +26,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to reflect. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
-        public float damageFrac { get; private set; } = 0.2f;
+        [AutoConfig("Amount of damage to reflect. Will be doubled by bleed proc. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+        public float damageFrac { get; private set; } = 0.08f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Amount of damage to convert to barrier. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+        public float barrierFrac { get; private set; } = 0.08f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 4f)]
         [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -202,26 +208,38 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
+            if(!self || !self.alive) { orig(self, damageInfo); return; }
+            var barrierPre = self.barrier;
             orig(self, damageInfo);
-            if(!self || !damageInfo.attacker || damageInfo.HasModdedDamageType(damageType) || !damageInfo.attacker.TryGetComponent<HealthComponent>(out var attackerHC)) return;
             var count = GetCount(self.body);
-            if(count > 0) {
+            if(count <= 0) return;
+
+            //barrier retaliation
+            var deltaBarrier = self.barrier - barrierPre;
+            if(deltaBarrier < 0 && damageInfo.attacker && !damageInfo.HasModdedDamageType(damageType) && damageInfo.attacker.TryGetComponent<HealthComponent>(out var attackerHC) && attackerHC.body) {
                 var attackerTeam = TeamComponent.GetObjectTeam(damageInfo.attacker);
-                var frac = Mathf.Clamp01(1f - 1f / (1f + damageFrac * ((attackerTeam == TeamIndex.Player) ? vsPlayerScaling: 1f) * (float)count));
-                var di = new DamageInfo {
+                var frac = Mathf.Clamp01(1f - 1f / (1f + damageFrac * ((attackerTeam == TeamIndex.Player) ? vsPlayerScaling : 1f) * (float)count));
+
+                var vlo = new GenericDamageOrb {
+                    origin = damageInfo.position,
+                    damageValue = deltaBarrier * frac,
+                    damageType = default,
+                    isCrit = false,
+                    teamIndex = self.body.teamComponent.teamIndex,
                     attacker = self.gameObject,
-                    canRejectForce = true,
-                    crit = false,
-                    damage = damageInfo.damage * frac,
-                    damageColorIndex = DamageColorIndex.Item,
-                    force = Vector3.zero,
-                    position = attackerHC.body ? attackerHC.body.corePosition : attackerHC.transform.position,
-                    procChainMask = damageInfo.procChainMask,
-                    procCoefficient = procCoefficient
+                    target = attackerHC.body.mainHurtBox,
+                    procCoefficient = procCoefficient,
+                    procChainMask = default,
+                    damageColorIndex = DamageColorIndex.Item
                 };
-                di.AddModdedDamageType(damageType);
-                attackerHC.TakeDamage(di);
+                vlo.AddModdedDamageType(damageType);
+                OrbManager.instance.AddOrb(vlo);
+
+                DotController.InflictDot(damageInfo.attacker, self.gameObject, DotController.DotIndex.Bleed, 3f, deltaBarrier * frac / self.body.damage);
             }
+
+            //conversion to barrier
+            self.AddBarrier(damageInfo.damage * Mathf.Clamp01(1f - 1f / (1f + barrierFrac) * (float)count));
         }
     }
 }
