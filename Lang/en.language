@@ -201,7 +201,7 @@
 
 		"TINKERSSATCHEL_HURDYGURDY_NAME": "Hurdy-Gurdy",
 		"TINKERSSATCHEL_HURDYGURDY_PICKUP": "Wind up with uninterrupted Secondary skills to fire burning projectiles.",
-		"TINKERSSATCHEL_HURDYGURDY_DESC": "Add <style=cIsUtility>{2} <style=cStack>(+{3} per stack)</style></style> charges of your <style=cIsUtility>Secondary skill</style>. After {1} or more uninterrupted uses of your Secondary skill, launch 1 <style=cStack>(+1 per stack)</style> burning strings at targets in front of you for <style=cIsDamage>{0} Ignite damage</style>.",
+		"TINKERSSATCHEL_HURDYGURDY_DESC": "Add <style=cIsUtility>{2} <style=cStack>(+{3} per stack)</style></style> charges of your <style=cIsUtility>Secondary skill</style>. After {1} or more uninterrupted uses of your <style=cIsUtility>Secondary skill</style>, launch <style=cIsDamage>1 <style=cStack>(+1 per stack)</style> burning strings</style> at targets in front of you for <style=cIsDamage>{0} Ignite damage</style>.",
 		"TINKERSSATCHEL_HURDYGURDY_LORE": "...and his music was eclectic.",
 
 		"TINKERSSATCHEL_KLEINBOTTLE_NAME": "Unstable Klein Bottle",
