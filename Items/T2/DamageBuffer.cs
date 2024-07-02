@@ -44,6 +44,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("If active, buffered damage cannot reduce a character below 1 health.", AutoConfigFlags.PreventNetMismatch)]
         public bool nonlethal { get; private set; } = true;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If active, cleanse effects (e.g. Blast Shower) will clear all buffered damage.", AutoConfigFlags.PreventNetMismatch)]
+        public bool cleanseable { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties
@@ -183,12 +187,14 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
+            On.RoR2.Util.CleanseBody += Util_CleanseBody;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             IL.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
             IL.RoR2.HealthComponent.Heal -= HealthComponent_Heal;
+            On.RoR2.Util.CleanseBody -= Util_CleanseBody;
         }
 
 
@@ -255,6 +261,13 @@ namespace ThinkInvisible.TinkersSatchel {
             } else {
                 TinkersSatchelPlugin._logger.LogError("Failed to apply IL patch (target instructions not found): DamageBuffer::HealthComponent_Heal");
             }
+        }
+
+        private void Util_CleanseBody(On.RoR2.Util.orig_CleanseBody orig, CharacterBody characterBody, bool removeDebuffs, bool removeBuffs, bool removeCooldownBuffs, bool removeDots, bool removeStun, bool removeNearbyProjectiles) {
+            orig(characterBody, removeDebuffs, removeBuffs, removeCooldownBuffs, removeDots, removeStun, removeNearbyProjectiles);
+            if(cleanseable && removeDots && characterBody && characterBody.healthComponent
+                && characterBody.healthComponent.TryGetComponent<DelayedDamageBufferComponent>(out var ddbc))
+                ddbc.bufferDamage.Clear();
         }
     }
 
