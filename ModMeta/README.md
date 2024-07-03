@@ -14,9 +14,9 @@ If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are d
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 45 items/equipments:
+- 47 items/equipments:
 	- 8 tier-1,
-	- 8 tier-2,
+	- 10 tier-2,
 	- 7 tier-3,
 	- 1 boss item,
 	- 6 equipments,
@@ -146,6 +146,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			</td>
 		</tr>
 		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/hurdyGurdyIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Hurdy-Gurdy</b><br>
+				Wind up with uninterrupted Secondary skills to fire burning projectiles.
+			</td>
+		</tr>
+		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/pixieTubeIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Pixie Tube</b><br>
@@ -157,6 +164,13 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Pulse Monitor</b><br>
 				Auto-activate your equipment for free at low health.
+			</td>
+		</tr>
+		<tr>
+			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/swordbreakerIcon.png?raw=true" width=128></td>
+			<td>
+				<b>Swordbreaker</b><br>
+				Retaliate with exploding sparks when your shield is struck.
 			</td>
 		</tr>
 		<tr>
@@ -348,8 +362,8 @@ Short summaries are provided below. For a full description of each item, see: ht
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/brambleRingIcon.png?raw=true" width=128></td>
 			<td>
-				<b>Bramble Ring</b> (T2)<br>
-				Return some damage to sender. Corrupts all Negative Feedback Loops.
+				<b>Bramble Band</b> (T2)<br>
+				Taking damage creates a thorny barrier. Corrupts all Negative Feedback Loops.
 			</td>
 		</tr>
 		<tr>
@@ -603,6 +617,33 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.2.0** *The Swashbuckling Update*
+
+- New content:
+	- Items
+		- Hurdy-Gurdy (T2): Wind up with uninterrupted Secondary skills to fire burning projectiles.
+		- Swordbreaker (T2): Retaliate with exploding sparks when your shield is struck.
+- Balance pass:
+	- Bramble Ring: Partially reworked.
+		- New effect: a small percentage of damage taken is converted to barrier. Taking barrier damage inflicts proportional bleed on the attacker.
+		- Old effect: a percentage of damage taken was inflicted on the attacker.
+		- *This item was too redundant with vanilla's Razorwire.*
+	- Negative Feedback Loop:
+		- Buffered damage is now nonlethal (can be disabled in config).
+		- Buffered damage can now be cleansed by Blast Shower and other modded sources of DoT cleanse (can be disabled or made partial in config).
+	- RC Controller:
+		- Now grants a moderate amount of armor per stack per affected drone.
+		- RC Controller now indefinitely toggles manual aiming with pings, instead of having a limited duration.
+			- Removed the 'duwration' config option.
+		- *This was a little too close to vanilla's Spare Drone Parts, and pretty much a worse version of it if you didn't have a use for the manual drone aiming.*
+	- Reduced spawn chance of Bulwark Drone and Item Drone to match that of vanilla Equipment Drone.
+- Removed Classic Items compatibility code.
+	- *Classic Items has been deprecated for a while now. Recommended replacements include *Lost in Transit* and/or *Standalone Ancient Scepter*.*
+	- Removed Beating Embryo functionality entirely. *Lost in Transit*'s Beating Embryo reduces cooldown instead of doubling effects.
+	- Retargeted Ancient Scepter compatibility to work with Standalone Ancient Scepter.
+- Renamed Bramble Ring to Bramble Band (for added alliterative appeal).
+- Bramble Band retaliation damage is now visible as a void lightning orb.
+
 **4.1.5**
 
 - Fixed fatal errors caused by the base game Devotion Update.
@@ -648,14 +689,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Increased model size.
 	- Reduced size and speed of fuse particles.
 	- Switched to a softer explosion effect.
-
-**4.1.1**
-
-- Balance pass:
-	- Huntress: Mk7b Rockeye Mini (Primary):
-		- Reduced base duration from 0.6s to 0.45s.
-		- Increased explosion proc coefficient from 0.5 to 1.
-		- Increased explosion damage coefficient from 0.5 to 1 due to falloff.
-		- Explosion now uses linear falloff (was erroneously using sweet-spot).
-		- Increased explosion radius from 4 to 7.
-		- Increased projectile speed from 80 to 135.

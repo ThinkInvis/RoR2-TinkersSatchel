@@ -2,6 +2,33 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**4.2.0** *The Swashbuckling Update*
+
+- New content:
+	- Items
+		- Hurdy-Gurdy (T2): Wind up with uninterrupted Secondary skills to fire burning projectiles.
+		- Swordbreaker (T2): Retaliate with exploding sparks when your shield is struck.
+- Balance pass:
+	- Bramble Ring: Partially reworked.
+		- New effect: a small percentage of damage taken is converted to barrier. Taking barrier damage inflicts proportional bleed on the attacker.
+		- Old effect: a percentage of damage taken was inflicted on the attacker.
+		- *This item was too redundant with vanilla's Razorwire.*
+	- Negative Feedback Loop:
+		- Buffered damage is now nonlethal (can be disabled in config).
+		- Buffered damage can now be cleansed by Blast Shower and other modded sources of DoT cleanse (can be disabled or made partial in config).
+	- RC Controller:
+		- Now grants a moderate amount of armor per stack per affected drone.
+		- RC Controller now indefinitely toggles manual aiming with pings, instead of having a limited duration.
+			- Removed the 'duwration' config option.
+		- *This was a little too close to vanilla's Spare Drone Parts, and pretty much a worse version of it if you didn't have a use for the manual drone aiming.*
+	- Reduced spawn chance of Bulwark Drone and Item Drone to match that of vanilla Equipment Drone.
+- Removed Classic Items compatibility code.
+	- *Classic Items has been deprecated for a while now. Recommended replacements include *Lost in Transit* and/or *Standalone Ancient Scepter*.*
+	- Removed Beating Embryo functionality entirely. *Lost in Transit*'s Beating Embryo reduces cooldown instead of doubling effects.
+	- Retargeted Ancient Scepter compatibility to work with Standalone Ancient Scepter.
+- Renamed Bramble Ring to Bramble Band (for added alliterative appeal).
+- Bramble Band retaliation damage is now visible as a void lightning orb.
+
 **4.1.5**
 
 - Fixed fatal errors caused by the base game Devotion Update.
