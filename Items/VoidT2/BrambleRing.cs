@@ -239,7 +239,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             //conversion to barrier
-            self.AddBarrier(damageInfo.damage * Mathf.Clamp01(1f - 1f / (1f + barrierFrac) * (float)count));
+            self.AddBarrier(damageInfo.damage * Mathf.Clamp01(1f - 1f / (1f + barrierFrac * (float)count)));
         }
     }
 }
