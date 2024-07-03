@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override bool itemIsAIBlacklisted { get; protected set; } = true;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            wrange.ToString("N0"), baseExtraSpeed.ToString("0%"), stackExtraSpeed.ToString("0%"), duwration.ToString("N0"), ownerArmor.ToString("N0")
+            wrange.ToString("N0"), baseExtraSpeed.ToString("0%"), stackExtraSpeed.ToString("0%"), ownerArmor.ToString("N0")
         };
 
 
@@ -44,11 +44,6 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum range (m) before breaking AI override and losing armor bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;
-
-        [AutoConfigRoOSlider("{0:N0} s", 0f, 300f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Time (s) to override AI on ping.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float duwration { get; private set; } = 30f;
 
 
 
@@ -372,10 +367,10 @@ namespace ThinkInvisible.TinkersSatchel {
         const float SEEK_RANGE = 200f;
         float lasWidth = 0f;
         bool _hasStacks = false;
-        float _overrideStopwatch = 0f;
+        bool _wrangleToggle = false;
 
         public int cachedWranglerCount { get; private set; } = 0;
-        public bool isWrangled => _hasStacks && _overrideStopwatch > 0f;
+        public bool isWrangled => _hasStacks && _wrangleToggle;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
@@ -405,12 +400,6 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
-        void FixedUpdate() {
-            if(_overrideStopwatch > 0f)
-                _overrideStopwatch -= Time.fixedDeltaTime;
-        }
-
         public void SetWranglerCount(int count) {
             if(cachedWranglerCount != count)
                 body.MarkAllStatsDirty();
@@ -419,7 +408,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         public void ApplyOverride() {
-            _overrideStopwatch = Wrangler.instance.duwration;
+            _wrangleToggle = !_wrangleToggle;
         }
     }
 
