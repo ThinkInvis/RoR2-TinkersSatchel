@@ -230,10 +230,19 @@ namespace ThinkInvisible.TinkersSatchel {
                     target = attackerHC.body.mainHurtBox,
                     procCoefficient = procCoefficient,
                     procChainMask = default,
-                    damageColorIndex = DamageColorIndex.Item
+                    damageColorIndex = DamageColorIndex.Item,
+                    duration = 0.1f
                 };
+
                 vlo.AddModdedDamageType(damageType);
                 OrbManager.instance.AddOrb(vlo);
+
+                var effectData = new EffectData {
+                    origin = damageInfo.position,
+                    genericFloat = 0.1f
+                };
+                effectData.SetHurtBoxReference(attackerHC.body.mainHurtBox);
+                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/VoidLightningOrbEffect"), effectData, true);
 
                 DotController.InflictDot(damageInfo.attacker, self.gameObject, DotController.DotIndex.Bleed, 3f, deltaBarrier * frac / self.body.damage);
             }
