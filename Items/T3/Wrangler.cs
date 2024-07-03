@@ -237,6 +237,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var minionGroup = MinionOwnership.MinionGroup.FindGroup(sender.master.netId);
                 if(minionGroup != null) {
                     foreach(var minionOwnership in minionGroup.members) {
+                        if(!minionOwnership) continue;
                         var minionMaster = minionOwnership.GetComponent<CharacterMaster>();
                         if(!minionMaster) continue;
                         var minionBody = minionMaster.GetBody();
