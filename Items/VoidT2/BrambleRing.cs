@@ -27,12 +27,12 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of damage to reflect. Will be doubled by bleed proc. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
-        public float damageFrac { get; private set; } = 0.08f;
+        public float damageFrac { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of damage to convert to barrier. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
-        public float barrierFrac { get; private set; } = 0.08f;
+        public float barrierFrac { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 4f)]
         [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
