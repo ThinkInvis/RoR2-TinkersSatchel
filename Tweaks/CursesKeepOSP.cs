@@ -39,7 +39,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ILFound) {
                 c.Index++;
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, CharacterBody, float>>((origFrac, body) => { return body.oneShotProtectionFraction; });
+                c.EmitDelegate<Func<float, CharacterBody, float>>((origFrac, body) => body.oneShotProtectionFraction);
             } else {
                 TinkersSatchelPlugin._logger.LogError("failed to apply IL patch (CurseKeepOSP)! CurseKeepOSP module will not work.");
             }
