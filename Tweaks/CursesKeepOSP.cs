@@ -8,6 +8,10 @@ using UnityEngine;
 namespace ThinkInvisible.TinkersSatchel {
     public class CursesKeepOSP : T2Module<CursesKeepOSP> {
 
+        public CursesKeepOSP() {
+            enabled = false; //default value only, config may override
+        }
+
         ////// TILER2 Module Setup //////
         
         public override bool managedEnable => true;
