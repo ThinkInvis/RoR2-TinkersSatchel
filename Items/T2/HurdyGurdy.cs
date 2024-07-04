@@ -167,7 +167,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     teamMaskFilter = TeamMask.allButNeutral,
                     filterByLoS = true,
                     searchOrigin = self.corePosition,
-                    searchDirection = self.characterDirection.forward,
+                    searchDirection = self.inputBank ? self.inputBank.aimDirection : self.characterDirection.forward,
                     sortMode = BullseyeSearch.SortMode.None
                 };
                 bs.teamMaskFilter.RemoveTeam(self.teamComponent.teamIndex);
