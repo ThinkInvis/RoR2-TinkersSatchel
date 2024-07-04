@@ -258,7 +258,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
             On.RoR2.EquipmentSlot.FireGummyClone -= EquipmentSlot_FireGummyClone;
 
-            On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.FireOrbArrow += FireSeekingArrow_FireOrbArrow;
+            On.EntityStates.Huntress.HuntressWeapon.FireSeekingArrow.FireOrbArrow -= FireSeekingArrow_FireOrbArrow;
         }
         #endregion
 
