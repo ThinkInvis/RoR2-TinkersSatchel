@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using RoR2.Skills;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -8,7 +7,6 @@ namespace ThinkInvisible.TinkersSatchel {
     ///Provides safe hooks for the Standalone Ancient Scepter mod. Check Compat_AncientScepter.enabled before using any other contained members.
     ///</summary>
     public static class Compat_AncientScepter {
-
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         public static bool RegisterScepterSkill(SkillDef replacingDef, string targetBodyName, SkillSlot targetSlot, SkillDef targetVariantDef) {
             return AncientScepter.AncientScepterItem.instance.RegisterScepterSkill(replacingDef, targetBodyName, targetVariantDef);

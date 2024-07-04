@@ -7,7 +7,6 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using System.Linq;
 using RoR2.Orbs;
-using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class VoidwispHive : Item<VoidwispHive> {

@@ -2,16 +2,12 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using System.Linq;
-using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class GupRay : Item<GupRay> {

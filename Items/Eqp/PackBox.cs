@@ -306,7 +306,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             //clear vanilla targeting info, in case we're swapping from another equipment
-            self.currentTarget = default(EquipmentSlot.UserTargetInfo);
+            self.currentTarget = default;
             self.targetIndicator.targetTransform = null;
             
             var cpt = self.characterBody.GetComponent<PackBoxTracker>();
@@ -319,7 +319,6 @@ namespace ThinkInvisible.TinkersSatchel {
                     else self.targetIndicator.visualizerPrefab = placeIndicatorPrefab;
                     cpt.groundTarget.transform.position = loc;
                     self.targetIndicator.targetTransform = cpt.groundTarget;
-                    //todo: on-ground indicator like engi blueprints, will need to track separately?
                 }
             } else {
                 self.targetIndicator.visualizerPrefab = packIndicatorPrefab;
@@ -365,8 +364,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     return false;
                 }
                 return TryGetBoxablePlacePos(slot.GetAimRay(), out Vector3 placeLoc, out _)
-                    ? pbh.TryPlaceServer(cpt, placeLoc)
-                    : false;
+                    && pbh.TryPlaceServer(cpt, placeLoc);
             }
 
             return false;

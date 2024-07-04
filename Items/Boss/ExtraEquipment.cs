@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 		////// Config //////
-        ///
+        
 		[AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
 		[AutoConfig("Chance to replace a drop from a Scavenger backpack with this item.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
 		public float dropChance { get; private set; } = 0.05f;

@@ -69,9 +69,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfig("Multiplier to BuffFrac for Engineer missiles: controls launch force per consumed missile.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float engiBoostFrac { get; private set; } = 50f;
 
-		/*[AutoConfig("Multiplier to BuffFrac for Artificer wall: NYI. Current effect is teleport to top of wall, which cannot be meaningfully boosted.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-		public float artiSpeedPadFrac { get; private set; } = 20f;*/
-
 		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfig("Multiplier to BuffFrac for Mercenary Blinding Assault: multiplies movement speed during dash.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float mercDashFrac { get; private set; } = 0.5f;
@@ -123,8 +120,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
 		[AutoConfig("Static value for all unhandled characters: duration of speed buff, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float unhandledDuration { get; private set; } = 5f;
-
-		//todo: IDR as overlay on character model?
 
 
 
@@ -194,13 +189,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			handledSkillDefs.Add(LegacyResourcesAPI.Load<SkillDef>("SkillDefs/CaptainBody/CallAirstrikeAlt"));
 
 			skillIconOverlay = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/SkillIcons/GoFasterStripesOverlay.png");
-
-			/*var ghost = tmpPrefab.GetComponent<ProjectileController>().ghostPrefab.InstantiateClone("TkSatTempSetupPrefab2", false);
-
-			ghost.AddComponent<SwooceTrajectoryPredictor>();
-
-			tmpPrefab.GetComponent<ProjectileController>().ghostPrefab = ghost.InstantiateClone("TkSatCaptainStrikeJumperAltGhost", false);
-			GameObject.Destroy(ghost);*/
 
 			tmpPrefab.AddComponent<SwooceTrajectoryPredictor>();
 
@@ -377,7 +365,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void ToolbotDash_FixedUpdate(On.EntityStates.Toolbot.ToolbotDash.orig_FixedUpdate orig, EntityStates.Toolbot.ToolbotDash self) {
 			orig(self);
 			var count = GetCount(self.characterBody);
-			//todo: add contextual skill override
 			if(count > 0) {
 				var cpt = self.GetComponent<ToolbotDashBoostTracker>();
 				if(!cpt) return;
@@ -665,7 +652,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		void Awake() {
 			line = gameObject.AddComponent<LineRenderer>();
 			line.material = UnityEngine.Object.Instantiate(LegacyResourcesAPI.Load<Material>("materials/matBlueprintsOk"));
-			//GameObject.Destroy(lineRenMtlSnagFrom);
 			line.material.SetColor("_TintColor", new Color(16f, 0.02f, 0.02f, 9f));
 			line.positionCount = 100;
 			List<Keyframe> kfmArr = new();

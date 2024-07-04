@@ -2,12 +2,10 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class KleinBottle : Item<KleinBottle> {

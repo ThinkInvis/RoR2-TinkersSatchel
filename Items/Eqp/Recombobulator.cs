@@ -10,8 +10,6 @@ using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Recombobulator : Equipment<Recombobulator> {
-        //TODO: maybe also allow on enemies/bosses?
-        //TODO: keep existing cost for stage
 
         ////// Equipment Data //////
 
@@ -207,8 +205,6 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
 
-            var achiNameToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_NAME";
-            var achiDescToken = $"ACHIEVEMENT_TKSAT_{name.ToUpper(System.Globalization.CultureInfo.InvariantCulture)}_DESCRIPTION";
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
             unlockable.sortScore = 200;
@@ -321,7 +317,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             //clear vanilla targeting info, in case we're swapping from another equipment
-            self.currentTarget = default(EquipmentSlot.UserTargetInfo);
+            self.currentTarget = default;
             self.targetIndicator.targetTransform = null;
 
             var res = CommonCode.FindNearestInteractable(self.gameObject, validObjectNames, self.GetAimRay(), 10f, 20f, false);

@@ -218,7 +218,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             //clear vanilla targeting info, in case we're swapping from another equipment
-            self.currentTarget = default(EquipmentSlot.UserTargetInfo);
+            self.currentTarget = default;
             self.targetIndicator.targetTransform = null;
 
             var res = CommonCode.FindNearestInteractable(self.gameObject, validObjectNames, self.GetAimRay(), 10f, 20f, false);

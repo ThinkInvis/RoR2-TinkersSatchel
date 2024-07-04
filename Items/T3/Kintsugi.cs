@@ -5,7 +5,6 @@ using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
-using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Kintsugi : Item<Kintsugi> {

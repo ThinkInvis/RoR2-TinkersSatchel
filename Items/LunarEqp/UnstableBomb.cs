@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using RoR2.Projectile;
 using UnityEngine.AddressableAssets;

@@ -8,7 +8,6 @@ using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
-    //todo: aim assist with tracking (may need to build velocity table for turret projectiles?), make drones follow aim
     public class Wrangler : Item<Wrangler> {
 
         ////// Item Data //////

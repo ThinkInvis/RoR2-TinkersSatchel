@@ -5,8 +5,6 @@ using TILER2;
 using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using RoR2.Projectile;
-using UnityEngine.AddressableAssets;
-using RoR2.ExpansionManagement;
 using System.Linq;
 using MonoMod.Cil;
 using System;

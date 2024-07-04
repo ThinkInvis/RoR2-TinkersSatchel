@@ -63,8 +63,6 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         public readonly ItemIndex mimicRecalcDummy;
-
-        //todo: expose this, blacklist scrap, key
         internal HashSet<ItemDef> mimicBlacklist = new();
 
 

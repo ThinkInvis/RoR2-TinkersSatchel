@@ -244,8 +244,6 @@ namespace ThinkInvisible.TinkersSatchel {
 				.Select(x => x.Trim() + "(Clone)"));
 		}
 
-        //todo: fix commando piercing shot (does not cause effect)
-
         public override void Install() {
 			base.Install();
             On.RoR2.Projectile.ProjectileController.Start += ProjectileController_Start;
@@ -421,8 +419,6 @@ namespace ThinkInvisible.TinkersSatchel {
 		public int currentBounces = 0;
 		public bool isBouncy { get; private set; }
 
-		//const float HOMING_TURN_RATE = 360f * Mathf.PI / 180f; //degs/sec
-
 		bool origDestroyOnWorldPIE;
 		bool origDestroyOnEnemyPIE;
 		bool origDestroyOnWorldPSTI;
@@ -486,11 +482,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				currTarget = null;
 				return;
 			}
-			//simplistic homing; todo: curveballs, predict velocity
-			//var oldVec = projectile.rigidbody.velocity;
 			var newVec = (currTarget.transform.position - transform.position).normalized
 				* origSpeed;
-			//projectile.rigidbody.velocity = Vector3.RotateTowards(oldVec, newVec, HOMING_TURN_RATE * Time.fixedDeltaTime, float.MaxValue);
 			projectile.rigidbody.velocity = newVec;
 		}
 

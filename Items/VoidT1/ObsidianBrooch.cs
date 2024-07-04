@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using System.Linq;
-using UnityEngine.AddressableAssets;
-using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ObsidianBrooch : Item<ObsidianBrooch> {

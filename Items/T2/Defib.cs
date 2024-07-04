@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
-using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using System;
 using RoR2.Orbs;
@@ -503,10 +502,6 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             if(hasBody) healingSourceStack.Pop();
         }
-        //TODO:
-        //find users of HealFraction, RepeatHealComponent
-        //attach owner info to HealthPickup, HealOrb, VendingMachineOrb
-        //calc player to find crit chance from randomly weighted by count on Lepton Daisy
     }
 
     [RegisterAchievement("TkSat_Defib", "TkSat_DefibUnlockable", "")]

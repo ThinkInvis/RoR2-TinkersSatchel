@@ -35,7 +35,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public EngiUtilitySpeedispenser() {
         }
-			//todo: allow interact to consume partial charge and renew buff
 
         public override void SetupAttributes() {
             base.SetupAttributes();

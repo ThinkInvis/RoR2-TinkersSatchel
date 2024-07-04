@@ -4,7 +4,6 @@ using RoR2;
 using RoR2.Navigation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TILER2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -165,13 +164,6 @@ namespace ThinkInvisible.TinkersSatchel {
                     paramTokens = new[] { displayName },
                     baseToken = "TKSAT_DELAYLOOT_MSG_DELAY"
                 });
-                /*var effectData = new EffectData {
-                    origin = droplet.transform.position,
-                    genericFloat = 1f,
-                    genericUInt = (uint)(pdef.itemIndex + 1)
-                };
-                effectData.SetNetworkedObjectReference(TeleporterInteraction.instance.gameObject);
-                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/ItemTakenOrbEffect"), effectData, true);*/
             }
         }
     }

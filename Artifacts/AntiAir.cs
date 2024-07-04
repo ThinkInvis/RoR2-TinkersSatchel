@@ -5,8 +5,6 @@ using UnityEngine;
 namespace ThinkInvisible.TinkersSatchel {
     public class AntiAir : Artifact<AntiAir> {
 
-        //TODO: custom death message
-
         ////// Config //////
 
         [AutoConfig("Incoming damage multiplier applied to airborne characters while Artifact of Suppression is active.", AutoConfigFlags.None, 1f, float.MaxValue)]

@@ -10,10 +10,6 @@ using UnityEngine.Networking;
 namespace ThinkInvisible.TinkersSatchel {
     public class BulwarkDrone : T2Module<BulwarkDrone> {
 
-        ////// Config //////
-        
-
-
         ////// Other Fields/Properties //////
 
         public GameObject bulwarkDroneInteractablePrefab { get; private set; }

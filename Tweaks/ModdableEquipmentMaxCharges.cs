@@ -6,6 +6,9 @@ using TILER2;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class ModdableEquipmentMaxCharges : T2Module<ModdableEquipmentMaxCharges> {
+
+        ////// TILER2 Module Setup //////
+
         public override bool managedEnable => true;
 
         public override void Install() {
@@ -20,6 +23,9 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.Inventory.UpdateEquipment -= Inventory_UpdateEquipment;
         }
 
+
+
+        ////// Hooks //////
 
         private void Inventory_UpdateEquipment(ILContext il) {
             ILCursor c = new(il);

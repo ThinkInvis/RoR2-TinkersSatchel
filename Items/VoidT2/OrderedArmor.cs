@@ -7,7 +7,6 @@ using R2API;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.AddressableAssets;
-using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class OrderedArmor : Item<OrderedArmor> {

@@ -6,7 +6,6 @@ using RoR2.Navigation;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
-using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ReviveOnce : Equipment<ReviveOnce> {
@@ -181,14 +180,6 @@ namespace ThinkInvisible.TinkersSatchel {
             UpdateDroneMasterPrefabNames();
         }
 
-        public override void Install() {
-            base.Install();
-        }
-
-        public override void Uninstall() {
-            base.Uninstall();
-        }
-
 
 
         ////// Private Methods //////
@@ -209,6 +200,7 @@ namespace ThinkInvisible.TinkersSatchel {
             GameObject obj;
             GameObject podPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/RoboCratePod");
 
+            //Try to find a free node to call down at; default to EquipmentSlot's own position otherwise
             var nodeGraph = SceneInfo.instance.GetNodeGraph(MapNodeGroup.GraphType.Ground);
             var nodeInd = nodeGraph.FindClosestNodeWithFlagConditions(slot.transform.position, HullClassification.Human, NodeFlags.None, NodeFlags.None, false);
             Vector3 nodePos = slot.transform.position;
@@ -219,7 +211,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 nodeRot = Util.QuaternionSafeLookRotation(nodePos - targPos);
             }
 
-            if(candidates.Count() > 0) {
+            //Create object...
+            if(candidates.Count() > 0) { //Has dead ally, revive
                 var which = rng.NextElementUniform(candidates.ToArray());
                 var newBody = which.Respawn(nodePos, nodeRot);
                 if(!newBody) return false;
@@ -236,7 +229,8 @@ namespace ThinkInvisible.TinkersSatchel {
                     paramTokens = new[] { rezzerName, rezTargetName },
                     baseToken = "TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE"
                 });
-            } else {
+            } else { //No dead ally, summon drone
+                //Prepare name list and select one
                 var validNames = new HashSet<string>(droneMasterPrefabNames);
                 if(!ItemDrone.instance.enabled)
                     validNames.Remove("ItemDroneMaster");
@@ -246,6 +240,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 var whichIndex = MasterCatalog.FindMasterIndex(whichName);
                 var which = MasterCatalog.GetMasterPrefab(whichIndex);
                 if(!which) return false;
+
+                //Create drone object
                 var summon = new MasterSummon {
                     masterPrefab = which,
                     position = nodePos,
@@ -257,13 +253,17 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!summon) return false;
                 obj = summon.GetBodyObject();
                 if(!obj) return false;
+
+                //Additional setup...
                 if(obj.name == "EquipmentDroneBody(Clone)" && obj.TryGetComponent<CharacterBody>(out var droneBody) && droneBody.master) {
+                    //Give random equipment to equipment drones
                     var validEqp = Run.instance.availableEquipmentDropList.Where(
                         pind => CatalogUtil.TryGetEquipmentDef(pind, out var edef) && edef.canBeRandomlyTriggered
                         ).ToArray();
                     var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(validEqp)).equipmentIndex;
                     droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
                 } else if(which == ItemDrone.instance.itemDroneMasterPrefab) {
+                    //Give random items to item drones
                     var wardPersist = summon.GetComponent<ItemDroneWardPersist>();
 
                     var drops = LegacyResourcesAPI.Load<BasicPickupDropTable>("DropTables/dtSmallChest");
@@ -282,6 +282,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!obj) return false;
             var objBody = obj.GetComponent<CharacterBody>();
 
+            //Put object in drop pod
             var podObj = GameObject.Instantiate(podPrefab, nodePos, nodeRot);
             var podSeat = podObj.GetComponent<VehicleSeat>();
             if(podSeat) {
@@ -292,6 +293,7 @@ namespace ThinkInvisible.TinkersSatchel {
             NetworkServer.Spawn(podObj);
             objBody.SetBodyStateToPreferredInitialState();
 
+            //Consume equipment, adjust cooldown timer of next equipment picked up to use cooldown for this equipment
             if(slot.equipmentIndex == this.equipmentDef.equipmentIndex) {
                 slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown * slot.inventory.CalculateEquipmentCooldownScale(), 0), (uint)slot.inventory.activeEquipmentSlot);
             }

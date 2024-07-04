@@ -3,7 +3,6 @@ using UnityEngine;
 using TILER2;
 using R2API.Utils;
 using UnityEngine.Networking;
-using R2API;
 using static TILER2.MiscUtil;
 
 namespace ThinkInvisible.TinkersSatchel {

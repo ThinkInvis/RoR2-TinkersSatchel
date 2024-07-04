@@ -3,13 +3,10 @@ using UnityEngine;
 using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
-using EntityStates;
 using RoR2.Skills;
-using RoR2.Projectile;
 using UnityEngine.Networking;
 using RoR2.Orbs;
 using R2API.Networking.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -185,6 +182,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void Awake() {
 			bezierCurveLine = GetComponent<BezierCurveLine>();
 		}
@@ -192,7 +190,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void DoDamageTick() {
 			if(!targetHealthComponent) targetHealthComponent = targetRoot.GetComponent<HealthComponent>();
 			if(primaryTargetRoot) {
-				DamageInfo damageInfo = new DamageInfo {
+				DamageInfo damageInfo = new() {
 					position = targetRoot.transform.position,
 					attacker = attackerBody.gameObject,
 					inflictor = null,
@@ -225,6 +223,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			else return transform.position;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void Update() {
 			age += Time.deltaTime;
 			var primaryPos = GetPrimaryTargetRootPosition();
@@ -233,6 +232,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			bezierCurveLine.endTransform.position = beginSiphon ? targetPos : Vector3.Lerp(primaryPos, targetPos, age / ATTACH_TIME);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
 		private void FixedUpdate() {
 			fixedAge += Time.fixedDeltaTime;
 			if(!targetRoot || (targetHealthComponent && !targetHealthComponent.alive)) {

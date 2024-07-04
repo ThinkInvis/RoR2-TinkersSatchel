@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
 using System.Linq;
-using UnityEngine.AddressableAssets;
-using RoR2.ExpansionManagement;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class VillainousVisage : Item<VillainousVisage> {

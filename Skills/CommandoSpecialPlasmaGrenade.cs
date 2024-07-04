@@ -3,10 +3,8 @@ using UnityEngine;
 using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
-using static TILER2.MiscUtil;
 using RoR2.Skills;
 using RoR2.Projectile;
-using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class CommandoSpecialPlasmaGrenade : T2Module<CommandoSpecialPlasmaGrenade> {

@@ -3,7 +3,10 @@ using TILER2;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class EquipmentDroneLabels : T2Module<EquipmentDroneLabels> {
-		public override bool managedEnable => true;
+
+        ////// TILER2 Module Setup //////
+        
+        public override bool managedEnable => true;
 
         public override void Install() {
             base.Install();
@@ -17,6 +20,10 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterBody.GetDisplayName -= CharacterBody_GetDisplayName;
         }
 
+
+
+        ////// Hooks //////
+        
         private string CharacterBody_GetDisplayName(On.RoR2.CharacterBody.orig_GetDisplayName orig, CharacterBody self) {
             var retv = orig(self);
             if(self.name != "EquipmentDroneBody(Clone)") return retv;

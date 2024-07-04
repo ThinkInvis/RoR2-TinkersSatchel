@@ -4,7 +4,6 @@ using RoR2.Skills;
 using TILER2;
 using UnityEngine;
 using System.Collections.Generic;
-using RoR2.CharacterAI;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using RoR2.ExpansionManagement;

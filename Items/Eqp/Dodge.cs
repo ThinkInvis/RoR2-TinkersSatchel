@@ -38,10 +38,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// Other Fields/Properties //////
-
-
-
         ////// TILER2 Module Setup //////
 
         public Dodge() {
