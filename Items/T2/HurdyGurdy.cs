@@ -6,6 +6,8 @@ using RoR2.Orbs;
 using System.Linq;
 using R2API;
 using UnityEngine.AddressableAssets;
+using System.Collections.Generic;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class HurdyGurdy : Item<HurdyGurdy> {
@@ -51,11 +53,16 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procCoefficient { get; private set; } = 0.5f;
 
+        [AutoConfigRoOString()]
+        [AutoConfig("Skill names which will always count for consecutive Hurdy-Gurdy activations.", AutoConfigFlags.PreventNetMismatch)]
+        public string skillOverridesConfig { get; private set; } = "RailgunnerBodyFireSnipeHeavy";
+
 
 
         ////// Other Fields/Properties //////
 
         public GameObject orbEffectPrefab { get; private set; }
+        readonly HashSet<string> skillOverrides = new();
 
 
 
@@ -87,6 +94,15 @@ namespace ThinkInvisible.TinkersSatchel {
             ContentAddition.AddEffect(orbEffectPrefab);
         }
 
+        public override void SetupConfig() {
+            base.SetupConfig();
+
+            ConfigEntryChanged += (sender, args) => {
+                if(args.target.boundProperty.Name == nameof(skillOverridesConfig))
+                    UpdateSkillOverrides();
+            };
+        }
+
         public override void SetupAttributes() {
             base.SetupAttributes();
         }
@@ -105,26 +121,40 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
+        ////// Private Methods //////
+
+        void UpdateSkillOverrides() {
+            skillOverrides.Clear();
+            skillOverrides.UnionWith(skillOverridesConfig.Split(','));
+        }
+
+
+
         ////// Hooks //////
 
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
             orig(self);
             var count = GetCount(self);
-            if(count > 0 && self.skillLocator && self.skillLocator.secondaryBonusStockSkill)
-                self.skillLocator.secondaryBonusStockSkill.SetBonusStockFromBody(
-                    self.skillLocator.secondaryBonusStockSkill.bonusStockFromBody
-                    + baseCharges + (count - 1) * stackCharges);
+            if(count <= 0 || !self.skillLocator || !self.skillLocator.secondaryBonusStockSkill) return;
+            self.skillLocator.secondaryBonusStockSkill.SetBonusStockFromBody(
+                self.skillLocator.secondaryBonusStockSkill.bonusStockFromBody
+                + baseCharges + (count - 1) * stackCharges);
         }
 
         private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
             orig(self, skill);
-            if(!self || !self.skillLocator) return;
+            if(!NetworkServer.active
+                || !self || !self.skillLocator || !skill.skillDef)
+                return;
             var count = GetCount(self);
             if(count == 0) return;
 
             if(!self.TryGetComponent<HurdyGurdyTracker>(out var hgt)) hgt = self.gameObject.AddComponent<HurdyGurdyTracker>();
 
-            if(self.skillLocator.FindSkillSlot(skill) != SkillSlot.Secondary) {
+            if(
+                (self.skillLocator.FindSkillSlot(skill) != SkillSlot.Secondary
+                    || skill.skillDef.baseRechargeInterval < 1f || skill.skillDef.stockToConsume <= 0
+                ) && !skillOverrides.Contains(skill.name.Replace("(Clone)",""))) {
                 hgt.consecutiveCasts = 0;
             } else {
                 hgt.consecutiveCasts++;
