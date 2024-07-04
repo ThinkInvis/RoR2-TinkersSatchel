@@ -95,7 +95,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				if(!ContentAddition.AddSkillDef(scepterSkillDef)) {
 					scepSetupSucceeded = false;
 				} else {
-					scepSetupSucceeded = Compat_AncientScepter.RegisterScepterSkill(scepterSkillDef, "CommandoBody", SkillSlot.Special, skillDef);
+					scepSetupSucceeded = Compat_AncientScepter.RegisterScepterSkill(scepterSkillDef, "CommandoBody", skillDef);
 				}
 				if(!scepSetupSucceeded)
 					TinkersSatchelPlugin._logger.LogError("Ancient Scepter support failed for CommandoSpecialPlasmaGrenade! Ancient Scepter will not work on this skill.");

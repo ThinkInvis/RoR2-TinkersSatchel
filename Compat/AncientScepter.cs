@@ -8,7 +8,7 @@ namespace ThinkInvisible.TinkersSatchel {
     ///</summary>
     public static class Compat_AncientScepter {
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static bool RegisterScepterSkill(SkillDef replacingDef, string targetBodyName, SkillSlot targetSlot, SkillDef targetVariantDef) {
+        public static bool RegisterScepterSkill(SkillDef replacingDef, string targetBodyName, SkillDef targetVariantDef) {
             return AncientScepter.AncientScepterItem.instance.RegisterScepterSkill(replacingDef, targetBodyName, targetVariantDef);
         }
 
