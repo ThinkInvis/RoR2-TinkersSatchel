@@ -190,7 +190,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
             On.RoR2.BulletAttack.ProcessHit += BulletAttack_ProcessHit;
             On.RoR2.Projectile.ProjectileController.OnCollisionEnter += ProjectileController_OnCollisionEnter;
-            On.RoR2.Projectile.ProjectileController.OnTriggerEnter += ProjectileController_OnTriggerEnter;
+            On.RoR2.Projectile.ProjectileControllerTrigger.OnTriggerEnter += ProjectileControllerTrigger_OnTriggerEnter;
             IL.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs += BaseAI_UpdateBodyInputs;
         }
@@ -199,7 +199,7 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Uninstall();
             On.RoR2.BulletAttack.ProcessHit -= BulletAttack_ProcessHit;
             On.RoR2.Projectile.ProjectileController.OnCollisionEnter -= ProjectileController_OnCollisionEnter;
-            On.RoR2.Projectile.ProjectileController.OnTriggerEnter -= ProjectileController_OnTriggerEnter;
+            On.RoR2.Projectile.ProjectileControllerTrigger.OnTriggerEnter -= ProjectileControllerTrigger_OnTriggerEnter;
             IL.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
             On.RoR2.CharacterAI.BaseAI.UpdateBodyInputs -= BaseAI_UpdateBodyInputs;
         }
@@ -281,9 +281,9 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        private void ProjectileController_OnTriggerEnter(On.RoR2.Projectile.ProjectileController.orig_OnTriggerEnter orig, RoR2.Projectile.ProjectileController self, Collider collider) {
+        private void ProjectileControllerTrigger_OnTriggerEnter(On.RoR2.Projectile.ProjectileControllerTrigger.orig_OnTriggerEnter orig, RoR2.Projectile.ProjectileControllerTrigger self, Collider collider) {
             orig(self, collider);
-            if(collider == null || !collider.gameObject || !self || !self.owner) return;
+            if(collider == null || !collider.gameObject || !self || !self.owner || !self.canImpactOnTrigger) return;
             var hb = collider.gameObject.GetComponent<HurtBox>();
             var ob = self.owner.GetComponent<CharacterBody>();
             var count = GetCount(ob);

@@ -48,7 +48,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             Stage.onServerStageBegin += Stage_onServerStageBegin;
-            IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3 += PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3;
+            IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 += PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
             On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
         }
@@ -56,7 +56,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Uninstall() {
             base.Uninstall();
             Stage.onServerStageBegin -= Stage_onServerStageBegin;
-            IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3 -= PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3;
+            IL.RoR2.PickupDropletController.CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3 -= PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3;
             GlobalEventManager.onCharacterDeathGlobal -= GlobalEventManager_onCharacterDeathGlobal;
             On.RoR2.Run.FixedUpdate -= Run_FixedUpdate;
         }
@@ -133,7 +133,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        private void PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3(ILContext il) {
+        private void PickupDropletController_CreatePickupDroplet_CreatePickupInfo_Vector3_Vector3(ILContext il) {
             ILCursor c = new(il);
             if(c.TryGotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<NetworkServer>(nameof(NetworkServer.Spawn)))) {

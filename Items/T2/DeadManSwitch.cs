@@ -129,17 +129,17 @@ namespace ThinkInvisible.TinkersSatchel {
     public class TkSatDeadManSwitchAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
-            On.RoR2.HealthComponent.FixedUpdate += HealthComponent_FixedUpdate;
+            On.RoR2.HealthComponent.ManagedFixedUpdate += HealthComponent_ManagedFixedUpdate; //TODO: switch this back to FixedUpdate if/when gbx or bepinex does
         }
 
         public override void OnUninstall() {
             base.OnUninstall();
-            On.RoR2.HealthComponent.FixedUpdate -= HealthComponent_FixedUpdate;
+            On.RoR2.HealthComponent.ManagedFixedUpdate -= HealthComponent_ManagedFixedUpdate;
         }
 
 
-        private void HealthComponent_FixedUpdate(On.RoR2.HealthComponent.orig_FixedUpdate orig, HealthComponent self) {
-            orig(self);
+        private void HealthComponent_ManagedFixedUpdate(On.RoR2.HealthComponent.orig_ManagedFixedUpdate orig, HealthComponent self, float deltaTime) {
+            orig(self, deltaTime);
             if(!self || !self.alive || !self.body || localUser == null || !self.body.masterObject || !localUser.cachedMasterObject || self.body.masterObject != localUser.cachedMasterObject) return;
             var cpt = self.body.masterObject.GetComponent<DeadManSwitchAchievementTracker>();
             if(!cpt) cpt = self.body.masterObject.AddComponent<DeadManSwitchAchievementTracker>();

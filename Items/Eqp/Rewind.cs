@@ -157,7 +157,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     return;
                 var esm = EntityStateMachine.FindByCustomName(_target.gameObject, "Body");
                 if(esm == null || esm.state is RewindState) return;
-                esm.SetState(EntityStateCatalog.InstantiateState(Rewind.instance.rewindStateType));
+                esm.SetState(EntityStateCatalog.InstantiateState(ref Rewind.instance.rewindStateType));
             }
         }
     }

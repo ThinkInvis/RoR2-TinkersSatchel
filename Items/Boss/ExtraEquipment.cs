@@ -164,14 +164,14 @@ namespace ThinkInvisible.TinkersSatchel {
 			base.Install();
             On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem += ChestBehavior_RollItem;
-            On.RoR2.PlayerCharacterMasterController.FixedUpdate += PlayerCharacterMasterController_FixedUpdate;
+            On.RoR2.PlayerCharacterMasterController.Update += PlayerCharacterMasterController_Update; //TODO: switch this back to FixedUpdate if/when gbx or bepinex does
         }
 
         public override void Uninstall() {
 			base.Uninstall();
             On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
-            On.RoR2.PlayerCharacterMasterController.FixedUpdate -= PlayerCharacterMasterController_FixedUpdate;
+            On.RoR2.PlayerCharacterMasterController.Update -= PlayerCharacterMasterController_Update;
         }
 
 
@@ -195,9 +195,9 @@ namespace ThinkInvisible.TinkersSatchel {
                 component.CheckCount();
         }
 
-        private void PlayerCharacterMasterController_FixedUpdate(On.RoR2.PlayerCharacterMasterController.orig_FixedUpdate orig, PlayerCharacterMasterController self) {
+        private void PlayerCharacterMasterController_Update(On.RoR2.PlayerCharacterMasterController.orig_Update orig, PlayerCharacterMasterController self) {
             orig(self);
-            if(self.hasEffectiveAuthority && self.bodyInputs && self.body && GetCount(self.body.inventory) > 0 && PlayerCharacterMasterController.CanSendBodyInput(self.networkUser, out _, out var player, out _)) {
+            if(self.hasEffectiveAuthority && self.bodyInputs && self.body && GetCount(self.body.inventory) > 0 && PlayerCharacterMasterController.CanSendBodyInput(self.networkUser, out _, out var player, out _, out _)) {
                 var infoIsPressed = player.GetButton("info");
                 if(self.bodyInputs.activateEquipment.justPressed && infoIsPressed) {
                     self.bodyInputs.activateEquipment.PushState(true); //skip rising edge (wasDown == down), should prevent equipment activation

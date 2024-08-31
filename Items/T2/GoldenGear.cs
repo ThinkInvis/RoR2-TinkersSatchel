@@ -148,7 +148,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public int failCount = 0;
     }
 
-    [RegisterAchievement("TkSat_GoldenGear", "TkSat_GoldenGearUnlockable", null, typeof(TkSatGoldenGearServerAchievement))]
+    [RegisterAchievement("TkSat_GoldenGear", "TkSat_GoldenGearUnlockable", null, serverTrackerType: typeof(TkSatGoldenGearServerAchievement))]
     public class TkSatGoldenGearAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

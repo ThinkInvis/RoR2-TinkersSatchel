@@ -477,7 +477,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void OnInstall() {
             base.OnInstall();
             On.RoR2.Projectile.ProjectileController.OnCollisionEnter += ProjectileController_OnCollisionEnter;
-            On.RoR2.Projectile.ProjectileController.OnTriggerEnter += ProjectileController_OnTriggerEnter;
+            On.RoR2.Projectile.ProjectileControllerTrigger.OnTriggerEnter += ProjectileControllerTrigger_OnTriggerEnter;
             On.RoR2.Projectile.ProjectileController.OnDestroy += ProjectileController_OnDestroy;
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
             On.RoR2.BulletAttack.ProcessHit += BulletAttack_ProcessHit;
@@ -486,7 +486,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void OnUninstall() {
             base.OnUninstall();
             On.RoR2.Projectile.ProjectileController.OnCollisionEnter -= ProjectileController_OnCollisionEnter;
-            On.RoR2.Projectile.ProjectileController.OnTriggerEnter -= ProjectileController_OnTriggerEnter;
+            On.RoR2.Projectile.ProjectileControllerTrigger.OnTriggerEnter -= ProjectileControllerTrigger_OnTriggerEnter;
             On.RoR2.Projectile.ProjectileController.OnDestroy -= ProjectileController_OnDestroy;
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
             On.RoR2.BulletAttack.ProcessHit -= BulletAttack_ProcessHit;
@@ -519,9 +519,9 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        private void ProjectileController_OnTriggerEnter(On.RoR2.Projectile.ProjectileController.orig_OnTriggerEnter orig, RoR2.Projectile.ProjectileController self, Collider collider) {
+        private void ProjectileControllerTrigger_OnTriggerEnter(On.RoR2.Projectile.ProjectileControllerTrigger.orig_OnTriggerEnter orig, RoR2.Projectile.ProjectileControllerTrigger self, Collider collider) {
             orig(self, collider);
-            if(!collider.gameObject) return;
+            if(!collider.gameObject || !self.canImpactOnTrigger) return;
             var hb = collider.gameObject.GetComponent<HurtBox>();
             if(hb && hb.healthComponent) {
                 self.gameObject.AddComponent<ProjectileHasValidHitFlag>();
