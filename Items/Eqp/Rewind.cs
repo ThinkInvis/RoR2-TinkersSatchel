@@ -180,13 +180,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
             modelTransform = base.GetModelTransform();
             if(modelTransform) {
-                var ovl = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
-                ovl.duration = duration;
-                ovl.animateShaderAlpha = true;
-                ovl.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-                ovl.destroyComponentOnEnd = true;
-                ovl.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashExpanded");
-                ovl.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+                var toi = TemporaryOverlayManager.AddOverlay(modelTransform.gameObject);
+                toi.duration = duration;
+                toi.animateShaderAlpha = true;
+                toi.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+                toi.destroyComponentOnEnd = true;
+                toi.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashExpanded");
+                toi.AddToCharacterModel(modelTransform.GetComponent<CharacterModel>());
             }
         }
 
