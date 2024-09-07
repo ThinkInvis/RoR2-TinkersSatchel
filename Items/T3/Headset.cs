@@ -325,7 +325,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public float lastHit = 0f;
     }
 
-	[RegisterAchievement("TkSat_Headset", "TkSat_HeadsetUnlockable", "")]
+	[RegisterAchievement("TkSat_Headset", "TkSat_HeadsetUnlockable", "", 3u)]
 	public class TkSatHeadsetAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();

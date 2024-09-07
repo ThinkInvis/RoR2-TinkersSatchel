@@ -504,7 +504,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_Defib", "TkSat_DefibUnlockable", "")]
+    [RegisterAchievement("TkSat_Defib", "TkSat_DefibUnlockable", "", 2u)]
     public class TkSatDefibAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

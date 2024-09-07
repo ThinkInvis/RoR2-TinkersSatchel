@@ -125,7 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_DeadManSwitch", "TkSat_DeadManSwitchUnlockable", "")]
+    [RegisterAchievement("TkSat_DeadManSwitch", "TkSat_DeadManSwitchUnlockable", "", 2u)]
     public class TkSatDeadManSwitchAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

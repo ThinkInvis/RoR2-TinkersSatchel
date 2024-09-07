@@ -466,7 +466,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_Mug", "TkSat_MugUnlockable", "")]
+    [RegisterAchievement("TkSat_Mug", "TkSat_MugUnlockable", "", 1u)]
     public class TkSatMugAchievement : RoR2.Achievements.BaseAchievement {
         bool bulletAttackDidHit = false;
 

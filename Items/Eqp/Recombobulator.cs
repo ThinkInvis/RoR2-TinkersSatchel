@@ -412,7 +412,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class RecombobulatorFlag : MonoBehaviour {}
 
-    [RegisterAchievement("TkSat_Recombobulator", "TkSat_RecombobulatorUnlockable", "")]
+    [RegisterAchievement("TkSat_Recombobulator", "TkSat_RecombobulatorUnlockable", "", 2u)]
     public class TkSatRecombobulatorAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

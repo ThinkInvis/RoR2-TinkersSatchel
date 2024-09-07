@@ -344,7 +344,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_ShootToHeal", "TkSat_ShootToHealUnlockable", "")]
+    [RegisterAchievement("TkSat_ShootToHeal", "TkSat_ShootToHealUnlockable", "", 1u)]
     public class TkSatShootToHealAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

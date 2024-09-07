@@ -387,7 +387,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_KleinBottle", "TkSat_KleinBottleUnlockable", "")]
+    [RegisterAchievement("TkSat_KleinBottle", "TkSat_KleinBottleUnlockable", "", 2u)]
     public class TkSatKleinBottleAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

@@ -337,7 +337,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_Lodestone", "TkSat_LodestoneUnlockable", "")]
+    [RegisterAchievement("TkSat_Lodestone", "TkSat_LodestoneUnlockable", "", 2u)]
     public class TkSatLodestoneAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

@@ -337,7 +337,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_TriBrooch", "TkSat_TriBroochUnlockable", "")]
+    [RegisterAchievement("TkSat_TriBrooch", "TkSat_TriBroochUnlockable", "", 1u)]
     public class TkSatTriBroochAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();

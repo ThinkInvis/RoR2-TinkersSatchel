@@ -320,7 +320,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-	[RegisterAchievement("TkSat_Skein", "TkSat_SkeinUnlockable", "")]
+	[RegisterAchievement("TkSat_Skein", "TkSat_SkeinUnlockable", "", 3u)]
 	public class TkSatSkeinAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();

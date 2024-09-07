@@ -337,7 +337,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_MotionTracker", "TkSat_MotionTrackerUnlockable", "")]
+    [RegisterAchievement("TkSat_MotionTracker", "TkSat_MotionTrackerUnlockable", "", 1u)]
     public class TkSatMotionTrackerAchievement : RoR2.Achievements.BaseAchievement {
         static bool qualifies = false;
 

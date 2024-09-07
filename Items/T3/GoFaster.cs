@@ -596,7 +596,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		#endregion
 	}
 
-	[RegisterAchievement("TkSat_GoFaster", "TkSat_GoFasterUnlockable", "")]
+	[RegisterAchievement("TkSat_GoFaster", "TkSat_GoFasterUnlockable", "", 3u)]
 	public class TkSatGoFasterAchievement : RoR2.Achievements.BaseAchievement {
 		public override void OnInstall() {
 			base.OnInstall();

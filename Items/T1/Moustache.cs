@@ -223,7 +223,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
     }
 
-    [RegisterAchievement("TkSat_Moustache", "TkSat_MoustacheUnlockable", "")]
+    [RegisterAchievement("TkSat_Moustache", "TkSat_MoustacheUnlockable", "", 1u)]
     public class TkSatMoustacheAchievement : RoR2.Achievements.BaseAchievement {
         const float UPDATE_INTERVAL = 2f;
         const float MAX_RANGE = 100f;
