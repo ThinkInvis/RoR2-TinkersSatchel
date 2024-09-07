@@ -78,7 +78,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var materials = resources.LoadAllAssets<Material>();
             foreach(Material material in materials)
                 if(material.shader.name.StartsWith("STUB_"))
-                    material.shader = Addressables.LoadAssetAsync<Shader>(material.shader.name.Substring(5))
+                    material.shader = Addressables.LoadAssetAsync<Shader>(material.shader.name[5..])
                         .WaitForCompletion();
         }
 

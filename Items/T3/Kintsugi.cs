@@ -256,7 +256,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!ItemCatalog.availability.available) return;
 			var nameTokens = validItemNameTokens.Split(',').Select(x => {
 				bool isInternalName = x.Length > 0 && (x[0] == '@');
-				return (content: (isInternalName ? x.Substring(1) : x).Trim(), isInternalName);
+				return (content: (isInternalName ? x[1..] : x).Trim(), isInternalName);
 				});
 			validItems.Clear();
 			validItems.UnionWith(
