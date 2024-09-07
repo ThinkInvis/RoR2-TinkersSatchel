@@ -309,8 +309,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
             public void OnReceived() {
                 var th = _adjustedCoeffs * ShootToHeal.instance.baseHealMod;
+                if(_self && _self.body) Defib.instance.healingSourceStack.Push(_self.body);
                 _target.Heal(th * _target.fullHealth, _pcm);
                 if(_self) _self.Heal(th * _self.fullHealth * ShootToHeal.instance.returnHealMod, _pcm);
+                if(_self && _self.body) Defib.instance.healingSourceStack.Pop();
             }
 
             public void Deserialize(NetworkReader reader) {
