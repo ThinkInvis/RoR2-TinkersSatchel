@@ -162,8 +162,8 @@
 
 
 		"TINKERSSATCHEL_DAMAGEBUFFER_NAME": "Negative Feedback Loop",
-		"TINKERSSATCHEL_DAMAGEBUFFER_PICKUP": "Some incoming damage is dealt over time.",
-		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "<style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style> of incoming damage</style> is <style=cIsHealing>applied gradually</style> over {1} seconds, ticking {2}. <style=cIsHealing>Healing</style> past <style=cIsHealth>max health</style> <style=cIsHealing>will apply</style> to the pool of delayed damage.",
+		"TINKERSSATCHEL_DAMAGEBUFFER_PICKUP": "Taking damage creates a barrier over time.",
+		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "<style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style> of incoming damage</style> is granted as <style=cIsHealing>barrier</style> which is applied gradually over {1} seconds, ticking {2}.",
 		"TINKERSSATCHEL_DAMAGEBUFFER_LORE": "",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK": "continuously",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK": "every {0} second(s)",
