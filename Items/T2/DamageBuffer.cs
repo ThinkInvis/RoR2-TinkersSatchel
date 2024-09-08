@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            bufferFrac.ToString("0%"), bufferDuration.ToString("N0"), GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2"))
+            bufferFrac.ToString("0%"), bufferDuration.ToString("N0"), GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2")), regenFrac.ToString("P0")
         };
 
 

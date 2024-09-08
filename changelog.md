@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.0.1**
+
+- Small patch for incorrect language token argument count on Negative Feedback Loop description.
+
 **5.0.0** *The Grinds My Gears Update*
 
 - BREAKING:
