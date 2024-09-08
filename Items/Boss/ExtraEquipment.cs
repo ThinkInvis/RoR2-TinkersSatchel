@@ -27,6 +27,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Other Fields/Properties //////
 
         public GameObject idrPrefab { get; private set; }
+        private MonoMod.RuntimeDetour.Hook hookGetIsEquipmentActivationAllowed;
 
 
 
@@ -158,6 +159,9 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
 			base.SetupAttributes();
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgSwapEquipment>();
+            hookGetIsEquipmentActivationAllowed = new(
+                typeof(CharacterBody).GetProperty(nameof(CharacterBody.isEquipmentActivationAllowed)).GetGetMethod(),
+                typeof(ExtraEquipment).GetMethod(nameof(OnManual_GetIsEquipmentActivationAllowed), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
         }
 
 		public override void Install() {
@@ -165,6 +169,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterMaster.OnInventoryChanged += CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem += ChestBehavior_RollItem;
             On.RoR2.PlayerCharacterMasterController.Update += PlayerCharacterMasterController_Update; //TODO: switch this back to FixedUpdate if/when gbx or bepinex does
+            hookGetIsEquipmentActivationAllowed.Apply();
         }
 
         public override void Uninstall() {
@@ -172,11 +177,22 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterMaster.OnInventoryChanged -= CharacterMaster_OnInventoryChanged;
             On.RoR2.ChestBehavior.RollItem -= ChestBehavior_RollItem;
             On.RoR2.PlayerCharacterMasterController.Update -= PlayerCharacterMasterController_Update;
+            hookGetIsEquipmentActivationAllowed.Undo();
         }
 
 
 
         ////// Hooks //////
+        
+        private bool OnManual_GetIsEquipmentActivationAllowed(System.Func<CharacterBody, bool> orig, CharacterBody self) {
+            var retv = orig(self);
+            if(self && GetCount(self) > 0
+                && self.master && self.master.playerCharacterMasterController
+                && self.master.playerCharacterMasterController.networkUser
+                && self.master.playerCharacterMasterController.networkUser.inputPlayer.GetButton("info"))
+                retv = false;
+            return retv;
+        }
 
         private void ChestBehavior_RollItem(On.RoR2.ChestBehavior.orig_RollItem orig, ChestBehavior self) {
 			orig(self);
@@ -200,7 +216,6 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self.hasEffectiveAuthority && self.bodyInputs && self.body && GetCount(self.body.inventory) > 0 && PlayerCharacterMasterController.CanSendBodyInput(self.networkUser, out _, out var player, out _, out _)) {
                 var infoIsPressed = player.GetButton("info");
                 if(self.bodyInputs.activateEquipment.justPressed && infoIsPressed) {
-                    self.bodyInputs.activateEquipment.PushState(true); //skip rising edge (wasDown == down), should prevent equipment activation
                     new MsgSwapEquipment(self.body).Send(R2API.Networking.NetworkDestination.Server);
                 }
             }
