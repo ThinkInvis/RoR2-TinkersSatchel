@@ -30,6 +30,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Amount of damage to convert per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float bufferFrac { get; private set; } = 0.1f;
 
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Amount of regen multiplier to add per stack (linear) at full barrier.", AutoConfigFlags.PreventNetMismatch, 0f, 10f)]
+        public float regenFrac { get; private set; } = 0.25f;
+
         [AutoConfigRoOSlider("{0:N1}", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time over which each barrier instance is delayed, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
@@ -177,7 +182,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void Install() {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage; ;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.ServerFixedUpdate += HealthComponent_ServerFixedUpdate;
         }
 
         public override void Uninstall() {
@@ -199,6 +205,15 @@ namespace ThinkInvisible.TinkersSatchel {
             var frac = Mathf.Clamp01(1f - 1f / (1f + bufferFrac * (float)count));
             var reduc = damageInfo.damage * frac;
             cpt.ApplyDamage(reduc);
+        }
+
+        private void HealthComponent_ServerFixedUpdate(On.RoR2.HealthComponent.orig_ServerFixedUpdate orig, HealthComponent self, float deltaTime) {
+            if(self && self.body)
+                self.regenAccumulator +=
+                    self.body.regen
+                    * (self.barrier / self.fullBarrier)
+                    * GetCount(self.body) * regenFrac;
+            orig(self, deltaTime);
         }
     }
 
