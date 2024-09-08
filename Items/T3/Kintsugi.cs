@@ -231,7 +231,6 @@ namespace ThinkInvisible.TinkersSatchel {
 			foreach(var idef in Kintsugi.instance.validItems) {
 				count += inventory.GetItemCount(idef);
 			}
-			TinkersSatchelPlugin._logger.LogWarning($"Kintsugi item count: {count}");
 			return count;
 		}
 
