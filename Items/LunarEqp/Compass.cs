@@ -182,6 +182,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
 			if (TeleporterInteraction.instance
+                && TeleporterInteraction.instance.currentState is TeleporterInteraction.IdleState
                 && slot.characterBody && slot.characterBody.master
                 && slot.characterBody.master.playerCharacterMasterController) {
                 if(useLimitType == UseLimitType.NTimesPerStage) {
