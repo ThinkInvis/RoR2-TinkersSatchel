@@ -74,7 +74,9 @@ namespace ThinkInvisible.TinkersSatchel {
             "EngiTurretBody(Clone)",
             "SquidTurretBody(Clone)",
             "RoboBallGreenBuddyBody(Clone)",
-            "RoboBallRedBuddyBody(Clone)"
+            "RoboBallRedBuddyBody(Clone)",
+            "BulwarkDroneBody(Clone)",
+            "ItemDroneBody(Clone)"
         };
 
         public GameObject hitEffectPrefab { get; private set; }
