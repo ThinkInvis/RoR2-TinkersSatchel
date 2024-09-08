@@ -80,10 +80,29 @@ namespace ThinkInvisible.TinkersSatchel {
 
             ContentAddition.AddProjectile(projectilePrefab);
         }
-        
+
+        public override void Install() {
+            base.Install();
+
+            On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
+        }
+
+        public override void Uninstall() {
+            base.Uninstall();
+
+            On.RoR2.MapZone.TryZoneStart -= MapZone_TryZoneStart;
+        }
+
 
 
         ////// Hooks //////
+
+        private void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other) {
+            if(self && self.zoneType == MapZone.ZoneType.OutOfBounds
+                && other && other.GetComponent<ProjectileExplodeOnDeath>())
+                return;
+            orig(self, other);
+        }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             var aimRay = slot.GetAimRay();
@@ -106,6 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
     [RequireComponent(typeof(CharacterBody), typeof(ProjectileExplosion))]
     public class ProjectileExplodeOnDeath : MonoBehaviour, IOnKilledServerReceiver {
         public void OnKilledServer(DamageReport damageReport) {
+            TinkersSatchelPlugin._logger.LogInfo("Projectile killed");
             var pbody = GetComponent<CharacterBody>();
             var pexp = GetComponent<ProjectileExplosion>();
             if(!pbody || !pexp) return;
