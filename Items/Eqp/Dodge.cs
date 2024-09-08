@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override float cooldown { get; protected set; } = 10f;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            evadeBurstSpeed.ToString("N0"), invulnTime.ToString("N1")
+            evadeBurstSpeed.ToString("N0"), evadeBurstSpeedGrounded.ToString("N0"), invulnTime.ToString("N1")
         };
 
 
@@ -27,6 +27,11 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Instant speed to add on equipment activation.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float evadeBurstSpeed { get; private set; } = 45f;
+
+        [AutoConfigRoOSlider("{0:N1} m/s", 0f, 50f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Instant speed to add on equipment activation.", AutoConfigFlags.None, 0f, float.MaxValue)]
+        public float evadeBurstSpeedGrounded { get; private set; } = 70f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfig("Duration of the invulnerability effect.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
@@ -81,7 +86,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     boostVec = slot.inputBank.moveVector;
                 boostVec.y = 0f;
                 boostVec = boostVec.normalized;
-                slot.characterBody.characterMotor.velocity = boostVec * evadeBurstSpeed;
+                slot.characterBody.characterMotor.velocity = boostVec * (slot.characterBody.characterMotor.isGrounded ? evadeBurstSpeedGrounded : evadeBurstSpeed);
             }
 
             slot.characterBody.RemoveBuff(RoR2Content.Buffs.HiddenInvincibility);

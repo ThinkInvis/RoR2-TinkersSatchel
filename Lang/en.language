@@ -20,7 +20,7 @@
 
 		"TINKERSSATCHEL_DODGE_NAME": "Stamina Bar",
 		"TINKERSSATCHEL_DODGE_PICKUP": "Perform up to 3 dodge rolls.",
-		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{0} m/s</style> and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>. This equipment <style=cIsUtility>holds 3 times as many charges</style>.",
+		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{1} m/s</style> while grounded or <style=cIsUtility>{0} m/s</style> in air, and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>. This equipment <style=cIsUtility>holds 3 times as many charges</style>.",
 		"TINKERSSATCHEL_DODGE_LORE": "",
 
 		"TINKERSSATCHEL_LODESTONE_NAME": "Lodestone",
