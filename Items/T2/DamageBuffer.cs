@@ -27,13 +27,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to convert per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float bufferFrac { get; private set; } = 0.1f;
+        [AutoConfig("Amount of damage to convert per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float bufferFrac { get; private set; } = 0.08f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of regen multiplier to add per stack (linear) at full barrier.", AutoConfigFlags.PreventNetMismatch, 0f, 10f)]
-        public float regenFrac { get; private set; } = 0.25f;
+        public float regenFrac { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -202,7 +202,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(count <= 0) return;
             var cpt = self.GetComponent<DelayedBarrierComponent>();
             if(!cpt) cpt = self.gameObject.AddComponent<DelayedBarrierComponent>();
-            var frac = Mathf.Clamp01(1f - 1f / (1f + bufferFrac * (float)count));
+            var frac = bufferFrac * (float)count;
             var reduc = damageInfo.damage * frac;
             cpt.ApplyDamage(reduc);
         }

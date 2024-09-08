@@ -163,7 +163,7 @@
 
 		"TINKERSSATCHEL_DAMAGEBUFFER_NAME": "Negative Feedback Loop",
 		"TINKERSSATCHEL_DAMAGEBUFFER_PICKUP": "Taking damage creates a healing barrier over time.",
-		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "<style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style> of incoming damage</style> is granted as <style=cIsHealing>barrier</style> which is applied gradually over {1} seconds, ticking {2}. Having <style=cIsHealing>barrier</style> makes your <style=cIsHealing>regen up to {3} more effective <style=cStack>(+{3} per stack, linear)</style></style> based on how close your <style=cIsHealing>barrier</style> is to maximum.",
+		"TINKERSSATCHEL_DAMAGEBUFFER_DESC": "<style=cIsDamage>{0} <style=cStack>(+{0} per stack, linear)</style> of incoming damage</style> is granted as <style=cIsHealing>barrier</style> which is applied gradually over {1} seconds, ticking {2}. Having <style=cIsHealing>barrier</style> makes your <style=cIsHealing>regen up to {3} more effective <style=cStack>(+{3} per stack, linear)</style></style> based on how close your <style=cIsHealing>barrier</style> is to maximum.",
 		"TINKERSSATCHEL_DAMAGEBUFFER_LORE": "",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK": "continuously",
 		"TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK": "every {0} second(s)",
