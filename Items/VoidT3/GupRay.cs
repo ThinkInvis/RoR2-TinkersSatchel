@@ -278,14 +278,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			ILCursor c = new(il);
 
 			if(c.TryGotoNext(MoveType.Before,
-				x => x.MatchLdloc(out _),
-				x => x.MatchLdloc(out _),
-				x => x.MatchCallOrCallvirt<BodySplitter>(nameof(BodySplitter.AddBodyVelocity)))) {
+				x => x.MatchCallOrCallvirt<CharacterMaster>(nameof(CharacterMaster.GetBody)),
+				x => x.MatchStloc(out _))) {
 				c.Index++;
 				c.Emit(OpCodes.Dup);
 				c.Emit(OpCodes.Ldarg_0);
 				c.EmitDelegate<Action<CharacterBody, BodySplitter>>((newBody, oldSplitter) => {
-					if(!currentSplitIsGupRay || !oldSplitter.body) return;
+					if(!currentSplitIsGupRay || !oldSplitter.body || !newBody) return;
 					var splitCount = newBody.master.inventory.GetItemCount(gupDebuff);
 					newBody.modelLocator.transform.localScale *= Mathf.Pow(GupRay.instance.scaleMult, splitCount);
 					var statsFac = Mathf.Pow(statMult, splitCount);
