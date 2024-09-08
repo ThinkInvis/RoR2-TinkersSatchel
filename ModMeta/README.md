@@ -142,7 +142,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/damageBufferIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Negative Feedback Loop</b><br>
-				Some incoming damage is dealt over time.
+				Taking damage creates a healing barrier over time.
 			</td>
 		</tr>
 		<tr>
@@ -595,6 +595,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
 			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; Stamina Bar may not work correctly if disabled.</td>
 		</tr>
+		<tr>
+			<td><b>Curses Keep OSP</b></td>
+			<td>This module causes One-Shot Protection to be kept while cursed (e.g. Shaped Glass). Disabled by default.</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -616,6 +620,43 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**5.0.0** *The Grinds My Gears Update*
+
+- BREAKING:
+	- Compat classes are now Internal. *Nobody should have been depending on these anyways, but major version increment it is.*
+	- DelayedDamageBufferComponent was renamed and reworked to DelayedBarrierComponent.
+- Fixes for Seekers of the Storm:
+	- All achievements now have appropriate lunar coin rewards.
+	- Causal Camera overlay now uses the new TemporaryOverlayManager system.
+	- Fixed Scavenger's Rucksack activating equipment just before changing slots (activation is supposed to be suppressed while switching).
+	- Fixed Pinball Wizard not working and causing errors on raycast bullet attacks.
+	- Fixed Unstable Mortar Tube projectiles exploding immediately when fired, and then also on impact with anything.
+	- Added EffectHelperComponent to projectile ghosts (fixes invisible projectiles).
+	- Updated dependencies for new patch.
+	- Retargeted changed hook signatures (fixes errors preventing mod load).
+- Balance pass:
+	- Unstable Mortar Tube projectiles now have 300 non-scaling health instead of 1 (to reduce the chances of them blowing up in your face immediately, at least early-game).
+	- Stamina Bar now provides moderately more speed while grounded.
+	- Reworked Negative Feedback Loop.
+		- New behavior: grants barrier over time in response to damage taken, and having barrier multiplies effectiveness of regen stat based on barrier fraction.
+		- Old behavior: converts some damage into a healable DoT.
+		- *This item became redundant with a new item in SotS, Warped Echo.*
+- Balance-like item bugfixes:
+	- Percussive Maintenance can now crit-heal with Defibrillator.
+	- Nautilus Protocol now works on Bulwark and Item Drones by default.
+	- Silver Compass can no longer be activated during or after the Teleporter event.
+	- Hurdy-Gurdy no longer works on Secondary skills with no cooldown.
+	- Hurdy-Gurdy now works on specific configured skills, even if not Secondary (works with Railgunner's non-alternate Primary while scoped, by default).
+- Removed a debug log that was inadvertently left in Kintsugi item count calculation.
+- Migrated the PreventCurseWhileOff config from Artifact of Danger to its own tweak module, CurseKeepOSP.
+- Fixed Hurdy-Gurdy using character forward (no vertical component) instead of aim forward.
+- Fixed a hook subscription leak in Sturdy Mug (should have had minimal-to-no effect, unless repeatedly disabling and enabling the item in ingame config hundreds of times in one session).
+- Project-wide code and comment cleanup.
+	- Implemented some C#9 features made available by SotS.
+	- Removed a bunch of TODO comments. *This is what we have GitHub issues and/or a separate private text file for.*
+	- Removed some dead code and unnecessary using directives.
+	- Suppressed some compiler messages.
 
 **4.2.0** *The Swashbuckling Update*
 
@@ -672,20 +713,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Slightly clarified Ferrofluid melee attack description.
 - Kintsugi now exposes a config for selecting which stats are affected.
 - Fixed a duplicate effect prefab registration in Pinball Wizard.
-
-**4.1.2**
-
-- Balance pass:
-	- Increased Item Drone range to 1000 m (was 100 m). Range is now configurable.
-	- Item Drones no longer drop command droplets on death if Artifact of Command is enabled (configurable).
-	- Huntress: MK7b Rockeye Mini:
-		- Increased projectile stick radius to 0.4 m (was 0.25 m).
-		- Increased base damage of both impacts to 150% (was 100%).
-		- Increased blast radius to 8.5 m (was 7 m).
-- Fixed some console spam caused by running server-only code on clients in Bulwark Drone, Sturdy Mug, Pinball Wizard, and Pulse Monitor.
-- Item Drone dropping items on death is now configurable (remains on by default).
-- Visual tweaks to Huntress: MK7b Rockeye Mini:
-	- Added a tracer effect.
-	- Increased model size.
-	- Reduced size and speed of fuse particles.
-	- Switched to a softer explosion effect.

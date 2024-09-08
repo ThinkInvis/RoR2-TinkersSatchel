@@ -131,8 +131,8 @@
 			<td>
 				<b>Chestplate</b><br>
 				<details>
-					<summary>Gain armor by hoarding money.</summary>
-					<small>Gain armor based on your currently held money. The first point of armor costs $10 (-10% per stack, exponential; scales with difficulty); each subsequent point costs 7.5% more than the last.</small>
+					<summary>Collecting money grants temporary armor.</summary>
+					<small>For every $2 collected (scales with difficulty), gain 1 armor (+1 per stack, -1.0% per point of armor before stacking) for 5 seconds.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -171,8 +171,8 @@
 			<td>
 				<b>Negative Feedback Loop</b><br>
 				<details>
-					<summary>Some incoming damage is dealt over time.</summary>
-					<small>10% (+10% per stack, hyperbolic) of incoming damage is applied gradually over 3 seconds, ticking continuously. Healing past max health will apply to the pool of delayed damage.</small>
+					<summary>Taking damage creates a healing barrier over time.</summary>
+					<small>8% (+8% per stack, linear) of incoming damage is granted as barrier which is applied gradually over 3 seconds, ticking continuously. Having barrier makes your regen up to 20% more effective (+20% per stack, linear) based on how close your barrier is to maximum.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -450,7 +450,7 @@
 				<b>Stamina Bar</b><br>
 				<details>
 					<summary>Perform up to 3 dodge rolls. <small>[Cooldown: 10 s]</small></summary>
-					<small>Perform a horizontal dodge, gaining a burst of speed of 45 m/s and becoming invulnerable for 0.5 second(s). This equipment holds 3 times as many charges.</small>
+					<small>Perform a horizontal dodge, gaining a burst of speed of 70 m/s while grounded or 45 m/s in air and becoming invulnerable for 0.5 second(s). This equipment holds 3 times as many charges.</small>
 				</details>
 			</td>
 			<td></td>
@@ -860,9 +860,7 @@
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/danger_on.png?raw=true" width=128></td>
 			<td><b>Artifact of Danger</b></td>
 			<td>Players can be killed in one hit.</td>
-			<td><ul>
-				<li>Provides a config option (disabled by default) to force one-hit protection while this artifact is off, even while cursed (e.g. Artifact of Glass).</li>
-			</ul></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/delayitems_on.png?raw=true" width=128></td>
@@ -902,6 +900,10 @@
 		<tr>
 			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
 			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; Stamina Bar may not work correctly if disabled.</td>
+		</tr>
+		<tr>
+			<td><b>Curses Keep OSP</b></td>
+			<td>This module causes One-Shot Protection to be kept while cursed (e.g. Shaped Glass). Disabled by default.</td>
 		</tr>
 	</tbody>
 </table>

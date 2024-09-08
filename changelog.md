@@ -2,6 +2,43 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.0.0** *The Grinds My Gears Update*
+
+- BREAKING:
+	- Compat classes are now Internal. *Nobody should have been depending on these anyways, but major version increment it is.*
+	- DelayedDamageBufferComponent was renamed and reworked to DelayedBarrierComponent.
+- Fixes for Seekers of the Storm:
+	- All achievements now have appropriate lunar coin rewards.
+	- Causal Camera overlay now uses the new TemporaryOverlayManager system.
+	- Fixed Scavenger's Rucksack activating equipment just before changing slots (activation is supposed to be suppressed while switching).
+	- Fixed Pinball Wizard not working and causing errors on raycast bullet attacks.
+	- Fixed Unstable Mortar Tube projectiles exploding immediately when fired, and then also on impact with anything.
+	- Added EffectHelperComponent to projectile ghosts (fixes invisible projectiles).
+	- Updated dependencies for new patch.
+	- Retargeted changed hook signatures (fixes errors preventing mod load).
+- Balance pass:
+	- Unstable Mortar Tube projectiles now have 300 non-scaling health instead of 1 (to reduce the chances of them blowing up in your face immediately, at least early-game).
+	- Stamina Bar now provides moderately more speed while grounded.
+	- Reworked Negative Feedback Loop.
+		- New behavior: grants barrier over time in response to damage taken, and having barrier multiplies effectiveness of regen stat based on barrier fraction.
+		- Old behavior: converts some damage into a healable DoT.
+		- *This item became redundant with a new item in SotS, Warped Echo.*
+- Balance-like item bugfixes:
+	- Percussive Maintenance can now crit-heal with Defibrillator.
+	- Nautilus Protocol now works on Bulwark and Item Drones by default.
+	- Silver Compass can no longer be activated during or after the Teleporter event.
+	- Hurdy-Gurdy no longer works on Secondary skills with no cooldown.
+	- Hurdy-Gurdy now works on specific configured skills, even if not Secondary (works with Railgunner's non-alternate Primary while scoped, by default).
+- Removed a debug log that was inadvertently left in Kintsugi item count calculation.
+- Migrated the PreventCurseWhileOff config from Artifact of Danger to its own tweak module, CurseKeepOSP.
+- Fixed Hurdy-Gurdy using character forward (no vertical component) instead of aim forward.
+- Fixed a hook subscription leak in Sturdy Mug (should have had minimal-to-no effect, unless repeatedly disabling and enabling the item in ingame config hundreds of times in one session).
+- Project-wide code and comment cleanup.
+	- Implemented some C#9 features made available by SotS.
+	- Removed a bunch of TODO comments. *This is what we have GitHub issues and/or a separate private text file for.*
+	- Removed some dead code and unnecessary using directives.
+	- Suppressed some compiler messages.
+
 **4.2.0** *The Swashbuckling Update*
 
 - New content:
