@@ -56,14 +56,6 @@ namespace ThinkInvisible.TinkersSatchel {
         public FloatDebuffParams debuffParams;
 
         public struct FloatDebuffParams {
-            public FloatDebuffParams(float duration, float height, float wobbleRadius, float wobbleSpeed, float wobbleForce, float slamForce) {
-                this.duration = duration;
-                this.height = height;
-                this.wobbleRadius = wobbleRadius;
-                this.wobbleSpeed = wobbleSpeed;
-                this.wobbleForce = wobbleForce;
-                this.slamForce = slamForce;
-            }
             public float duration;
             public float height;
             public float wobbleRadius;
