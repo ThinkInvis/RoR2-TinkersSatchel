@@ -39,6 +39,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override bool managedEnable => true;
 
+        bool hookSuccess = false;
+
         public override void Install() {
             base.Install();
 
@@ -53,10 +55,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void InstallLanguage() {
             base.InstallLanguage();
-            languageOverlays.Add(R2API.LanguageAPI.AddOverlay("ITEM_KNOCKBACKHITENEMIES_PICKUP",
-                Language.GetString("TKSAT_OVERLAY_KNOCKBACKHITENEMIES_PICKUP")));
-            languageOverlays.Add(R2API.LanguageAPI.AddOverlay("ITEM_KNOCKBACKHITENEMIES_DESC",
-                Language.GetStringFormatted("TKSAT_OVERLAY_KNOCKBACKHITENEMIES_DESC", procChance.ToString("N0"), pullTime.ToString("N1"), (damageFrac*100f).ToString("N0"))));
+            if(hookSuccess) {
+                languageOverlays.Add(R2API.LanguageAPI.AddOverlay("ITEM_KNOCKBACKHITENEMIES_PICKUP",
+                    Language.GetString("TKSAT_OVERLAY_KNOCKBACKHITENEMIES_PICKUP")));
+                languageOverlays.Add(R2API.LanguageAPI.AddOverlay("ITEM_KNOCKBACKHITENEMIES_DESC",
+                    Language.GetStringFormatted("TKSAT_OVERLAY_KNOCKBACKHITENEMIES_DESC", procChance.ToString("N0"), pullTime.ToString("N1"), (damageFrac * 100f).ToString("N0"))));
+            }
         }
 
 
@@ -101,8 +105,10 @@ namespace ThinkInvisible.TinkersSatchel {
                     }
                     return 0; //bypass default behavior by pretending item count is 0
                 });
+                hookSuccess = true;
             } else {
                 TinkersSatchelPlugin._logger.LogError("KnockbackFinFloat: failed to apply IL hook (GlobalEventManager_ProcessHitEnemy), could not find target instructions. Tweak will not apply.");
+                hookSuccess = false;
             }
         }
     }
