@@ -93,10 +93,10 @@ namespace ThinkInvisible.TinkersSatchel {
                             }, new FloatDebuffController.FloatDebuffParams {
                                 duration = pullTime,
                                 height = pullHeight,
-                                slamForce = 10f,
-                                wobbleForce = 8f,
+                                slamForce = 20f,
+                                wobbleForce = 20f,
                                 wobbleRadius = pullWobble,
-                                wobbleSpeed = 0.0125f
+                                wobbleSpeed = 0.5f
                             });
                     }
                     return 0; //bypass default behavior by pretending item count is 0
