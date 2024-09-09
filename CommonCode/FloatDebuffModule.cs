@@ -37,10 +37,10 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public static void Inflict(HealthComponent target, DamageInfo damageInfo) {
+        public static void Inflict(HealthComponent target, DamageInfo damageInfo, FloatDebuffController.FloatDebuffParams debuffParams) {
             var fdc = target.gameObject.GetComponent<FloatDebuffController>();
             if(!fdc) fdc = target.gameObject.AddComponent<FloatDebuffController>();
-            fdc.Inflict(damageInfo);
+            fdc.Inflict(damageInfo, debuffParams);
         }
     }
 
@@ -53,6 +53,24 @@ namespace ThinkInvisible.TinkersSatchel {
         public float holdStopwatch;
         public float wobbleSeed;
         public DamageInfo deferredDamageInfo;
+        public FloatDebuffParams debuffParams;
+
+        public struct FloatDebuffParams {
+            public FloatDebuffParams(float duration, float height, float wobbleRadius, float wobbleSpeed, float wobbleForce, float slamForce) {
+                this.duration = duration;
+                this.height = height;
+                this.wobbleRadius = wobbleRadius;
+                this.wobbleSpeed = wobbleSpeed;
+                this.wobbleForce = wobbleForce;
+                this.slamForce = slamForce;
+            }
+            public float duration;
+            public float height;
+            public float wobbleRadius;
+            public float wobbleSpeed;
+            public float wobbleForce;
+            public float slamForce;
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
@@ -63,17 +81,17 @@ namespace ThinkInvisible.TinkersSatchel {
         void FixedUpdate() {
             if(!started) return;
             holdStopwatch -= Time.fixedDeltaTime;
-            var wobbleParam = (holdStopwatch + wobbleSeed) * Mathf.PI * 0.5f;
-            var targetPos = targetHoldPos + new Vector3(Mathf.Cos(wobbleParam), Mathf.Cos(wobbleParam * 2), Mathf.Cos(wobbleParam * 3)) * KleinBottle.instance.pullWobble;
+            var wobbleParam = (holdStopwatch + wobbleSeed) * Mathf.PI * debuffParams.wobbleSpeed;
+            var targetPos = targetHoldPos + new Vector3(Mathf.Cos(wobbleParam), Mathf.Cos(wobbleParam * 2), Mathf.Cos(wobbleParam * 3)) * debuffParams.wobbleRadius;
             var velVec = (targetPos - healthComponent.body.transform.position);
             motor.ApplyForceImpulse(new PhysForceInfo {
-                force = (velVec.normalized * 8f - motor.velocity) * motor.mass,
+                force = (velVec.normalized * debuffParams.wobbleForce - motor.velocity) * motor.mass,
                 ignoreGroundStick = true,
                 disableAirControlUntilCollision = false
             });
             if(holdStopwatch <= 0f) {
                 motor.ApplyForceImpulse(new PhysForceInfo {
-                    force = new Vector3(0, -25f, 0) * motor.mass,
+                    force = new Vector3(0, -debuffParams.slamForce, 0) * motor.mass,
                     ignoreGroundStick = true,
                     disableAirControlUntilCollision = false
                 });
@@ -82,19 +100,22 @@ namespace ThinkInvisible.TinkersSatchel {
             }
         }
 
-        public void Inflict(DamageInfo damageInfo) {
+        public void Inflict(DamageInfo damageInfo, FloatDebuffParams debuffParams) {
             if(!healthComponent.alive) return;
             if(deferredDamageInfo != null)
                 healthComponent.TakeDamage(deferredDamageInfo);
             deferredDamageInfo = damageInfo;
+            this.debuffParams = debuffParams;
             if(!healthComponent.TryGetComponent<SetStateOnHurt>(out var ssoh) || !healthComponent.TryGetComponent<IPhysMotor>(out motor) || !ssoh.canBeStunned) {
                 healthComponent.TakeDamage(deferredDamageInfo);
                 Destroy(this);
             } else {
-                targetHoldPos = healthComponent.transform.position + new Vector3(0, KleinBottle.instance.pullHeight, 0);
+                targetHoldPos = healthComponent.transform.position + new Vector3(0, debuffParams.height, 0);
                 wobbleSeed = KleinBottle.instance.rng.nextNormalizedFloat;
-                holdStopwatch = KleinBottle.instance.pullTime;
-                ssoh.SetStun(KleinBottle.instance.pullTime);
+                if(holdStopwatch < debuffParams.duration) {
+                    holdStopwatch = debuffParams.duration;
+                    ssoh.SetStun(debuffParams.duration);
+                }
                 started = true;
             }
         }

@@ -307,6 +307,13 @@ namespace ThinkInvisible.TinkersSatchel {
                                     position = tcpt.body.corePosition,
                                     procChainMask = default,
                                     procCoefficient = procCoefficient
+                                }, new FloatDebuffController.FloatDebuffParams {
+                                    duration = this.pullTime,
+                                    height = this.pullHeight,
+                                    slamForce = 25f,
+                                    wobbleForce = 8f,
+                                    wobbleRadius = this.pullWobble,
+                                    wobbleSpeed = 0.5f
                                 });
                             }
                         }
