@@ -112,10 +112,8 @@ namespace ThinkInvisible.TinkersSatchel {
             } else {
                 targetHoldPos = healthComponent.transform.position + new Vector3(0, debuffParams.height, 0);
                 wobbleSeed = KleinBottle.instance.rng.nextNormalizedFloat;
-                if(holdStopwatch < debuffParams.duration) {
+                if(holdStopwatch < debuffParams.duration)
                     holdStopwatch = debuffParams.duration;
-                    ssoh.SetStun(debuffParams.duration);
-                }
                 started = true;
             }
         }

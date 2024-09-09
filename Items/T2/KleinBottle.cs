@@ -315,6 +315,8 @@ namespace ThinkInvisible.TinkersSatchel {
                                     wobbleRadius = this.pullWobble,
                                     wobbleSpeed = 0.5f
                                 });
+                                if(tcpt.body.gameObject.TryGetComponent<SetStateOnHurt>(out var ssoh) && ssoh.canBeStunned)
+                                    ssoh.SetStun(this.pullTime);
                             }
                         }
                     }

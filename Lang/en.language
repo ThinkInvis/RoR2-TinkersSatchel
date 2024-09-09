@@ -3,7 +3,7 @@
 		"TKSAT_DISABLED_SKILL_NAME": "Suppressed Skill",
 		"TKSAT_DISABLED_SKILL_DESCRIPTION": "Something has temporarily prevented you from using this skill!",
 		"TKSAT_KEYWORD_TAUNT": "<style=cKeywordName>Taunt</style><style=cSub>Taunted AI will only <style=cIsDamage>attack</style> targets that have inflicted Taunt on them, unless no other option is available. On both AI and survivors, any <style=cIsDamage>damage</style> inflicted on non-Taunting targets is halved. Taunt is removed if the source of Taunt dies.</style>",
-		"TKSAT_KEYWORD_FLOAT": "<style=cKeywordName>Float</style><style=cSub>Float holds a target at a fixed point in the air, then inflicts a damaging downwards slam when it expires. New stacks replace the previous one, inflicting the latter's damage immediately and resetting the duration if longer than its remaining time.</style>",
+		"TKSAT_KEYWORD_FLOAT": "<style=cKeywordName>Float</style><style=cSub>Float holds a target at a fixed point in the air, then inflicts a damaging downwards slam when it expires. New stacks replace the previous one, inflicting the latter's damage immediately and resetting the duration if longer than its remaining time. On targets which can't be stunned, float inflicts its damage instantly.</style>",
 		"TKSAT_KEYWORD_SUPPRESS": "<style=cKeywordName>Suppressed</style><style=cSub>A Suppressed skill cannot be used and has its cooldowns frozen.</style>",
 
 		"TINKERSSATCHEL_EXPANSION_NAME": "Tinker's Satchel",
@@ -206,8 +206,8 @@
 		"TINKERSSATCHEL_HURDYGURDY_LORE": "...and his music was eclectic.",
 
 		"TINKERSSATCHEL_KLEINBOTTLE_NAME": "Unstable Klein Bottle",
-		"TINKERSSATCHEL_KLEINBOTTLE_PICKUP": "Chance to float nearby enemies on taking damage.",
-		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "After taking damage, {0} <style=cStack>(+{0} per stack, mult.)</style> chance to <style=cIsUtility>float</style> enemies within {1} m for {2} seconds and <style=cIsDamage>{3} damage</style>. <style=cStack>Has an internal cooldown of {4} s.</style>",
+		"TINKERSSATCHEL_KLEINBOTTLE_PICKUP": "Chance to float and stun nearby enemies on taking damage.",
+		"TINKERSSATCHEL_KLEINBOTTLE_DESC": "After taking damage, {0} <style=cStack>(+{0} per stack, mult.)</style> chance to <style=cIsUtility>float</style> and <style=cIsUtility>stun</style> enemies within {1} m for {2} seconds and <style=cIsDamage>{3} damage</style>. <style=cStack>Has an internal cooldown of {4} s.</style>",
 		"TINKERSSATCHEL_KLEINBOTTLE_LORE": "Order: \u201CUnstable Klein Bottle\u201D\r\nTracking Number: 23******\r\nEstimated Delivery: 09\/04\/2056\r\nShipping Method: Fragile\r\nShipping Address: 43rd Floor, Crumbling Tower, Venus\r\nShipping Details:\r\n\r\nThis one was a doozy. Damn near sucked in one of our artificers during final construction of this proof-of-concept. But your formula worked! We've sent it over for your examination.\r\n\r\nCareful not to drop it. In theory, the construct's temporal metastability should cause it to revert when the glass is broken, and we think its topology would leave a bubble of safety in the middle during detonation... but none of us were brave enough to test that. Losing this could set us back weeks, let alone the potential for injury and damage even if we're right.",
 		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_NAME": "Can't Touch This",
 		"ACHIEVEMENT_TKSAT_KLEINBOTTLE_DESCRIPTION": "Block, or take 1 or less points of damage from, 3 attacks in a row.",
