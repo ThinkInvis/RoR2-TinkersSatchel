@@ -265,7 +265,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 )) {
                 c.Emit(OpCodes.Dup);
                 c.EmitDelegate<Action<GameObject>>(obj => {
-                    Debug.Log($"Adding RecombobulatorFlag to {obj}");
                     obj.AddComponent<RecombobulatorFlag>();
                 });
             }
