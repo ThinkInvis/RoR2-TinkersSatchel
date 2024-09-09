@@ -387,6 +387,11 @@
 		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_ALREADY_HAVE": "Can't take speed boost\n(Don't be greedy!)",
 		"TKSAT_ENGI_SPEEDISPENSER_CONTEXT_CHARGING": "Can't take speed boost\n(Still brewing...)",
 		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_NAME": "Speed Dispenser",
-		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION": "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>."
+		"TKSAT_ENGI_UTILITY_SPEEDISPENSER_DESCRIPTION": "Deploy a <style=cIsUtility>stationary decanter</style> that stores up to 4 delicious, caffeinated, precision-brewed charges of <style=cIsUtility>sprint speed</style> and <style=cIsUtility>jump height</style>. <style=cIsUtility>Inherits all your items</style>.",
+
+
+
+		"TKSAT_OVERLAY_KNOCKBACKHITENEMIES_PICKUP": "Chance to float on hit.",
+		"TKSAT_OVERLAY_KNOCKBACKHITENEMIES_DESC": "<style=cIsUtility>{0}%</style> <style=cStack>(+{0}% per stack, hyperbolic)</style> chance on hit to <style=cIsUtility>float</style> enemies for <style=cIsUtility>{1} seconds</style> and <style=cIsDamage>{2}% base damage</style>."
 	}
 }
