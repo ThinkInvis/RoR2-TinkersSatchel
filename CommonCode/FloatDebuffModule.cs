@@ -25,7 +25,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		public override void SetupBehavior() {
 			base.SetupBehavior();
-		}
+
+            On.RoR2.Util.CleanseBody += Util_CleanseBody;
+        }
+
+        private void Util_CleanseBody(On.RoR2.Util.orig_CleanseBody orig, CharacterBody characterBody, bool removeDebuffs, bool removeBuffs, bool removeCooldownBuffs, bool removeDots, bool removeStun, bool removeNearbyProjectiles) {
+            orig(characterBody, removeDebuffs, removeBuffs, removeCooldownBuffs, removeDots, removeStun, removeNearbyProjectiles);
+            if(removeDebuffs && characterBody) {
+                if(characterBody.TryGetComponent<FloatDebuffController>(out var fdc))
+                    GameObject.Destroy(fdc);
+            }
+        }
     }
 
     [RequireComponent(typeof(HealthComponent))]
