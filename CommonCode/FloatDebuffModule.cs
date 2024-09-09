@@ -84,8 +84,10 @@ namespace ThinkInvisible.TinkersSatchel {
             var wobbleParam = (holdStopwatch + wobbleSeed) * Mathf.PI * debuffParams.wobbleSpeed;
             var targetPos = targetHoldPos + new Vector3(Mathf.Cos(wobbleParam), Mathf.Cos(wobbleParam * 2), Mathf.Cos(wobbleParam * 3)) * debuffParams.wobbleRadius;
             var velVec = (targetPos - healthComponent.body.transform.position);
+            var vStr = Mathf.Min(debuffParams.wobbleForce, velVec.magnitude);
+            velVec = velVec.normalized * Mathf.Pow(vStr/debuffParams.wobbleForce, 0.5f) * debuffParams.wobbleForce;
             motor.ApplyForceImpulse(new PhysForceInfo {
-                force = (velVec.normalized * debuffParams.wobbleForce - motor.velocity) * motor.mass,
+                force = (velVec - motor.velocity) * motor.mass,
                 ignoreGroundStick = true,
                 disableAirControlUntilCollision = false
             });
