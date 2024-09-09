@@ -26,7 +26,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfig("Radius of random motion of the reworked Knockback Fin float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float pullWobble { get; private set; } = 0.25f;
+        public float pullWobble { get; private set; } = 0.5f;
         
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -96,7 +96,7 @@ namespace ThinkInvisible.TinkersSatchel {
                                 slamForce = 10f,
                                 wobbleForce = 8f,
                                 wobbleRadius = pullWobble,
-                                wobbleSpeed = 0.125f
+                                wobbleSpeed = 0.0125f
                             });
                     }
                     return 0; //bypass default behavior by pretending item count is 0
