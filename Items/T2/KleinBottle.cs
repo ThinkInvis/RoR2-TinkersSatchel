@@ -295,10 +295,10 @@ namespace ThinkInvisible.TinkersSatchel {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
                             if(tcpt.body && tcpt.body.isActiveAndEnabled) {
-                                if(tcpt.body.healthComponent.gameObject.TryGetComponent<KleinBottleDebuff>(out var existingDebuff)) {
+                                if(tcpt.body.healthComponent.gameObject.TryGetComponent<FloatDebuffController>(out var existingDebuff)) {
                                     existingDebuff.RenewFloat();
                                 } else {
-                                    var debuff = tcpt.body.healthComponent.gameObject.AddComponent<KleinBottleDebuff>();
+                                    var debuff = tcpt.body.healthComponent.gameObject.AddComponent<FloatDebuffController>();
                                     debuff.deferredDamageInfo = new DamageInfo {
                                         attacker = self.gameObject,
                                         canRejectForce = true,
@@ -326,6 +326,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public float LastTimestamp = 0f;
     }
 
+    [Obsolete("Replaced by FloatDebuffController.")]
     [RequireComponent(typeof(HealthComponent))]
     public class KleinBottleDebuff : MonoBehaviour {
         HealthComponent healthComponent;
