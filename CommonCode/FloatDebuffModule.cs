@@ -36,6 +36,12 @@ namespace ThinkInvisible.TinkersSatchel {
                     GameObject.Destroy(fdc);
             }
         }
+
+        public static void Inflict(HealthComponent target, DamageInfo damageInfo) {
+            var fdc = target.gameObject.GetComponent<FloatDebuffController>();
+            if(!fdc) fdc = target.gameObject.AddComponent<FloatDebuffController>();
+            fdc.Inflict(damageInfo);
+        }
     }
 
     [RequireComponent(typeof(HealthComponent))]
@@ -71,31 +77,26 @@ namespace ThinkInvisible.TinkersSatchel {
                     ignoreGroundStick = true,
                     disableAirControlUntilCollision = false
                 });
-                InflictDamage();
+                healthComponent.TakeDamage(deferredDamageInfo);
+                Destroy(this);
             }
         }
 
-        public void RenewFloat() {
-            healthComponent.TakeDamage(deferredDamageInfo);
-            holdStopwatch = KleinBottle.instance.pullTime;
-            healthComponent.GetComponent<SetStateOnHurt>().SetStun(KleinBottle.instance.pullTime);
-        }
-
-        public void InflictFloat() {
+        public void Inflict(DamageInfo damageInfo) {
+            if(!healthComponent.alive) return;
+            if(deferredDamageInfo != null)
+                healthComponent.TakeDamage(deferredDamageInfo);
+            deferredDamageInfo = damageInfo;
             if(!healthComponent.TryGetComponent<SetStateOnHurt>(out var ssoh) || !healthComponent.TryGetComponent<IPhysMotor>(out motor) || !ssoh.canBeStunned) {
-                InflictDamage();
+                healthComponent.TakeDamage(deferredDamageInfo);
+                Destroy(this);
             } else {
                 targetHoldPos = healthComponent.transform.position + new Vector3(0, KleinBottle.instance.pullHeight, 0);
                 wobbleSeed = KleinBottle.instance.rng.nextNormalizedFloat;
                 holdStopwatch = KleinBottle.instance.pullTime;
                 ssoh.SetStun(KleinBottle.instance.pullTime);
+                started = true;
             }
-            started = true;
-        }
-
-        public void InflictDamage() {
-            healthComponent.TakeDamage(deferredDamageInfo);
-            Destroy(this);
         }
     }
 }

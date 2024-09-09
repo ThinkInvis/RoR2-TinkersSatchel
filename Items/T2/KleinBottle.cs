@@ -295,25 +295,19 @@ namespace ThinkInvisible.TinkersSatchel {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
                             if(tcpt.body && tcpt.body.isActiveAndEnabled) {
-                                if(tcpt.body.healthComponent.gameObject.TryGetComponent<FloatDebuffController>(out var existingDebuff)) {
-                                    existingDebuff.RenewFloat();
-                                } else {
-                                    var debuff = tcpt.body.healthComponent.gameObject.AddComponent<FloatDebuffController>();
-                                    debuff.deferredDamageInfo = new DamageInfo {
-                                        attacker = self.gameObject,
-                                        canRejectForce = true,
-                                        crit = isCrit,
-                                        damage = self.body.damage * damageFrac,
-                                        damageColorIndex = DamageColorIndex.Item,
-                                        damageType = DamageType.AOE,
-                                        force = Vector3.zero,
-                                        inflictor = null,
-                                        position = tcpt.body.corePosition,
-                                        procChainMask = default,
-                                        procCoefficient = procCoefficient
-                                    };
-                                    debuff.InflictFloat();
-                                }
+                                FloatDebuffModule.Inflict(tcpt.body.healthComponent, new DamageInfo {
+                                    attacker = self.gameObject,
+                                    canRejectForce = true,
+                                    crit = isCrit,
+                                    damage = self.body.damage * damageFrac,
+                                    damageColorIndex = DamageColorIndex.Item,
+                                    damageType = DamageType.AOE,
+                                    force = Vector3.zero,
+                                    inflictor = null,
+                                    position = tcpt.body.corePosition,
+                                    procChainMask = default,
+                                    procCoefficient = procCoefficient
+                                });
                             }
                         }
                     }
