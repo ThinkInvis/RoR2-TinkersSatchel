@@ -228,7 +228,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var rangeSq = range * range;
                 stopwatch = scanInterval;
 
-                var tgtsToTaunt = GameObject.FindObjectsOfType<CharacterBody>()
+                var tgtsToTaunt = CharacterBody.readOnlyInstancesList
                     .Where(x => (x.transform.position - transform.position).sqrMagnitude < rangeSq
                         && x.master
                         && x.teamComponent.teamIndex != teamcpt.teamIndex && x.teamComponent.teamIndex != TeamIndex.Neutral)

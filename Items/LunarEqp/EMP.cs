@@ -3,6 +3,7 @@ using UnityEngine;
 using TILER2;
 using RoR2.Projectile;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class EMP : Equipment<EMP> {
@@ -173,13 +174,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             float sqrad = range * range;
-            foreach(var tcpt in GameObject.FindObjectsOfType<TeamComponent>()) {
-                var deltaPos = tcpt.transform.position - slot.transform.position;
+            foreach(var cb in CharacterBody.readOnlyInstancesList) {
+                var deltaPos = cb.transform.position - slot.transform.position;
                 if(deltaPos.sqrMagnitude <= sqrad) {
-                    bool isSurvivor = tcpt.teamIndex == TeamIndex.Player;
-                    if(tcpt.body && tcpt.body.skillLocator) {
-                        var stsd = tcpt.body.gameObject.GetComponent<ServerTimedSkillDisable>();
-                        if(!stsd) stsd = tcpt.body.gameObject.AddComponent<ServerTimedSkillDisable>();
+                    bool isSurvivor = cb.teamComponent.teamIndex == TeamIndex.Player;
+                    if(cb.skillLocator) {
+                        var stsd = cb.gameObject.GetComponent<ServerTimedSkillDisable>();
+                        if(!stsd) stsd = cb.gameObject.AddComponent<ServerTimedSkillDisable>();
                         if(!isSurvivor) {
                             stsd.ServerApply(duration, SkillSlot.Primary);
                         }

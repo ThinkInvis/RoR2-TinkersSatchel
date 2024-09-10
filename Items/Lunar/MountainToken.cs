@@ -8,6 +8,7 @@ using System;
 using EntityStates;
 using System.Linq;
 using R2API;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MountainToken : Item<MountainToken> {
@@ -131,10 +132,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, BaseState self) {
             orig(self);
-            foreach(var cb in UnityEngine.Object.FindObjectsOfType<CharacterBody>())
+            foreach(var cb in CharacterBody.readOnlyInstancesList)
                 if(GetCount(cb) > 0 && !cb.TryGetComponent<MountainTokenTracker>(out _))
                     cb.gameObject.AddComponent<MountainTokenTracker>();
-            foreach(var mtt in UnityEngine.Object.FindObjectsOfType<MountainTokenTracker>())
+            foreach(var mtt in MountainTokenTracker.readOnlyInstancesList)
                 mtt.Reset();
         }
 
@@ -163,6 +164,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterBody))]
     public class MountainTokenTracker : MonoBehaviour {
+        private static List<MountainTokenTracker> instancesList = new();
+        public static readonly ReadOnlyCollection<MountainTokenTracker> readOnlyInstancesList = new(instancesList);
+
         CharacterBody body;
         float ungroundedTime = 0f;
         int _stacks = 0;
@@ -179,6 +183,16 @@ namespace ThinkInvisible.TinkersSatchel {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             body = GetComponent<CharacterBody>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void OnEnable() {
+            instancesList.Add(this);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void OnDisable() {
+            instancesList.Remove(this);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
