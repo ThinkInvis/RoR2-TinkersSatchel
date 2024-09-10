@@ -8,6 +8,7 @@ using Mono.Cecil.Cil;
 using R2API;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ShootToHeal : Item<ShootToHeal> {
@@ -365,8 +366,10 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self.inventory.GetItemCount(RoR2Content.Items.ChainLightning) > 0 || self.inventory.GetItemCount(DLC1Content.Items.ChainLightningVoid) > 0) count++;
             if(self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse) > 0) count++;
             if(self.inventory.GetItemCount(RoR2Content.Items.ShockNearby) > 0) count++;
+            var ees = self.GetComponent<ExtraEquipmentStash>();
             if((self.inventory.currentEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex
-                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex)) count++;
+                || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex)
+                || ees && ees.readOnlyStashedEquipment.Any(x => x.equipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex)) count++;
             if(self.inventory.GetItemCount(RoR2Content.Items.Behemoth) > 0) count++;
             if(self.inventory.GetItemCount(HurdyGurdy.instance.itemDef) > 0) count++;
             if(count >= 3)

@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
 using System.Collections.Generic;
 using R2API.Networking.Interfaces;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class ExtraEquipment : Item<ExtraEquipment> {
@@ -255,6 +256,7 @@ namespace ThinkInvisible.TinkersSatchel {
 	[RequireComponent(typeof(CharacterMaster))]
 	public class ExtraEquipmentStash : MonoBehaviour {
         readonly Queue<EquipmentState> stashedEquipment = new();
+        public List<EquipmentState> readOnlyStashedEquipment => stashedEquipment.ToList();
 		CharacterMaster master;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
