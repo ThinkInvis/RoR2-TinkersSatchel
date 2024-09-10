@@ -144,8 +144,8 @@
 			<td>
 				<b>Unstable Klein Bottle</b><br>
 				<details>
-					<summary>Gravity slam nearby enemies on taking damage.</summary>
-					<small>After taking damage, 8.0% (+8.0% per stack, mult.) chance to stun enemies within 20 m for 1.0 seconds. Affected enemies are held in midair while stunned, then slammed into the ground for 50% damage. Has an internal cooldown of 1.5 s.</small>
+					<summary>Chance to float and stun nearby enemies on taking damage.</summary>
+					<small>After taking damage, 8.0% (+8.0% per stack, mult.) chance to float and stun enemies within 20 m for 1.0 seconds and 50% damage. Has an internal cooldown of 1.5 s.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -904,6 +904,10 @@
 		<tr>
 			<td><b>Curses Keep OSP</b></td>
 			<td>This module causes One-Shot Protection to be kept while cursed (e.g. Shaped Glass). Disabled by default.</td>
+		</tr>
+		<tr>
+			<td><b>Knockback Fin Float</b></td>
+			<td>This module reworks the vanilla Seekers of the Storm item Knockback Fin. Instead of knocking enemies back, it will apply the Float debuff (also applied by this mod's Unstable Klein Bottle), holding an enemy in the air for a short time and then applying damage and downwards velocity.</td>
 		</tr>
 	</tbody>
 </table>

@@ -2,6 +2,24 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.1.0**
+
+- Added inspect text to broken Item Drones and Bulwark Drones.
+- Improved performance of Bulwark Drone, Celestial Gambit, EMP Device, Cardboard Box, and Lodestone by introducing component caching.
+- Added the Knockback Fin Float module.
+	- Reworks the SotS item Knockback Fin to use Unstable Klein Bottle's effect, minus the stun and plus some damage.
+	- Now works on bosses and other unstunnable targets, inflicting damage only.
+	- Slightly lowered proc chance by default.
+- Separated Unstable Klein Bottle's effect into a new standalone debuff, Float.
+	- Float holds a character in a fixed spot in the air for some time, then inflicts damage and flings the character downwards.
+	- Additional stacks of Float cause previous ones to expire immediately, but the previous stack's timer is kept if it's still longer than the new duration.
+	- Unstable Klein Bottle now inflicts stun as a separate effect.
+	- Float, and by extension the Unstable Klein Bottle effect, can now be cleansed.
+	- Significantly improved smoothness of midair hold animation.
+- Pulse Monitor now triggers on-equipment-use items (e.g. Bottled Chaos, War Horn).
+- Percussive Maintenance now counts equipment stashed in Scavenger's Rucksack for its unlock achievement.
+- Removed an old debug log from a Quantum Recombobulator hook, which probably wasn't even showing up due to using Unity's logger.
+
 **5.0.1**
 
 - Small patch for incorrect language token argument count on Negative Feedback Loop description.

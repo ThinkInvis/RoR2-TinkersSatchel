@@ -177,7 +177,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/kleinBottleIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Unstable Klein Bottle</b><br>
-				Gravity slam nearby enemies on taking damage.
+				Chance to float and stun nearby enemies on taking damage.
 			</td>
 		</tr>
 		<tr>
@@ -599,11 +599,16 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><b>Curses Keep OSP</b></td>
 			<td>This module causes One-Shot Protection to be kept while cursed (e.g. Shaped Glass). Disabled by default.</td>
 		</tr>
+		<tr>
+			<td><b>Knockback Fin Float</b></td>
+			<td>This module reworks the vanilla Seekers of the Storm item Knockback Fin. Instead of knocking enemies back, it will apply the Float debuff (also applied by this mod's Unstable Klein Bottle), holding an enemy in the air for a short time and then applying damage and downwards velocity.</td>
+		</tr>
 	</tbody>
 </table>
 
 ## Issues/TODO
 
+- Taunt and Float debuffs need custom icons.
 - ItemDisplayRule incompleteness:
 	- A few TkSat items have absent or incomplete ItemDisplayRules.
 	- Non-Survivor vanilla characters have no display rules for TkSat items.
@@ -620,6 +625,24 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**5.1.0**
+
+- Added inspect text to broken Item Drones and Bulwark Drones.
+- Improved performance of Bulwark Drone, Celestial Gambit, EMP Device, Cardboard Box, and Lodestone by introducing component caching.
+- Added the Knockback Fin Float module.
+	- Reworks the SotS item Knockback Fin to use Unstable Klein Bottle's effect, minus the stun and plus some damage.
+	- Now works on bosses and other unstunnable targets, inflicting damage only.
+	- Slightly lowered proc chance by default.
+- Separated Unstable Klein Bottle's effect into a new standalone debuff, Float.
+	- Float holds a character in a fixed spot in the air for some time, then inflicts damage and flings the character downwards.
+	- Additional stacks of Float cause previous ones to expire immediately, but the previous stack's timer is kept if it's still longer than the new duration.
+	- Unstable Klein Bottle now inflicts stun as a separate effect.
+	- Float, and by extension the Unstable Klein Bottle effect, can now be cleansed.
+	- Significantly improved smoothness of midair hold animation.
+- Pulse Monitor now triggers on-equipment-use items (e.g. Bottled Chaos, War Horn).
+- Percussive Maintenance now counts equipment stashed in Scavenger's Rucksack for its unlock achievement.
+- Removed an old debug log from a Quantum Recombobulator hook, which probably wasn't even showing up due to using Unity's logger.
 
 **5.0.1**
 
@@ -699,7 +722,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Made all strings used in Artifact of Safekeeping localizable.
 	- This forced a removal of the AnnounceDropMode ItemTierCount setting, and a change in how item tiers display for pickups (color only, words removed).
 - Made string used in Command Terminal revivals localizable.
-
-**4.1.4**
-
-- Fixed a potential NRE in Celestial Gambit causing the Teleporter to sometimes drop zero items.

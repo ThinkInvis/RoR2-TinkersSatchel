@@ -1,6 +1,6 @@
 {
   "name": "TinkersSatchel",
-  "version_number": "5.0.1",
+  "version_number": "5.1.0",
   "website_url": "https://github.com/ThinkInvis/RoR2-TinkersSatchel",
   "description": "An adequate assortment of anomalous additions: acquisitions, artifacts, and abilities abound.",
   "dependencies": [
@@ -14,6 +14,6 @@
     "RiskofThunder-R2API_Networking-1.0.2",
     "RiskofThunder-R2API_Prefab-1.0.4",
     "RiskofThunder-R2API_RecalculateStats-1.4.0",
-    "ThinkInvis-TILER2-7.4.1"
+    "ThinkInvis-TILER2-7.4.2"
   ]
 }
