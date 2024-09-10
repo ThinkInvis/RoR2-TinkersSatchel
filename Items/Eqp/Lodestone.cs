@@ -48,7 +48,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private GameObject blackHolePrefab;
         public HashSet<string> validObjectNamesRB { get; private set; } = new HashSet<string>();
-        public HashSet<string> validObjectNamesNoRB { get; private set; } = new HashSet<string>();
         const float PULL_FORCE = 60f;
         internal static UnlockableDef unlockable;
         public GameObject idrPrefab { get; private set; }
@@ -223,12 +222,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 "Sawmerang(Clone)",
                 "LunarSunProjectile(Clone)"
             });
-            validObjectNamesNoRB.UnionWith(new[] { //may have RB, but should teleport anyways
-                "DeskplantWard(Clone)",
-                "CrippleWard(Clone)",
-                "WarbannerWard(Clone)",
-                "DamageZoneWard(Clone)"
-            });
 
             unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
             unlockable.cachedName = $"TkSat_{name}Unlockable";
@@ -273,9 +266,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 .Where(x => validObjectNamesRB.Contains(x.name))
                 .Select(x => x.GetComponent<Rigidbody>())
                 .Where(x => x);
-            var nonRbObjectsInRange = GameObject.FindObjectsOfType<GameObject>() //TODO: add colliders to all of these prefabs
-                .Where(x => validObjectNamesNoRB.Contains(x.name)
-                    && Vector3.Distance(x.transform.position, slot.characterBody.corePosition) < range);
+            var nonRbObjectsInRange =
+                MiscObjectTrackerModule.readOnlyWarbanners
+                .Union(MiscObjectTrackerModule.readOnlyCrippleWards)
+                .Union(MiscObjectTrackerModule.readOnlyDeskplants)
+                .Union(MiscObjectTrackerModule.readOnlyRandomDamageZones)
+                .Where(x => Vector3.Distance(x.transform.position, slot.characterBody.corePosition) < range);
 
             foreach(var rb in rbObjectsInRange) {
                 var sticky = rb.gameObject.GetComponent<RoR2.Projectile.ProjectileStickOnImpact>();

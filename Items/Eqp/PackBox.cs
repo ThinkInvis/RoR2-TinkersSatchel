@@ -400,16 +400,13 @@ namespace ThinkInvisible.TinkersSatchel {
                 .Where(x => x && x.gameObject)
                 .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
                 .Concat( //OverlapSphere doesn't hit Warbanners
-                    GameObject.FindObjectsOfType<BuffWard>()
-                    .Select(x => x.gameObject)
-                    .Where(x => x.name == "WarbannerWard(Clone)" && Vector3.Distance(x.transform.position, aim.origin) < maxDistance + camAdjust)
-                    )
+                    MiscObjectTrackerModule.readOnlyWarbanners
+                    .Where(x => Vector3.Distance(x.transform.position, aim.origin) < maxDistance + camAdjust))
                 .Where(x => validObjectNames.Contains(x.name))
                 .Select(x => (target: x, vdot: Vector3.Dot(aim.direction, (x.transform.position - aim.origin).normalized)))
                 .Where(x => x.vdot > minDot
                     && (!requireLoS
-                    || !Physics.Linecast(aim.origin, x.target.transform.position, LayerIndex.world.mask)
-                    ))
+                    || !Physics.Linecast(aim.origin, x.target.transform.position, LayerIndex.world.mask)))
                 .OrderBy(x => x.vdot * Vector3.Distance(x.target.transform.position, aim.origin))
                 .Select(x => x.target.gameObject)
                 .FirstOrDefault();
