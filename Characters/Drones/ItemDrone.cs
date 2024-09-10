@@ -248,6 +248,9 @@ namespace ThinkInvisible.TinkersSatchel {
             itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/Prop1/Prop1 1").GetComponent<MeshRenderer>().material = brokenMtl;
             itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/Prop2/Prop2 1").GetComponent<MeshRenderer>().material = brokenMtl;
             itemDroneInteractablePrefab.transform.Find("Model Base/mdlItemDrone/Root/Prop3/Prop3 1").GetComponent<MeshRenderer>().material = brokenMtl;
+            var droneSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texDroneIconOutlined.png")
+                .WaitForCompletion();
+            itemDroneInteractablePrefab.GetComponent<GenericInspectInfoProvider>().InspectInfo.Info.Visual = droneSprite;
         }
 
         void SetupSpawnCard() {

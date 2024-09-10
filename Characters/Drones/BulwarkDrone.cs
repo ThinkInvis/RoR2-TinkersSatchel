@@ -158,6 +158,9 @@ namespace ThinkInvisible.TinkersSatchel {
             var brokenMtl = Addressables.LoadAssetAsync<Material>("RoR2/Base/Drones/matDroneBrokenGeneric.mat")
                 .WaitForCompletion();
             bulwarkDroneInteractablePrefab.transform.Find("Model Base/BulwarkDrone").GetComponent<MeshRenderer>().material = brokenMtl;
+            var droneSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texDroneIconOutlined.png")
+                .WaitForCompletion();
+            bulwarkDroneInteractablePrefab.GetComponent<GenericInspectInfoProvider>().InspectInfo.Info.Visual = droneSprite;
         }
 
         void SetupSpawnCard() {

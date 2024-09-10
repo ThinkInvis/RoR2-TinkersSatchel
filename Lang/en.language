@@ -348,11 +348,15 @@
 		"TKSAT_BULWARKDRONE_NAME": "Bulwark Drone",
 		"TKSAT_BULWARKDRONE_BODY_NAME": "Bulwark Drone",
 		"TKSAT_BULWARKDRONE_CONTEXT": "Repair Bulwark Drone",
+		"TKSAT_BULWARKDRONE_INSPECT": "A companion bought with gold that will follow the survivor, Taunting half of nearby enemies every 5 seconds. Resilient, self-repairing, and starts with one stack of <style=cIsHealing>Razorwire</style>.",
+		"TKSAT_BULWARKDRONE_LORE": "",
 
 		"TKSAT_ITEMDRONE_NAME": "Item Drone",
 		"TKSAT_ITEMDRONE_BODY_NAME": "Item Drone",
 		"TKSAT_ITEMDRONE_POPUP_TEXT": "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>",
 		"TKSAT_ITEMDRONE_CONTEXT": "Give Item",
+		"TKSAT_ITEMDRONE_INSPECT": "A companion bought with items that will follow the survivor, granting the effects of those items to all allies in a huge radius. Can accept up to <color=#FFFFFF>5 Common</color>, <color=#77FF17>3 Uncommon</color>, or <color=#E7543A>1 Rare</color> item(s).",
+		"TKSAT_ITEMDRONE_LORE": "",
 
 
 
