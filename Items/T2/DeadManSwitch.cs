@@ -120,7 +120,8 @@ namespace ThinkInvisible.TinkersSatchel {
                     * eqp.cooldown
                     * (DeadManSwitch.instance.externalCdr ? body.inventory.CalculateEquipmentCooldownScale() : 1f);
                 body.AddTimedBuff(DeadManSwitch.instance.deadManSwitchBuff, icd);
-                body.equipmentSlot.PerformEquipmentAction(eqp);
+                if(body.equipmentSlot.PerformEquipmentAction(eqp))
+                    body.equipmentSlot.OnEquipmentExecuted();
             }
         }
     }
