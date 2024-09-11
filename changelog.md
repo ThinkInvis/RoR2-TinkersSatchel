@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.1.1**
+
+- Fixed missing orig calls causing several vanilla items (Bustling Fungus, Warbanner, Mercurial Rachis, Effigy of Grief, Interstellar Deskplant, maybe others) to not function.
+
 **5.1.0**
 
 - Added inspect text to broken Item Drones and Bulwark Drones.

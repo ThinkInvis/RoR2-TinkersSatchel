@@ -30,10 +30,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealingWard_Awake(On.RoR2.HealingWard.orig_Awake orig, HealingWard self) {
+			orig(self);
 			self.gameObject.AddComponent<HealingWardInstanceTracker>();
         }
 
         private void BuffWard_OnEnable(On.RoR2.BuffWard.orig_OnEnable orig, BuffWard self) {
+			orig(self);
 			switch(self.gameObject.name) {
 				case "WarbannerWard(Clone)":
 					warbanners.Add(self.gameObject);
@@ -48,6 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		private void BuffWard_OnDisable(On.RoR2.BuffWard.orig_OnDisable orig, BuffWard self) {
+			orig(self);
 			switch(self.gameObject.name) {
 				case "WarbannerWard(Clone)":
 					warbanners.Remove(self.gameObject);

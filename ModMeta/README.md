@@ -626,6 +626,10 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.1.1**
+
+- Fixed missing orig calls causing several vanilla items (Bustling Fungus, Warbanner, Mercurial Rachis, Effigy of Grief, Interstellar Deskplant, maybe others) to not function.
+
 **5.1.0**
 
 - Added inspect text to broken Item Drones and Bulwark Drones.
@@ -711,14 +715,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Retargeted Ancient Scepter compatibility to work with Standalone Ancient Scepter.
 - Renamed Bramble Ring to Bramble Band (for added alliterative appeal).
 - Bramble Band retaliation damage is now visible as a void lightning orb.
-
-**4.1.5**
-
-- Fixed fatal errors caused by the base game Devotion Update.
-- 🌧︎ Fixed Celestial Gambit preventing all teleporter drops if a player is dead when the teleporter boss dies.
-- Fixed Bismuth Tonic applying the inverse of the expected buff duration change.
-- Fixed Cardboard Box alternate icon path being incorrect, causing console log spam while an object is packed.
-- Fixed very incorrect filters on Kintsugi item name checker (Kintsugi should now work at all and be unlockable under default settings).
-- Made all strings used in Artifact of Safekeeping localizable.
-	- This forced a removal of the AnnounceDropMode ItemTierCount setting, and a change in how item tiers display for pickups (color only, words removed).
-- Made string used in Command Terminal revivals localizable.
