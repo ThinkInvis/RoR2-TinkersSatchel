@@ -41,6 +41,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Fixed knockback resistance vs. taunted enemies.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float knockResist { get; private set; } = 0.5f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
 
 
         ////// Other Fields/Properties //////
@@ -207,7 +210,11 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(damageInfo.attacker && self.body && GetCount(self.body) > 0 && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && attackerBody.HasBuff(TauntDebuffModule.tauntDebuff)) {
+            if(damageInfo.attacker && self.body
+                && GetCount(self.body) > 0
+                && (!disableSelfDamage || self.gameObject != damageInfo.attacker.gameObject)
+                && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
+                && attackerBody.HasBuff(TauntDebuffModule.tauntDebuff)) {
                 damageInfo.damage *= 1f - damageResist;
                 damageInfo.force *= 1f - knockResist;
             }
@@ -217,6 +224,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void SetStateOnHurt_OnTakeDamageServer(On.RoR2.SetStateOnHurt.orig_OnTakeDamageServer orig, SetStateOnHurt self, DamageReport damageReport) {
             orig(self, damageReport);
             if(!self.targetStateMachine || !self.spawnedOverNetwork || !damageReport.attackerMaster || !damageReport.victimBody) return;
+            if(disableSelfDamage && damageReport.attacker == damageReport.victim) return;
             var count = GetCount(damageReport.attackerMaster);
             if(count > 0 && Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(count * damageReport.damageInfo.procCoefficient * procChance), damageReport.attackerMaster))
                 damageReport.victimBody.AddTimedBuff(TauntDebuffModule.tauntDebuff, procDuration);

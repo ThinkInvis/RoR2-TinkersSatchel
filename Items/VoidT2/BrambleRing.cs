@@ -41,6 +41,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Proc coefficient of the retaliation attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procCoefficient { get; private set; } = 0f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
 
 
         ////// Other Fields/Properties //////
@@ -206,7 +209,11 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(!self || !self.alive) { orig(self, damageInfo); return; }
+            if(!self || !self.alive
+                || (disableSelfDamage && damageInfo.attacker && damageInfo.attacker == self.gameObject)) {
+                orig(self, damageInfo);
+                return;
+            }
             var barrierPre = self.barrier;
             orig(self, damageInfo);
             var count = GetCount(self.body);

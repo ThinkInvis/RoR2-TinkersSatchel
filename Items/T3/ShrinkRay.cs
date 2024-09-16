@@ -45,6 +45,10 @@ namespace ThinkInvisible.TinkersSatchel {
             AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float scaleDebuff { get; private set; } = 0.5f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -214,9 +218,10 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
 			orig(self, damageInfo, victim);
-			if(NetworkServer.active && damageInfo != null && damageInfo.attacker) {
+			if(NetworkServer.active && damageInfo != null && damageInfo.attacker
+                && (!disableSelfDamage || damageInfo.attacker != victim)) {
 				var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
-				if(count > 0 && damageInfo.attacker != victim) {
+				if(count > 0) {
 					var sricd = damageInfo.attacker.GetComponent<ShrinkRayICDComponent>();
 					if(!sricd)
 						sricd = damageInfo.attacker.AddComponent<ShrinkRayICDComponent>();

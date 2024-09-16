@@ -44,6 +44,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Tick interval of the granted barrier, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float bufferRate { get; private set; } = 0f;
+        
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
 
 
 
@@ -197,7 +201,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             orig(self, damageInfo);
-            if(!self || !self.body || damageInfo == null || (damageInfo.damageType & DamageType.FallDamage) != 0) return;
+            if(!self || !self.body || damageInfo == null || (damageInfo.damageType & DamageType.FallDamage) != 0
+                || (disableSelfDamage && damageInfo.attacker && damageInfo.attacker == self.gameObject)) return;
             var count = GetCount(self.body);
             if(count <= 0) return;
             var cpt = self.GetComponent<DelayedBarrierComponent>();

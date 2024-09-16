@@ -47,10 +47,14 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("If true, indicator VFX will be disabled.")]
         public bool disableVFX { get; private set; } = false;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
-        
+
         internal static UnlockableDef unlockable;
         internal static GameObject vfxPrefab;
         public GameObject idrPrefab { get; private set; }
@@ -230,7 +234,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             orig(self, damageInfo);
 
-            if(self && damageInfo.attacker) {
+            if(self && damageInfo.attacker && (!disableSelfDamage || self.gameObject != damageInfo.attacker)) {
                 var mtt = damageInfo.attacker.GetComponent<MotionTrackerTracker>();
                 var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
                 if(mtt && count > 0) {

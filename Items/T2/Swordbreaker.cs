@@ -54,6 +54,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Internal cooldown for firing projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float icd { get; private set; } = 0.5f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -104,7 +108,12 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(!NetworkServer.active || !self || !self.alive || !damageInfo.attacker || damageInfo.procChainMask.HasProc(ProcType.Thorns)) { orig(self, damageInfo); return; }
+            if(!NetworkServer.active || !self || !self.alive|| !damageInfo.attacker
+                || damageInfo.procChainMask.HasProc(ProcType.Thorns)
+                || (damageInfo.attacker == self.gameObject && disableSelfDamage)) {
+                orig(self, damageInfo);
+                return;
+            }
             var shieldBeforeDamage = self ? self.shield : 0;
             orig(self, damageInfo);
             var count = GetCount(self.body);

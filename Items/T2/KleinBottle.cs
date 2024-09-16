@@ -63,6 +63,9 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procCoefficient { get; private set; } = 1f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
 
 
         ////// Other Fields/Properties //////
@@ -261,7 +264,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker) {
             orig(self, damageValue, damagePosition, damageIsSilent, attacker);
-            if(NetworkServer.active && self.body && damageValue > 0f) {
+            if(NetworkServer.active && self.body && damageValue > 0f
+                && (!disableSelfDamage || !attacker || attacker != self.gameObject)) {
                 var cpt = self.GetComponent<KleinBottleTimeTracker>();
                 if(!cpt)
                     cpt = self.gameObject.AddComponent<KleinBottleTimeTracker>();

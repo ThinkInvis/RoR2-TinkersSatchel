@@ -31,6 +31,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Range to spread debuffs within.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float range { get; private set; } = 50f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -197,7 +201,8 @@ namespace ThinkInvisible.TinkersSatchel {
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             orig(self, damageInfo);
 
-            if(damageInfo == null || !damageInfo.attacker || (damageInfo.damageType & DamageType.DoT) != 0) return;
+            if(damageInfo == null || !damageInfo.attacker || (damageInfo.damageType & DamageType.DoT) != 0
+                || (disableSelfDamage && damageInfo.attacker == self.gameObject)) return;
 
             var dc = DotController.FindDotController(self.gameObject);
             if(!dc || dc.dotStackList.Count <= 0) return;

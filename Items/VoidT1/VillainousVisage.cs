@@ -31,6 +31,10 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Duration of the stealth buff once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float buffDuration { get; private set; } = 1.3f;
 
+        [AutoConfigRoOCheckbox()]
+        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        public bool disableSelfDamage { get; private set; } = true;
+
 
 
         ////// Other Fields/Properties //////
@@ -235,7 +239,10 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody) && attackerBody.HasBuff(activeBuff) && !attackerBody.HasBuff(minStealthBuff)) {
+            if(damageInfo != null && damageInfo.attacker
+                && (!disableSelfDamage || damageInfo.attacker != self.gameObject)
+                && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
+                && attackerBody.HasBuff(activeBuff) && !attackerBody.HasBuff(minStealthBuff)) {
                 attackerBody.ClearTimedBuffs(activeBuff);
                 attackerBody.ClearTimedBuffs(RoR2Content.Buffs.Cloak);
                 damageInfo.damage *= 1f + GetCount(attackerBody) * damageFrac;
