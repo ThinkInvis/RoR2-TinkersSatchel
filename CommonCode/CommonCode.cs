@@ -218,4 +218,13 @@ namespace ThinkInvisible.TinkersSatchel {
 			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
 		}
 	}
+	public static class CommonCodeExtensions {
+		internal static Quaternion ApplyRandomSpread(this Xoroshiro128Plus rng, Quaternion targetRotation, float coneHalfAngleDegr) {
+			var phi = rng.nextNormalizedFloat * Mathf.PI * 2f;
+			var z = Mathf.Lerp(Mathf.Cos(coneHalfAngleDegr * Mathf.PI / 180f), 1f, rng.nextNormalizedFloat);
+			var zf = Mathf.Sqrt(1f - z * z);
+			var rDir = new Vector3(zf * Mathf.Cos(phi), zf * Mathf.Sin(phi), z);
+			return targetRotation * Quaternion.LookRotation(rDir);
+		}
+	}
 }

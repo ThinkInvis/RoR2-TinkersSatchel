@@ -323,10 +323,7 @@ namespace ThinkInvisible.TinkersSatchel {
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             var origRot = fireProjectileInfo.rotation;
             for(var i = 0; i < procCount; i++) {
-                fireProjectileInfo.rotation = origRot * Quaternion.Euler(
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr);
+                fireProjectileInfo.rotation = rng.ApplyRandomSpread(origRot, spreadConeHalfAngleDegr);
                 orig(self, fireProjectileInfo);
             }
         }
@@ -454,10 +451,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     damageColorIndex = DamageColorIndex.Item,
                     force = 0f,
                     owner = attackerBody.gameObject,
-                    rotation = origRot * Quaternion.Euler(
-                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                        (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr),
+                    rotation = rng.ApplyRandomSpread(origRot, spreadConeHalfAngleDegr),
                     position = attackerBody.corePosition,
                     procChainMask = procChainMask,
                     projectilePrefab = projectilePrefab

@@ -133,10 +133,6 @@ namespace ThinkInvisible.TinkersSatchel {
             if(attackerBody.rigidbody) targetPos += attackerBody.rigidbody.velocity * 0.5f;
             var targetRotation = Quaternion.LookRotation(targetVector);
             for(var i = 0; i < totalProjectiles; i++) {
-                var randomRotation = targetRotation * Quaternion.Euler(
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr,
-                    (rng.nextNormalizedFloat - 0.5f) * spreadConeHalfAngleDegr);
                 var pcm = default(ProcChainMask);
                 pcm.AddProc(ProcType.Thorns);
                 var randomFuseTime = 0.3f + (rng.nextNormalizedFloat * 2f - 1f) * 0.1f;
@@ -149,7 +145,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     position = sourcePos + targetVector * (self.body.radius + 1.5f),
                     procChainMask = pcm,
                     projectilePrefab = projectilePrefab,
-                    rotation = randomRotation,
+                    rotation = rng.ApplyRandomSpread(targetRotation, spreadConeHalfAngleDegr),
                     useFuseOverride = true,
                     fuseOverride = randomFuseTime,
                     useSpeedOverride = true,
