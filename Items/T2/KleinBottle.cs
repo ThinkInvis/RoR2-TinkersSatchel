@@ -276,7 +276,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     cpt.LastTimestamp = Time.fixedTime;
                 var count = GetCount(self.body);
                 var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
-                var proc = Util.CheckRoll(pChance, self.body.master);
+                var proc = Util.CheckRoll(pChance, self.body.master.luck, self.body.master);
                 if(proc) {
                     RoR2.Projectile.ProjectileManager.instance.FireProjectile(
                         blackHolePrefab,

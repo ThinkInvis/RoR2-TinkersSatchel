@@ -285,7 +285,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				&& !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
 				var count = GetCount(attackerBody);
 				if(count > 0) {
-					if(Util.CheckRoll(bounceChance, attackerBody.master)) {
+					if(Util.CheckRoll(bounceChance, attackerBody.master?.luck ?? 0, attackerBody.master)) {
 						ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
 							crit = attackerBody.RollCrit(),
 							damage = self.damage * meleeProjectileDamage,
@@ -324,7 +324,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				var origDamage = self.damage;
 
 				for(var i = 1; i <= maxBounces; i++) {
-					if(!Util.CheckRoll(bounceChance, body.master)) return retv;
+					if(!Util.CheckRoll(bounceChance, body.master?.luck ?? 0, body.master)) return retv;
 					var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner), TeamIndex.Neutral)
 						.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
 						.Select(obj => {
@@ -391,7 +391,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			var body = self.owner.GetComponent<CharacterBody>();
 			var count = GetCount(body);
 			var rb = self.GetComponent<Rigidbody>();
-			if(count <= 0 || !rb || !Util.CheckRoll(bounceChance, body.master)) return;
+			if(count <= 0 || !rb || !Util.CheckRoll(bounceChance, body.master?.luck ?? 0, body.master)) return;
 			var ppc = self.gameObject.AddComponent<PinballProjectileController>();
 			ppc.maxBounces = baseBounces + stackBounces * (count - 1);
 		}
@@ -517,7 +517,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				EffectManager.SpawnEffect(Pinball.instance.effectPrefab, pinbEffData, true);
 			}
 
-			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance, ownerMaster)) {
+			if(currentBounces >= maxBounces || !Util.CheckRoll(Pinball.instance.bounceChance, ownerMaster.luck, ownerMaster)) {
 				isBouncy = false;
 				currentBounces = maxBounces;
 				var colliders = GetComponentsInChildren<Collider>();

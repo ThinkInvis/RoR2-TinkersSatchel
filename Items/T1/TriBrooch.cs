@@ -254,7 +254,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(!self.targetStateMachine || !self.spawnedOverNetwork || !report.attackerBody)
                     return;
                 var count = GetCount(report.attackerBody);
-                if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procChance, report.attackerMaster)) return;
+                if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procChance, report.attackerMaster.luck, report.attackerMaster)) return;
                 bool isFreeze = (report.damageInfo.damageType & DamageType.Freeze2s) != DamageType.Generic;
                 bool isStun = (report.damageInfo.damageType & DamageType.Stun1s) != DamageType.Generic || (report.damageInfo.damageType & DamageType.Shock5s) != DamageType.Generic;
                 if(isFreeze) {
@@ -283,7 +283,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.EmitDelegate<Action<SetStateOnHurt, DamageReport>>((self, report) => {
                     if(report == null || !report.attackerBody || !report.victimBody) return;
                     var count = GetCount(report.attackerBody);
-                    if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procChance, report.attackerMaster)) return;
+                    if(count <= 0 || (preventSelfProc && report.attacker == report.victim) || !Util.CheckRoll(procChance, report.attackerMaster.luck, report.attackerMaster)) return;
                     bool doFreeze = rng.nextBool;
                     if(doFreeze) {
                         InflictFreezeOrStun(count, self, report, false);
@@ -304,7 +304,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var atkb = inflictDotInfo.attackerObject.GetComponent<CharacterBody>();
             var count = GetCount(atkb);
             if(count <= 0 || !victimBody || !victimSSOH || (preventSelfProc && victimBody == atkb)) return;
-            if(!Util.CheckRoll(procChance, atkb.master))
+            if(!Util.CheckRoll(procChance, atkb.master.luck, atkb.master))
                 return;
             bool isStun = rng.nextBool;
             if(!victimBody.healthComponent.isInFrozenState) {

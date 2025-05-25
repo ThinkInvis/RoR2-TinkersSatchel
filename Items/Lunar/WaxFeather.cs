@@ -165,7 +165,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void GlobalEventManager_onServerDamageDealt(DamageReport report) {
             if(report == null || !report.victimBody || !report.attackerBody || report.attackerBody != body) return;
 
-            if(!Util.CheckRoll(WaxFeather.instance.igniteChance * Mathf.Min(charge, 1f), report.attackerMaster)) return;
+            if(!Util.CheckRoll(WaxFeather.instance.igniteChance * Mathf.Min(charge, 1f), report.attackerMaster.luck, report.attackerMaster)) return;
 
             var dot = new InflictDotInfo {
                 victimObject = report.victim.gameObject,

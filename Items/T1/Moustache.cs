@@ -226,7 +226,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!self.targetStateMachine || !self.spawnedOverNetwork || !damageReport.attackerMaster || !damageReport.victimBody) return;
             if(disableSelfDamage && damageReport.attacker == damageReport.victim) return;
             var count = GetCount(damageReport.attackerMaster);
-            if(count > 0 && Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(count * damageReport.damageInfo.procCoefficient * procChance), damageReport.attackerMaster))
+            if(count > 0 && Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(count * damageReport.damageInfo.procCoefficient * procChance), damageReport.attackerMaster.luck, damageReport.attackerMaster))
                 damageReport.victimBody.AddTimedBuff(TauntDebuffModule.tauntDebuff, procDuration);
         }
     }

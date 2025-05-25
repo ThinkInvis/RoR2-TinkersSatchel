@@ -226,7 +226,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(enemies.Length <= 0) return;
 
             for(var i = 0; i < count; i++) {
-                if(!Util.CheckRoll(procChance, body.master)) continue;
+                if(!Util.CheckRoll(procChance, body.master?.luck ?? 0, body.master)) continue;
                 var tgt = rng.NextElementUniform(enemies);
                 var dot = rng.NextElementUniform(dc.dotStackList);
                 var idi = new InflictDotInfo {
