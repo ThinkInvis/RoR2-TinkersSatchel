@@ -91,6 +91,7 @@ namespace ThinkInvisible.TinkersSatchel {
             rewindBuff.isCooldown = true;
             rewindBuff.name = "TKSATRewind";
             rewindBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/rewindBuffIcon.png");
+            rewindBuff.ignoreGrowthNectar = true;
             ContentAddition.AddBuffDef(rewindBuff);
         }
 

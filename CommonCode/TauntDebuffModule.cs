@@ -23,7 +23,9 @@ namespace ThinkInvisible.TinkersSatchel {
 			tauntDebuff.name = "TKSATTaunt";
 			tauntDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texAttackIcon.png")
 				.WaitForCompletion();
-			ContentAddition.AddBuffDef(tauntDebuff);
+            tauntDebuff.ignoreGrowthNectar = true;
+            tauntDebuff.flags = BuffDef.Flags.ExcludeFromNoxiousThorns;
+            ContentAddition.AddBuffDef(tauntDebuff);
 		}
 
 		public override void SetupBehavior() {

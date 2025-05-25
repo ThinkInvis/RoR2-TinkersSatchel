@@ -58,6 +58,7 @@ namespace ThinkInvisible.TinkersSatchel {
             eligibilityBuff.isDebuff = false;
             eligibilityBuff.name = "TKSATMountainTokenEligibility";
             eligibilityBuff.iconSprite = itemDef.pickupIconSprite;
+            eligibilityBuff.ignoreGrowthNectar = true;
             ContentAddition.AddBuffDef(eligibilityBuff);
         }
 

@@ -68,6 +68,7 @@ namespace ThinkInvisible.TinkersSatchel {
             deadManSwitchBuff.isCooldown = true;
             deadManSwitchBuff.name = "TKSATDeadManSwitch";
             deadManSwitchBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/deadManSwitchBuff.png");
+            deadManSwitchBuff.ignoreGrowthNectar = true;
             ContentAddition.AddBuffDef(deadManSwitchBuff);
         }
 

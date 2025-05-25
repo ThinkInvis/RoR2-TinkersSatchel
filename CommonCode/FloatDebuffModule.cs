@@ -20,7 +20,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			floatDebuff.name = "TKSATFloat";
 			floatDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texBuffSlow50Icon.png")
 				.WaitForCompletion();
-			ContentAddition.AddBuffDef(floatDebuff);
+            floatDebuff.ignoreGrowthNectar = true;
+            ContentAddition.AddBuffDef(floatDebuff);
 		}
 
 		public override void SetupBehavior() {

@@ -215,6 +215,7 @@ namespace ThinkInvisible.TinkersSatchel {
             damageBonusDisplayBuff.isCooldown = true;
             damageBonusDisplayBuff.name = modInfo.shortIdentifier + "HealsToDamageCharging";
             damageBonusDisplayBuff.iconSprite = iconResource;
+            damageBonusDisplayBuff.ignoreGrowthNectar = true;
             ContentAddition.AddBuffDef(damageBonusDisplayBuff);
 
             statBuff = ScriptableObject.CreateInstance<BuffDef>();
