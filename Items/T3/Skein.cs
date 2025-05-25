@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Utility, ItemTag.Damage });
 
 		protected override string[] GetDescStringArgs(string langID = null) => new[] {
-			highMassFrac.ToString("0%"), lowMassFrac.ToString("0%"), massChangeDuration.ToString("N0"), graceRate.ToString("0%"), hitIcd.ToString("N2")
+			highMassFrac.ToString("0%"), lowMassFracMove.ToString("0%"), lowMassFracAttack.ToString("0%"), massChangeDuration.ToString("N0"), graceRate.ToString("0%"), hitIcd.ToString("N2")
 		};
 
 
@@ -29,9 +29,14 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
 		[AutoConfig("Maximum speed to add per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-		public float lowMassFrac { get; private set; } = 0.5f;
+		public float lowMassFracAttack { get; private set; } = 0.3f;
 
-		[AutoConfigRoOSlider("{0:N0} s", 0f, 30f)]
+        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
+        [AutoConfig("Maximum speed to add per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        public float lowMassFracMove { get; private set; } = 0.4f;
+
+        [AutoConfigRoOSlider("{0:N0} s", 0f, 30f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Time required to reach maximum buff, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
 		public float massChangeDuration { get; private set; } = 5f;
@@ -240,9 +245,8 @@ namespace ThinkInvisible.TinkersSatchel {
 			var count = GetCount(sender);
 			var cpt = sender.GetComponent<SkeinTracker>();
 			if(count > 0 && cpt) {
-				var fac = cpt.GetMovementScalar() * count * lowMassFrac;
-				args.moveSpeedMultAdd += fac;
-				args.attackSpeedMultAdd += fac;
+                args.moveSpeedMultAdd += cpt.GetMovementScalar() * count * lowMassFracMove;
+				args.attackSpeedMultAdd += cpt.GetMovementScalar() * count * lowMassFracAttack;
             }
 		}
 

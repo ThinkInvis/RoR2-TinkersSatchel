@@ -257,7 +257,7 @@
 
 		"TINKERSSATCHEL_SKEIN_NAME": "Spacetime Skein",
 		"TINKERSSATCHEL_SKEIN_PICKUP": "Gain mass while stationary. Lose mass while moving.",
-		"TINKERSSATCHEL_SKEIN_DESC": "Standing still reduces all <style=cIsDamage>damage and knockback</style> you take by up to <style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style></style>. Moving increasing your <style=cIsUtility>move and attack speed</style> by up to <style=cIsUtility>{1} <style=cStack>(+{1} per stack, linear)</style></style>. Each effect ramps up over {2} seconds, while the other effect is lost {3} as fast. Taking damage forces the movement effect to charge for {4} seconds.",
+		"TINKERSSATCHEL_SKEIN_DESC": "Standing still reduces all <style=cIsDamage>damage and knockback</style> you take by up to <style=cIsDamage>{0} <style=cStack>(+{0} per stack, hyperbolic)</style></style>. Moving increasing your <style=cIsUtility>move and attack speed</style> by up to <style=cIsUtility>{1} and {2} <style=cStack>(+{1} and {2} per stack, linear)</style></style>. Each effect ramps up over {3} seconds, while the other effect is lost {4} as fast. Taking damage forces the movement effect to charge for {5} seconds.",
 		"TINKERSSATCHEL_SKEIN_LORE": "",
 		"ACHIEVEMENT_TKSAT_SKEIN_NAME": "Phenomenal Cosmic Power",
 		"ACHIEVEMENT_TKSAT_SKEIN_DESCRIPTION": "Complete all 4 Item Set achievements from Tinker's Satchel.",
