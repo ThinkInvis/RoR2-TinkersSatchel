@@ -36,13 +36,15 @@
   <ItemGroup>
     <Reference Include="AncientScepter">
       <HintPath>Compat\AncientScepter.dll</HintPath>
+	  <Private>False</Private>
     </Reference>
     <Reference Include="Dronemeld">
       <HintPath>..\Dronemeld\Build\Dronemeld\Dronemeld.dll</HintPath>
+	  <Private>False</Private>
     </Reference>
     <Reference Include="TILER2">
       <HintPath>..\TILER2\Build\TILER2\TILER2.dll</HintPath>
-      <Private>false</Private>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 
