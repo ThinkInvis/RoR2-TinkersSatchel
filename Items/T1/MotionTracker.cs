@@ -26,17 +26,17 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageFracBase { get; private set; } = 0.4f;
+        public float damageFracBase { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proc coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
-        public float procFrac { get; private set; } = 0.5f;
+        public float procFrac { get; private set; } = 0.35f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Time in combat required to recharge projectile attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float damageTime { get; private set; } = 3f;
+        public float damageTime { get; private set; } = 4f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
