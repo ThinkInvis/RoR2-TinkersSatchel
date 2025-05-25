@@ -130,7 +130,7 @@ namespace ThinkInvisible.TinkersSatchel {
             });
         }
 
-        private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, BaseState self) {
+        private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, RoR2.TeleporterInteraction.ChargingState self) {
             orig(self);
             foreach(var cb in CharacterBody.readOnlyInstancesList)
                 if(GetCount(cb) > 0 && !cb.TryGetComponent<MountainTokenTracker>(out _))

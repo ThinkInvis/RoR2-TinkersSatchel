@@ -262,8 +262,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
 
-        private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker) {
-            orig(self, damageValue, damagePosition, damageIsSilent, attacker);
+        private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker, bool delayedDamage, bool firstHitOfDelayedDamage) {
+            orig(self, damageValue, damagePosition, damageIsSilent, attacker, delayedDamage, firstHitOfDelayedDamage);
             if(NetworkServer.active && self.body && damageValue > 0f
                 && (!disableSelfDamage || !attacker || attacker != self.gameObject)) {
                 var cpt = self.GetComponent<KleinBottleTimeTracker>();

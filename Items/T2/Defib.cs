@@ -489,10 +489,10 @@ namespace ThinkInvisible.TinkersSatchel {
             if(hasBody) healingSourceStack.Pop();
         }
 
-        private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker) {
+        private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker, bool delayedDamage, bool firstHitOfDelayedDamage) {
             bool hasBody = self && self.body;
             if(hasBody) healingSourceStack.Push(self.body);
-            orig(self, damageValue, damagePosition, damageIsSilent, attacker);
+            orig(self, damageValue, damagePosition, damageIsSilent, attacker, delayedDamage, firstHitOfDelayedDamage);
             if(hasBody) healingSourceStack.Pop();
         }
 
