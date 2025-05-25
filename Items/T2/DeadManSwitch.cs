@@ -92,7 +92,6 @@ namespace ThinkInvisible.TinkersSatchel {
                 && !body.GetComponent<DeadManSwitchTracker>())
                 body.gameObject.AddComponent<DeadManSwitchTracker>();
         }
-
     }
 
     [RequireComponent(typeof(CharacterBody))]
@@ -121,8 +120,11 @@ namespace ThinkInvisible.TinkersSatchel {
                     * eqp.cooldown
                     * (DeadManSwitch.instance.externalCdr ? body.inventory.CalculateEquipmentCooldownScale() : 1f);
                 body.AddTimedBuff(DeadManSwitch.instance.deadManSwitchBuff, icd);
-                if(body.equipmentSlot.PerformEquipmentAction(eqp))
+                if(body.equipmentSlot.PerformEquipmentAction(eqp)) {
+                    var es = body.inventory.GetEquipment(body.inventory.activeEquipmentSlot);
                     body.equipmentSlot.OnEquipmentExecuted();
+                    body.inventory.SetEquipment(es, body.inventory.activeEquipmentSlot);
+                }
             }
         }
     }
