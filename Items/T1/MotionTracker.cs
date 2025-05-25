@@ -227,8 +227,11 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
         
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(GetCount(body) > 0 && !body.GetComponent<MotionTrackerTracker>())
+            var mtt = body.GetComponent<MotionTrackerTracker>();
+            if(GetCount(body) > 0 && !mtt)
                 body.gameObject.AddComponent<MotionTrackerTracker>();
+            else if(GetCount(body) == 0 && mtt)
+                GameObject.Destroy(mtt);
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
@@ -261,6 +264,15 @@ namespace ThinkInvisible.TinkersSatchel {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
             ownerBody = GetComponent<CharacterBody>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void OnDestroy() {
+            var frozenCombatants = activeCombatants.ToArray();
+            foreach(var kvp in frozenCombatants) {
+                if(kvp.Value.indicator != null)
+                    kvp.Value.indicator.active = false;
+            }
         }
 
         public void SetInCombat(GameObject with) {
