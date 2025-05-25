@@ -10,7 +10,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="BepInEx.Core" Version="5.4.21" />
+    <PackageReference Include="BepInEx.Core" Version="[5.4.21]" />
     <PackageReference Include="MMHOOK.RoR2" Version="2025.5.23" NoWarn="NU1701" />
     <PackageReference Include="R2API.Core" Version="5.1.5" />
     <PackageReference Include="R2API.DamageType" Version="1.1.7" />
