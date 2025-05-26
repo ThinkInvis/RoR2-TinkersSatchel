@@ -32,8 +32,9 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 2 for Huntress,
 	- and 3 for Engineer;
 - 6 artifacts;
-- and 2 other features:
+- and 3 other features:
 	- a UI tweak,
+	- an off-by-default module allowing one-shot protection while cursed,
 	- and a module allowing easy changes to equipment max charges.
 
 Short summaries are provided below. For a full description of each item, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ContentSummary.md
@@ -599,15 +600,14 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><b>Curses Keep OSP</b></td>
 			<td>This module causes One-Shot Protection to be kept while cursed (e.g. Shaped Glass). Disabled by default.</td>
 		</tr>
-		<tr>
-			<td><b>Knockback Fin Float</b></td>
-			<td>This module reworks the vanilla Seekers of the Storm item Knockback Fin. Instead of knocking enemies back, it will apply the Float debuff (also applied by this mod's Unstable Klein Bottle), holding an enemy in the air for a short time and then applying damage and downwards velocity.</td>
-		</tr>
 	</tbody>
 </table>
 
 ## Issues/TODO
 
+- Stamina Bar max charges change, and maybe the relevant patch, is very broken.
+- Pulse Grenade causes console log spam, magnetism may be broken or undertuned.
+- Fudge Dice needs an indicator buff.
 - Taunt and Float debuffs need custom icons.
 - ItemDisplayRule incompleteness:
 	- A few TkSat items have absent or incomplete ItemDisplayRules.
@@ -625,6 +625,37 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**5.2.0**
+
+- Recompiled, remapped signatures, and updated dependencies for recent vanilla updates.
+	- Fixed Pulse Monitor unintentionally consuming equipment charges.
+- Fixed Old-War Lidar still working and applying damage even after the last item stack is lost.
+- Spacetime Skein's attack and move speed bonuses can now be configured separately.
+- Removed the Knockback Fin Float tweak module (vanilla item behavior was changed and the tweak behavior no longer really fits).
+- Balance changes:
+	- Prevented self-damage/debuff by default on the following items: Old-War Lidar, Macho Moustache, Negative Feedback Loop, Unstable Klein Bottle, Swordbreaker, Shrink Ray, Obsidian Brooch, Villainous Visage, Bramble Band.
+		- Self-damage/debuff on these items is now configurable.
+	- Major nerf to Old-War Lidar.
+		- Attack frequency: 0.33/sec -> 0.25/sec.
+		- Attack damage: 40% -> 20%.
+		- Attack proc coefficient: 50% -> 35%.
+		- *On closer inspection, this was kind of outperforming Ukelele, a similar Uncommon item.*
+	- Moderate nerf to Spacetime Skein.
+		- Attack speed bonus: +50% -> +30%.
+		- Move speed bonus: +50% -> +40%.
+- Balance-like item bugfixes:
+	- Allowed Luck stat (57-Leaf Clover and Fudge Dice) to affect the following items: Wax Feather, Macho Moustache, Triskelion Brooch, Unstable Klein Bottle, Pinball Wizard, Obsidian Brooch.
+		- Notably, this does not include Sturdy Mug nor Timelost Rum.
+	- Sturdy Mug and Swordbreaker now use proper conic spread (was square).
+	- Applied missing damage source information to all skills and Lodestone equipment.
+		- Allows Luminous Shot to work on all 3 primary skills.
+	- Excluded some buffs/debuffs from Growth Nectar and/or Noxious Thorn.
+- Fixed a formatting issue in the Sturdy Mug description.
+- Some backend improvements:
+	- Suppressed a harmless (but very annoying) warning on a dependency.
+	- Made BepInEx dependency version static.
+	- Postbuild event can now create the Build folder and project name subfolder if missing (e.g. on a new clone of the repo).
 
 **5.1.1**
 
@@ -688,30 +719,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Removed a bunch of TODO comments. *This is what we have GitHub issues and/or a separate private text file for.*
 	- Removed some dead code and unnecessary using directives.
 	- Suppressed some compiler messages.
-
-**4.2.0** *The Swashbuckling Update*
-
-- New content:
-	- Items
-		- Hurdy-Gurdy (T2): Wind up with uninterrupted Secondary skills to fire burning projectiles.
-		- Swordbreaker (T2): Retaliate with exploding sparks when your shield is struck.
-- Balance pass:
-	- Bramble Ring: Partially reworked.
-		- New effect: a small percentage of damage taken is converted to barrier. Taking barrier damage inflicts proportional bleed on the attacker.
-		- Old effect: a percentage of damage taken was inflicted on the attacker.
-		- *This item was too redundant with vanilla's Razorwire.*
-	- Negative Feedback Loop:
-		- Buffered damage is now nonlethal (can be disabled in config).
-		- Buffered damage can now be cleansed by Blast Shower and other modded sources of DoT cleanse (can be disabled or made partial in config).
-	- RC Controller:
-		- Now grants a moderate amount of armor per stack per affected drone.
-		- RC Controller now indefinitely toggles manual aiming with pings, instead of having a limited duration.
-			- Removed the 'duwration' config option.
-		- *This was a little too close to vanilla's Spare Drone Parts, and pretty much a worse version of it if you didn't have a use for the manual drone aiming.*
-	- Reduced spawn chance of Bulwark Drone and Item Drone to match that of vanilla Equipment Drone.
-- Removed Classic Items compatibility code.
-	- *Classic Items has been deprecated for a while now. Recommended replacements include *Lost in Transit* and/or *Standalone Ancient Scepter*.*
-	- Removed Beating Embryo functionality entirely. *Lost in Transit*'s Beating Embryo reduces cooldown instead of doubling effects.
-	- Retargeted Ancient Scepter compatibility to work with Standalone Ancient Scepter.
-- Renamed Bramble Ring to Bramble Band (for added alliterative appeal).
-- Bramble Band retaliation damage is now visible as a void lightning orb.

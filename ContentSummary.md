@@ -91,7 +91,7 @@
 				<b>Old War Lidar</b><br>
 				<details>
 					<summary>Periodically fire weak projectiles at all hostiles.</summary>
-					<small>For 6 seconds after hitting or being hit by an enemy, strike with an orbital laser for 40% damage (+20% per stack) every 3 seconds.</small>
+					<small>For 6 seconds after hitting or being hit by an enemy, strike with an orbital laser for 20% damage (+20% per stack) every 4 seconds.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -317,7 +317,7 @@
 				<b>Spacetime Skein</b><br>
 				<details>
 					<summary>Gain mass while stationary. Lose mass while moving.</summary>
-					<small>Standing still reduces the next damage and knockback you take by up to 50% (+50% per stack, hyperbolic). Moving increasing your move and attack speed by up to 50% (+50% per stack, linear). Each effect ramps up over 5 seconds, while the other effect is lost 200% as fast. Taking damage forces the movement effect to charge for 0.25 seconds.</small>
+					<small>Standing still reduces the next damage and knockback you take by up to 50% (+50% per stack, hyperbolic). Moving increasing your move and attack speed by up to 40% and 30% (+40% and 30% per stack, linear). Each effect ramps up over 5 seconds, while the other effect is lost 200% as fast. Taking damage forces the movement effect to charge for 0.25 seconds.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -904,10 +904,6 @@
 		<tr>
 			<td><b>Curses Keep OSP</b></td>
 			<td>This module causes One-Shot Protection to be kept while cursed (e.g. Shaped Glass). Disabled by default.</td>
-		</tr>
-		<tr>
-			<td><b>Knockback Fin Float</b></td>
-			<td>This module reworks the vanilla Seekers of the Storm item Knockback Fin. Instead of knocking enemies back, it will apply the Float debuff (also applied by this mod's Unstable Klein Bottle), holding an enemy in the air for a short time and then applying damage and downwards velocity.</td>
 		</tr>
 	</tbody>
 </table>

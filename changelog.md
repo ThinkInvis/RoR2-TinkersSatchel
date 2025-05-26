@@ -2,6 +2,37 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.2.0**
+
+- Recompiled, remapped signatures, and updated dependencies for recent vanilla updates.
+	- Fixed Pulse Monitor unintentionally consuming equipment charges.
+- Fixed Old-War Lidar still working and applying damage even after the last item stack is lost.
+- Spacetime Skein's attack and move speed bonuses can now be configured separately.
+- Removed the Knockback Fin Float tweak module (vanilla item behavior was changed and the tweak behavior no longer really fits).
+- Balance changes:
+	- Prevented self-damage/debuff by default on the following items: Old-War Lidar, Macho Moustache, Negative Feedback Loop, Unstable Klein Bottle, Swordbreaker, Shrink Ray, Obsidian Brooch, Villainous Visage, Bramble Band.
+		- Self-damage/debuff on these items is now configurable.
+	- Major nerf to Old-War Lidar.
+		- Attack frequency: 0.33/sec -> 0.25/sec.
+		- Attack damage: 40% -> 20%.
+		- Attack proc coefficient: 50% -> 35%.
+		- *On closer inspection, this was kind of outperforming Ukelele, a similar Uncommon item.*
+	- Moderate nerf to Spacetime Skein.
+		- Attack speed bonus: +50% -> +30%.
+		- Move speed bonus: +50% -> +40%.
+- Balance-like item bugfixes:
+	- Allowed Luck stat (57-Leaf Clover and Fudge Dice) to affect the following items: Wax Feather, Macho Moustache, Triskelion Brooch, Unstable Klein Bottle, Pinball Wizard, Obsidian Brooch.
+		- Notably, this does not include Sturdy Mug nor Timelost Rum.
+	- Sturdy Mug and Swordbreaker now use proper conic spread (was square).
+	- Applied missing damage source information to all skills and Lodestone equipment.
+		- Allows Luminous Shot to work on all 3 primary skills.
+	- Excluded some buffs/debuffs from Growth Nectar and/or Noxious Thorn.
+- Fixed a formatting issue in the Sturdy Mug description.
+- Some backend improvements:
+	- Suppressed a harmless (but very annoying) warning on a dependency.
+	- Made BepInEx dependency version static.
+	- Postbuild event can now create the Build folder and project name subfolder if missing (e.g. on a new clone of the repo).
+
 **5.1.1**
 
 - Fixed missing orig calls causing several vanilla items (Bustling Fungus, Warbanner, Mercurial Rachis, Effigy of Grief, Interstellar Deskplant, maybe others) to not function.
