@@ -115,8 +115,9 @@ namespace ThinkInvisible.TinkersSatchel {
 						isCrit = Util.CheckRoll(critStat, characterBody.master),
 						radius = 0.1f,
 						smartCollision = true,
-						hitCallback = AltModeHitCallback
-					}.Fire();
+						hitCallback = AltModeHitCallback,
+                        damageType = DamageTypeCombo.GenericPrimary
+                    }.Fire();
 				}
 			}
 
@@ -142,7 +143,8 @@ namespace ThinkInvisible.TinkersSatchel {
 						hitEffectPrefab = EntityStates.Commando.CommandoWeapon.FirePistol2.hitEffectPrefab,
 						isCrit = Util.CheckRoll(critStat, characterBody.master),
 						radius = 0.1f,
-						smartCollision = true
+						smartCollision = true,
+						damageType = DamageTypeCombo.GenericPrimary
 					}.Fire();
 				}
 				characterBody.AddSpreadBloom(spreadBloomValue);

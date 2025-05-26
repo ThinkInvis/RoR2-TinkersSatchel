@@ -136,7 +136,7 @@ namespace ThinkInvisible.TinkersSatchel {
 							crit = this.characterBody.RollCrit(),
 							damage = this.characterBody.damage * damageCoeff,
 							damageColorIndex = DamageColorIndex.Default,
-							damageType = DamageType.AOE,
+							damageType = new DamageTypeCombo(DamageType.AOE, DamageTypeExtended.Generic, DamageSource.Secondary),
 							force = Vector3.zero,
 							inflictor = null,
 							procChainMask = default,

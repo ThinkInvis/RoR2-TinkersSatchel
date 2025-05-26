@@ -321,7 +321,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         crit = slot.characterBody.RollCrit(),
                         damage = damage,
                         damageColorIndex = DamageColorIndex.Default,
-                        damageType = DamageType.Generic | DamageType.AOE,
+                        damageType = new DamageTypeCombo(DamageType.Generic | DamageType.AOE, DamageTypeExtended.Generic, DamageSource.Equipment),
                         canRejectForce = false,
                         force = (vInitial - ((mcpt != null) ? mcpt.velocity : Vector3.zero)) * ((mcpt != null) ? mcpt.mass : 1f),
                         position = tcpt.body.corePosition,

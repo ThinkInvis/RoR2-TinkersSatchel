@@ -103,7 +103,8 @@ namespace ThinkInvisible.TinkersSatchel {
 					bouncedObjects = new(),
 					range = 100f,
 					origin = muzzle.position,
-					target = self.initialOrbTarget
+					target = self.initialOrbTarget,
+					damageType = DamageTypeCombo.GenericSecondary
 				};
 				OrbManager.instance.AddOrb(orb);
 			} else

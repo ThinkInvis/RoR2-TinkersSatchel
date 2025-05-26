@@ -149,7 +149,7 @@ namespace ThinkInvisible.TinkersSatchel {
 								0f, characterBody.spreadBloomAngle,
 								1f, 1f, 0f, 0f)
 							),
-						gameObject, damageStat, 0f, characterBody.RollCrit());
+						gameObject, damageStat, 0f, characterBody.RollCrit(), damageType: DamageTypeCombo.GenericPrimary);
 				}
 				characterBody.AddSpreadBloom(spreadBloomValue);
 			}
@@ -233,8 +233,9 @@ namespace ThinkInvisible.TinkersSatchel {
 				position = originalPoint.position,
 				procChainMask = projc.procChainMask,
 				projectilePrefab = EngiPrimaryFlak.instance.subProjectilePrefab,
-				rotation = Util.QuaternionSafeLookRotation(ray.direction)
-			});
+				rotation = Util.QuaternionSafeLookRotation(ray.direction),
+				damageTypeOverride = DamageTypeCombo.GenericPrimary
+            });
 		}
     }
 }

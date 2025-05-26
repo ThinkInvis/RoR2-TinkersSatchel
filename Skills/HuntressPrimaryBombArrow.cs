@@ -115,7 +115,8 @@ namespace ThinkInvisible.TinkersSatchel {
 					ProjectileManager.instance.FireProjectile(
 						HuntressPrimaryBombArrow.instance.projectilePrefab, aim.origin,
 						Util.QuaternionSafeLookRotation(aim.direction),
-						gameObject, damageStat * damageModifier, 0f, characterBody.RollCrit());
+						gameObject, damageStat * damageModifier, 0f, characterBody.RollCrit(),
+						damageType: DamageTypeCombo.GenericPrimary);
 				}
 			}
 
