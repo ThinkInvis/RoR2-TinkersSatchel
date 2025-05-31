@@ -18,7 +18,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			floatDebuff.canStack = false;
 			floatDebuff.isDebuff = true;
 			floatDebuff.name = "TKSATFloat";
-			floatDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texBuffSlow50Icon.png")
+			floatDebuff.iconSprite = Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/texBuffSlow50Icon.tif")
 				.WaitForCompletion();
             floatDebuff.ignoreGrowthNectar = true;
             ContentAddition.AddBuffDef(floatDebuff);
