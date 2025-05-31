@@ -264,7 +264,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void HealthComponent_UpdateLastHitTime(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker, bool delayedDamage, bool firstHitOfDelayedDamage) {
             orig(self, damageValue, damagePosition, damageIsSilent, attacker, delayedDamage, firstHitOfDelayedDamage);
-            if(NetworkServer.active && self.body && damageValue > 0f
+            if(NetworkServer.active && self.body && self.body.teamComponent && damageValue > 0f
                 && (!disableSelfDamage || !attacker || attacker != self.gameObject)) {
                 var cpt = self.GetComponent<KleinBottleTimeTracker>();
                 if(!cpt)
@@ -276,7 +276,11 @@ namespace ThinkInvisible.TinkersSatchel {
                     cpt.LastTimestamp = Time.fixedTime;
                 var count = GetCount(self.body);
                 var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
-                var proc = Util.CheckRoll(pChance, self.body.master.luck, self.body.master);
+                bool proc = false;
+                if(self.body.master)
+                    proc = Util.CheckRoll(pChance, self.body.master.luck, self.body.master);
+                else
+                    proc = Util.CheckRoll(pChance);
                 if(proc) {
                     RoR2.Projectile.ProjectileManager.instance.FireProjectile(
                         blackHolePrefab,
@@ -298,7 +302,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     foreach(TeamComponent tcpt in teamMembers) {
                         var velVec = tcpt.transform.position - self.transform.position;
                         if(velVec.sqrMagnitude <= sqrad) {
-                            if(tcpt.body && tcpt.body.isActiveAndEnabled) {
+                            if(tcpt.body && tcpt.body.isActiveAndEnabled && tcpt.body.healthComponent) {
                                 FloatDebuffModule.Inflict(tcpt.body.healthComponent, new DamageInfo {
                                     attacker = self.gameObject,
                                     canRejectForce = true,

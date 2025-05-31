@@ -96,32 +96,36 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, System.Collections.Generic.List<HurtBox> hitResults) {
             var retv = orig(self, hitResults);
+            if(!self.hitBoxGroup || !self.attacker || !self.attacker.TryGetComponent<CharacterBody>(out var ownerBody) || !ownerBody.characterMotor || !ownerBody.characterDirection) return retv; //missing important data, abort
             Vector3 averageHitboxCentroid = Vector3.zero;
             foreach(var hb in self.hitBoxGroup.hitBoxes) {
                 averageHitboxCentroid += hb.transform.position;
             }
             averageHitboxCentroid /= self.hitBoxGroup.hitBoxes.Length;
-            if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var ownerBody) && (ownerBody.coreTransform.position - averageHitboxCentroid).sqrMagnitude < 25f && ownerBody.characterMotor && ownerBody.characterDirection) {
-                var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
-                var maxRange = meleeAmount * GetCount(ownerBody);
-                foreach(var t in targets) {
-                    if(!t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;
-                    var towardsVec = averageHitboxCentroid - t.body.corePosition;
-                    if(towardsVec.magnitude < maxRange && t.body) {
-                        var falloffFactor = (towardsVec.magnitude / maxRange);
-                        var targetSpeed = falloffFactor * meleeForce;
-                        var currentVelocity = t.body.characterMotor ? t.body.characterMotor.velocity : t.body.rigidbody.velocity;
-                        var currentSpeed = currentVelocity.magnitude;
-                        var angularAccel = meleeTurnForce * Mathf.PI * 2 * falloffFactor;
-                        if(currentSpeed < targetSpeed) {
-                            currentVelocity *= targetSpeed / currentSpeed;
-                        }
-                        var newVelocity = Vector3.RotateTowards(currentVelocity, towardsVec.normalized * targetSpeed, angularAccel * Time.fixedDeltaTime, 0f);
-                        if(t.body.characterMotor)
-                            t.body.characterMotor.velocity = newVelocity;
-                        else
-                            t.body.rigidbody.velocity = newVelocity;
+            if((ownerBody.coreTransform.position - averageHitboxCentroid).sqrMagnitude >= 25f) return retv; //attack is too far from owner, probably not melee, abort
+            var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
+            var maxRange = meleeAmount * GetCount(ownerBody);
+            foreach(var t in targets) {
+                if(!t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;
+                var towardsVec = averageHitboxCentroid - t.body.corePosition;
+                if(towardsVec.magnitude < maxRange) {
+                    var falloffFactor = (towardsVec.magnitude / maxRange);
+                    var targetSpeed = falloffFactor * meleeForce;
+                    Vector3 currentVelocity;
+                    if(t.body.characterMotor)
+                        currentVelocity = t.body.characterMotor.velocity;
+                    else
+                        currentVelocity = t.body.rigidbody.velocity;
+                    var currentSpeed = currentVelocity.magnitude;
+                    var angularAccel = meleeTurnForce * Mathf.PI * 2 * falloffFactor;
+                    if(currentSpeed < targetSpeed) {
+                        currentVelocity *= targetSpeed / currentSpeed;
                     }
+                    var newVelocity = Vector3.RotateTowards(currentVelocity, towardsVec.normalized * targetSpeed, angularAccel * Time.fixedDeltaTime, 0f);
+                    if(t.body.characterMotor)
+                        t.body.characterMotor.velocity = newVelocity;
+                    else
+                        t.body.rigidbody.velocity = newVelocity;
                 }
             }
             return retv;
