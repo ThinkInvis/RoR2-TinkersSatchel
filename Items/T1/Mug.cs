@@ -314,7 +314,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(self, fireProjectileInfo);
-            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
+            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>() || fireProjectileInfo.rotation == null) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);
@@ -443,7 +443,12 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCount(attackerBody);
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
-            var origRot = Quaternion.LookRotation(attackerBody.inputBank ? attackerBody.inputBank.aimDirection : (attackerBody.characterDirection ? attackerBody.characterDirection.forward : attackerBody.transform.forward), attackerBody.transform.up);
+            var targetVec = attackerBody.transform.forward;
+            if(attackerBody.inputBank)
+                targetVec = attackerBody.inputBank.aimDirection;
+            else if(attackerBody.characterDirection)
+                targetVec = attackerBody.characterDirection.forward;
+            var origRot = Quaternion.LookRotation(targetVec, attackerBody.transform.up);
             for(var i = 0; i < procCount; i++) {
                 ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
                     crit = attackerBody.RollCrit(),
