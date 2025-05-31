@@ -74,7 +74,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private int Inventory_GetEquipmentSlotMaxCharges(On.RoR2.Inventory.orig_GetEquipmentSlotMaxCharges orig, Inventory self, byte slot) {
             //note: normally unused, UpdateEquipment has the same calculation hardcoded. Tweaks/ModdableEquipmentMaxCharges module fixes this.
-            return orig(self, slot) * ((self.GetEquipment(slot).equipmentDef == equipmentDef) ? 3 : 1);
+            return Math.Min(orig(self, slot) * ((self.GetEquipment(slot).equipmentDef == equipmentDef) ? 3 : 1), 255);
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
