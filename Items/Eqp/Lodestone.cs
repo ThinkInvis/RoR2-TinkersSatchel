@@ -26,7 +26,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fraction of base damage to inflict.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float baseDamageFrac { get; private set; } = 4f;
+        public float baseDamageFrac { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
