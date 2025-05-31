@@ -2,6 +2,20 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.2.1**
+
+- Balance pass:
+	- Swordbreaker:
+		- Removed reflected damage (25% to 0%, config option removed).
+		- Reduced per-projectile base damage from 50% to 40%.
+		- *I found out the hard way that enemies getting this item is a quick run-killer, and it was also overtuned compared to similar vanilla items.*
+	- Lodestone:
+		- Reduced base damage from 400% to 200%.
+		- *This was also kind of a lot compared to e.g. Disposable Missile Launcher.*
+- Attempted to improve null safety of Ferrofluid, Unstable Klein Bottle, and Sturdy Mug.
+- Fixed missing icon texture for Float debuff.
+- Fixed potential integer overflow in Stamina Bar charge count (will now cap at 255).
+
 **5.2.0**
 
 - Recompiled, remapped signatures, and updated dependencies for recent vanilla updates.
