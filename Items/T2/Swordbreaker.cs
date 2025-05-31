@@ -17,7 +17,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing, ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            shieldAmt.ToString("N0"), sparkCount.ToString("N0"), spreadConeHalfAngleDegr.ToString("N1"), rawDamage.ToString("P0"), retalDamage.ToString("P0"), icd.ToString("N1")
+            shieldAmt.ToString("N0"), sparkCount.ToString("N0"), spreadConeHalfAngleDegr.ToString("N1"), rawDamage.ToString("P0"), icd.ToString("N1")
         };
 
 
@@ -27,12 +27,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Base damage of this item's projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float rawDamage { get; private set; } = 0.5f;
-
-        [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Reflected damage of this item's projectiles (added to rawDamage).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float retalDamage { get; private set; } = 0.25f;
+        public float rawDamage { get; private set; } = 0.4f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -125,7 +120,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(icdCpt.stopwatch > 0f) return;
             icdCpt.stopwatch = icd;
             var totalProjectiles = sparkCount * count;
-            var projDamage = -dShield * retalDamage + self.body.damage * rawDamage;
+            var projDamage = self.body.damage * rawDamage;
             var sourcePos = self.body.mainHurtBox ? self.body.mainHurtBox.collider.bounds.center : damageInfo.position;
             var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
             var targetPos = (attackerBody && attackerBody.mainHurtBox) ? attackerBody.mainHurtBox.collider.bounds.center : damageInfo.attacker.transform.position;
