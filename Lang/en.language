@@ -49,6 +49,8 @@
 		"TINKERSSATCHEL_REVIVEONCE_LORE": "",
 		"TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE": "{0} called down a clone of {1}!",
 		"TINKERSSATCHEL_REVIVEONCE_MSG_REVIVE_VAGUE": "Someone",
+		"ACHIEVEMENT_TKSAT_REVIVEONCE_NAME": "Get Some!",
+		"ACHIEVEMENT_TKSAT_REVIVEONCE_DESCRIPTION": "Get 20 direct Primary kills in a row without using another skill.",
 
 		"TINKERSSATCHEL_REWIND_NAME": "Causal Camera",
 		"TINKERSSATCHEL_REWIND_PICKUP": "Phase briefly and rewind yourself 10 seconds.",

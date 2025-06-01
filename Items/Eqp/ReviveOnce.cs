@@ -300,4 +300,46 @@ namespace ThinkInvisible.TinkersSatchel {
             return true;
         }
     }
+
+    [RegisterAchievement("TkSat_ReviveOnce", "TkSat_ReviveOnceUnlockable", "", 1u)]
+    public class TkSatReviveOnceAchievement : RoR2.Achievements.BaseAchievement {
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.CharacterBody.OnSkillActivated += CharacterBody_OnSkillActivated;
+            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.CharacterBody.OnSkillActivated -= CharacterBody_OnSkillActivated;
+            On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
+        }
+
+
+        private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport) {
+            orig(self, damageReport);
+            if(!damageReport.attackerBody || damageReport.attackerBody != localUser.cachedBody) return;
+            if((damageReport.damageInfo.damageType.damageSource & DamageSource.Primary) != 0) {
+                if(!damageReport.attackerBody.TryGetComponent<TkSatReviveOnceAchievementStreakTracker>(out var tracker))
+                    tracker = damageReport.attackerBody.gameObject.AddComponent<TkSatReviveOnceAchievementStreakTracker>();
+                tracker.kills++;
+                if(tracker.kills > 20)
+                    Grant();
+            }
+        }
+
+        private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
+            orig(self, skill);
+            if(!NetworkServer.active) return;
+            if(self && self.skillLocator
+                && self.skillLocator.FindSkillSlot(skill) != SkillSlot.Primary
+                && self.TryGetComponent<TkSatReviveOnceAchievementStreakTracker>(out var tracker)) {
+                tracker.kills = 0;
+            }
+        }
+    }
+
+    public class TkSatReviveOnceAchievementStreakTracker : MonoBehaviour {
+        public int kills = 0;
+    }
 }
