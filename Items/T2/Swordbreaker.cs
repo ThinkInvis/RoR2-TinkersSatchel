@@ -103,16 +103,18 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(!NetworkServer.active || !self || !self.alive|| !damageInfo.attacker
-                || damageInfo.procChainMask.HasProc(ProcType.Thorns)
-                || (damageInfo.attacker == self.gameObject && disableSelfDamage)) {
+            if(!NetworkServer.active || !self) {
                 orig(self, damageInfo);
                 return;
             }
-            var shieldBeforeDamage = self ? self.shield : 0;
+            var shieldBeforeDamage = self.shield;
             orig(self, damageInfo);
+            if(!self || !self.body || !self.alive
+                || !damageInfo.attacker || !damageInfo.attacker.transform || (damageInfo.attacker == self.gameObject && disableSelfDamage)
+                || damageInfo.procChainMask.HasProc(ProcType.Thorns))
+                return;
             var count = GetCount(self.body);
-            if(count <= 0) return;
+            if(count == 0) return;
             var dShield = self.shield - shieldBeforeDamage;
             if(dShield >= 0) return;
             var icdCpt = self.GetComponent<SwordbreakerICD>();
@@ -121,11 +123,15 @@ namespace ThinkInvisible.TinkersSatchel {
             icdCpt.stopwatch = icd;
             var totalProjectiles = sparkCount * count;
             var projDamage = self.body.damage * rawDamage;
-            var sourcePos = self.body.mainHurtBox ? self.body.mainHurtBox.collider.bounds.center : damageInfo.position;
+            var sourcePos = damageInfo.position;
+            if(self.body.mainHurtBox && self.body.mainHurtBox.collider)
+                sourcePos = self.body.mainHurtBox.collider.bounds.center;
             var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
-            var targetPos = (attackerBody && attackerBody.mainHurtBox) ? attackerBody.mainHurtBox.collider.bounds.center : damageInfo.attacker.transform.position;
+            var targetPos = damageInfo.attacker.transform.position;
+            if(attackerBody && attackerBody.mainHurtBox && attackerBody.mainHurtBox.collider)
+                targetPos = attackerBody.mainHurtBox.collider.bounds.center;
             var targetVector = (targetPos - sourcePos).normalized;
-            if(attackerBody.rigidbody) targetPos += attackerBody.rigidbody.velocity * 0.5f;
+            if(attackerBody && attackerBody.rigidbody) targetPos += attackerBody.rigidbody.velocity * 0.5f;
             var targetRotation = Quaternion.LookRotation(targetVector);
             for(var i = 0; i < totalProjectiles; i++) {
                 var pcm = default(ProcChainMask);
