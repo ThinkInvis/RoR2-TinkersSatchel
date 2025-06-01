@@ -100,10 +100,11 @@ namespace ThinkInvisible.TinkersSatchel {
             Vector3 averageHitboxCentroid = Vector3.zero;
             int validHBCount = 0;
             foreach(var hb in self.hitBoxGroup.hitBoxes) {
-                if(!hb) continue;
+                if(!hb || !hb.enabled || !hb.gameObject || !hb.gameObject.activeInHierarchy) continue;
                 validHBCount++;
                 averageHitboxCentroid += hb.transform.position;
             }
+            if(validHBCount == 0) return retv; //attack has no hitboxes, abort
             averageHitboxCentroid /= validHBCount;
             if((ownerBody.corePosition - averageHitboxCentroid).sqrMagnitude >= 25f) return retv; //attack is too far from owner, probably not melee, abort
             var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
