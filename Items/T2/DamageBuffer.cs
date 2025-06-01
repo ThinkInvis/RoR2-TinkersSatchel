@@ -258,4 +258,23 @@ namespace ThinkInvisible.TinkersSatchel {
                 bufferDamage.Add((amount, amount));
         }
     }
+
+    [RegisterAchievement("TkSat_DamageBuffer", "TkSat_DamageBufferUnlockable", "", 1u)]
+    public class TkSatDamageBufferAchievement : RoR2.Achievements.BaseAchievement {
+        public override void OnInstall() {
+            base.OnInstall();
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+        }
+
+        public override void OnUninstall() {
+            base.OnUninstall();
+            On.RoR2.CharacterBody.RecalculateStats -= CharacterBody_RecalculateStats;
+        }
+
+        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
+            orig(self);
+            if(!self || self != localUser.cachedBody || !self.healthComponent) return;
+            if(self.healthComponent.barrier == self.maxBarrier && self.maxBarrier > 0f) Grant();
+        }
+    }
 }
