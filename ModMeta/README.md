@@ -605,7 +605,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 ## Issues/TODO
 
-- Stamina Bar max charges change, and maybe the relevant patch, is very broken.
 - Pulse Grenade causes console log spam, magnetism may be broken or undertuned.
 - Fudge Dice needs an indicator buff.
 - Taunt and Float debuffs need custom icons.
@@ -625,6 +624,10 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**5.2.2**
+
+- Further attempts to improve null safety of Ferrofluid.
 
 **5.2.1**
 
@@ -692,7 +695,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Pulse Monitor now triggers on-equipment-use items (e.g. Bottled Chaos, War Horn).
 - Percussive Maintenance now counts equipment stashed in Scavenger's Rucksack for its unlock achievement.
 - Removed an old debug log from a Quantum Recombobulator hook, which probably wasn't even showing up due to using Unity's logger.
-
-**5.0.1**
-
-- Small patch for incorrect language token argument count on Negative Feedback Loop description.

@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.2.2**
+
+- Further attempts to improve null safety of Ferrofluid.
+
 **5.2.1**
 
 - Balance pass:
