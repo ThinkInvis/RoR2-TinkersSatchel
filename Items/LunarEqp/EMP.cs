@@ -3,7 +3,6 @@ using UnityEngine;
 using TILER2;
 using RoR2.Projectile;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class EMP : Equipment<EMP> {

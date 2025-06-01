@@ -1,5 +1,4 @@
-﻿using RoR2;
-using UnityEngine;
+﻿using UnityEngine;
 using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;

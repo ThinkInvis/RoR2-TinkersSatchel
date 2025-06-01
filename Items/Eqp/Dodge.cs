@@ -1,10 +1,7 @@
 ﻿using RoR2;
 using UnityEngine;
 using TILER2;
-using R2API;
-using MonoMod.Cil;
 using System;
-using Mono.Cecil.Cil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Dodge : Equipment<Dodge> {

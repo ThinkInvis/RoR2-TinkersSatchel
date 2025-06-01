@@ -3,11 +3,7 @@ using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class DamageBuffer : Item<DamageBuffer> {

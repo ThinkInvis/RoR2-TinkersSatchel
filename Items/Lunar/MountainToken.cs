@@ -5,7 +5,6 @@ using TILER2;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
-using EntityStates;
 using System.Linq;
 using R2API;
 using System.Collections.Generic;
