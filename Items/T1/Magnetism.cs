@@ -98,15 +98,18 @@ namespace ThinkInvisible.TinkersSatchel {
             var retv = orig(self, hitResults);
             if(!self.hitBoxGroup || !self.attacker || !self.attacker.TryGetComponent<CharacterBody>(out var ownerBody) || !ownerBody.characterMotor || !ownerBody.characterDirection) return retv; //missing important data, abort
             Vector3 averageHitboxCentroid = Vector3.zero;
+            int validHBCount = 0;
             foreach(var hb in self.hitBoxGroup.hitBoxes) {
+                if(!hb) continue;
+                validHBCount++;
                 averageHitboxCentroid += hb.transform.position;
             }
-            averageHitboxCentroid /= self.hitBoxGroup.hitBoxes.Length;
-            if((ownerBody.coreTransform.position - averageHitboxCentroid).sqrMagnitude >= 25f) return retv; //attack is too far from owner, probably not melee, abort
+            averageHitboxCentroid /= validHBCount;
+            if((ownerBody.corePosition - averageHitboxCentroid).sqrMagnitude >= 25f) return retv; //attack is too far from owner, probably not melee, abort
             var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
             var maxRange = meleeAmount * GetCount(ownerBody);
             foreach(var t in targets) {
-                if(!t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;
+                if(!t || !t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;
                 var towardsVec = averageHitboxCentroid - t.body.corePosition;
                 if(towardsVec.magnitude < maxRange) {
                     var falloffFactor = (towardsVec.magnitude / maxRange);
