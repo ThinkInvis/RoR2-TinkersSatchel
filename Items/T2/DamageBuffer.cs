@@ -268,18 +268,18 @@ namespace ThinkInvisible.TinkersSatchel {
     public class TkSatDamageBufferAchievement : RoR2.Achievements.BaseAchievement {
         public override void OnInstall() {
             base.OnInstall();
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.HealthComponent.SetBarrier += HealthComponent_SetBarrier;
         }
 
         public override void OnUninstall() {
             base.OnUninstall();
-            On.RoR2.CharacterBody.RecalculateStats -= CharacterBody_RecalculateStats;
+            On.RoR2.HealthComponent.SetBarrier -= HealthComponent_SetBarrier;
         }
 
-        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
-            orig(self);
-            if(!self || self != localUser.cachedBody || !self.healthComponent) return;
-            if(self.healthComponent.barrier == self.maxBarrier && self.maxBarrier > 0f) Grant();
+        private void HealthComponent_SetBarrier(On.RoR2.HealthComponent.orig_SetBarrier orig, HealthComponent self, float newBarrier) {
+            orig(self, newBarrier);
+            if(!self || !self.body || self.body != localUser.cachedBody) return;
+            if(newBarrier >= self.fullBarrier && newBarrier > 0f) Grant();
         }
     }
 }
