@@ -2,6 +2,13 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.2.3**
+
+- Improved null safety of Swordbreaker; potentially fixes an issue preventing Void Chests from being opened.
+- Added an unlock achievement to the following items:
+	- Command Terminal: Get Some! (Get 20 direct Primary kills in a row without using another skill.)
+	- Negative Feedback Loop: Encased (Reach maximum barrier.)
+
 **5.2.2**
 
 - Further attempts to improve null safety of Ferrofluid.
