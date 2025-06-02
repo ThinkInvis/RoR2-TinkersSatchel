@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using System.Collections.Generic;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class DamageBuffer : Item<DamageBuffer> {
@@ -49,6 +50,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties
 
+        internal static UnlockableDef unlockable;
         public GameObject idrPrefab { get; private set; }
 
 
@@ -178,6 +180,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/damageBufferIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            itemDef.unlockableDef = unlockable;
         }
 
         public override void Install() {

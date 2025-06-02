@@ -6,6 +6,7 @@ using RoR2.Navigation;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
+using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ReviveOnce : Equipment<ReviveOnce> {
@@ -37,6 +38,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
+        internal static UnlockableDef unlockable;
         public readonly HashSet<string> droneMasterPrefabNames = new();
         public GameObject idrPrefab { get; private set; }
 
@@ -176,6 +178,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            unlockable = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockable.cachedName = $"TkSat_{name}Unlockable";
+            unlockable.sortScore = 200;
+            unlockable.achievementIcon = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/UnlockIcons/reviveOnceIcon.png");
+            ContentAddition.AddUnlockableDef(unlockable);
+            equipmentDef.unlockableDef = unlockable;
 
             UpdateDroneMasterPrefabNames();
         }
