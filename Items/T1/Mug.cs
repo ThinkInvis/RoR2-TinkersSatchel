@@ -265,7 +265,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
         ////// Hooks //////
-        
+
         private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self) {
             orig(self);
             if(ignoreStack > 0) {
@@ -281,7 +281,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HurtBox> hitResults) {
             var retv = orig(self, hitResults);
-            if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
+            if(NetworkServer.active && self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
                 && !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
                 if(GetCount(attackerBody) > 0) {
                     ignoreStack++;
@@ -314,7 +314,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(self, fireProjectileInfo);
-            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>() || fireProjectileInfo.rotation == null) return;
+            if(!NetworkServer.active || ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>() || fireProjectileInfo.rotation == null) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);

@@ -386,7 +386,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 InflictDamage();
             } else {
                 targetHoldPos = healthComponent.transform.position + new Vector3(0, KleinBottle.instance.pullHeight, 0);
-                wobbleSeed = KleinBottle.instance.rng.nextNormalizedFloat;
+                wobbleSeed = Time.fixedTime % 1f;
                 holdStopwatch = KleinBottle.instance.pullTime;
                 ssoh.SetStun(KleinBottle.instance.pullTime);
             }

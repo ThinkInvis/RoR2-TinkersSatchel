@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TILER2;
 using static TILER2.MiscUtil;
 using System.Linq;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class ObsidianBrooch : Item<ObsidianBrooch> {
@@ -201,7 +202,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             orig(self, damageInfo);
 
-            if(damageInfo == null || !damageInfo.attacker || (damageInfo.damageType & DamageType.DoT) != 0
+            if(!NetworkServer.active || damageInfo == null || !damageInfo.attacker || (damageInfo.damageType & DamageType.DoT) != 0
                 || (disableSelfDamage && damageInfo.attacker == self.gameObject)) return;
 
             var dc = DotController.FindDotController(self.gameObject);

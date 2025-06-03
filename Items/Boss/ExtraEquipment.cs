@@ -197,7 +197,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ChestBehavior_RollItem(On.RoR2.ChestBehavior.orig_RollItem orig, ChestBehavior self) {
 			orig(self);
-			if(self.gameObject.name == "ScavBackpack(Clone)" && rng.nextNormalizedFloat < dropChance) {
+			if(NetworkServer.active && self.gameObject.name == "ScavBackpack(Clone)" && rng.nextNormalizedFloat < dropChance) {
 				self.dropPickup = pickupIndex;
 			}
         }

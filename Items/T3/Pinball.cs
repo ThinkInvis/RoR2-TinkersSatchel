@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using RoR2.Projectile;
 using System.Linq;
+using R2API.Networking.Interfaces;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class Pinball : Item<Pinball> {
@@ -208,11 +209,13 @@ namespace ThinkInvisible.TinkersSatchel {
 		public override void SetupAttributes() {
 			base.SetupAttributes();
 
-			projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/PinballProjectile.prefab");
+            R2API.Networking.NetworkingAPI.RegisterMessageType<PinballProjectileController.MsgSetBounceTarget>();
+
+            projectilePrefab = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Projectiles/PinballProjectile.prefab");
 			projectilePrefab.GetComponent<ProjectileImpactExplosion>().blastProcCoefficient = procCoefficient;
 			ContentAddition.AddProjectile(projectilePrefab);
 
-			bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
+            bouncyPhysmat = Addressables.LoadAssetAsync<PhysicMaterial>("RoR2/Base/Common/physmatBouncy.physicMaterial")
 				.WaitForCompletion();
 
 			var tspp = new GameObject("TkSatTempSetupPrefabPrefab");
@@ -281,7 +284,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HurtBox> hitResults) {
 			var retv = orig(self, hitResults);
-			if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
+			if(NetworkServer.active && self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
 				&& !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
 				var count = GetCount(attackerBody);
 				if(count > 0) {
@@ -552,33 +555,67 @@ namespace ThinkInvisible.TinkersSatchel {
 					ps.stopwatch = 0f;
 				}
 			}
-			var enemies = GatherEnemies(projectile.teamFilter.teamIndex, TeamIndex.Neutral)
-				.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
-				.Where(obj => {
-					if(obj == lastTarget) return false;
-					var hc = obj.GetComponent<HealthComponent>();
-					if(!hc || !hc.alive) return false;
-					var dvec = (obj.transform.position - transform.position);
-					var ddist = dvec.magnitude;
-					var ray = new Ray(transform.position, dvec.normalized);
-					if(Physics.Raycast(ray, ddist, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
-						return false;
-					return true;
-				});
-			GameObject nextTarget = null;
-			if(enemies.Count() > 0)
-				nextTarget = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
-			if(nextTarget) {
-				currTarget = nextTarget;
-				projectile.rigidbody.velocity =
-					(nextTarget.transform.position - transform.position).normalized
-					* origSpeed;
-			} else {
-				lastTarget = null;
-				currTarget = null;
-			}
-			projectile.rigidbody.angularVelocity = UnityEngine.Random.insideUnitSphere * 15f; //sp-- spEEN!!
+			if(NetworkServer.active) {
+				var enemies = GatherEnemies(projectile.teamFilter.teamIndex, TeamIndex.Neutral)
+					.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+					.Where(obj => {
+						if(obj == lastTarget) return false;
+						var hc = obj.GetComponent<HealthComponent>();
+						if(!hc || !hc.alive) return false;
+						var dvec = (obj.transform.position - transform.position);
+						var ddist = dvec.magnitude;
+						var ray = new Ray(transform.position, dvec.normalized);
+						if(Physics.Raycast(ray, ddist, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
+							return false;
+						return true;
+					});
+				GameObject nextTarget = null;
+				if(enemies.Count() > 0)
+					nextTarget = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
+				if(nextTarget) {
+					currTarget = nextTarget;
+					projectile.rigidbody.velocity =
+						(nextTarget.transform.position - transform.position).normalized
+						* origSpeed;
+				} else {
+					lastTarget = null;
+					currTarget = null;
+                }
+				new MsgSetBounceTarget(currTarget, this).Send(R2API.Networking.NetworkDestination.Clients);
+            }
+            projectile.rigidbody.angularVelocity = UnityEngine.Random.insideUnitSphere * 15f; //sp-- spEEN!!
 		}
+
+        public struct MsgSetBounceTarget : INetMessage {
+            GameObject _target;
+			PinballProjectileController _projectile;
+
+            public MsgSetBounceTarget(GameObject target, PinballProjectileController projectile) {
+                _target = target;
+				_projectile = projectile;
+            }
+
+            public void Deserialize(NetworkReader reader) {
+                var tgto = reader.ReadGameObject();
+                _target = tgto; //null is allowed
+				var tgtp = reader.ReadGameObject();
+                if(tgtp)
+                    _projectile = tgtp.GetComponent<PinballProjectileController>();
+                else {
+                    TinkersSatchelPlugin._logger.LogError("Received MsgSetBounceTarget for nonexistent or non-networked projectile GameObject");
+                }
+            }
+
+            public void Serialize(NetworkWriter writer) {
+                writer.Write(_target);
+                writer.Write(_projectile.gameObject);
+            }
+
+            public void OnReceived() {
+                if(!_projectile || NetworkServer.active) return;
+				_projectile.currTarget = _target;
+            }
+        }
     }
 
 	public class RandomPinballSFXOnEnable : MonoBehaviour {

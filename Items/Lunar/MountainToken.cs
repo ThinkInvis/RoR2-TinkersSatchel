@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using R2API;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MountainToken : Item<MountainToken> {
@@ -202,7 +203,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 if(ungroundedTime > MountainToken.instance.maxUngroundedTime / (float)maxStacks) {
                     ungroundedTime = 0;
                     Stacks--;
-                    MountainToken.GrantToEnemiesInTeleporter();
+                    if(NetworkServer.active)
+                        MountainToken.GrantToEnemiesInTeleporter();
                 }
             }
         }
