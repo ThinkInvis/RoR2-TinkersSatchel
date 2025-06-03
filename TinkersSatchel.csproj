@@ -15,12 +15,12 @@
     <PackageReference Include="R2API.Core" Version="5.1.5" />
     <PackageReference Include="R2API.DamageType" Version="1.1.7" />
     <PackageReference Include="R2API.Deployable" Version="1.0.1" />
-    <PackageReference Include="R2API.Director" Version="2.3.4" />
+    <PackageReference Include="R2API.Director" Version="2.3.5" />
     <PackageReference Include="R2API.Items" Version="1.0.4" />
     <PackageReference Include="R2API.Language" Version="1.0.1" />
     <PackageReference Include="R2API.Networking" Version="1.0.3" />
     <PackageReference Include="R2API.Prefab" Version="1.0.4" />
-    <PackageReference Include="R2API.RecalculateStats" Version="1.5.0" />
+    <PackageReference Include="R2API.RecalculateStats" Version="1.6.0" />
     <PackageReference Include="RiskOfRain2.GameLibs" Version="1.3.9-r.0" />
     <PackageReference Include="UnityEngine.Modules" Version="[2021.3.33]" />
   </ItemGroup>
