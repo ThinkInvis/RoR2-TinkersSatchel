@@ -100,10 +100,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 var icdCpt = effectOriginMaster.GetComponent<FudgeDiceICD>();
                 if(!icdCpt) icdCpt = effectOriginMaster.gameObject.AddComponent<FudgeDiceICD>();
                 if(icdCpt.stopwatch <= 0f) {
-                    var retv = orig(percentChance, luck + boostAmount, effectOriginMaster);
-                    if(retv)
+                    var firstRoll = orig(percentChance, luck, effectOriginMaster);
+                    if(firstRoll) return firstRoll;
+                    var reroll = orig(percentChance, luck + boostAmount, effectOriginMaster);
+                    if(reroll)
                         icdCpt.stopwatch = icd * (Mathf.Pow(1f - cdrStack, count - 1));
-                    return retv;
+                    return reroll;
                 }
             }
             return orig(percentChance, luck, effectOriginMaster);
