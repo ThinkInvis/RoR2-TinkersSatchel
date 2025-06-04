@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Collections.ObjectModel;
 using TILER2;
+using R2API;
+using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class FudgeDice : Item<FudgeDice> {
@@ -38,6 +40,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
+        internal BuffDef readyBuff;
+        internal BuffDef consumedBuff;
 
 
         ////// TILER2 Module Setup //////
@@ -48,6 +52,25 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public override void SetupAttributes() {
             base.SetupAttributes();
+
+            readyBuff = ScriptableObject.CreateInstance<BuffDef>();
+            readyBuff.buffColor = Color.white;
+            readyBuff.canStack = false;
+            readyBuff.isDebuff = false;
+            readyBuff.isCooldown = true;
+            readyBuff.name = modInfo.shortIdentifier + "FudgeDiceReady";
+            readyBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/fudgeDiceBuffIcon.png");
+            ContentAddition.AddBuffDef(readyBuff);
+
+            consumedBuff = ScriptableObject.CreateInstance<BuffDef>();
+            consumedBuff.buffColor = Color.gray;
+            consumedBuff.canStack = false;
+            consumedBuff.isDebuff = false;
+            consumedBuff.isCooldown = true;
+            consumedBuff.name = modInfo.shortIdentifier + "FudgeDiceConsumed";
+            consumedBuff.ignoreGrowthNectar = true;
+            consumedBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/fudgeDiceBuffConsumedIcon.png");
+            ContentAddition.AddBuffDef(consumedBuff);
         }
 
         public override void Install() {
@@ -80,11 +103,40 @@ namespace ThinkInvisible.TinkersSatchel {
 
     public class FudgeDiceICD : MonoBehaviour {
         public float stopwatch = 0f;
+        CharacterMaster master;
+        CharacterBody body;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void Awake() {
+            master = GetComponent<CharacterMaster>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        void OnDisable() {
+            if(body && NetworkServer.active) {
+                body.RemoveBuff(FudgeDice.instance.consumedBuff);
+                body.RemoveBuff(FudgeDice.instance.readyBuff);
+            }
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
             if(stopwatch > 0f)
                 stopwatch -= Time.fixedDeltaTime;
+
+            if(!body && master.hasBody) {
+                body = master.GetBody();
+            }
+
+            if(body && NetworkServer.active) {
+                if(stopwatch > 0f) {
+                    body.AddBuff(FudgeDice.instance.consumedBuff);
+                    body.RemoveBuff(FudgeDice.instance.readyBuff);
+                } else {
+                    body.AddBuff(FudgeDice.instance.readyBuff);
+                    body.RemoveBuff(FudgeDice.instance.consumedBuff);
+                }
+            }
         }
     }
 }
