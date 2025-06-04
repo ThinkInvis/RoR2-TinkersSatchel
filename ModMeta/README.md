@@ -1,15 +1,5 @@
 # Tinker's Satchel
 
-## SUPPORT DISCLAIMER
-
-### Use of a mod manager is STRONGLY RECOMMENDED.
-
-Seriously, use a mod manager.
-
-If the versions of Tinker's Satchel or TILER2 (or possibly any other mods) are different between your game and other players' in multiplayer, things WILL break. If TILER2 is causing kicks for "unspecified reason", it's likely due to a mod version mismatch. Ensure that all players in a server, including the host and/or dedicated server, are using the same mod versions before reporting a bug.
-
-**While reporting a bug, make sure to post a console log** (`path/to/RoR2/BepInEx/LogOutput.log`) from a run of the game where the bug happened; this often provides important information about why the bug is happening. If the bug is multiplayer-only, please try to include logs from both server and client.
-
 ## Description
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
@@ -605,9 +595,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 
 ## Issues/TODO
 
-- Pulse Grenade causes console log spam, magnetism may be broken or undertuned.
-- Fudge Dice needs an indicator buff.
-- Taunt and Float debuffs need custom icons.
+- Taunt debuff needs custom icons and a target indicator.
 - ItemDisplayRule incompleteness:
 	- A few TkSat items have absent or incomplete ItemDisplayRules.
 	- Non-Survivor vanilla characters have no display rules for TkSat items.
@@ -616,7 +604,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 	- Broken drones are missing smoke/sparks effects.
 	- Cardboard Box alternate icon has not been updated to vanilla style like other icons as of v2.2.3.
 - Some class-specific item behaviors on Go-Faster Stripes are missing or placeholders.
-- Mimic usually displays a count of 0 in chat pickup announcements; might also not count towards logbook stat tracker.
 - See the GitHub repo for more!
 
 ## Changelog
@@ -624,6 +611,34 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**5.2.4**
+
+- Balance pass:
+	- Commando: Fusion Grenade:
+		- Magnetism range increased 6 m > 8 m.
+		- Magnetism angular strength increased 720 deg/s > 1080 deg/s.
+	- Swordbreaker:
+		- No longer fires additional projectiles per stack.
+		- Now deals additional damage per stack, equal to first stack damage (stacks linearly).
+		- Projectile damage decreased 40% > 25%.
+		- Projectile explosion damage falloff removed.
+		- Projectile explosion radius increased 4 m > 6 m.
+	- Fudge Dice:
+		- Buff is no longer put on cooldown by failed rolls, only by successes which wouldn't have happened without the buff.
+		- Buff now performs a non-luck reroll which stacks with the previous effect.
+		- Decreased luck amount +9 > +2 (+3 including the non-luck reroll).
+		- *These changes are intended to make the item more capable of affecting other procs than the first triggered in quick succession.*
+- Fixed ItemDisplayRules causing console errors and failure to display in inventory on obtaining items.
+- Resolved NullReferenceExceptions (definitely for real this time! probably!), now thought to be caused by attempting to use server-only RNG on client. Affects the following items:
+	- Sturdy Mug, Pinball Wizard: extra projectile spawns/retargets are no longer accurately predicted by client and may appear laggy at first.
+	- Unstable Klein Bottle: Float debuff is now seeded based on run fixed time instead of an RNG.
+	- Scavenger's Rucksack, Celestial Gambit, Obsidian Brooch: probably wasn't causing issues, but added serverside-only checks just in case.
+- Fixed an issue causing console warning spam and potential audio issues with Commando: Fusion Grenade.
+- Fixed missing projectile ghosts for Engineer: Smart Flak.
+- Added a custom icon for Float debuff.
+- Added an indicator buff for Fudge Dice.
+- Fudge Dice now plays luck vfx/sfx.
 
 **5.2.3**
 
@@ -680,7 +695,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Suppressed a harmless (but very annoying) warning on a dependency.
 	- Made BepInEx dependency version static.
 	- Postbuild event can now create the Build folder and project name subfolder if missing (e.g. on a new clone of the repo).
-
-**5.1.1**
-
-- Fixed missing orig calls causing several vanilla items (Bustling Fungus, Warbanner, Mercurial Rachis, Effigy of Grief, Interstellar Deskplant, maybe others) to not function.

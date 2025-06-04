@@ -2,6 +2,37 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.2.4**
+
+- Balance pass:
+	- Commando: Fusion Grenade:
+		- Magnetism range increased 6 m > 8 m.
+		- Magnetism angular strength increased 720 deg/s > 1080 deg/s.
+	- Swordbreaker:
+		- No longer fires additional projectiles per stack.
+		- Now deals additional damage per stack, equal to first stack damage (stacks linearly).
+		- Projectile damage decreased 40% > 25%.
+		- Projectile explosion damage falloff removed.
+		- Projectile explosion radius increased 4 m > 6 m.
+	- Fudge Dice:
+		- Buff is no longer put on cooldown by failed rolls, only by successes which wouldn't have happened without the buff.
+		- Buff now performs a non-luck reroll which stacks with the previous effect.
+		- Decreased luck amount +9 > +2 (+3 including the non-luck reroll).
+		- *These changes are intended to make the item more capable of affecting other procs than the first triggered in quick succession.*
+	- Negative Feedback Loop:
+		- Damage-to-barrier conversion now stacks hyperbolically to 300% (was linearly).
+		- Now has a configurable hyperbolic cap.
+- Fixed ItemDisplayRules causing console errors and failure to display in inventory on obtaining items.
+- Resolved NullReferenceExceptions (definitely for real this time! probably!), now thought to be caused by attempting to use server-only RNG on client. Affects the following items:
+	- Sturdy Mug, Pinball Wizard: extra projectile spawns/retargets are no longer accurately predicted by client and may appear laggy at first.
+	- Unstable Klein Bottle: Float debuff is now seeded based on run fixed time instead of an RNG.
+	- Scavenger's Rucksack, Celestial Gambit, Obsidian Brooch: probably wasn't causing issues, but added serverside-only checks just in case.
+- Fixed an issue causing console warning spam and potential audio issues with Commando: Fusion Grenade.
+- Fixed missing projectile ghosts for Engineer: Smart Flak.
+- Added a custom icon for Float debuff.
+- Added an indicator buff for Fudge Dice.
+- Fudge Dice now plays luck vfx/sfx.
+
 **5.2.3**
 
 - Improved null safety of Swordbreaker; potentially fixes an issue preventing Void Chests from being opened.

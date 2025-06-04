@@ -172,7 +172,7 @@
 				<b>Negative Feedback Loop</b><br>
 				<details>
 					<summary>Taking damage creates a healing barrier over time.</summary>
-					<small>8% (+8% per stack, linear) of incoming damage is granted as barrier which is applied gradually over 3 seconds, ticking continuously. Having barrier makes your regen up to 20% more effective (+20% per stack, linear) based on how close your barrier is to maximum.</small>
+					<small>8% (+8% per stack, hyperbolic up to 200%) of incoming damage is granted as barrier which is applied gradually over 3 seconds, ticking continuously. Having barrier makes your regen up to 20% more effective (+20% per stack, linear) based on how close your barrier is to maximum.</small>
 				</details>
 			</td>
 			<td><ul>
@@ -226,7 +226,7 @@
 				<b>Fudge Dice</b><br>
 				<details>
 					<summary>Periodically guarantee luck.</summary>
-					<small>Once every 20 seconds (-10% per stack, hyperbolic), your next random effect is rolled with +9 luck.</small>
+					<small>Once every 20 seconds (-10% per stack, hyperbolic), start rerolling failed random effects with +2 luck until one succeeds.</small>
 				</details>
 			</td>
 			<td></td>
@@ -248,7 +248,7 @@
 				<b>Swordbreaker</b><br>
 				<details>
 					<summary>Retaliate with exploding sparks when your shield is struck.</summary>
-					<small>Gain 50 (+50 per stack) flat shield. Recharges outside of danger. Every 0.5 seconds, when you take shield damage, fire 3 (+3 per stack) exploding sparks within 5.0° of the attacker for 3x50% base damage plus 3x25% reflected damage.</small>
+					<small>Gain 50 (+50 per stack) flat shield. Recharges outside of danger. Every 0.5 seconds, when you take shield damage, fire 3 exploding sparks within 5.0° of the attacker for 3x25% base damage (+3x25% per stack).</small>
 				</details>
 			</td>
 			<td></td>
@@ -436,7 +436,7 @@
 				<b>Lodestone</b><br>
 				<details>
 					<summary>Pull nearby enemies and allied item effects. <small>[Cooldown: 20 s]</small></summary>
-					<small>Pull enemies within 40 m towards yourself for 400% base damage. Pull drops, orbs, and projectiles caused by ally items within 150 m to your location.</small>
+					<small>Pull enemies within 40 m towards yourself for 200% base damage. Pull drops, orbs, and projectiles caused by ally items within 150 m to your location.</small>
 				</details>
 			</td>
 			<td><ul>
