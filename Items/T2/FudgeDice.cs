@@ -34,8 +34,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of luck to provide per proc.", AutoConfigFlags.PreventNetMismatch, 1, 100)]
-        public int boostAmount { get; private set; } = 3;
+        [AutoConfig("Amount of luck to provide per proc. Should be treated as value+1 due to the effect including a non-luck reroll.", AutoConfigFlags.PreventNetMismatch, 1, 100)]
+        public int boostAmount { get; private set; } = 2;
 
 
         ////// Other Fields/Properties //////
