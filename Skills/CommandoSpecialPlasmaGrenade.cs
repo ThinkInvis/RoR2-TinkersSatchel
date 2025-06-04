@@ -4,6 +4,7 @@ using R2API;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
 using RoR2.Projectile;
+using RoR2;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class CommandoSpecialPlasmaGrenade : T2Module<CommandoSpecialPlasmaGrenade> {
@@ -143,6 +144,10 @@ namespace ThinkInvisible.TinkersSatchel {
 				baseDelayBeforeFiringProjectile = 0;
 				bloom = 0;
                 base.OnEnter();
+            }
+            public override void ModifyProjectileInfo(ref FireProjectileInfo fireProjectileInfo) {
+                base.ModifyProjectileInfo(ref fireProjectileInfo);
+				fireProjectileInfo.damageTypeOverride = new(DamageType.IgniteOnHit, DamageTypeExtended.Generic, DamageSource.Special);
             }
         }
 	}
