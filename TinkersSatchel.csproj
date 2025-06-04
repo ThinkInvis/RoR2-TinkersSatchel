@@ -16,7 +16,7 @@
     <PackageReference Include="R2API.DamageType" Version="1.1.7" />
     <PackageReference Include="R2API.Deployable" Version="1.0.1" />
     <PackageReference Include="R2API.Director" Version="2.3.5" />
-    <PackageReference Include="R2API.Items" Version="1.0.4" />
+    <PackageReference Include="R2API.Items" Version="1.0.5" />
     <PackageReference Include="R2API.Language" Version="1.0.1" />
     <PackageReference Include="R2API.Networking" Version="1.0.3" />
     <PackageReference Include="R2API.Prefab" Version="1.0.4" />
