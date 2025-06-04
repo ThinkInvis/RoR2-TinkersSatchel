@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            bufferFrac.ToString("0%"), bufferDuration.ToString("N0"), GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2")), regenFrac.ToString("P0")
+            bufferFrac.ToString("0%"), bufferDuration.ToString("N0"), GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2")), regenFrac.ToString("P0"), bufferFracCap.ToString("P0")
         };
 
 
@@ -25,8 +25,13 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to convert per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Amount of damage to convert per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
         public float bufferFrac { get; private set; } = 0.08f;
+
+        [AutoConfigRoOSlider("{0:P0}", 0.1f, 10f)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Hyperbolic cap for bufferFrac.", AutoConfigFlags.PreventNetMismatch, 0.1f, 10f)]
+        public float bufferFracCap { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -226,7 +231,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(count <= 0) return;
             var cpt = self.GetComponent<DelayedBarrierComponent>();
             if(!cpt) cpt = self.gameObject.AddComponent<DelayedBarrierComponent>();
-            var frac = bufferFrac * (float)count;
+            var frac = Util.Hyperbolic(bufferFrac / bufferFracCap * (float)count) * bufferFracCap;
             var reduc = damageInfo.damage * frac;
             cpt.ApplyDamage(reduc);
         }
