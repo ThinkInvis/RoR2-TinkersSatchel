@@ -216,8 +216,16 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 
 			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
-		}
-	}
+        }
+
+        internal static Quaternion ApplyRandomSpread(Quaternion targetRotation, float coneHalfAngleDegr) {
+            var phi = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
+            var z = UnityEngine.Random.Range(Mathf.Cos(coneHalfAngleDegr * Mathf.PI / 180f), 1f);
+            var zf = Mathf.Sqrt(1f - z * z);
+            var rDir = new Vector3(zf * Mathf.Cos(phi), zf * Mathf.Sin(phi), z);
+            return targetRotation * Quaternion.LookRotation(rDir);
+        }
+    }
 	public static class CommonCodeExtensions {
 		internal static Quaternion ApplyRandomSpread(this Xoroshiro128Plus rng, Quaternion targetRotation, float coneHalfAngleDegr) {
 			var phi = rng.nextNormalizedFloat * Mathf.PI * 2f;

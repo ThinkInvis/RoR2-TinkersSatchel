@@ -8,6 +8,7 @@ using RoR2.Projectile;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Networking;
+using static ThinkInvisible.TinkersSatchel.CommonCode;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Mug : Item<Mug> {
@@ -314,7 +315,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(self, fireProjectileInfo);
-            if(!NetworkServer.active || ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>() || fireProjectileInfo.rotation == null) return;
+            if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>() || fireProjectileInfo.rotation == null) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
             var count = GetCount(cpt);
@@ -323,7 +324,7 @@ namespace ThinkInvisible.TinkersSatchel {
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             var origRot = fireProjectileInfo.rotation;
             for(var i = 0; i < procCount; i++) {
-                fireProjectileInfo.rotation = rng.ApplyRandomSpread(origRot, spreadConeHalfAngleDegr);
+                fireProjectileInfo.rotation = ApplyRandomSpread(origRot, spreadConeHalfAngleDegr);
                 orig(self, fireProjectileInfo);
             }
         }
