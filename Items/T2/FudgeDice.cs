@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using TILER2;
 using R2API;
 using UnityEngine.Networking;
+using UnityEngine.AddressableAssets;
+using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class FudgeDice : Item<FudgeDice> {
@@ -42,6 +44,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         internal BuffDef readyBuff;
         internal BuffDef consumedBuff;
+        internal GameObject cloverEffect;
 
 
         ////// TILER2 Module Setup //////
@@ -71,6 +74,8 @@ namespace ThinkInvisible.TinkersSatchel {
             consumedBuff.ignoreGrowthNectar = true;
             consumedBuff.iconSprite = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/MiscIcons/fudgeDiceBuffConsumedIcon.png");
             ContentAddition.AddBuffDef(consumedBuff);
+
+            cloverEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Clover/CloverEffect.prefab").WaitForCompletion();
         }
 
         public override void Install() {
@@ -103,8 +108,10 @@ namespace ThinkInvisible.TinkersSatchel {
                     var firstRoll = orig(percentChance, luck, effectOriginMaster);
                     if(firstRoll) return firstRoll;
                     var reroll = orig(percentChance, luck + boostAmount, effectOriginMaster);
-                    if(reroll)
+                    if(reroll) {
                         icdCpt.stopwatch = icd * (Mathf.Pow(1f - cdrStack, count - 1));
+                        icdCpt.wasLucky = true;
+                    }
                     return reroll;
                 }
             }
@@ -116,6 +123,8 @@ namespace ThinkInvisible.TinkersSatchel {
         public float stopwatch = 0f;
         CharacterMaster master;
         CharacterBody body;
+        //GameObject effectTarget;
+        internal bool wasLucky;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
@@ -137,8 +146,12 @@ namespace ThinkInvisible.TinkersSatchel {
             if(stopwatch > 0f && count > 0)
                 stopwatch -= Time.fixedDeltaTime;
 
-            if(!body && master.hasBody) {
+            if(!body) {
                 body = master.GetBody();
+                /*if(body) {
+                    var etid = body.GetComponentsInChildren<ItemDisplay>().Where(x => x.name == "FudgeDice" || x.name == "FudgeDice(Clone)").FirstOrDefault();
+                    if(etid) effectTarget = etid.gameObject;
+                }*/ //not necessary until IDRs are in place
             }
 
             if(body && NetworkServer.active) {
@@ -153,6 +166,15 @@ namespace ThinkInvisible.TinkersSatchel {
                         if(!body.HasBuff(FudgeDice.instance.readyBuff)) body.AddBuff(FudgeDice.instance.readyBuff);
                         body.RemoveBuff(FudgeDice.instance.consumedBuff);
                     }
+                }
+                if(wasLucky) {
+                    wasLucky = false;
+                    var tgtTsf = body.coreTransform;
+                    //if(effectTarget) tgtTsf = effectTarget.transform;
+                    EffectManager.SpawnEffect(FudgeDice.instance.cloverEffect, new EffectData {
+                        origin = tgtTsf.position,
+                        rotation = tgtTsf.rotation
+                    }, true);
                 }
             }
         }
