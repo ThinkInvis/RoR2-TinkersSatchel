@@ -27,7 +27,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Base damage of this item's projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
-        public float rawDamage { get; private set; } = 0.4f;
+        public float rawDamage { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -36,7 +36,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 10)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Number of projectiles fired by this item per stack.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        [AutoConfig("Number of projectiles fired by this item.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
         public int sparkCount { get; private set; } = 3;
 
         [AutoConfigRoOSlider("{0:N2}°", 0f, 180f)]
@@ -121,8 +121,8 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!icdCpt) icdCpt = self.gameObject.AddComponent<SwordbreakerICD>();
             if(icdCpt.stopwatch > 0f) return;
             icdCpt.stopwatch = icd;
-            var totalProjectiles = sparkCount * count;
-            var projDamage = self.body.damage * rawDamage;
+            var totalProjectiles = sparkCount;
+            var projDamage = self.body.damage * rawDamage * count;
             var sourcePos = damageInfo.position;
             if(self.body.mainHurtBox && self.body.mainHurtBox.collider)
                 sourcePos = self.body.mainHurtBox.collider.bounds.center;

@@ -223,7 +223,7 @@
 
 		"TINKERSSATCHEL_SWORDBREAKER_NAME": "Swordbreaker",
 		"TINKERSSATCHEL_SWORDBREAKER_PICKUP": "Retaliate with exploding sparks when your shield is struck.",
-		"TINKERSSATCHEL_SWORDBREAKER_DESC": "Gain <style=cIsHealing>{0}</style> <style=cStack>(+{0} per stack)</style> flat <style=cIsHealing>shield</style>. Recharges outside of danger. Every {4} seconds, when you take <style=cIsHealth>shield damage</style>, fire {1} <style=cStack>(+{1} per stack)</style> exploding sparks within {2}° of the attacker for <style=cIsDamage>{1}x{3} base damage</style>.",
+		"TINKERSSATCHEL_SWORDBREAKER_DESC": "Gain <style=cIsHealing>{0}</style> <style=cStack>(+{0} per stack)</style> flat <style=cIsHealing>shield</style>. Recharges outside of danger. Every {4} seconds, when you take <style=cIsHealth>shield damage</style>, fire {1} exploding sparks within {2}° of the attacker for <style=cIsDamage>{1}x{3} base damage</style> <style=cStack>(+{3} per stack)</style>.",
 		"TINKERSSATCHEL_SWORDBREAKER_LORE": "",
 
 		"TINKERSSATCHEL_GOFASTER_NAME": "Go-Faster Stripes",
