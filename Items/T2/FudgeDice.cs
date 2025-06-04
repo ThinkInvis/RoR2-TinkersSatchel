@@ -35,7 +35,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Amount of luck to provide per proc.", AutoConfigFlags.PreventNetMismatch, 1, 100)]
-        public int boostAmount { get; private set; } = 9;
+        public int boostAmount { get; private set; } = 3;
 
 
         ////// Other Fields/Properties //////
@@ -76,16 +76,23 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             On.RoR2.Util.CheckRoll_float_float_CharacterMaster += Util_CheckRoll_float_float_CharacterMaster;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             On.RoR2.Util.CheckRoll_float_float_CharacterMaster -= Util_CheckRoll_float_float_CharacterMaster;
+            CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
         }
 
 
 
         ////// Hooks //////
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
+            if(body && body.master && GetCount(body) > 0 && !body.master.gameObject.GetComponent<FudgeDiceICD>())
+                body.master.gameObject.AddComponent<FudgeDiceICD>();
+        }
 
         private bool Util_CheckRoll_float_float_CharacterMaster(On.RoR2.Util.orig_CheckRoll_float_float_CharacterMaster orig, float percentChance, float luck, CharacterMaster effectOriginMaster) {
             var count = GetCount(effectOriginMaster);
@@ -93,8 +100,10 @@ namespace ThinkInvisible.TinkersSatchel {
                 var icdCpt = effectOriginMaster.GetComponent<FudgeDiceICD>();
                 if(!icdCpt) icdCpt = effectOriginMaster.gameObject.AddComponent<FudgeDiceICD>();
                 if(icdCpt.stopwatch <= 0f) {
-                    icdCpt.stopwatch = icd * (Mathf.Pow(1f - cdrStack, count - 1));
-                    return orig(percentChance, luck + boostAmount, effectOriginMaster);
+                    var retv = orig(percentChance, luck + boostAmount, effectOriginMaster);
+                    if(retv)
+                        icdCpt.stopwatch = icd * (Mathf.Pow(1f - cdrStack, count - 1));
+                    return retv;
                 }
             }
             return orig(percentChance, luck, effectOriginMaster);
@@ -121,7 +130,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
-            if(stopwatch > 0f)
+            var count = FudgeDice.instance.GetCount(master);
+
+            if(stopwatch > 0f && count > 0)
                 stopwatch -= Time.fixedDeltaTime;
 
             if(!body && master.hasBody) {
@@ -129,12 +140,17 @@ namespace ThinkInvisible.TinkersSatchel {
             }
 
             if(body && NetworkServer.active) {
-                if(stopwatch > 0f) {
-                    body.AddBuff(FudgeDice.instance.consumedBuff);
+                if(count == 0) {
                     body.RemoveBuff(FudgeDice.instance.readyBuff);
-                } else {
-                    body.AddBuff(FudgeDice.instance.readyBuff);
                     body.RemoveBuff(FudgeDice.instance.consumedBuff);
+                } else {
+                    if(stopwatch > 0f) {
+                        if(!body.HasBuff(FudgeDice.instance.consumedBuff)) body.AddBuff(FudgeDice.instance.consumedBuff);
+                        body.RemoveBuff(FudgeDice.instance.readyBuff);
+                    } else {
+                        if(!body.HasBuff(FudgeDice.instance.readyBuff)) body.AddBuff(FudgeDice.instance.readyBuff);
+                        body.RemoveBuff(FudgeDice.instance.consumedBuff);
+                    }
                 }
             }
         }
