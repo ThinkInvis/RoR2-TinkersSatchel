@@ -167,6 +167,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 rules = new[] {
                     new ItemDisplayRule {
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefabAddress = new AssetReferenceGameObject(""),
                         followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponLauncher.prefab").WaitForCompletion(),
                         childName = "ItemDrone",
                         localPos = new Vector3(-0.22377F, 0.42059F, 0.29719F),
@@ -174,6 +175,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         localScale = new Vector3(0.75F, 0.75F, 0.75F)
                     }, new ItemDisplayRule {
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefabAddress = new AssetReferenceGameObject(""),
                         followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponRobotArm.prefab").WaitForCompletion(),
                         childName = "ItemDrone",
                         localPos = new Vector3(0.85892F, -0.34884F, 0F),
@@ -186,6 +188,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 rules = new[] {
                     new ItemDisplayRule {
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefabAddress = new AssetReferenceGameObject(""),
                         followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponMinigun.prefab").WaitForCompletion(),
                         childName = "ItemDrone",
                         localPos = new Vector3(-1.53903F, 0.13204F, -0.02679F),
@@ -193,6 +196,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         localScale = new Vector3(1F, 1F, 1F)
                     }, new ItemDisplayRule {
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
+                        followerPrefabAddress = new AssetReferenceGameObject(""),
                         followerPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/DroneWeapons/DisplayDroneWeaponLauncher.prefab").WaitForCompletion(),
                         childName = "ItemDrone",
                         localPos = new Vector3(-0.22377F, 0.42059F, 0.29719F),

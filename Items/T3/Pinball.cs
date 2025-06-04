@@ -101,6 +101,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			/// Survivors ///
 			displayRules.Add("Bandit2Body", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Chest",
 				localPos = new Vector3(-0.06567F, 0.12138F, -0.20501F),
@@ -109,6 +110,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("CaptainBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Chest",
 				localPos = new Vector3(0.00143F, 0.00143F, -0.22823F),
@@ -117,6 +119,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("CommandoBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Stomach",
 				localPos = new Vector3(0.07875F, 0.19793F, -0.14871F),
@@ -125,6 +128,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("CrocoBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Stomach",
 				localPos = new Vector3(0.02502F, -0.37262F, 3.06713F),
@@ -133,6 +137,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("EngiBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Pelvis",
 				localPos = new Vector3(-0.01673F, -0.18265F, 0.35104F),
@@ -141,6 +146,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("HuntressBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Chest",
 				localPos = new Vector3(0.15394F, 0.07526F, -0.05401F),
@@ -149,6 +155,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("LoaderBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "MechBase",
 				localPos = new Vector3(0.12752F, 0.14517F, -0.18434F),
@@ -157,6 +164,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("MageBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Chest",
 				localPos = new Vector3(0.18761F, 0.06765F, -0.29962F),
@@ -165,6 +173,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("MercBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Stomach",
 				localPos = new Vector3(0.01144F, 0.07258F, -0.16841F),
@@ -173,6 +182,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("ToolbotBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Chest",
 				localPos = new Vector3(1.58694F, 1.38868F, -1.89818F),
@@ -181,6 +191,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("TreebotBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "PlatformBase",
 				localPos = new Vector3(0.12912F, 0.64686F, -0.97308F),
@@ -189,6 +200,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("RailgunnerBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Backpack",
 				localPos = new Vector3(0.2635F, -0.18186F, 0.20648F),
@@ -197,6 +209,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			});
 			displayRules.Add("VoidSurvivorBody", new ItemDisplayRule {
 				ruleType = ItemDisplayRuleType.ParentedPrefab,
+				followerPrefabAddress = new AssetReferenceGameObject(""),
 				followerPrefab = idrPrefab,
 				childName = "Chest",
 				localPos = new Vector3(0.04817F, -0.09084F, -0.19568F),
