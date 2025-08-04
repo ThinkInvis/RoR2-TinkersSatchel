@@ -7,6 +7,8 @@ using System.Linq;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
+using System;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Wrangler : Item<Wrangler> {
@@ -45,22 +47,27 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Maximum range (m) before breaking AI override and losing armor bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;
 
+        [AutoConfigRoOString()]
+        [AutoConfig("Which object names are allowed for RC Controller behavior (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
+AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "Drone1Body",
+            "BackupDroneBody",
+            "FlameDroneBody",
+            "MegaDroneBody",
+            "MissileDroneBody",
+            "Turret1Body",
+            "EngiTurretBody",
+            "SquidTurretBody",
+            "RoboBallGreenBuddyBody",
+            "RoboBallRedBuddyBody"
+        });
 
 
         ////// Other Fields/Properties //////
 
-        private readonly string[] validBodyNames = new[] {
-            "Drone1Body(Clone)",
-            "BackupDroneBody(Clone)",
-            "FlameDroneBody(Clone)",
-            "MegaDroneBody(Clone)",
-            "MissileDroneBody(Clone)",
-            "Turret1Body(Clone)",
-            "EngiTurretBody(Clone)",
-            "SquidTurretBody(Clone)",
-            "RoboBallGreenBuddyBody(Clone)",
-            "RoboBallRedBuddyBody(Clone)"
-        };
+        private static HashSet<string> validBodyNames = new HashSet<string>();
+
         public GameObject idrPrefab { get; private set; }
 
 
@@ -204,6 +211,12 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void SetupAttributes() {
             base.SetupAttributes();
             R2API.Networking.NetworkingAPI.RegisterMessageType<MsgWrangle>();
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            validBodyNames.UnionWith(objectNamesConfig.Split(',')
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {

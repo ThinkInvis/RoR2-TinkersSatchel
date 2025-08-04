@@ -7,6 +7,8 @@ using System.Linq;
 using static R2API.RecalculateStatsAPI;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
+using System;
+using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class NautilusProtocol : Item<NautilusProtocol> {
@@ -60,24 +62,29 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Proc coefficient of the void detonation attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procCoefficient { get; private set; } = 1f;
 
+        [AutoConfigRoOString()]
+        [AutoConfig("Which object names are allowed for Nautilus Protocol behavior (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
+    AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+        public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
+            "Drone1Body",
+            "BackupDroneBody",
+            "FlameDroneBody",
+            "MegaDroneBody",
+            "MissileDroneBody",
+            "Turret1Body",
+            "EngiTurretBody",
+            "SquidTurretBody",
+            "RoboBallGreenBuddyBody",
+            "RoboBallRedBuddyBody",
+            "BulwarkDroneBody",
+            "ItemDroneBody"
+        });
+
 
 
         ////// Other Fields/Properties //////
 
-        private readonly string[] validBodyNames = new[] {
-            "Drone1Body(Clone)",
-            "BackupDroneBody(Clone)",
-            "FlameDroneBody(Clone)",
-            "MegaDroneBody(Clone)",
-            "MissileDroneBody(Clone)",
-            "Turret1Body(Clone)",
-            "EngiTurretBody(Clone)",
-            "SquidTurretBody(Clone)",
-            "RoboBallGreenBuddyBody(Clone)",
-            "RoboBallRedBuddyBody(Clone)",
-            "BulwarkDroneBody(Clone)",
-            "ItemDroneBody(Clone)"
-        };
+        private static HashSet<string> validBodyNames = new HashSet<string>();
 
         public GameObject hitEffectPrefab { get; private set; }
 
@@ -109,6 +116,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 }};
                 orig(providers.Concat(new[] { isp }).ToArray());
             };
+        }
+
+        public override void SetupConfig() {
+            base.SetupConfig();
+            validBodyNames.UnionWith(objectNamesConfig.Split(',')
+                .Select(x => x.Trim() + "(Clone)"));
         }
 
         public override void Install() {
