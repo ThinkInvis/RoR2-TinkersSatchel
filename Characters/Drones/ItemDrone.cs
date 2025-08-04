@@ -228,10 +228,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void CreatePanelPrefab() {
             var tmpPanelSetup = LegacyResourcesAPI.Load<GameObject>("Prefabs/UI/ScrapperPickerPanel").InstantiateClone("TkSatTempSetupPrefab", false);
+            
+            //set label text
             var label = tmpPanelSetup.transform.Find("MainPanel/Juice/Label").GetComponent<HGTextMeshProUGUI>();
             label.text = "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>";
             var labelTMC = tmpPanelSetup.transform.Find("MainPanel/Juice/Label").GetComponent<LanguageTextMeshController>();
             labelTMC.token = "TKSAT_ITEMDRONE_POPUP_TEXT";
+
+            //remove scrapper helper and scrap visual
+            GameObject.Destroy(tmpPanelSetup.GetComponent<ScrapperInfoPanelHelper>());
+            GameObject.Destroy(tmpPanelSetup.transform.Find("MainPanel/Juice/ScrapperDetailsVertical/InspectPanel/InspectPanelArea/InspectionPanel/HorizontalBox/InspectIconContainer/InspectVisualBackground/InspectedVisual/TargetScrap").gameObject);
+            GameObject.Destroy(tmpPanelSetup.transform.Find("MainPanel/Juice/ScrapperDetailsVertical/InspectPanel/InspectPanelArea/InspectionPanel/HorizontalBox/InspectIconContainer/InspectVisualBackground/InspectedVisual/ConversionGlyph").gameObject);
 
             itemDronePanelPrefab = tmpPanelSetup.InstantiateClone("TkSatItemDronePanel", false);
             GameObject.Destroy(tmpPanelSetup);
