@@ -2,6 +2,11 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**5.2.5**
+
+- Fixed corruption in Item Drone interactable prefab causing it to not display its pickup select menu on interact.
+- Made RC Controller and Nautilus Protocol valid drone lists configurable.
+
 **5.2.4**
 
 - Balance pass:
