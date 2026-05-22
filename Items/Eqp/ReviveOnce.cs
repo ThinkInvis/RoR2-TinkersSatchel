@@ -285,20 +285,6 @@ namespace ThinkInvisible.TinkersSatchel {
                         ).ToArray();
                     var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(validEqp)).equipmentIndex;
                     droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
-                } else if(which == ItemDrone.instance.itemDroneMasterPrefab) {
-                    //Give random items to item drones
-                    var wardPersist = summon.GetComponent<ItemDroneWardPersist>();
-
-                    var drops = LegacyResourcesAPI.Load<BasicPickupDropTable>("DropTables/dtSmallChest");
-                    var drop = drops.GenerateDrop(rng);
-                    if(wardPersist && CatalogUtil.TryGetItemDef(drop, out var idef)) {
-                        int remCount = 1;
-                        if(idef.tier == ItemTier.Tier2 || idef.tier == ItemTier.VoidTier2)
-                            remCount = 3;
-                        if(idef.tier == ItemTier.Tier1 || idef.tier == ItemTier.VoidTier1)
-                            remCount = 5;
-                        wardPersist.AddItems(idef.itemIndex, remCount);
-                    }
                 }
             }
 

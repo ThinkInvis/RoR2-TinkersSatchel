@@ -97,8 +97,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }, "Set", () => SetEnabled(allSkills, false));
 
             HashSet<T2Module> allDrones = new() {
-                BulwarkDrone.instance,
-                ItemDrone.instance
+                BulwarkDrone.instance
             };
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {
                 category = "Enable...",
