@@ -256,7 +256,7 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/dodgeIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Stamina Bar</b><br>
-				Perform up to 3 dodge rolls. <small>[Cooldown: 10 s]</small>
+				Perform a dodge roll. <small>[Cooldown: 10 s]</small>
 			</td>
 		</tr>
 		<tr>
@@ -336,13 +336,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Bramble Band</b> (T2)<br>
 				Taking damage creates a thorny barrier. Corrupts all Negative Feedback Loops.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/gupRayIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Gup Ray</b> (T3)<br>
-				Split enemies into two much weaker copies. Corrupts all Shrink Rays.
 			</td>
 		</tr>
 		<tr>
@@ -586,13 +579,19 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 	- Net config sync is no longer available.
 	- Config file polling is no longer available.
 - Removed content (BREAKING):
-	- Item Drone, Mostly-Tame Mimic, Scavenger's Rucksack, Artifact of Reconfiguration: untenable to support due to added complexity in the inventory system; some of these may be reintroduced in the future.
+	- Item Drone, Mostly-Tame Mimic, Gup Ray, Scavenger's Rucksack, Artifact of Reconfiguration: untenable to support due to added complexity in the inventory system; some of these may be reintroduced in the future.
 	- ModdableEquipmentMaxCharges tweak: no longer necessary.
 - Balance pass:
 	- En Passant:
 		- Cooldown reduction per hit increased to 0.15s (was 0.025s).
 		- Now gets cooldown reduction from a maximum of 5 hits per attack.
+	- Stamina Bar:
+		- No longer provides extra equipment charges.
+		- Invulnerability duration increased to 1 second (was 0.5 seconds).
+		- Minimum cooldown increased to 1.5 seconds (was 0.5 seconds).
+		- Moderately increased both grounded and aerial speed boost intensity.
 - Fixed a potential once-per-frame NullReferenceException in Villainous Visage.
+- Fixed Command Terminal attempting to revive still-living drones. Command Terminal can now only revive objects with a PlayerCharacterMasterController.
 
 **5.2.5**
 

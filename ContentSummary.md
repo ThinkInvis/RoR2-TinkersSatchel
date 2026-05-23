@@ -419,8 +419,8 @@
 			<td>
 				<b>Stamina Bar</b><br>
 				<details>
-					<summary>Perform up to 3 dodge rolls. <small>[Cooldown: 10 s]</small></summary>
-					<small>Perform a horizontal dodge, gaining a burst of speed of 70 m/s while grounded or 45 m/s in air and becoming invulnerable for 0.5 second(s). This equipment holds 3 times as many charges.</small>
+					<summary>Perform a dodge roll. <small>[Cooldown: 10 s]</small></summary>
+					<small>Perform a horizontal dodge, gaining a burst of speed of 80 m/s while grounded or 55 m/s in air and becoming invulnerable for 1 second(s).</small>
 				</details>
 			</td>
 			<td></td>
@@ -613,18 +613,6 @@
 				<details>
 					<summary>Taking damage creates a thorny barrier. Corrupts all Negative Feedback Loops.</summary>
 					<small>After taking damage, gain a temporary barrier for 12.5% (+12.5% per stack, hyperbolic) of the damage taken. 2x12.5% of damage absorbed by your barrier (+2x12.5% per stack, hyperbolic) is taken by the inflictor: once instantly, and once as bleed. Corrupts all Negative Feedback Loops.</small>
-				</details>
-			</td>
-			<td><ul>
-			</ul></td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/gupRayIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Gup Ray</b> (T3)<br>
-				<details>
-					<summary>Split enemies into two much weaker copies. Corrupts all Shrink Rays.</summary>
-					<small>Once every 5 seconds, hitting a non-final-boss enemy splits them into 2 copies with 25% health and damage. Enemies can be split 1 time per stack. Corrupts all Shrink Rays.</small>
 				</details>
 			</td>
 			<td><ul>

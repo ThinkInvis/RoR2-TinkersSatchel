@@ -18,7 +18,13 @@
 	- En Passant:
 		- Cooldown reduction per hit increased to 0.15s (was 0.025s).
 		- Now gets cooldown reduction from a maximum of 5 hits per attack.
+	- Stamina Bar:
+		- No longer provides extra equipment charges.
+		- Invulnerability duration increased to 1 second (was 0.5 seconds).
+		- Minimum cooldown increased to 1.5 seconds (was 0.5 seconds).
+		- Moderately increased both grounded and aerial speed boost intensity.
 - Fixed a potential once-per-frame NullReferenceException in Villainous Visage.
+- Fixed Command Terminal attempting to revive still-living drones. Command Terminal can now only revive objects with a PlayerCharacterMasterController.
 
 **5.2.5**
 

@@ -23,8 +23,8 @@
 
 
 		"TINKERSSATCHEL_DODGE_NAME": "Stamina Bar",
-		"TINKERSSATCHEL_DODGE_PICKUP": "Perform up to 3 dodge rolls.",
-		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{1} m/s</style> while grounded or <style=cIsUtility>{0} m/s</style> in air, and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>. This equipment <style=cIsUtility>holds 3 times as many charges</style>.",
+		"TINKERSSATCHEL_DODGE_PICKUP": "Perform a dodge roll.",
+		"TINKERSSATCHEL_DODGE_DESC": "Perform a horizontal dodge, gaining a burst of speed of <style=cIsUtility>{1} m/s</style> while grounded or <style=cIsUtility>{0} m/s</style> in air, and becoming <style=cIsUtility>invulnerable for {1} second(s)</style>.",
 		"TINKERSSATCHEL_DODGE_LORE": "",
 
 		"TINKERSSATCHEL_LODESTONE_NAME": "Lodestone",
@@ -125,11 +125,6 @@
 		"TINKERSSATCHEL_MAGNETISM_PICKUP": "Your attacks become slightly magnetic and gain crit chance.",
 		"TINKERSSATCHEL_MAGNETISM_DESC": "Your projectile attacks <style=cIsUtility>track</style> towards enemies within <style=cIsUtility>{0}° (increases halfway to {1}° every {2} stacks)</style>. Your melee attacks create a continuous pulling vortex with a radius of <style=cIsUtility>{3} m <style=cStack>(+{3} per stack)</style></style>. Also gain <style=cIsDamage>{4}% crit chance <style=cStack>(+{4}% per stack)</style></style>.",
 		"TINKERSSATCHEL_MAGNETISM_LORE": "",
-
-		"TINKERSSATCHEL_MIMIC_NAME": "Mostly-Tame Mimic",
-		"TINKERSSATCHEL_MIMIC_PICKUP": "Mimics your other items at random.",
-		"TINKERSSATCHEL_MIMIC_DESC": "Picks one of your other items to <style=cIsUtility>mimic</style> <style=cStack>(each stack is tracked separately)</style> from a weighted selection of {0} of your item types of each tier. <style=cIsUtility>Every {1} second(s)</style>, all mimics will <style=cIsUtility>scramble</style> to a new selection.",
-		"TINKERSSATCHEL_MIMIC_LORE": "This is getting out of hand.\n\nA couple weeks ago, Jameson figured out that the mimics can be tamed... but only enough to keep them from chomping your fingers off. That was good enough for most of the crew. A few of them also became of the opinion that they're kind of cute -- the ones that aren't trying to kill us planetside, anyway.\n\nSo we've started taking them as pets. Didn't account for one thing until it was too late, though: their mimickry and hiding instincts? <i>No</i> getting rid of those. So... now our ship's full of things which aren't sure exactly which things they should be.\n\nI swear, if my favorite mug starts running away because my coffee's too hot for it <i>one</i> more time....",
 
 		"TINKERSSATCHEL_MOTIONTRACKER_NAME": "Old War Lidar",
 		"TINKERSSATCHEL_MOTIONTRACKER_PICKUP": "Periodically fire weak projectiles at all hostiles.",
@@ -312,11 +307,6 @@
 		"TINKERSSATCHEL_VOIDWISPHIVE_LORE": "",
 
 
-		"TINKERSSATCHEL_GUPRAY_NAME": "Gup Ray",
-		"TINKERSSATCHEL_GUPRAY_PICKUP": "Split enemies into two much weaker copies. <style=cIsVoid>Corrupts all Shrink Rays</style>.",
-		"TINKERSSATCHEL_GUPRAY_DESC": "Once every {0} seconds, hitting a non-final-boss enemy <style=cIsUtility>splits</style> them into 2 copies with {1} <style=cIsHealth>health</style> and <style=cIsDamage>damage</style>, as well as {2} <style=cIsUtility>speed</style> and <style=cIsUtility>attack speed</style>. <style=cStack>Enemies can be split 1 time per stack.</style> <style=cIsVoid>Corrupts all Shrink Rays</style>.",
-		"TINKERSSATCHEL_GUPRAY_LORE": "",
-
 		"TINKERSSATCHEL_LOOM_NAME": "Unraveling Loom",
 		"TINKERSSATCHEL_LOOM_PICKUP": "All your attacks become progressively slower and more powerful. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.",
 		"TINKERSSATCHEL_LOOM_DESC": "Each <style=cIsDamage>combat skill</style> use gives you <style=cIsDamage>-{0} attack speed and +{1} damage</style> for {2} seconds <style=cStack>(+{2} s per stack)</style>, up to {3} times <style=cStack>(+{3} per stack)</style>. <style=cIsVoid>Corrupts all Spacetime Skeins</style>.",
@@ -344,9 +334,6 @@
 		"TKSAT_DELAYLOOT_MSG_DELAY": "<style=cEvent>{0} has been taken for safekeeping.</style>",
 		"TKSAT_DELAYLOOT_MSG_DELAY_VAGUE": "Something",
 
-		"TINKERSSATCHEL_DISPOSABLEEQUIP_NAME": "Artifact of Reconfiguration",
-		"TINKERSSATCHEL_DISPOSABLEEQUIP_DESC": "Start with {0} equipment slots. Equipment is more common, and is consumed instead of going on cooldown.",
-
 		"TINKERSSATCHEL_PACKTACTICS_NAME": "Artifact of Tactics",
 		"TINKERSSATCHEL_PACKTACTICS_DESC": "All combatants give nearby teammates small, stacking boosts to speed, damage, and armor.",
 
@@ -357,13 +344,6 @@
 		"TKSAT_BULWARKDRONE_CONTEXT": "Repair Bulwark Drone",
 		"TKSAT_BULWARKDRONE_INSPECT": "A companion bought with gold that will follow the survivor, Taunting half of nearby enemies every 5 seconds. Resilient, self-repairing, and starts with one stack of <style=cIsHealing>Razorwire</style>.",
 		"TKSAT_BULWARKDRONE_LORE": "",
-
-		"TKSAT_ITEMDRONE_NAME": "Item Drone",
-		"TKSAT_ITEMDRONE_BODY_NAME": "Item Drone",
-		"TKSAT_ITEMDRONE_POPUP_TEXT": "<b>Item Drone</b>\r\n<i>Pick an item to insert...</i>",
-		"TKSAT_ITEMDRONE_CONTEXT": "Give Item",
-		"TKSAT_ITEMDRONE_INSPECT": "A companion bought with items that will follow the survivor, granting the effects of those items to all allies in a huge radius. Can accept up to <color=#FFFFFF>5 Common</color>, <color=#77FF17>3 Uncommon</color>, or <color=#E7543A>1 Rare</color> item(s).",
-		"TKSAT_ITEMDRONE_LORE": "",
 
 
 
