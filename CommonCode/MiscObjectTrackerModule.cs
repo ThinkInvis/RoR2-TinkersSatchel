@@ -1,20 +1,22 @@
-﻿using RoR2;
-using UnityEngine;
-using TILER2;
+﻿using HG;
+using Rewired.Utils.Interfaces;
+using RoR2;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TILER2;
+using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class MiscObjectTrackerModule : T2Module<MiscObjectTrackerModule> {
 		public override bool managedEnable => false;
 
-		private static List<GameObject> warbanners = new();
+		private static readonly List<GameObject> warbanners = new();
 		public static readonly ReadOnlyCollection<GameObject> readOnlyWarbanners = new(warbanners);
-		private static List<GameObject> randomDamageZones = new();
+		private static readonly List<GameObject> randomDamageZones = new();
 		public static readonly ReadOnlyCollection<GameObject> readOnlyRandomDamageZones = new(randomDamageZones);
-		private static List<GameObject> crippleWards = new();
+		private static readonly List<GameObject> crippleWards = new();
 		public static readonly ReadOnlyCollection<GameObject> readOnlyCrippleWards = new(crippleWards);
-		internal static List<GameObject> deskplants = new();
+		internal static readonly List<GameObject> deskplants = new();
 		public static readonly ReadOnlyCollection<GameObject> readOnlyDeskplants = new(deskplants);
 
 		public override void SetupAttributes() {

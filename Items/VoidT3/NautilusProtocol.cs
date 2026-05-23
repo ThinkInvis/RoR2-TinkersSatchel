@@ -84,7 +84,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Other Fields/Properties //////
 
-        private static HashSet<string> validBodyNames = new HashSet<string>();
+        private static readonly HashSet<string> validBodyNames = new();
 
         public GameObject hitEffectPrefab { get; private set; }
 
@@ -204,11 +204,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target.gameObject);
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 if(!_target || !_target.TryGetComponent<NautilusTrackerComponent>(out var ntc)) return;
                 ntc.Detonate();
             }

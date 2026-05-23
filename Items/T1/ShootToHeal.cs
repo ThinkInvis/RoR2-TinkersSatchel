@@ -321,7 +321,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 _pcm = pcm;
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 var th = _adjustedCoeffs * ShootToHeal.instance.baseHealMod;
                 if(_self && _self.body) Defib.instance.healingSourceStack.Push(_self.body);
                 _target.Heal(th * _target.fullHealth, _pcm);
@@ -351,7 +351,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 _pcm = reader.ReadProcChainMask();
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target.gameObject);
                 writer.Write(_self.gameObject);
                 writer.Write(_adjustedCoeffs);

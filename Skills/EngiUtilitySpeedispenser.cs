@@ -248,14 +248,14 @@ namespace ThinkInvisible.TinkersSatchel {
 					_masterIndex = (MasterCatalog.MasterIndex)reader.ReadInt32();
                 }
 
-                public void Serialize(NetworkWriter writer) {
+                public readonly void Serialize(NetworkWriter writer) {
 					writer.Write(_body.gameObject);
 					writer.Write(_pos);
 					writer.Write(_rot);
 					writer.Write((int)_masterIndex);
 				}
 
-				public void OnReceived() {
+				public readonly void OnReceived() {
 					if(_body && _body.master) {
 						var dispMaster = new MasterSummon {
 							masterPrefab = MasterCatalog.GetMasterPrefab(_masterIndex),

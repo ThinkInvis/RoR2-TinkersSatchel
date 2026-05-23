@@ -163,12 +163,12 @@ namespace ThinkInvisible.TinkersSatchel {
 					_target = tgto.GetComponent<CharacterBody>();
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
 				writer.Write((sbyte)_slot);
 				writer.Write(_target.gameObject);
 			}
 
-			public void OnReceived() {
+			public readonly void OnReceived() {
 				if(!_target) {
 					TinkersSatchelPlugin._logger.LogWarning("Received ServerTimedSkillDisable.MsgApply for nonexistent game object on client");
 					return;
@@ -206,14 +206,14 @@ namespace ThinkInvisible.TinkersSatchel {
 				_stock = reader.ReadInt32();
 			}
 
-			public void Serialize(NetworkWriter writer) {
+			public readonly void Serialize(NetworkWriter writer) {
 				writer.Write((sbyte)_slot);
 				writer.Write(_target.gameObject);
 				writer.Write(_cooldown);
 				writer.Write(_stock);
 			}
 
-			public void OnReceived() {
+			public readonly void OnReceived() {
 				if(!_target) {
 					TinkersSatchelPlugin._logger.LogWarning("Received ServerTimedSkillDisable.MsgRemove for nonexistent game object on client");
 					return;

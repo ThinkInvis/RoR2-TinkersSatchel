@@ -165,7 +165,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
     [RequireComponent(typeof(CharacterBody))]
     public class MountainTokenTracker : MonoBehaviour {
-        private static List<MountainTokenTracker> instancesList = new();
+        private static readonly List<MountainTokenTracker> instancesList = new();
         public static readonly ReadOnlyCollection<MountainTokenTracker> readOnlyInstancesList = new(instancesList);
 
         CharacterBody body;

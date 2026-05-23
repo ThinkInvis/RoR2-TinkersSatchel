@@ -147,11 +147,11 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target.gameObject);
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 if(!_target) return;
                 var cpt = _target.GetComponent<RewindComponent>();
                 if(!cpt || cpt.frames.Count == 0)

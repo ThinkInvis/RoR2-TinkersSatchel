@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private static bool? _enabled;
         internal static bool enabled {
             get {
-                if(_enabled == null) _enabled = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.DestroyedClone.AncientScepter");
+                _enabled ??= BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.DestroyedClone.AncientScepter");
                 return (bool)_enabled;
             }
         }

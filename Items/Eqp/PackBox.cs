@@ -440,7 +440,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     _aux[i] = reader.ReadGameObject();
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target);
                 writer.Write(_owner);
                 writer.Write(_aux.Length);
@@ -448,7 +448,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     writer.Write(_aux[i]);
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 if(!_target) {
                     TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPack for null GameObject");
                     return;
@@ -485,13 +485,13 @@ namespace ThinkInvisible.TinkersSatchel {
                 _pos = reader.ReadVector3();
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target);
                 writer.Write(_owner);
                 writer.Write(_pos);
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 if(!_target) {
                     TinkersSatchelPlugin._logger.LogError($"Received MsgPackboxPlace for null GameObject");
                     return;

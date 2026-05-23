@@ -290,7 +290,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     cpt.LastTimestamp = Time.fixedTime;
                 var count = GetCountEffective(self.body);
                 var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
-                bool proc = false;
+                bool proc;
                 if(self.body.master)
                     proc = Util.CheckRoll(pChance, self.body.master.luck, self.body.master);
                 else

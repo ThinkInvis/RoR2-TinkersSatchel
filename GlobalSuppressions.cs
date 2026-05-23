@@ -6,3 +6,5 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Member Access", "Publicizer001:Accessing a member that was not originally public", Justification = "I did that on purpose, I'm modding a game, shush!")]
+[assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "Folders used for organization, namespaces are only necessary to prevent conflicts with other mods", Scope = "namespace", Target = "~N:ThinkInvisible.TinkersSatchel")]
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "namespace", Target = "~N:ThinkInvisible.TinkersSatchel")]

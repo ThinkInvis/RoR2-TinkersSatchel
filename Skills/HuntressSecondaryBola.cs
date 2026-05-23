@@ -286,14 +286,14 @@ namespace ThinkInvisible.TinkersSatchel {
 				attackerRoot = reader.ReadGameObject();
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
 				writer.Write(sender.gameObject);
 				writer.Write(primaryTargetRoot);
 				writer.Write(targetRoot);
 				writer.Write(attackerRoot);
 			}
 
-			public void OnReceived() {
+			public readonly void OnReceived() {
 				sender.primaryTargetRoot = primaryTargetRoot;
 				sender.targetRoot = targetRoot;
 				sender.attackerBody = attackerRoot.GetComponent<CharacterBody>();

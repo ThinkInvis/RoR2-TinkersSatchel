@@ -279,7 +279,9 @@ namespace ThinkInvisible.TinkersSatchel {
 
                     pctx.costTypeDef.PayCost(pctx, pres);
                     StatManager.OnPurchase(slot.characterBody, purch.costType, purch.purchaseStatNames.Select(new Func<string, StatDef>(StatDef.Find)));
+#pragma warning disable CS0618 // Type or member is obsolete
                     purch.onPurchase.Invoke(iac);
+#pragma warning restore CS0618 // Type or member is obsolete
                     purch.onDetailedPurchaseServer.Invoke(pctx, pres);
 
                     //TODO: find a way to fire the PurchaseInteraction.onPurchaseGlobalServer event here. doesn't do anything ingame YET, but other mods or future updates may depend on it

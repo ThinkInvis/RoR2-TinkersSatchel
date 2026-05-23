@@ -619,12 +619,12 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target);
                 writer.Write(_projectile.gameObject);
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 if(!_projectile || NetworkServer.active) return;
 				_projectile.currTarget = _target;
             }

@@ -66,7 +66,7 @@ AutoConfigFlags.DeferForever)]
 
         ////// Other Fields/Properties //////
 
-        private static HashSet<string> validBodyNames = new HashSet<string>();
+        private static readonly HashSet<string> validBodyNames = new();
 
         public GameObject idrPrefab { get; private set; }
 
@@ -374,11 +374,11 @@ AutoConfigFlags.DeferForever)]
                 }
             }
 
-            public void Serialize(NetworkWriter writer) {
+            public readonly void Serialize(NetworkWriter writer) {
                 writer.Write(_target.gameObject);
             }
 
-            public void OnReceived() {
+            public readonly void OnReceived() {
                 if(!_target || !_target.TryGetComponent<WranglerReceiverComponent>(out var wrc)) return;
                 wrc.ApplyOverride();
             }
