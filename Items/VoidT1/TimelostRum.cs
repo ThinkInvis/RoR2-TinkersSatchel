@@ -29,17 +29,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Delay per extra hit.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Delay per extra hit.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float delayTime { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Extra hit chance per item.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Extra hit chance per item.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float procChance { get; private set; } = 0.1f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage modifier for melee attacks.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage modifier for melee attacks.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float meleeDamage { get; private set; } = 0.25f;
 
 

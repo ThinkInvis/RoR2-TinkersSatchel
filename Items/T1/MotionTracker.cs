@@ -25,22 +25,22 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage coefficient of this item's attack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageFracBase { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc coefficient of this item's attack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Proc coefficient of this item's attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procFrac { get; private set; } = 0.35f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Time in combat required to recharge projectile attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Time in combat required to recharge projectile attack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageTime { get; private set; } = 4f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage coefficient per additional item stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage coefficient per additional item stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageFracStack { get; private set; } = 0.2f;
 
         [AutoConfigRoOCheckbox()]
@@ -48,7 +48,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public bool disableVFX { get; private set; } = false;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

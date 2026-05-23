@@ -54,12 +54,12 @@ namespace ThinkInvisible.TinkersSatchel {
 		[AutoConfigRoOString()]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
 		[AutoConfig("Extra projectile names to blacklist (comma-delimited, leading/trailing whitespace will be ignored).",
-			AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+			AutoConfigFlags.DeferForever)]
 		public string blacklistedProjectiles { get; private set; } = "TreebotFlower1, TreebotFlower2, TreebotFlowerSeed";
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 2f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		[AutoConfig("Proportion of melee attack damage on fired projectiles.", AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float meleeProjectileDamage { get; private set; } = 0.5f;
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]

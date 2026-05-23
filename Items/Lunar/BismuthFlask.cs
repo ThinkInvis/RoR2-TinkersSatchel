@@ -22,12 +22,12 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Reduction to duration of debuffs/DoTs per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Reduction to duration of debuffs/DoTs per stack (hyperbolic).", AutoConfigFlags.None, 0f, 1f)]
         public float debuffReduction { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Reduction to duration of buffs per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Reduction to duration of buffs per stack (hyperbolic).", AutoConfigFlags.None, 0f, 1f)]
         public float buffReduction { get; private set; } = 0.1f;
 
 

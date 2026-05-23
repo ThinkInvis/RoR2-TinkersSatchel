@@ -27,50 +27,50 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Fraction of healing to absorb, stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Fraction of healing to absorb, stacks hyperbolically.", AutoConfigFlags.None, 0f, 1f)]
         public float healingRatio { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Additional multiplier to HealingRatio for overheal.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Additional multiplier to HealingRatio for overheal.", AutoConfigFlags.None, 0f, 1f)]
         public float overhealMalus { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Absorbed healing required to activate the buff, relative to max health.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Absorbed healing required to activate the buff, relative to max health.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float activationRatio { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration of the buff, once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Duration of the buff, once triggered.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffDuration { get; private set; } = 10f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Attack speed multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Attack speed multiplier to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeAttackSpeed { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Damage multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage multiplier to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeDamage { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Move speed multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Move speed multiplier to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeMoveSpeed { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Jump power multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Jump power multiplier to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeJumpPower { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Health regen multiplier to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Health regen multiplier to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeRegen { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base crit chance to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Base crit chance to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeCrit { get; private set; } = 20f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 30f)]
-        [AutoConfig("Base armor to add per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Base armor to add per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMagnitudeArmor { get; private set; } = 20f;
 
 

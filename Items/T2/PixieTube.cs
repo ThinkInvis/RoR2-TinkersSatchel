@@ -26,41 +26,41 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration of all Pixie Tube buffs.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        [AutoConfig("Duration of all Pixie Tube buffs.", AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float buffDuration { get; private set; } = 10f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Fractional move speed bonus from the Water buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Fractional move speed bonus from the Water buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffMoveAmt { get; private set; } = 0.05f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Fractional attack speed bonus from the Air buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Fractional attack speed bonus from the Air buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffAttackAmt { get; private set; } = 0.05f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Fractional damage bonus from the Fire buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Fractional damage bonus from the Fire buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffDamageAmt { get; private set; } = 0.03f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Flat armor bonus from the Earth buff.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Flat armor bonus from the Earth buff.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffArmorAmt { get; private set; } = 10f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Internal cooldown on each non-primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Internal cooldown on each non-primary skill, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float perSkillCooldown { get; private set; } = 3f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Internal cooldown on primary skill, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Internal cooldown on primary skill, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float primaryCooldown { get; private set; } = 6f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, stacking spawns stronger wisps instead of more.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, stacking spawns stronger wisps instead of more.")]
         public bool performanceMerge { get; private set; } = true;
 
 

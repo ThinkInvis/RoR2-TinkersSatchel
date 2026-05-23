@@ -25,27 +25,27 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Reduction to melee/blast range/radius per stack (linear divisor).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Reduction to melee/blast range/radius per stack (linear divisor).", AutoConfigFlags.None, 0f, 1f)]
         public float rangeReduc { get; private set; } = 0.1f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Reduction to projectile speed per stack (linear divisor).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Reduction to projectile speed per stack (linear divisor).", AutoConfigFlags.None, 0f, 1f)]
         public float speedReduc { get; private set; } = 0.1f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Reduction to hitscan range per stack (linear divisor).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Reduction to hitscan range per stack (linear divisor).", AutoConfigFlags.None, 0f, 1f)]
         public float hitscanReduc { get; private set; } = 0.1f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("DoT damage multiplier per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("DoT damage multiplier per stack (linear).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageBuff { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Debuff duration multiplier per stack (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Debuff duration multiplier per stack (linear).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float durationBuff { get; private set; } = 0.25f;
 
 

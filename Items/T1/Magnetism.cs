@@ -22,35 +22,35 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:N0}", 0f, 5f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Projectile magnetism angle (deg) at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
+        [AutoConfig("Projectile magnetism angle (deg) at first stack.", AutoConfigFlags.None, 0f, 180f)]
         public float rangedAmountBase { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 180f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Projectile magnetism angle (deg) cap.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
+        [AutoConfig("Projectile magnetism angle (deg) cap.", AutoConfigFlags.None, 0f, 180f)]
         public float rangedAmountMax { get; private set; } = 30f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 200)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Number of item stacks over which projectile magnetism angle approaches its cap by half.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        [AutoConfig("Number of item stacks over which projectile magnetism angle approaches its cap by half.", AutoConfigFlags.None, 1, int.MaxValue)]
         public int rangedAmountLambda { get; private set; } = 50;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Melee draw-in range (m) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Melee draw-in range (m) per stack, linear.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float meleeAmount { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
-        [AutoConfig("Maximum melee draw-in pull speed (m/s).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum melee draw-in pull speed (m/s).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float meleeForce { get; private set; } = 30f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 10f)]
-        [AutoConfig("Maximum melee draw-in pull angular speed (rotations/sec).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum melee draw-in pull angular speed (rotations/sec).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float meleeTurnForce { get; private set; } = 4f;
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Global critical chance increase (percentage 0-100) per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Global critical chance increase (percentage 0-100) per stack, linear.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float critAmount { get; private set; } = 2.5f;
 
 

@@ -28,11 +28,11 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Time spent in midair after which all bonus item stacks will have been removed and granted to enemies. Bonus items decay linearly over this timespan.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Time spent in midair after which all bonus item stacks will have been removed and granted to enemies. Bonus items decay linearly over this timespan.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float maxUngroundedTime { get; private set; } = 20f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 600f)]
-        [AutoConfig("Amount of extra monster credits to assign to the teleporter event per stack (scales with time).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Amount of extra monster credits to assign to the teleporter event per stack (scales with time).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float difficultyBonus { get; private set; } = 100f;
 
 

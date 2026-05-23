@@ -42,6 +42,10 @@
       <HintPath>..\Dronemeld\Build\Dronemeld\Dronemeld.dll</HintPath>
 	  <Private>False</Private>
     </Reference>
+    <Reference Include="NavYoink">
+      <HintPath>..\NavYoink\Build\NavYoink\NavYoink.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="TILER2">
       <HintPath>..\TILER2\Build\TILER2\TILER2.dll</HintPath>
       <Private>False</Private>

@@ -25,16 +25,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to reflect. Will be doubled by bleed proc. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+        [AutoConfig("Amount of damage to reflect. Will be doubled by bleed proc. Stacks hyperbolically.", AutoConfigFlags.None, 0f, 0.999f)]
         public float damageFrac { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 0.999f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to convert to barrier. Stacks hyperbolically.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+        [AutoConfig("Amount of damage to convert to barrier. Stacks hyperbolically.", AutoConfigFlags.None, 0f, 0.999f)]
         public float barrierFrac { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 4f)]
-        [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Multiplier to damageFrac vs players.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float vsPlayerScaling { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
@@ -43,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public float procCoefficient { get; private set; } = 0f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

@@ -31,26 +31,26 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration of the phasing effect, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Duration of the phasing effect, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float phaseDuration { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum rewind time, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float rewindDuration { get; private set; } = 10f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Minimum rewind time, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Minimum rewind time, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float minDuration { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Time after use before beginning to record again, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Time after use before beginning to record again, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float icd { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N2} s", 0.05f, 10f)]
-        [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.PreventNetMismatch, 0.05f, float.MaxValue)]
+        [AutoConfig("Time between saved player states, in seconds.", AutoConfigFlags.None, 0.05f, float.MaxValue)]
         public float frameInterval { get; private set; } = 0.5f;
 
 

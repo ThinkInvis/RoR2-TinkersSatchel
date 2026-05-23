@@ -29,32 +29,32 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Armor applied per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Armor applied per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float armorBuff { get; private set; } = 25f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Regen applied per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Regen applied per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float regenBuff { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Damage bonus multiplier applied per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage bonus multiplier applied per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageBuff { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Range (m) of the ping explosion.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Range (m) of the ping explosion.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float detRange { get; private set; } = 80f;
 
         [AutoConfigRoOSlider("{0:N0} s", 0f, 300f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Relative damage of the ping explosion.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Relative damage of the ping explosion.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float detDamage { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Minimum time between detonations on a single drone.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Minimum time between detonations on a single drone.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float detIcd { get; private set; } = 5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
@@ -64,7 +64,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for Nautilus Protocol behavior (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
-    AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+            AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
             "Drone1Body",
             "BackupDroneBody",

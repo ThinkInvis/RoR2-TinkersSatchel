@@ -25,27 +25,27 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Stat bonus per T1 item per stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+		[AutoConfig("Stat bonus per T1 item per stack.", AutoConfigFlags.None, 0f, 1f)]
 		public float tier1Bonus { get; private set; } = 0.01f;
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Stat bonus per T2 item per stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+		[AutoConfig("Stat bonus per T2 item per stack.", AutoConfigFlags.None, 0f, 1f)]
 		public float tier2Bonus { get; private set; } = 0.03f;
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Stat bonus per any other item (e.g. T3, Boss) per stack.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+		[AutoConfig("Stat bonus per any other item (e.g. T3, Boss) per stack.", AutoConfigFlags.None, 0f, 1f)]
 		public float tier3Bonus { get; private set; } = 0.05f;
 
 		[AutoConfigRoOString()]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateStats)]
-		[AutoConfig("Items to count towards Kintsugi, as a comma-delimited list of name tokens or internal names (will be automatically trimmed, prefix name tokens with @).", AutoConfigFlags.PreventNetMismatch)]
+		[AutoConfig("Items to count towards Kintsugi, as a comma-delimited list of name tokens or internal names (will be automatically trimmed, prefix name tokens with @).")]
 		public string validItemNameTokens { get; private set; } = "ScrapWhite, ScrapGreen, ScrapRed, ScrapYellow, RegeneratingScrap, RegeneratingScrapConsumed, HealingPotionConsumed, FragileDamageBonusConsumed, ExtraLifeVoidConsumed, ExtraLifeConsumed, TKSATKintsugi";
 
 		[AutoConfigRoOIntSlider("{0:B7}", 0, 127)]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("Binary flag determining which stats to effect. 1: Attack Speed, 2: Damage, 4: Move Speed, 8: Jump Power, 16: Regen Mult., 32: Crit Chance, 64: Armor", AutoConfigFlags.PreventNetMismatch, 0, 127)]
+		[AutoConfig("Binary flag determining which stats to effect. 1: Attack Speed, 2: Damage, 4: Move Speed, 8: Jump Power, 16: Regen Mult., 32: Crit Chance, 64: Armor", AutoConfigFlags.None, 0, 127)]
 		public int buffEffectFlags { get; private set; } = 127;
 
 

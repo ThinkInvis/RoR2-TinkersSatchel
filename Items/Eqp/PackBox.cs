@@ -8,6 +8,7 @@ using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using System;
 using UnityEngine.AddressableAssets;
+using ThinkInvisible.NavYoink;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class PackBox : Equipment<PackBox> {
@@ -24,7 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for packing (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+            AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
             "Turret1Body",
             "Turret1Broken",

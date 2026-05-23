@@ -24,16 +24,16 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Fractional stealth attack damage bonus per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Fractional stealth attack damage bonus per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.13f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Duration of the stealth buff once triggered.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Duration of the stealth buff once triggered.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float buffDuration { get; private set; } = 1.3f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

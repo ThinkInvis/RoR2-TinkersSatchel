@@ -28,8 +28,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Config //////
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, AI with nothing better to do will attempt to shoot teammates if they have this item, either of them are injured, and Artifact of Chaos is not enabled.",
-            AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, AI with nothing better to do will attempt to shoot teammates if they have this item, either of them are injured, and Artifact of Chaos is not enabled.")]
         public bool aiOverride { get; private set; } = true;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]

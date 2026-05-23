@@ -26,17 +26,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOIntSlider("${0:N0}", 1, 1000)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        [AutoConfig("Gold required for the first point of armor. Scales with difficulty level.", AutoConfigFlags.None, 1, int.MaxValue)]
         public int goldAmt { get; private set; } = 2;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Exponential reduction to points of armor past the first.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Exponential reduction to points of armor past the first.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float goldExp { get; private set; } = 0.01f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Duration of each point of armor.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Duration of each point of armor.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float duration { get; private set; } = 5f;
 
 

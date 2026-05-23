@@ -27,15 +27,15 @@ namespace ThinkInvisible.TinkersSatchel {
 		public int maxStacks { get; private set; } = 10;
 
 		[AutoConfigRoOSlider("{0:P1}", 0f, 0.999f)]
-		[AutoConfig("Attack speed multiplier reduction per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, 0.999f)]
+		[AutoConfig("Attack speed multiplier reduction per buff stack.", AutoConfigFlags.None, 0f, 0.999f)]
 		public float stackAttack { get; private set; } = 0.05f;
 
 		[AutoConfigRoOSlider("{0:P1}", 0f, 10f)]
-		[AutoConfig("Damage multiplier addition per buff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		[AutoConfig("Damage multiplier addition per buff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float stackDamage { get; private set; } = 0.125f;
 
 		[AutoConfigRoOSlider("{0:N0} s", 0f, 30f)]
-		[AutoConfig("Time before effect expires.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		[AutoConfig("Time before effect expires.", AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float window { get; private set; } = 3f;
 
 

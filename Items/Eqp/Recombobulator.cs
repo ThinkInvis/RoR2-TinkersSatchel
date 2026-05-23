@@ -24,7 +24,7 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for recombobulation (comma-delimited, leading/trailing whitespace will be ignored). Items not in this list will also not be selected as the new object. WARNING: May have unintended results on some untested objects!",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+            AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
             "Turret1Broken",
             "Drone1Broken",
@@ -65,8 +65,7 @@ namespace ThinkInvisible.TinkersSatchel {
         });
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, interactables will only reroll into other interactables of the same category (chest, shrine, drone, etc.).",
-            AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, interactables will only reroll into other interactables of the same category (chest, shrine, drone, etc.).")]
         public bool respectCategory { get; private set; } = true;
 
 

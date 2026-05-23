@@ -29,27 +29,27 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Extra fire rate applied at 1 stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Extra fire rate applied at 1 stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float baseExtraSpeed { get; private set; } = 0.4f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Extra fire rate applied per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Extra fire rate applied per additional stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float stackExtraSpeed { get; private set; } = 0.4f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage | AutoConfigUpdateActionTypes.InvalidateStats)]
-        [AutoConfig("Armor given to item's holder, per drone per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Armor given to item's holder, per drone per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float ownerArmor { get; private set; } = 15f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum range (m) before breaking AI override and losing armor bonus.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum range (m) before breaking AI override and losing armor bonus.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float wrange { get; private set; } = 150f;
 
         [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for RC Controller behavior (comma-delimited, leading/trailing whitespace will be ignored). WARNING: May have unintended results on some untested objects!",
-AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
             "Drone1Body",
             "BackupDroneBody",

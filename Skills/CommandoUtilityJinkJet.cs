@@ -11,14 +11,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Module Data //////
 
-		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame | AutoConfigFlags.PreventNetMismatch;
+		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame;
 
 
 
 		////// Config //////
 
 		[AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
-		[AutoConfig("Multiplier to GoFaster BuffFrac for this skill: multiplies launch speed.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+		[AutoConfig("Multiplier to GoFaster BuffFrac for this skill: multiplies launch speed.", AutoConfigFlags.None, 0f, float.MaxValue)]
 		public float goFasterBuffFrac { get; private set; } = 0.5f;
 
 

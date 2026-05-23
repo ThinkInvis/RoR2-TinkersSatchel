@@ -24,16 +24,16 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplicative internal cooldown reduction per stack past the first.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Multiplicative internal cooldown reduction per stack past the first.", AutoConfigFlags.None, 0f, 1f)]
         public float cdrStack { get; private set; } = 0.15f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, also applies equipment cooldown reduction from other sources to the ICD. If false, only cdrStack is applied.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, also applies equipment cooldown reduction from other sources to the ICD. If false, only cdrStack is applied.")]
         public bool externalCdr { get; private set; } = false;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("The percentage of maximum health below which to trigger this item's effect.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("The percentage of maximum health below which to trigger this item's effect.", AutoConfigFlags.None, 0f, 1f)]
         public float healthThreshold { get; private set; } = 0.5f;
 
 

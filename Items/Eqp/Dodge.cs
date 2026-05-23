@@ -31,11 +31,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public float evadeBurstSpeedGrounded { get; private set; } = 70f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
-        [AutoConfig("Duration of the invulnerability effect.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        [AutoConfig("Duration of the invulnerability effect.", AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float invulnTime { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
-        [AutoConfig("Minimum cooldown between equipment activations.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        [AutoConfig("Minimum cooldown between equipment activations.", AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float icd { get; private set; } = 0.5f;
 
 

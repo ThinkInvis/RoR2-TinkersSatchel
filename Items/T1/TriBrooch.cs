@@ -26,21 +26,21 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance for the effect to trigger (percentage).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        [AutoConfig("Chance for the effect to trigger (percentage).", AutoConfigFlags.None, 0f, 100f)]
         public float procChance { get; private set; } = 9f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc damage, as base damage fraction, at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Proc damage, as base damage fraction, at first stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float procBaseDamage { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Proc damage, as base damage fraction, per additional stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Proc damage, as base damage fraction, per additional stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float procStackDamage { get; private set; } = 0.5f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, will never proc from self damage.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, will never proc from self damage.")]
         public bool preventSelfProc { get; private set; } = false;
 
 

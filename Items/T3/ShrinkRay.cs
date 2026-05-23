@@ -37,16 +37,16 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Strength of the damage debuff (higher = less damage). Does not stack.",
-            AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+            AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageDebuff { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfig("Strength of the model scale effect per stack (lower = smaller).",
-            AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+            AutoConfigFlags.None, 0f, float.MaxValue)]
         public float scaleDebuff { get; private set; } = 0.5f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

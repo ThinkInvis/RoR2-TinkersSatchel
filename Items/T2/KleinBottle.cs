@@ -26,37 +26,37 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Percent chance for Unstable Klein Bottle to proc; stacks multiplicatively.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        [AutoConfig("Percent chance for Unstable Klein Bottle to proc; stacks multiplicatively.", AutoConfigFlags.None, 0f, 100f)]
         public float procChance { get; private set; } = 8f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Range of the Unstable Klein Bottle effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Range of the Unstable Klein Bottle effect.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float pullRadius { get; private set; } = 20f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Vertical hold distance of the Unstable Klein Bottle's float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Vertical hold distance of the Unstable Klein Bottle's float effect.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float pullHeight { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Radius of random motion of the Unstable Klein Bottle's float effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Radius of random motion of the Unstable Klein Bottle's float effect.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float pullWobble { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration of the Unstable Klein Bottle's float effect and stun.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Duration of the Unstable Klein Bottle's float effect and stun.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float pullTime { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 5f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Internal cooldown of the Unstable Klein Bottle effect.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Internal cooldown of the Unstable Klein Bottle effect.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float procIcd { get; private set; } = 1.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Damage multiplier stat of the attack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageFrac { get; private set; } = 0.5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
@@ -65,7 +65,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public float procCoefficient { get; private set; } = 1f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

@@ -30,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOString()]
         [AutoConfig("Which object names are allowed for activation (comma-delimited, leading/trailing whitespace will be ignored). Target objects must also incorporate a ChestBehavior component. WARNING: May have unintended results on some untested objects!",
-            AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever)]
+            AutoConfigFlags.DeferForever)]
         public string objectNamesConfig { get; private set; } = String.Join(", ", new[] {
             "Chest1",
             "Chest2",
@@ -45,7 +45,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cost reduction (0 = no reduction).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Cost reduction (0 = no reduction).", AutoConfigFlags.None, 0f, 1f)]
         public float refundFrac { get; private set; } = 0.5f;
 
 

@@ -25,31 +25,31 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of damage to convert per stack (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Amount of damage to convert per stack (hyperbolic).", AutoConfigFlags.None, 0f, 1f)]
         public float bufferFrac { get; private set; } = 0.08f;
 
         [AutoConfigRoOSlider("{0:P0}", 0.1f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Hyperbolic cap for bufferFrac.", AutoConfigFlags.PreventNetMismatch, 0.1f, 10f)]
+        [AutoConfig("Hyperbolic cap for bufferFrac.", AutoConfigFlags.None, 0.1f, 10f)]
         public float bufferFracCap { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of regen multiplier to add per stack (linear) at full barrier.", AutoConfigFlags.PreventNetMismatch, 0f, 10f)]
+        [AutoConfig("Amount of regen multiplier to add per stack (linear) at full barrier.", AutoConfigFlags.None, 0f, 10f)]
         public float regenFrac { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 60f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Time over which each barrier instance is delayed, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Time over which each barrier instance is delayed, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float bufferDuration { get; private set; } = 3f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Tick interval of the granted barrier, in seconds.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Tick interval of the granted barrier, in seconds.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float bufferRate { get; private set; } = 0f;
         
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

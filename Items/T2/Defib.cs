@@ -29,12 +29,12 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplier for extra healing per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Multiplier for extra healing per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float critFracStack { get; private set; } = 0.25f;
         
         [AutoConfigRoOSlider("{0:P0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Crit chance added by the first stack of this item.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        [AutoConfig("Crit chance added by the first stack of this item.", AutoConfigFlags.None, 0f, 100f)]
         public float critBonus { get; private set; } = 5f;
 
 

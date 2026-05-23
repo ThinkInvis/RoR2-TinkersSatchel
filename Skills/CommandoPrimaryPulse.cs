@@ -12,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		////// Module Data //////
 
-		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame | AutoConfigFlags.PreventNetMismatch;
+		public override AutoConfigFlags enabledConfigFlags => AutoConfigFlags.DeferUntilEndGame;
 
 
 
@@ -20,7 +20,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		
 		[AutoConfigRoOCheckbox()]
 		[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-		[AutoConfig("If true, skill will have no recoil and use an alternate mechanic: high-end damage will start at +0 compared to low-end, and ramp up while attacking the same enemy without missing.", AutoConfigFlags.PreventNetMismatch)]
+		[AutoConfig("If true, skill will have no recoil and use an alternate mechanic: high-end damage will start at +0 compared to low-end, and ramp up while attacking the same enemy without missing.")]
 		public bool altModeFocusFire { get; private set; } = false;
 
 		////// Other Fields/Properties //////

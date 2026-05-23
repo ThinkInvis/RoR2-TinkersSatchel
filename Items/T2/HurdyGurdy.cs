@@ -27,26 +27,26 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Base damage of this item's projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Base damage of this item's projectiles.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float projDamage { get; private set; } = 2f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 180f)]
-        [AutoConfig("Forward cone angle for acquiring projectile targets.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
+        [AutoConfig("Forward cone angle for acquiring projectile targets.", AutoConfigFlags.None, 0f, 180f)]
         public float projAngle { get; private set; } = 30f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Uninterrupted secondary skill activations required to start firing.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        [AutoConfig("Uninterrupted secondary skill activations required to start firing.", AutoConfigFlags.None, 1, int.MaxValue)]
         public int windupTime { get; private set; } = 3;
 
         [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Secondary skill charges provided by the first stack of this item.", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
+        [AutoConfig("Secondary skill charges provided by the first stack of this item.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int baseCharges { get; private set; } = 2;
 
         [AutoConfigRoOIntSlider("{0:N0}", 0, 10)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Secondary skill charges provided per additional first stack of this item.", AutoConfigFlags.PreventNetMismatch, 0, int.MaxValue)]
+        [AutoConfig("Secondary skill charges provided per additional first stack of this item.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int stackCharges { get; private set; } = 1;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
@@ -54,7 +54,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public float procCoefficient { get; private set; } = 0.5f;
 
         [AutoConfigRoOString()]
-        [AutoConfig("Skill names which will always count for consecutive Hurdy-Gurdy activations.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Skill names which will always count for consecutive Hurdy-Gurdy activations.")]
         public string skillOverridesConfig { get; private set; } = "RailgunnerBodyFireSnipeHeavy";
 
 

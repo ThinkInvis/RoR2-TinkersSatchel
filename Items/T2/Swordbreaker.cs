@@ -26,31 +26,31 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Base damage of this item's projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Base damage of this item's projectiles.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float rawDamage { get; private set; } = 0.25f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of flat shield given by this item per stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Amount of flat shield given by this item per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float shieldAmt { get; private set; } = 50f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 10)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Number of projectiles fired by this item.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        [AutoConfig("Number of projectiles fired by this item.", AutoConfigFlags.None, 1, int.MaxValue)]
         public int sparkCount { get; private set; } = 3;
 
         [AutoConfigRoOSlider("{0:N2}°", 0f, 180f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum degrees of spread to add to projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, 180f)]
+        [AutoConfig("Maximum degrees of spread to add to projectiles.", AutoConfigFlags.None, 0f, 180f)]
         public float spreadConeHalfAngleDegr { get; private set; } = 5f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Internal cooldown for firing projectiles.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Internal cooldown for firing projectiles.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float icd { get; private set; } = 0.5f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

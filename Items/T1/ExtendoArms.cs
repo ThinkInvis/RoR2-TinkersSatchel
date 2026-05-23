@@ -25,27 +25,27 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Hitbox scale increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Hitbox scale increase per stack, linear.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float resizeAmount { get; private set; } = 0.125f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Projectile velocity increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Projectile velocity increase per stack, linear.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float speedAmount { get; private set; } = 0.075f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Hitscan range increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Hitscan range increase per stack, linear.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float rangeAmount { get; private set; } = 0.075f;
 
         [AutoConfigRoOSlider("{0:P1}", 0f, 3f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Global attack damage increase per stack, linear.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Global attack damage increase per stack, linear.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float damageAmount { get; private set; } = 0.05f;
 
         [AutoConfigRoOSlider("{0:N1}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum distance between character and center of an AoE to count as a PBAoE.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Maximum distance between character and center of an AoE to count as a PBAoE.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float pbaoeRange { get; private set; } = 5f;
 
 

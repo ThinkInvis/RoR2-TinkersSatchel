@@ -23,8 +23,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Config //////
 
         [AutoConfigRoOString()]
-        [AutoConfig("Which master prefab names to spawn if there are no allies to be revived. WARNING: May have unintended results on some untested objects!",
-            AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Which master prefab names to spawn if there are no allies to be revived. WARNING: May have unintended results on some untested objects!")]
         public string masterNamesConfig { get; private set; } = String.Join(", ", new[] {
             "EquipmentDroneMaster",
             "Drone1Master",

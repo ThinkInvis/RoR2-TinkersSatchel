@@ -35,12 +35,12 @@ namespace ThinkInvisible.TinkersSatchel {
         public float procCoefficient { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
-        [AutoConfig("Range for pulling enemies.", AutoConfigFlags.PreventNetMismatch | AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
+        [AutoConfig("Range for pulling enemies.", AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
         public float enemyRange { get; private set; } = 40f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Range for pulling other objects.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Range for pulling other objects.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float objectRange { get; private set; } = 150f;
 
 

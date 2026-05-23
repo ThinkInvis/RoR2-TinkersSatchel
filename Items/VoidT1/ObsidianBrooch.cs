@@ -25,16 +25,16 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:N1}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance to trigger the effect. Effect can proc once per stack.", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        [AutoConfig("Chance to trigger the effect. Effect can proc once per stack.", AutoConfigFlags.None, 0f, 100f)]
         public float procChance { get; private set; } = 9f;
 
         [AutoConfigRoOSlider("{0:N0} m", 0f, 300f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Range to spread debuffs within.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Range to spread debuffs within.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float range { get; private set; } = 50f;
 
         [AutoConfigRoOCheckbox()]
-        [AutoConfig("If true, self-damage will not proc this item.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If true, self-damage will not proc this item.")]
         public bool disableSelfDamage { get; private set; } = true;
 
 

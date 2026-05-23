@@ -26,17 +26,17 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 30f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Base cooldown at first stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Base cooldown at first stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float icd { get; private set; } = 20f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplicative internal cooldown reduction per stack past the first.", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Multiplicative internal cooldown reduction per stack past the first.", AutoConfigFlags.None, 0f, 1f)]
         public float cdrStack { get; private set; } = 0.1f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Amount of luck to provide per proc. Should be treated as value+1 due to the effect including a non-luck reroll.", AutoConfigFlags.PreventNetMismatch, 1, 100)]
+        [AutoConfig("Amount of luck to provide per proc. Should be treated as value+1 due to the effect including a non-luck reroll.", AutoConfigFlags.None, 1, 100)]
         public int boostAmount { get; private set; } = 2;
 
 

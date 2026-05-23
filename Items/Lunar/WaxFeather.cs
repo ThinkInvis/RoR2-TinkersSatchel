@@ -22,42 +22,42 @@ namespace ThinkInvisible.TinkersSatchel {
         
         [AutoConfigRoOSlider("{0:N1} s", 0f, 15f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Airtime required to accumulate a buff/debuff stack.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Airtime required to accumulate a buff/debuff stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float chargeFreq { get; private set; } = 0.4f;
 
         [AutoConfigRoOIntSlider("{0:N0}", 1, 100)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum buff/debuff stacks per item stack.", AutoConfigFlags.PreventNetMismatch, 1, int.MaxValue)]
+        [AutoConfig("Maximum buff/debuff stacks per item stack.", AutoConfigFlags.None, 1, int.MaxValue)]
         public int maxStacks { get; private set; } = 10;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How fast to decay charge while grounded, relative to chargeFreq.", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("How fast to decay charge while grounded, relative to chargeFreq.", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float decayFreqMult { get; private set; } = 3f;
 
         [AutoConfigRoOSlider("{0:N0}%", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Ignite chance at full strength (does not stack).", AutoConfigFlags.PreventNetMismatch, 0f, 100f)]
+        [AutoConfig("Ignite chance at full strength (does not stack).", AutoConfigFlags.None, 0f, 100f)]
         public float igniteChance { get; private set; } = 15f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 10f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Relative ignite damage per stack at full strength (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Relative ignite damage per stack at full strength (linear).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float igniteDamage { get; private set; } = 0.2f;
 
         [AutoConfigRoOSlider("{0:N0}", 0f, 1000f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Armor penalty per stack at full strength (linear).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Armor penalty per stack at full strength (linear).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float armorDebuff { get; private set; } = 5f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Gravity reduction per stack at full strength (hyperbolic).", AutoConfigFlags.PreventNetMismatch, 0f, 1f)]
+        [AutoConfig("Gravity reduction per stack at full strength (hyperbolic).", AutoConfigFlags.None, 0f, 1f)]
         public float gravityBuff { get; private set; } = 0.015f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Speed penalty per stack at full strength (linear divisor).", AutoConfigFlags.PreventNetMismatch, 0f, float.MaxValue)]
+        [AutoConfig("Speed penalty per stack at full strength (linear divisor).", AutoConfigFlags.None, 0f, float.MaxValue)]
         public float speedDebuff { get; private set; } = 0.01f;
 
 
