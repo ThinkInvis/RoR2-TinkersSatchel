@@ -363,22 +363,22 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             if(localUser.cachedMaster != self) return;
             int matches = 0;
-            if(self.inventory.GetItemCount(RoR2Content.Items.Mushroom) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.NearbyDamageBonus) > 0) matches++;
-            if(Moustache.instance.GetCount(self.inventory) > 0 || VillainousVisage.instance.GetCount(self.inventory) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Mushroom) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.NearbyDamageBonus) > 0) matches++;
+            if(Moustache.instance.GetCountEffective(self.inventory) > 0 || VillainousVisage.instance.GetCountEffective(self.inventory) > 0) matches++;
 
-            if(self.inventory.GetItemCount(RoR2Content.Items.Thorns) > 0) matches++;
-            if(KleinBottle.instance.GetCount(self.inventory) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Thorns) > 0) matches++;
+            if(KleinBottle.instance.GetCountEffective(self.inventory) > 0) matches++;
 
-            if(self.inventory.GetItemCount(RoR2Content.Items.Icicle) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.ShockNearby) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.NovaOnHeal) > 0) matches++;
-            if(Headset.instance.GetCount(self.inventory) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Icicle) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.ShockNearby) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.NovaOnHeal) > 0) matches++;
+            if(Headset.instance.GetCountEffective(self.inventory) > 0) matches++;
 
-            if(self.inventory.GetItemCount(RoR2Content.Items.SiphonOnLowHealth) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.SprintWisp) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.SiphonOnLowHealth) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.SprintWisp) > 0) matches++;
 
-            if(self.inventory.GetItemCount(DLC1Content.Items.LunarSun) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(DLC1Content.Items.LunarSun) > 0) matches++;
 
             if(self.inventory.currentEquipmentIndex == RoR2Content.Equipment.Cleanse.equipmentIndex
                 || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.Cleanse.equipmentIndex)

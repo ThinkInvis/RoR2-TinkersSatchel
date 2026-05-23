@@ -241,9 +241,9 @@ namespace ThinkInvisible.TinkersSatchel {
         
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
             var mtt = body.GetComponent<MotionTrackerTracker>();
-            if(GetCount(body) > 0 && !mtt)
+            if(GetCountEffective(body) > 0 && !mtt)
                 body.gameObject.AddComponent<MotionTrackerTracker>();
-            else if(GetCount(body) == 0 && mtt)
+            else if(GetCountEffective(body) == 0 && mtt)
                 GameObject.Destroy(mtt);
         }
 
@@ -252,7 +252,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(self && damageInfo.attacker && (!disableSelfDamage || self.gameObject != damageInfo.attacker)) {
                 var mtt = damageInfo.attacker.GetComponent<MotionTrackerTracker>();
-                var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
+                var count = GetCountEffective(damageInfo.attacker.GetComponent<CharacterBody>());
                 if(mtt && count > 0) {
                     mtt.SetInCombat(self.gameObject);
                 }
@@ -353,7 +353,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 minSpread = 0,
                 maxSpread = 0,
                 bulletCount = 1u,
-                damage = ownerBody.damage * (MotionTracker.instance.damageFracBase + (MotionTracker.instance.GetCount(ownerBody) - 1) * MotionTracker.instance.damageFracStack),
+                damage = ownerBody.damage * (MotionTracker.instance.damageFracBase + (MotionTracker.instance.GetCountEffective(ownerBody) - 1) * MotionTracker.instance.damageFracStack),
                 force = 0f,
                 tracerEffectPrefab = MotionTracker.tracerEffectPrefab,
                 hitEffectPrefab = MotionTracker.hitEffectPrefab,

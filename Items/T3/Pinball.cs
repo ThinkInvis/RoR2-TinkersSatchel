@@ -299,7 +299,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			var retv = orig(self, hitResults);
 			if(NetworkServer.active && self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
 				&& !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
-				var count = GetCount(attackerBody);
+				var count = GetCountEffective(attackerBody);
 				if(count > 0) {
 					if(Util.CheckRoll(bounceChance, attackerBody.master?.luck ?? 0, attackerBody.master)) {
 						ProjectileManager.instance.FireProjectile(new FireProjectileInfo {
@@ -327,7 +327,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!self.owner) return retv;
 
 			var body = self.owner.GetComponent<CharacterBody>();
-			var count = GetCount(body);
+			var count = GetCountEffective(body);
 
 			if(count > 0) {
 				var maxBounces = baseBounces + (count - 1) * stackBounces;
@@ -405,7 +405,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self);
 			if(!self || !self.owner || self.GetComponent<ProjectileStickOnImpact>() || self.GetComponent<Deployable>() || projectileNameBlacklist.Contains(self.gameObject.name)) return;
 			var body = self.owner.GetComponent<CharacterBody>();
-			var count = GetCount(body);
+			var count = GetCountEffective(body);
 			var rb = self.GetComponent<Rigidbody>();
 			if(count <= 0 || !rb || !Util.CheckRoll(bounceChance, body.master?.luck ?? 0, body.master)) return;
 			var ppc = self.gameObject.AddComponent<PinballProjectileController>();
@@ -656,12 +656,12 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self);
 			if(localUser.cachedMaster != self) return;
 			int matches = 0;
-			if(self.inventory.GetItemCount(RoR2Content.Items.ExplodeOnDeath) > 0) matches++;
-			if(self.inventory.GetItemCount(RoR2Content.Items.IgniteOnKill) > 0) matches++;
-			if(self.inventory.GetItemCount(RoR2Content.Items.Dagger) > 0) matches++;
-			if(self.inventory.GetItemCount(RoR2Content.Items.Icicle) > 0) matches++;
-			if(self.inventory.GetItemCount(RoR2Content.Items.LaserTurbine) > 0) matches++;
-			if(self.inventory.GetItemCount(RoR2Content.Items.BleedOnHitAndExplode) > 0) matches++;
+			if(self.inventory.GetItemCountEffective(RoR2Content.Items.ExplodeOnDeath) > 0) matches++;
+			if(self.inventory.GetItemCountEffective(RoR2Content.Items.IgniteOnKill) > 0) matches++;
+			if(self.inventory.GetItemCountEffective(RoR2Content.Items.Dagger) > 0) matches++;
+			if(self.inventory.GetItemCountEffective(RoR2Content.Items.Icicle) > 0) matches++;
+			if(self.inventory.GetItemCountEffective(RoR2Content.Items.LaserTurbine) > 0) matches++;
+			if(self.inventory.GetItemCountEffective(RoR2Content.Items.BleedOnHitAndExplode) > 0) matches++;
 			if(matches >= 3)
 				Grant();
 		}

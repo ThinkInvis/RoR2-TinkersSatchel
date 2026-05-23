@@ -231,7 +231,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void CharacterBody_OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill) {
 			orig(self, skill);
-			var count = GetCount(self);
+			var count = GetCountEffective(self);
 			if(count > 0 && skill && skill.isCombatSkill && (skill.baseRechargeInterval > 0f || self.skillLocator.FindSkillSlot(skill) == SkillSlot.Primary)) {
 				int oldCount = self.GetBuffCount(loomBuff);
 				self.ClearTimedBuffs(loomBuff.buffIndex);

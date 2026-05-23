@@ -226,7 +226,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
             if(damageInfo.attacker && self.body
-                && GetCount(self.body) > 0
+                && GetCountEffective(self.body) > 0
                 && (!disableSelfDamage || self.gameObject != damageInfo.attacker.gameObject)
                 && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
                 && attackerBody.HasBuff(TauntDebuffModule.tauntDebuff)) {
@@ -240,7 +240,7 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, damageReport);
             if(!self.targetStateMachine || !self.spawnedOverNetwork || !damageReport.attackerMaster || !damageReport.victimBody) return;
             if(disableSelfDamage && damageReport.attacker == damageReport.victim) return;
-            var count = GetCount(damageReport.attackerMaster);
+            var count = GetCountEffective(damageReport.attackerMaster);
             if(count > 0 && Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(count * damageReport.damageInfo.procCoefficient * procChance), damageReport.attackerMaster.luck, damageReport.attackerMaster))
                 damageReport.victimBody.AddTimedBuff(TauntDebuffModule.tauntDebuff, procDuration);
         }

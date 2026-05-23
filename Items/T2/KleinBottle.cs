@@ -288,7 +288,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     return;
                 else
                     cpt.LastTimestamp = Time.fixedTime;
-                var count = GetCount(self.body);
+                var count = GetCountEffective(self.body);
                 var pChance = (1f - Mathf.Pow(1 - procChance / 100f, count)) * 100f;
                 bool proc = false;
                 if(self.body.master)

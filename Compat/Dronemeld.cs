@@ -14,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static int GetStackCount(Inventory inv) {
-            return inv.GetItemCount(Dronemeld.DronemeldPlugin.stackItem);
+            return inv.GetItemCountEffective(Dronemeld.DronemeldPlugin.stackItem);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]

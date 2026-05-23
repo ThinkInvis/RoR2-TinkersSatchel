@@ -99,7 +99,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!sender) return;
             var cpt = sender.GetComponent<GoldenGearComponent>();
             if(cpt) {
-                var armorBonus = Mathf.Log(cpt.totalBuff * goldExp + 1f) / Mathf.Log(goldExp + 1f) * GetCount(sender);
+                var armorBonus = Mathf.Log(cpt.totalBuff * goldExp + 1f) / Mathf.Log(goldExp + 1f) * GetCountEffective(sender);
                 sender.SetBuffCount(GoldenGear.instance.goldenGearBuff.buffIndex, Mathf.FloorToInt(armorBonus));
                 args.armorAdd += armorBonus;
             }
@@ -108,7 +108,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void CharacterMaster_GiveMoney(On.RoR2.CharacterMaster.orig_GiveMoney orig, CharacterMaster self, uint amount) {
             orig(self, amount);
             if(!self.hasBody) return;
-            var stacks = GetCount(self);
+            var stacks = GetCountEffective(self);
             if(stacks == 0) return;
 
             var cb = self.GetBody();

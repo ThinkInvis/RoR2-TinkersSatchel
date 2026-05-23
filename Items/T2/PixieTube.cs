@@ -376,7 +376,7 @@ namespace ThinkInvisible.TinkersSatchel {
             
             if(self && self.skillLocator
                 && !blacklistedSkills.Contains(skill.skillDef)) {
-                var count = GetCount(self);
+                var count = GetCountEffective(self);
                 if(count <= 0) return;
                 var pts = self.gameObject.GetComponent<PixieTubeStopwatch>();
                 if(!pts)
@@ -396,7 +396,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef) {
             var retv = orig(self, equipmentDef);
             if(NetworkServer.active && self && self.characterBody) {
-                var count = GetCount(self.characterBody);
+                var count = GetCountEffective(self.characterBody);
                 if(count <= 0) return retv;
                 var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
                 if(!pts)
@@ -420,7 +420,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void Fire_FireMissile(On.EntityStates.Engi.EngiMissilePainter.Fire.orig_FireMissile orig, EntityStates.Engi.EngiMissilePainter.Fire self, HurtBox target, Vector3 position) {
             orig(self, target, position);
-            var count = GetCount(self.characterBody);
+            var count = GetCountEffective(self.characterBody);
             if(count <= 0) return;
             var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
             if(!pts)
@@ -434,7 +434,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void PlaceTurret_FixedUpdate(On.EntityStates.Engi.EngiWeapon.PlaceTurret.orig_FixedUpdate orig, EntityStates.Engi.EngiWeapon.PlaceTurret self) {
             orig(self);
             if((self.inputBank.skill1.down || self.inputBank.skill4.justPressed) && self.currentPlacementInfo.ok && self.exitCountdown == 0.25f && self.exitPending) {
-                var count = GetCount(self.characterBody);
+                var count = GetCountEffective(self.characterBody);
                 if(count <= 0) return;
                 var pts = self.characterBody.gameObject.GetComponent<PixieTubeStopwatch>();
                 if(!pts)

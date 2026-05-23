@@ -134,7 +134,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self) {
             orig(self);
-            var count = GetCount(self);
+            var count = GetCountEffective(self);
             if(count <= 0 || !self.skillLocator || !self.skillLocator.secondaryBonusStockSkill) return;
             self.skillLocator.secondaryBonusStockSkill.SetBonusStockFromBody(
                 self.skillLocator.secondaryBonusStockSkill.bonusStockFromBody
@@ -146,7 +146,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!NetworkServer.active
                 || !self || !self.skillLocator || !skill.skillDef)
                 return;
-            var count = GetCount(self);
+            var count = GetCountEffective(self);
             if(count == 0) return;
 
             if(!self.TryGetComponent<HurdyGurdyTracker>(out var hgt)) hgt = self.gameObject.AddComponent<HurdyGurdyTracker>();

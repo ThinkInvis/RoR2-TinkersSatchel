@@ -243,7 +243,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!inventory) return 0;
 			int count = 0;
 			foreach(var idef in Kintsugi.instance.validItems) {
-				count += inventory.GetItemCount(idef);
+				count += inventory.GetItemCountEffective(idef);
 			}
 			return count;
 		}
@@ -252,7 +252,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			var retv = new Dictionary<ItemTier, int>();
 			if(!inventory) return retv;
 			foreach(var idef in Kintsugi.instance.validItems) {
-				var c = inventory.GetItemCount(idef);
+				var c = inventory.GetItemCountEffective(idef);
 				if(retv.ContainsKey(idef.tier))
 					retv[idef.tier] += c;
 				else
@@ -288,7 +288,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
-			var multCount = GetCount(sender);
+			var multCount = GetCountEffective(sender);
 			var consumedItems = GetConsumedItemCountByTier(sender.inventory);
 			float totalBonus = 0;
 			foreach(var (k, v) in consumedItems.Select(x => (x.Key, x.Value))) {

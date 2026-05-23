@@ -99,7 +99,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
         private void Swordbreaker_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
-            args.baseShieldAdd += GetCount(sender) * shieldAmt;
+            args.baseShieldAdd += GetCountEffective(sender) * shieldAmt;
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
@@ -113,7 +113,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 || !damageInfo.attacker || !damageInfo.attacker.transform || (damageInfo.attacker == self.gameObject && disableSelfDamage)
                 || damageInfo.procChainMask.HasProc(ProcType.Thorns))
                 return;
-            var count = GetCount(self.body);
+            var count = GetCountEffective(self.body);
             if(count == 0) return;
             var dShield = self.shield - shieldBeforeDamage;
             if(dShield >= 0) return;

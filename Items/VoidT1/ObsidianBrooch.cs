@@ -223,7 +223,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!dc || dc.dotStackList.Count <= 0) return;
 
             var body = damageInfo.attacker.GetComponent<CharacterBody>();
-            var count = GetCount(body);
+            var count = GetCountEffective(body);
             if(count <= 0) return;
 
             var enemies = GatherEnemies(body.teamComponent.teamIndex, TeamIndex.Neutral)

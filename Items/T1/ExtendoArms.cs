@@ -236,14 +236,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public static float GetRangeMultiplier(CharacterBody body) {
             if(!ExtendoArms.instance.enabled || !body) return 1f;
-            var count = ExtendoArms.instance.GetCount(body.inventory);
+            var count = ExtendoArms.instance.GetCountEffective(body.inventory);
             return 1f + count * ExtendoArms.instance.resizeAmount;
         }
 
         [Obsolete("Damage bonus provided by this item is now global, and applied to the character's damage stat.")]
         public static float GetDamageMultiplier(CharacterBody body) {
             if(!ExtendoArms.instance.enabled || !body) return 1f;
-            var count = ExtendoArms.instance.GetCount(body.inventory);
+            var count = ExtendoArms.instance.GetCountEffective(body.inventory);
             return 1f + count * ExtendoArms.instance.damageAmount;
         }
 
@@ -254,8 +254,8 @@ namespace ThinkInvisible.TinkersSatchel {
         private void ProjectileManager_InitializeProjectile(On.RoR2.Projectile.ProjectileManager.orig_InitializeProjectile orig, RoR2.Projectile.ProjectileController projectileController, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(projectileController, fireProjectileInfo);
 
-            if(fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && GetCount(ownerBody) > 0) {
-                float speedMult = 1f + GetCount(ownerBody) * speedAmount;
+            if(fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && GetCountEffective(ownerBody) > 0) {
+                float speedMult = 1f + GetCountEffective(ownerBody) * speedAmount;
 
                 if(projectileController.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
                     ps.desiredForwardSpeed *= speedMult;
@@ -284,7 +284,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var origRadius = self.radius;
             if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
                 if(Vector3.Distance(attackerBody.corePosition, self.position) < pbaoeRange) {
-                    var count = GetCount(attackerBody);
+                    var count = GetCountEffective(attackerBody);
                     self.radius *= 1f + count * resizeAmount;
                 }
             }
@@ -300,7 +300,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<Vector3, OverlapAttack, Vector3>>((origFullExtents, self) => {
                     if(!self.attacker) return origFullExtents;
-                    var count = GetCount(self.attacker.GetComponent<CharacterBody>());
+                    var count = GetCountEffective(self.attacker.GetComponent<CharacterBody>());
                     return origFullExtents * (1f + resizeAmount * count);
                 });
             } else {
@@ -311,7 +311,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
             float mdMult = 1f;
             if(self.owner && self.owner.TryGetComponent<CharacterBody>(out var ownerBody))
-                mdMult += GetCount(ownerBody) * rangeAmount;
+                mdMult += GetCountEffective(ownerBody) * rangeAmount;
             self.maxDistance *= mdMult;
             orig(self);
             self.maxDistance /= mdMult;
@@ -319,7 +319,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args) {
             if(!sender) return;
-            args.damageMultAdd += GetCount(sender) * damageAmount;
+            args.damageMultAdd += GetCountEffective(sender) * damageAmount;
         }
     }
 }

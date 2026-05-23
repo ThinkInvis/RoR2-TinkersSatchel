@@ -277,7 +277,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(GetCount(body) > 0 && !body.GetComponent<HealDamageConversionTracker>())
+            if(GetCountEffective(body) > 0 && !body.GetComponent<HealDamageConversionTracker>())
                 body.gameObject.AddComponent<HealDamageConversionTracker>();
         }
 
@@ -299,7 +299,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.Emit(OpCodes.Ldarg_3);
                 c.EmitDelegate<Func<HealthComponent, float, bool, float>>((self, origAmount, nonRegen) => {
                     if(nonRegen && self && self.body && self.body.TryGetComponent<HealDamageConversionTracker>(out var hdct)) {
-                        var count = GetCount(self.body);
+                        var count = GetCountEffective(self.body);
                         if(count > 0) {
                             var missingHealth = self.fullHealth - self.health;
                             var totalWouldHeal = origAmount;

@@ -283,7 +283,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					spren.color = Color.white;
 				} else overlay = overlayTsf.gameObject;
 
-				var hasItem = GetCount(self.playerCharacterMasterController.body) > 0;
+				var hasItem = GetCountEffective(self.playerCharacterMasterController.body) > 0;
 
 				if(overlay.activeSelf != hasItem)
 					overlay.SetActive(hasItem);
@@ -295,7 +295,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(NetworkServer.active && self
 				&& self.skillLocator && self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility
 				&& !handledSkillDefs.Contains(skill.skillDef)) {
-				var count = GetCount(self);
+				var count = GetCountEffective(self);
 				if(count <= 0) return;
 				for(var i = 0; i < count; i++)
 					self.AddTimedBuff(genericSpeedBoostBuff, unhandledDuration, count);
@@ -310,14 +310,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void DodgeState_RecalculateRollSpeed(On.EntityStates.Commando.DodgeState.orig_RecalculateRollSpeed orig, EntityStates.Commando.DodgeState self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				self.rollSpeed *= 1f + buffFrac * commandoDodgeFrac * count;
             }
 		}
 
 		private void SlideState_FixedUpdate(On.EntityStates.Commando.SlideState.orig_FixedUpdate orig, EntityStates.Commando.SlideState self) {
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			var origMoveSpeed = self.moveSpeedStat;
 			if(count > 0) self.moveSpeedStat *= 1f + buffFrac * commandoSlideFrac * count;
 			orig(self);
@@ -326,7 +326,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void BlinkState_OnEnter(On.EntityStates.Huntress.BlinkState.orig_OnEnter orig, EntityStates.Huntress.BlinkState self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				self.duration /= 1f + buffFrac * huntressBlinkTimeFac * count;
 				self.speedCoefficient *= (1f + buffFrac * (self is EntityStates.Huntress.MiniBlinkState ? huntressBlink2RangeFac : huntressBlinkRangeFac) * count) * (1f + buffFrac * huntressBlinkTimeFac * count);
@@ -335,7 +335,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void StealthMode_OnEnter(On.EntityStates.Bandit2.StealthMode.orig_OnEnter orig, EntityStates.Bandit2.StealthMode self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0 && self.isAuthority && self.characterBody.characterMotor) {
 				var mainSpeed = count * buffFrac * banditCloakSpeedFrac;
 				var massAdjust = (self.characterBody.characterMotor ? self.characterBody.characterMotor.mass : 1f);
@@ -353,7 +353,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void ToolbotDash_OnEnter(On.EntityStates.Toolbot.ToolbotDash.orig_OnEnter orig, EntityStates.Toolbot.ToolbotDash self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				var cpt = self.GetComponent<ToolbotDashBoostTracker>();
 				if(!cpt) cpt = self.gameObject.AddComponent<ToolbotDashBoostTracker>();
@@ -364,7 +364,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void ToolbotDash_FixedUpdate(On.EntityStates.Toolbot.ToolbotDash.orig_FixedUpdate orig, EntityStates.Toolbot.ToolbotDash self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				var cpt = self.GetComponent<ToolbotDashBoostTracker>();
 				if(!cpt) return;
@@ -390,7 +390,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self);
 			var depl = self.GetComponent<Deployable>();
 			if(!depl) return;
-			var count = GetCount(depl.ownerMaster);
+			var count = GetCountEffective(depl.ownerMaster);
 			if(count > 0) {
 				var bw = self.gameObject.AddComponent<BuffWard>();
 				bw.radius = 10f;
@@ -402,7 +402,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void Fire_OnEnter(On.EntityStates.Engi.EngiMissilePainter.Fire.orig_OnEnter orig, EntityStates.Engi.EngiMissilePainter.Fire self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0 && self.targetsList.Count == 0) {
 				var mainSpeed = count * buffFrac * engiBoostFrac;
 				var massAdjust = (self.characterBody.characterMotor ? self.characterBody.characterMotor.mass : 1f);
@@ -442,7 +442,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(self.goodPlacement)
 				tpos = self.areaIndicatorInstance.transform.position + Vector3.up * 3f;
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0 && self.goodPlacement && self.characterBody.characterMotor) {
 				var dvec = tpos - self.characterBody.characterMotor.previousPosition;
 				self.characterBody.characterMotor.rootMotion += dvec;
@@ -463,7 +463,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void Assaulter2_OnEnter(On.EntityStates.Merc.Assaulter2.orig_OnEnter orig, EntityStates.Merc.Assaulter2 self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				self.moveSpeedStat *= 1f + buffFrac * mercDashFrac * count;
 			}
@@ -471,14 +471,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void FocusedAssaultDash_OnEnter(On.EntityStates.Merc.FocusedAssaultDash.orig_OnEnter orig, EntityStates.Merc.FocusedAssaultDash self) {
 			orig(self);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				self.speedCoefficient *= 1f + buffFrac * mercDash2Frac * count;
 			}
 		}
 
 		private void FireSonicBoom_OnEnter(On.EntityStates.Treebot.Weapon.FireSonicBoom.orig_OnEnter orig, EntityStates.Treebot.Weapon.FireSonicBoom self) {
-			var count = GetCount(self.characterBody);  //nonfunctional!
+			var count = GetCountEffective(self.characterBody);  //nonfunctional!
 			if(count > 0) {
 				var amt = 1f + buffFrac * (self is EntityStates.Treebot.Weapon.FirePlantSonicBoom ? treebotSonicBoom2Frac : treebotSonicBoomFrac) * count;
 				self.airKnockbackDistance *= amt;
@@ -488,7 +488,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		private void BaseSwingChargedFist_OnEnter(On.EntityStates.Loader.BaseSwingChargedFist.orig_OnEnter orig, EntityStates.Loader.BaseSwingChargedFist self) {
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				var whichFrac = self is EntityStates.Loader.SwingChargedFist ? loaderChargeFistFrac : loaderChargeFist2Frac;
 				self.minLungeSpeed *= 1f + buffFrac * whichFrac * count;
@@ -498,7 +498,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		private void BaseLeap_OnEnter(On.EntityStates.Croco.BaseLeap.orig_OnEnter orig, EntityStates.Croco.BaseLeap self) {
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count <= 0) {
 				orig(self);
 				return;
@@ -512,7 +512,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void CallAirstrikeAlt_ModifyProjectile(On.EntityStates.Captain.Weapon.CallAirstrikeAlt.orig_ModifyProjectile orig, EntityStates.Captain.Weapon.CallAirstrikeAlt self, ref FireProjectileInfo fireProjectileInfo) {
 			orig(self, ref fireProjectileInfo);
-			var count = GetCount(self.characterBody);
+			var count = GetCountEffective(self.characterBody);
 			if(count > 0) {
 				fireProjectileInfo.projectilePrefab = captainStrikeJumperAltProjectile;
 				fireProjectileInfo.force = buffFrac * (captainAirstrikeAltFracBase + (count - 1) * captainAirstrikeAltFracStack);
@@ -527,7 +527,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 			orig(self);
 			if(!self.projectileController.owner) return;
-			var count = GetCount(self.projectileController.owner.gameObject.GetComponent<CharacterBody>());
+			var count = GetCountEffective(self.projectileController.owner.gameObject.GetComponent<CharacterBody>());
 			if(count <= 0) return;
 			if(isNuke) {
 				var result = new BlastAttack {

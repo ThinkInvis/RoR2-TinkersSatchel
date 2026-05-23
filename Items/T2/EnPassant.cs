@@ -94,7 +94,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!NetworkServer.active) return;
             if(self && self.skillLocator
                 && self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility) {
-                var count = GetCount(self);
+                var count = GetCountEffective(self);
                 if(count > 0) {
                     var hitbox = Object.Instantiate(attackPrefab);
                     hitbox.GetComponent<DestroyOnTimer>().duration = attackTime;
@@ -120,7 +120,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 attacker = attackerBody.gameObject,
                 inflictor = attackerBody.gameObject,
                 teamIndex = TeamComponent.GetObjectTeam(attackerBody.gameObject),
-                damage = attackerBody.damage * EnPassant.instance.attackDamage * EnPassant.instance.GetCount(attackerBody),
+                damage = attackerBody.damage * EnPassant.instance.attackDamage * EnPassant.instance.GetCountEffective(attackerBody),
                 hitEffectPrefab = EnPassant.instance.hitEffectPrefab,
                 isCrit = attackerBody.RollCrit(),
                 hitBoxGroup = GetComponent<HitBoxGroup>(),
@@ -148,7 +148,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 results.Clear();
                 attack.Fire(results);
                 var utilSlot = attackerBody.skillLocator.GetSkill(SkillSlot.Utility);
-                utilSlot.RunRecharge(EnPassant.instance.cdrPerHit * results.Count * EnPassant.instance.GetCount(attackerBody));
+                utilSlot.RunRecharge(EnPassant.instance.cdrPerHit * results.Count * EnPassant.instance.GetCountEffective(attackerBody));
             }
             if(visualStopwatch >= VISUAL_TICK_RATE) {
                 visualStopwatch %= VISUAL_TICK_RATE;

@@ -154,7 +154,7 @@ namespace ThinkInvisible.TinkersSatchel {
             droplet.SetActive(false);
             var pctrl = droplet.GetComponent<PickupDropletController>();
             if(!pctrl) return;
-            var pdef = PickupCatalog.GetPickupDef(pctrl.pickupIndex);
+            var pdef = PickupCatalog.GetPickupDef(pctrl.pickupState.pickupIndex);
 
             if(pdef != null && announceItems != AnnounceItemsMode.Nothing) {
                 string displayName = Language.GetString((announceItems == AnnounceItemsMode.ItemName) ? pdef.nameToken : "TKSAT_DELAYLOOT_MSG_DELAY_VAGUE");

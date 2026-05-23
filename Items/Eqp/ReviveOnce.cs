@@ -281,7 +281,7 @@ namespace ThinkInvisible.TinkersSatchel {
                         pind => CatalogUtil.TryGetEquipmentDef(pind, out var edef) && edef.canBeRandomlyTriggered
                         ).ToArray();
                     var randomEqp = PickupCatalog.GetPickupDef(rng.NextElementUniform(validEqp)).equipmentIndex;
-                    droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0);
+                    droneBody.master.inventory.SetEquipment(new EquipmentState(randomEqp, Run.FixedTimeStamp.negativeInfinity, 1), 0, 0);
                 }
             }
 
@@ -301,7 +301,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             //Consume equipment, adjust cooldown timer of next equipment picked up to use cooldown for this equipment
             if(slot.equipmentIndex == this.equipmentDef.equipmentIndex) {
-                slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown * slot.inventory.CalculateEquipmentCooldownScale(), 0), (uint)slot.inventory.activeEquipmentSlot);
+                slot.inventory.SetEquipment(new EquipmentState(EquipmentIndex.None, Run.FixedTimeStamp.now + cooldown * slot.inventory.CalculateEquipmentCooldownScale(), 0), (uint)slot.inventory.activeEquipmentSlot, (uint)slot.inventory.activeEquipmentSet[(int)slot.inventory.activeEquipmentSlot]);
             }
             return true;
         }

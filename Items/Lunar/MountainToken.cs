@@ -125,7 +125,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     if(!nu || !nu.isParticipating) continue;
                     var body = nu.GetCurrentBody();
                     if(!body) continue;
-                    msBonusCount += GetCount(body);
+                    msBonusCount += GetCountEffective(body);
                 }
                 return origCredits + msBonusCount * difficultyBonus * Mathf.Pow(Run.instance.compensatedDifficultyCoefficient, 0.5f);
             });
@@ -134,7 +134,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void ChargingState_OnEnter(On.RoR2.TeleporterInteraction.ChargingState.orig_OnEnter orig, RoR2.TeleporterInteraction.ChargingState self) {
             orig(self);
             foreach(var cb in CharacterBody.readOnlyInstancesList)
-                if(GetCount(cb) > 0 && !cb.TryGetComponent<MountainTokenTracker>(out _))
+                if(GetCountEffective(cb) > 0 && !cb.TryGetComponent<MountainTokenTracker>(out _))
                     cb.gameObject.AddComponent<MountainTokenTracker>();
             foreach(var mtt in MountainTokenTracker.readOnlyInstancesList)
                 mtt.Reset();
@@ -211,7 +211,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public void Reset() {
             ungroundedTime = 0f;
-            maxStacks = MountainToken.instance.GetCount(body);
+            maxStacks = MountainToken.instance.GetCountEffective(body);
             Stacks = maxStacks;
         }
 

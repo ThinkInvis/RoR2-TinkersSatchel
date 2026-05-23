@@ -302,7 +302,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ignoreStack > 0 || !self.owner) return;
             var cpt = self.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
-            var count = GetCount(cpt);
+            var count = GetCountEffective(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
@@ -333,7 +333,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
-            var count = GetCount(cpt);
+            var count = GetCountEffective(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
@@ -355,7 +355,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             c.EmitDelegate<Func<HealthComponent, DamageInfo, DamageInfo>>((victim, di) => {
                 if(ignoreStack == 0 && di.attacker && di.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
-                    var count = GetCount(attackerBody);
+                    var count = GetCountEffective(attackerBody);
                     if(count > 0) {
                         var totalChance = count * procChance;
                         int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);

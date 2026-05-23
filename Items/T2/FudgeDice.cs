@@ -95,12 +95,12 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(body && body.master && GetCount(body) > 0 && !body.master.gameObject.GetComponent<FudgeDiceICD>())
+            if(body && body.master && GetCountEffective(body) > 0 && !body.master.gameObject.GetComponent<FudgeDiceICD>())
                 body.master.gameObject.AddComponent<FudgeDiceICD>();
         }
 
         private bool Util_CheckRoll_float_float_CharacterMaster(On.RoR2.Util.orig_CheckRoll_float_float_CharacterMaster orig, float percentChance, float luck, CharacterMaster effectOriginMaster) {
-            var count = GetCount(effectOriginMaster);
+            var count = GetCountEffective(effectOriginMaster);
             if(count > 0 && percentChance > 0f) {
                 var icdCpt = effectOriginMaster.GetComponent<FudgeDiceICD>();
                 if(!icdCpt) icdCpt = effectOriginMaster.gameObject.AddComponent<FudgeDiceICD>();
@@ -141,7 +141,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void FixedUpdate() {
-            var count = FudgeDice.instance.GetCount(master);
+            var count = FudgeDice.instance.GetCountEffective(master);
 
             if(stopwatch > 0f && count > 0)
                 stopwatch -= Time.fixedDeltaTime;

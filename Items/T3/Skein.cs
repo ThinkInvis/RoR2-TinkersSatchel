@@ -243,7 +243,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		////// Hooks //////
 		
 		private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-			var hasItem = GetCount(body) > 0;
+			var hasItem = GetCountEffective(body) > 0;
 			var component = body.GetComponent<SkeinTracker>();
 			if(hasItem && !component)
 				body.gameObject.AddComponent<SkeinTracker>();
@@ -256,7 +256,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
 			if(!sender) return;
-			var count = GetCount(sender);
+			var count = GetCountEffective(sender);
 			var cpt = sender.GetComponent<SkeinTracker>();
 			if(count > 0 && cpt) {
                 args.moveSpeedMultAdd += cpt.GetMovementScalar() * count * lowMassFracMove;
@@ -266,7 +266,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
 			if(self && self.body) {
-				var count = GetCount(self.body);
+				var count = GetCountEffective(self.body);
 				var cpt = self.GetComponent<SkeinTracker>();
 				if(count > 0 && cpt) {
 					var fac = 1f - (1f - Mathf.Pow(highMassFrac, count)) * cpt.GetResistanceScalar();

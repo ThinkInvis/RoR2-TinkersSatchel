@@ -225,7 +225,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void BaseAI_UpdateBodyInputs(On.RoR2.CharacterAI.BaseAI.orig_UpdateBodyInputs orig, RoR2.CharacterAI.BaseAI self) {
             orig(self);
             if(!aiOverride) return;
-            if(GetCount(self.master) > 0
+            if(GetCountEffective(self.master) > 0
                 && RunArtifactManager.instance && !RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.friendlyFireArtifactDef)
                 && self.hasAimTarget && self.hasAimConfirmation && TeamComponent.GetObjectTeam(self.skillDriverEvaluation.aimTarget.gameObject) == self.master.teamIndex
                 && self.bodyInputBank
@@ -254,7 +254,7 @@ namespace ThinkInvisible.TinkersSatchel {
                     && cpt.teamIndex == TeamComponent.GetObjectTeam(self.attacker)) {
                         self.ignoredHealthComponentList.Add(cpt.healthComponent);
                         var ob = self.attacker.GetComponent<CharacterBody>();
-                        var count = GetCount(ob);
+                        var count = GetCountEffective(ob);
                         if(count > 0) {
                             var relativeAttackDamage = (self.attacker.TryGetComponent<CharacterBody>(out var acb)) ? (self.damage / acb.damage) : 1f;
                             new MsgHealTargetAndSelf(cpt.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
@@ -273,7 +273,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var retv = orig(self, ref hitInfo);
             if(!self.owner || !hitInfo.hitHurtBox) return retv;
             var ob = self.owner.GetComponent<CharacterBody>();
-            var count = GetCount(ob);
+            var count = GetCountEffective(ob);
             if(hitInfo.hitHurtBox.healthComponent && count > 0 && hitInfo.hitHurtBox.healthComponent != self.owner.GetComponent<HealthComponent>() && hitInfo.hitHurtBox.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 var relativeAttackDamage = ob ? (self.damage / ob.damage) : 1f;
                 new MsgHealTargetAndSelf(hitInfo.hitHurtBox.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
@@ -287,7 +287,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(collision == null || !collision.gameObject || !self || !self.owner) return;
             var hb = collision.gameObject.GetComponent<HurtBox>();
             var ob = self.owner.GetComponent<CharacterBody>();
-            var count = GetCount(ob);
+            var count = GetCountEffective(ob);
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 var relativeAttackDamage = (ob && self.TryGetComponent<RoR2.Projectile.ProjectileDamage>(out var pd)) ? (pd.damage / ob.damage) : 1f;
                 new MsgHealTargetAndSelf(hb.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
@@ -300,7 +300,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(collider == null || !collider.gameObject || !self || !self.owner || !self.canImpactOnTrigger) return;
             var hb = collider.gameObject.GetComponent<HurtBox>();
             var ob = self.owner.GetComponent<CharacterBody>();
-            var count = GetCount(ob);
+            var count = GetCountEffective(ob);
             if(hb && hb.healthComponent && count > 0 && hb.healthComponent != self.owner.GetComponent<HealthComponent>() && hb.teamIndex == TeamComponent.GetObjectTeam(self.owner)) {
                 var relativeAttackDamage = (ob && self.TryGetComponent<RoR2.Projectile.ProjectileDamage>(out var pd)) ? (pd.damage / ob.damage) : 1f;
                 new MsgHealTargetAndSelf(hb.healthComponent, ob.healthComponent, count * self.procCoefficient * relativeAttackDamage, self.procChainMask)
@@ -376,13 +376,13 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             if(this.localUser.cachedMaster != self) return;
             int count = 0;
-            if(self.inventory.GetItemCount(RoR2Content.Items.ChainLightning) > 0 || self.inventory.GetItemCount(DLC1Content.Items.ChainLightningVoid) > 0) count++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse) > 0) count++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.ShockNearby) > 0) count++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.ChainLightning) > 0 || self.inventory.GetItemCountEffective(DLC1Content.Items.ChainLightningVoid) > 0) count++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse) > 0) count++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.ShockNearby) > 0) count++;
             if((self.inventory.currentEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex
                 || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.TeamWarCry.equipmentIndex)) count++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.Behemoth) > 0) count++;
-            if(self.inventory.GetItemCount(HurdyGurdy.instance.itemDef) > 0) count++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Behemoth) > 0) count++;
+            if(self.inventory.GetItemCountEffective(HurdyGurdy.instance.itemDef) > 0) count++;
             if(count >= 3)
                 Grant();
         }

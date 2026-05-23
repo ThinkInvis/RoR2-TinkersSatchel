@@ -227,7 +227,7 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self, damageInfo);
             if(!self || !self.body || damageInfo == null || (damageInfo.damageType & DamageType.FallDamage) != 0
                 || (disableSelfDamage && damageInfo.attacker && damageInfo.attacker == self.gameObject)) return;
-            var count = GetCount(self.body);
+            var count = GetCountEffective(self.body);
             if(count <= 0) return;
             var cpt = self.GetComponent<DelayedBarrierComponent>();
             if(!cpt) cpt = self.gameObject.AddComponent<DelayedBarrierComponent>();
@@ -241,7 +241,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 self.regenAccumulator +=
                     self.body.regen
                     * (self.barrier / self.fullBarrier)
-                    * GetCount(self.body) * regenFrac;
+                    * GetCountEffective(self.body) * regenFrac;
             orig(self, deltaTime);
         }
     }

@@ -298,7 +298,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var retv = orig(self, hitResults);
             if(NetworkServer.active && self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
                 && !firedAttacks.Any(x => x.TryGetTarget(out var t) && t == self)) {
-                if(GetCount(attackerBody) > 0) {
+                if(GetCountEffective(attackerBody) > 0) {
                     ignoreStack++;
 
                     FireCustomProjectiles(attackerBody, self.damage * meleeProjectileDamage, self.procChainMask);
@@ -315,7 +315,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ignoreStack > 0 || !self.owner) return;
             var cpt = self.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
-            var count = GetCount(cpt);
+            var count = GetCountEffective(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
@@ -332,7 +332,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(ignoreStack > 0 || !self || !fireProjectileInfo.owner || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>() || fireProjectileInfo.rotation == null) return;
             var cpt = fireProjectileInfo.owner.GetComponent<CharacterBody>();
             if(!cpt) return;
-            var count = GetCount(cpt);
+            var count = GetCountEffective(cpt);
             if(count <= 0) return;
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), cpt.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
@@ -455,7 +455,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         void FireCustomProjectiles(CharacterBody attackerBody, float damage, ProcChainMask procChainMask) {
             if(!attackerBody) return;
-            var count = GetCount(attackerBody);
+            var count = GetCountEffective(attackerBody);
             var totalChance = count * procChance;
             int procCount = (Util.CheckRoll(Wrap(totalChance * 100f, 0f, 100f), attackerBody.master) ? 1 : 0) + (int)Mathf.Floor(totalChance);
             var targetVec = attackerBody.transform.forward;

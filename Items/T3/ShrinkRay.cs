@@ -233,7 +233,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self, damageInfo, victim);
 			if(NetworkServer.active && damageInfo != null && damageInfo.attacker
                 && (!disableSelfDamage || damageInfo.attacker != victim)) {
-				var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
+				var count = GetCountEffective(damageInfo.attacker.GetComponent<CharacterBody>());
 				if(count > 0) {
 					var sricd = damageInfo.attacker.GetComponent<ShrinkRayICDComponent>();
 					if(!sricd)

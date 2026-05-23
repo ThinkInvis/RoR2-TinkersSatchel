@@ -46,8 +46,6 @@ namespace ThinkInvisible.TinkersSatchel {
 
         public BuffDef statusBuff { get; private set; }
 
-        private static HashSet<int> validItemTypeCache;
-
 
 
         ////// TILER2 Module Setup //////
@@ -114,7 +112,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Public Methods //////
 
         public float CalculateArmor(Inventory inv) {
-            var count = GetCount(inv);
+            var count = GetCountEffective(inv);
             if(count <= 0) return 0;
             var types = GetTotalItemTypes(inv);
 

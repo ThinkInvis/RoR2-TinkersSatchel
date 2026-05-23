@@ -104,7 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody obj) {
-            if(GetCount(obj) > 0 && !obj.TryGetComponent<IcarusTracker>(out _))
+            if(GetCountEffective(obj) > 0 && !obj.TryGetComponent<IcarusTracker>(out _))
                 obj.gameObject.AddComponent<IcarusTracker>();
         }
 
@@ -154,7 +154,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void Body_onInventoryChanged() {
-            stacks = WaxFeather.instance.GetCount(body) * WaxFeather.instance.maxStacks;
+            stacks = WaxFeather.instance.GetCountEffective(body) * WaxFeather.instance.maxStacks;
             if(stacks == 0) {
                 body.SetBuffCount(WaxFeather.instance.statusBuff.buffIndex, 0);
                 body.statsDirty = true;

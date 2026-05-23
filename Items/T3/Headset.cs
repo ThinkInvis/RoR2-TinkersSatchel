@@ -252,7 +252,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			if(!NetworkServer.active) return;
 			if(self && self.skillLocator
 				&& self.skillLocator.FindSkillSlot(skill) == SkillSlot.Utility) {
-				var count = GetCount(self);
+				var count = GetCountEffective(self);
 				if(count > 0) {
 					var cpt = self.GetComponent<HeadsetComponent>();
 					if(!cpt) cpt = self.gameObject.AddComponent<HeadsetComponent>();
@@ -268,7 +268,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 			var cpt = self.gameObject.GetComponent<HeadsetComponent>();
 			if(!cpt) cpt = self.gameObject.AddComponent<HeadsetComponent>();
-			var count = GetCount(self);
+			var count = GetCountEffective(self);
 			if(count <= 0) {
 				cpt.hitsRemaining = 0;
 			} else if(cpt.hitsRemaining > 0) {
@@ -354,7 +354,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 		bool currentDamageIsHeadstompers = false;
 		private void HeadstompersFall_DoStompExplosionAuthority(On.EntityStates.Headstompers.HeadstompersFall.orig_DoStompExplosionAuthority orig, EntityStates.Headstompers.HeadstompersFall self) {
-			if(self.body && self.body.inventory && self.body.inventory.GetItemCount(RoR2Content.Items.FallBoots) > 0) {
+			if(self.body && self.body.inventory && self.body.inventory.GetItemCountEffective(RoR2Content.Items.FallBoots) > 0) {
 				var dist = Mathf.Max(0f, self.initialY - self.body.footPosition.y);
 				if(dist >= EntityStates.Headstompers.HeadstompersFall.maxDistance) {
 					currentDamageIsHeadstompers = true;

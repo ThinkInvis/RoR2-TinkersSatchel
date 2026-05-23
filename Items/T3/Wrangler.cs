@@ -248,7 +248,7 @@ AutoConfigFlags.DeferForever)]
         ////// Hooks //////
         #region Hooks
         private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
-            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0
+            if(self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCountEffective(pcmc.body) > 0
                 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<CharacterBody>(out var cb)) {
                 new MsgWrangle(cb).Send(R2API.Networking.NetworkDestination.Server);
             }
@@ -257,7 +257,7 @@ AutoConfigFlags.DeferForever)]
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
-            var count = GetCount(sender);
+            var count = GetCountEffective(sender);
             //add armor to drone owner
             if(count > 0 && sender.master) {
                 var minionGroup = MinionOwnership.MinionGroup.FindGroup(sender.master.netId);
@@ -323,7 +323,7 @@ AutoConfigFlags.DeferForever)]
                     ) > wrange)
                 cpt.SetWranglerCount(0);
             else
-                cpt.SetWranglerCount(GetCount(self.leader.characterBody));
+                cpt.SetWranglerCount(GetCountEffective(self.leader.characterBody));
 
             if(cpt.isWrangled) {
                 //force drones to fly to leader

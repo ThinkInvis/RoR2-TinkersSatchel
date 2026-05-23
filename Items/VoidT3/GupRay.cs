@@ -205,7 +205,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			base.SetupAttributes();
 
 			gupDebuff = ScriptableObject.CreateInstance<ItemDef>();
-			gupDebuff.deprecatedTier = ItemTier.NoTier;
+			gupDebuff.tier = ItemTier.NoTier;
 			gupDebuff.canRemove = false;
 			gupDebuff.hidden = true;
 			gupDebuff.nameToken = "TKSAT_INTERNAL_GUPRAY_COUNTER";
@@ -248,20 +248,20 @@ namespace ThinkInvisible.TinkersSatchel {
 		private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim) {
 			orig(self, damageInfo, victim);
 			if(NetworkServer.active && damageInfo != null && damageInfo.attacker) {
-				var count = GetCount(damageInfo.attacker.GetComponent<CharacterBody>());
+				var count = GetCountEffective(damageInfo.attacker.GetComponent<CharacterBody>());
 				var victimBody = victim.GetComponent<CharacterBody>();
 				if(count > 0 && damageInfo.attacker != victim && victimBody
 					&& !victimBody.gameObject.name.Contains("Brother")
 					&& !victimBody.gameObject.name.Contains("VoidRaidCrab")
 					&& !victimBody.gameObject.name.Contains("ScavLunar")
-					&& victimBody.master && victimBody.master.inventory && victimBody.master.inventory.GetItemCount(gupDebuff) < count) {
+					&& victimBody.master && victimBody.master.inventory && victimBody.master.inventory.GetItemCountEffective(gupDebuff) < count) {
 					var sricd = damageInfo.attacker.GetComponent<ShrinkRayICDComponent>();
 					if(!sricd)
 						sricd = damageInfo.attacker.AddComponent<ShrinkRayICDComponent>();
 					if(Time.fixedTime - sricd.lastHit > icd) {
 						sricd.lastHit = Time.fixedTime;
 
-						victimBody.master.inventory.GiveItem(gupDebuff);
+						victimBody.master.inventory.GiveItemPermanent(gupDebuff);
 
 						EffectManager.SpawnEffect(EntityStates.Gup.BaseSplitDeath.deathEffectPrefab, new EffectData {
 							origin = victim.GetComponent<CharacterBody>().corePosition,
@@ -299,7 +299,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				c.Emit(OpCodes.Ldarg_0);
 				c.EmitDelegate<Action<CharacterBody, BodySplitter>>((newBody, oldSplitter) => {
 					if(!currentSplitIsGupRay || !oldSplitter.body || !newBody) return;
-					var splitCount = newBody.master.inventory.GetItemCount(gupDebuff);
+					var splitCount = newBody.master.inventory.GetItemCountEffective(gupDebuff);
 					newBody.modelLocator.transform.localScale *= Mathf.Pow(GupRay.instance.scaleMult, splitCount);
 					var statsFac = Mathf.Pow(statMult, splitCount);
 					var speedStatsFac = Mathf.Pow(speedStatMult, splitCount);

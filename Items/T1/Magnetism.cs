@@ -108,7 +108,7 @@ namespace ThinkInvisible.TinkersSatchel {
             averageHitboxCentroid /= validHBCount;
             if((ownerBody.corePosition - averageHitboxCentroid).sqrMagnitude >= 25f) return retv; //attack is too far from owner, probably not melee, abort
             var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
-            var maxRange = meleeAmount * GetCount(ownerBody);
+            var maxRange = meleeAmount * GetCountEffective(ownerBody);
             foreach(var t in targets) {
                 if(!t || !t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;
                 var towardsVec = averageHitboxCentroid - t.body.corePosition;
@@ -137,7 +137,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
             if(self.owner && self.owner.TryGetComponent<CharacterBody>(out var ownerBody)) {
-                var count = GetCount(ownerBody);
+                var count = GetCountEffective(ownerBody);
                 if(count > 0) {
                     var bs = new BullseyeSearch {
                         maxAngleFilter = CalculateMagnetismAngle(count),
@@ -166,7 +166,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(!fireProjectileInfo.owner || !fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var cb)
                 || !fireProjectileInfo.projectilePrefab || fireProjectileInfo.projectilePrefab.GetComponent<Deployable>()
                 || projectileController.TryGetComponent<RoR2.Projectile.MissileController>(out _)) return;
-            var count = GetCount(cb);
+            var count = GetCountEffective(cb);
             if(count == 0) return;
 
             var bs = new BullseyeSearch {
@@ -198,7 +198,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args) {
             if(!sender) return;
-            args.critAdd += GetCount(sender) * critAmount;
+            args.critAdd += GetCountEffective(sender) * critAmount;
         }
 
 
