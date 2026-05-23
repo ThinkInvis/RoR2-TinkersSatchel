@@ -254,7 +254,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-            if(damageInfo != null && damageInfo.attacker
+            if(self && damageInfo != null && damageInfo.attacker
                 && (!disableSelfDamage || damageInfo.attacker != self.gameObject)
                 && damageInfo.attacker.TryGetComponent<CharacterBody>(out var attackerBody)
                 && attackerBody.HasBuff(activeBuff) && !attackerBody.HasBuff(minStealthBuff)) {
