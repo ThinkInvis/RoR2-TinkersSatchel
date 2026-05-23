@@ -75,11 +75,13 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.Inventory.DeductEquipmentCharges_byte_byte_int += Inventory_DeductEquipmentCharges_byte_byte_int;
         }
 
         public override void Uninstall() {
             base.Uninstall();
             CharacterBody.onBodyInventoryChangedGlobal -= CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.Inventory.DeductEquipmentCharges_byte_byte_int -= Inventory_DeductEquipmentCharges_byte_byte_int;
         }
 
 
@@ -92,12 +94,18 @@ namespace ThinkInvisible.TinkersSatchel {
                 && !body.GetComponent<DeadManSwitchTracker>())
                 body.gameObject.AddComponent<DeadManSwitchTracker>();
         }
+
+        private void Inventory_DeductEquipmentCharges_byte_byte_int(On.RoR2.Inventory.orig_DeductEquipmentCharges_byte_byte_int orig, Inventory self, byte slot, byte set, int deduction) {
+            if(self.TryGetComponent<DeadManSwitchTracker>(out var dmst) && dmst.doNotDeduct) return;
+            orig(self, slot, set, deduction);
+        }
     }
 
     [RequireComponent(typeof(CharacterBody))]
     public class DeadManSwitchTracker : MonoBehaviour {
         float icd = 0f;
         CharacterBody body;
+        internal bool doNotDeduct;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         void Awake() {
@@ -121,11 +129,9 @@ namespace ThinkInvisible.TinkersSatchel {
                     * (DeadManSwitch.instance.externalCdr ? body.inventory.CalculateEquipmentCooldownScale() : 1f);
                 body.AddTimedBuff(DeadManSwitch.instance.deadManSwitchBuff, icd);
                 if(body.equipmentSlot.PerformEquipmentAction(eqp)) {
-                    var slot = body.inventory.activeEquipmentSlot;
-                    var set = body.inventory.FindBestEquipmentSetIndex(false);
-                    var es = body.inventory.GetEquipment(slot, set);
+                    doNotDeduct = true;
                     body.equipmentSlot.OnEquipmentExecuted();
-                    body.inventory.SetEquipment(es, slot, set);
+                    doNotDeduct = false;
                 }
             }
         }
