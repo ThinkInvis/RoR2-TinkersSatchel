@@ -19,23 +19,23 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Config //////
 
-        [AutoConfigRoOSlider("{0:N1} m/s", 0f, 50f)]
+        [AutoConfigRoOSlider("{0:N1} m/s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Instant speed to add on equipment activation.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float evadeBurstSpeed { get; private set; } = 45f;
+        public float evadeBurstSpeed { get; private set; } = 55f;
 
-        [AutoConfigRoOSlider("{0:N1} m/s", 0f, 50f)]
+        [AutoConfigRoOSlider("{0:N1} m/s", 0f, 100f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Instant speed to add on equipment activation.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float evadeBurstSpeedGrounded { get; private set; } = 70f;
+        public float evadeBurstSpeedGrounded { get; private set; } = 80f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfig("Duration of the invulnerability effect.", AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
-        public float invulnTime { get; private set; } = 0.5f;
+        public float invulnTime { get; private set; } = 1f;
 
         [AutoConfigRoOSlider("{0:N1} s", 0f, 10f)]
         [AutoConfig("Minimum cooldown between equipment activations.", AutoConfigFlags.DeferForever, 0f, float.MaxValue)]
-        public float icd { get; private set; } = 0.5f;
+        public float icd { get; private set; } = 1.5f;
 
 
 
@@ -54,24 +54,10 @@ namespace ThinkInvisible.TinkersSatchel {
             base.SetupAttributes();
         }
 
-        public override void Install() {
-            base.Install();
-            On.RoR2.Inventory.GetEquipmentSlotMaxCharges += Inventory_GetEquipmentSlotMaxCharges;
-        }
-
-        public override void Uninstall() {
-            base.Uninstall();
-            On.RoR2.Inventory.GetEquipmentSlotMaxCharges -= Inventory_GetEquipmentSlotMaxCharges;
-        }
-
 
 
         ////// Hooks //////
-
-        private int Inventory_GetEquipmentSlotMaxCharges(On.RoR2.Inventory.orig_GetEquipmentSlotMaxCharges orig, Inventory self) {
-            return Math.Min(orig(self) * ((self.GetActiveEquipment().equipmentDef == equipmentDef) ? 3 : 1), 255);
-        }
-
+        
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
             if(!slot.characterBody) return false;
 
