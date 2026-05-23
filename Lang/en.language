@@ -189,7 +189,7 @@
 
 		"TINKERSSATCHEL_ENPASSANT_NAME": "En Passant",
 		"TINKERSSATCHEL_ENPASSANT_PICKUP": "Melee strike with your Utility skill to recharge it.",
-		"TINKERSSATCHEL_ENPASSANT_DESC": "After activating your Utility skill, fire a horizontal <style=cIsDamage>melee attack</style> which lasts {1} seconds and deals <style=cIsDamage>{0} damage</style> <style=cStack>(+{0} per stack)</style>. Each hit with this attack <style=cIsUtility>recharges your Utility skill by {2} seconds</style> <style=cStack>(+{2} s per stack)</style>.",
+		"TINKERSSATCHEL_ENPASSANT_DESC": "After activating your Utility skill, fire a horizontal <style=cIsDamage>melee attack</style> which lasts {1} seconds and deals <style=cIsDamage>{0} damage</style> <style=cStack>(+{0} per stack)</style>. Each hit with this attack, up to {3} hits, <style=cIsUtility>recharges your Utility skill by {2} seconds</style> <style=cStack>(+{2} s per stack)</style>.",
 		"TINKERSSATCHEL_ENPASSANT_LORE": "",
 
 		"TINKERSSATCHEL_FUDGEDICE_NAME": "Fudge Dice",

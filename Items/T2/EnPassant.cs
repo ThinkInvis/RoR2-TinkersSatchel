@@ -16,7 +16,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Damage });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            attackDamage.ToString("P0"), attackTime.ToString("N0"), cdrPerHit.ToString("N3")
+            attackDamage.ToString("P0"), attackTime.ToString("N0"), cdrPerHit.ToString("N3"), maxCdrHits.ToString("N0")
         };
 
 
@@ -36,12 +36,17 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfigRoOSlider("{0:N2} s", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Fixed cooldown reduction per attack hit, per stack.", AutoConfigFlags.None, 0f, float.MaxValue)]
-        public float cdrPerHit { get; private set; } = 0.025f;
+        public float cdrPerHit { get; private set; } = 0.15f;
 
         [AutoConfigRoOSlider("{0:P0}", 0f, 1f)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procCoefficient { get; private set; } = 1f;
+
+        [AutoConfigRoOSlider("{0:N0}", 0, 50)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Maximum number of hits to apply CDR from per attack, per stack.", AutoConfigFlags.None, 0, int.MaxValue)]
+        public int maxCdrHits { get; private set; } = 5;
 
 
 
@@ -113,6 +118,7 @@ namespace ThinkInvisible.TinkersSatchel {
         const float TICK_RATE = 0.1f;
         const float VISUAL_TICK_RATE = 0.2f;
         List<HurtBox> results;
+        int totalHits = 0;
 
         public void Begin(CharacterBody attackerBody) {
             this.attackerBody = attackerBody;
@@ -147,8 +153,14 @@ namespace ThinkInvisible.TinkersSatchel {
                 stopwatch %= TICK_RATE;
                 results.Clear();
                 attack.Fire(results);
-                var utilSlot = attackerBody.skillLocator.GetSkill(SkillSlot.Utility);
-                utilSlot.RunRecharge(EnPassant.instance.cdrPerHit * results.Count * EnPassant.instance.GetCountEffective(attackerBody));
+                var icount = EnPassant.instance.GetCountEffective(attackerBody);
+                var newTotalHits = Mathf.Min(totalHits + results.Count, EnPassant.instance.maxCdrHits);
+                var extraHits = newTotalHits - totalHits;
+                totalHits = newTotalHits;
+                if(extraHits > 0) {
+                    var utilSlot = attackerBody.skillLocator.GetSkill(SkillSlot.Utility);
+                    utilSlot.RunRecharge(EnPassant.instance.cdrPerHit * extraHits * icount);
+                }
             }
             if(visualStopwatch >= VISUAL_TICK_RATE) {
                 visualStopwatch %= VISUAL_TICK_RATE;
