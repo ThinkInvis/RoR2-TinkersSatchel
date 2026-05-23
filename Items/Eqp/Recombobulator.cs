@@ -238,7 +238,7 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.ScrapperController.BeginScrapping += ScrapperController_BeginScrapping;
+            On.RoR2.ScrapperController.BeginScrapping_UniquePickup += ScrapperController_BeginScrapping;
             IL.EntityStates.Drone.DeathState.OnImpactServer += DeathState_OnImpactServer;
         }
 
@@ -247,7 +247,7 @@ namespace ThinkInvisible.TinkersSatchel {
             IL.RoR2.SceneDirector.GenerateInteractableCardSelection -= SceneDirector_GenerateInteractableCardSelection;
             On.RoR2.EquipmentSlot.UpdateTargets -= EquipmentSlot_UpdateTargets;
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.ScrapperController.BeginScrapping -= ScrapperController_BeginScrapping;
+            On.RoR2.ScrapperController.BeginScrapping_UniquePickup -= ScrapperController_BeginScrapping;
             IL.EntityStates.Drone.DeathState.OnImpactServer -= DeathState_OnImpactServer;
         }
 
@@ -288,8 +288,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
 
-        private void ScrapperController_BeginScrapping(On.RoR2.ScrapperController.orig_BeginScrapping orig, ScrapperController self, int intPickupIndex) {
-            orig(self, intPickupIndex);
+        private void ScrapperController_BeginScrapping(On.RoR2.ScrapperController.orig_BeginScrapping_UniquePickup orig, ScrapperController self, UniquePickup pickup) {
+            orig(self, pickup);
             if(self && !self.GetComponent<RecombobulatorFlag>())
                 self.gameObject.AddComponent<RecombobulatorFlag>();
         }

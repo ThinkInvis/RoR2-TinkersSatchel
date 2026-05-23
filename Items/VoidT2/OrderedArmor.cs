@@ -1,12 +1,13 @@
-﻿using RoR2;
-using UnityEngine;
-using System.Collections.ObjectModel;
-using TILER2;
-using static R2API.RecalculateStatsAPI;
-using R2API;
+﻿using R2API;
+using RoR2;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using TILER2;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
+using static R2API.RecalculateStatsAPI;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class OrderedArmor : Item<OrderedArmor> {
@@ -126,20 +127,16 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Non-Public Methods //////
 
         private static int GetTotalItemTypes(Inventory inv) {
-            if(validItemTypeCache == null) {
-                validItemTypeCache = new HashSet<int>();
-                for(var i = 0; i < inv.itemStacks.Length; i++) {
-                    var idef = ItemCatalog.GetItemDef((ItemIndex)i);
-                    if(idef == null || idef.hidden) continue;
-                    var itier = ItemTierCatalog.GetItemTierDef(idef.tier);
-                    if(itier != null && itier.isDroppable) validItemTypeCache.Add(i);
-                }
-            }
-
             int retv = 0;
-
-            for(var i = 0; i < inv.itemStacks.Length; i++) {
-                if(inv.itemStacks[i] > 0 && validItemTypeCache.Contains(i)) retv++;
+            var values = inv.effectiveItemStacks.inner.GetValuesSpan();
+            var nonZeroIndices = inv.effectiveItemStacks.GetNonZeroIndicesSpan();
+            for(int i = 0; i < nonZeroIndices.Length; i++) {
+                var ind = (ItemIndex)(nonZeroIndices[i]);
+                var idef = ItemCatalog.GetItemDef(ind);
+                if(idef.hidden) continue;
+                var itier = ItemTierCatalog.GetItemTierDef(idef.tier);
+                if(itier != null && itier.isDroppable && values[(int)ind] > 0)
+                    retv++;
             }
 
             return retv;

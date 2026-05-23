@@ -363,9 +363,9 @@ namespace ThinkInvisible.TinkersSatchel {
 					if(enemies.Count() > 0) {
 						var (obj, rayHitInfo) = Pinball.instance.rng.NextElementUniform(enemies.ToArray());
 						var aimVec = (obj.transform.position - bounceEnd).normalized;
-						var nhi = BulletAttack.GetBulletHit();
+						var nhi = BulletAttack.bulletHitPool.Request();
 						self.damage = origDamage * bounceDamageFrac;
-						self.InitBulletHitFromRaycastHit(ref nhi, bounceEnd, aimVec, ref rayHitInfo);
+						self.InitBulletHitFromRaycastHit(ref nhi, new(bounceEnd, aimVec), ref rayHitInfo);
 						self.ProcessHit(ref nhi);
 
 						if(self.tracerEffectPrefab) {

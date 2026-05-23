@@ -1,11 +1,15 @@
 ﻿using RoR2;
-using UnityEngine;
-using TILER2;
-using System.Linq;
-using UnityEngine.AddressableAssets;
+using RoR2.Stats;
 using System;
 using System.Collections.Generic;
-using RoR2.Stats;
+using System.ComponentModel;
+using System.Diagnostics.Tracing;
+using System.Linq;
+using System.Reflection;
+using TILER2;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.UIElements;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class MonkeysPaw : Equipment<MonkeysPaw> {
@@ -259,10 +263,29 @@ namespace ThinkInvisible.TinkersSatchel {
                     purch.cost = origCost;
                     return false;
                 }
-                var payCostResults = CostTypeCatalog.GetCostTypeDef(purch.costType)
-                    .PayCost(purch.cost, iac, targetObj, rng, ItemIndex.None); //paying items currently unsupported
-                if(slot.characterBody)
+                using(CostTypeDef.PayCostContext.pool.Request(out var pctx))
+                using(CostTypeDef.PayCostResults.pool.Request(out var pres))
+                    {
+                    pctx.cost = purch.cost;
+                    pctx.activator = iac;
+                    pctx.activatorBody = iac.GetComponent<CharacterBody>();
+                    pctx.activatorMaster = (pctx.activatorBody ? pctx.activatorBody.master : null);
+                    pctx.activatorInventory = (pctx.activatorBody ? pctx.activatorBody.inventory : null);
+                    pctx.purchasedObject = targetObj;
+                    pctx.purchaseInteraction = purch;
+                    pctx.costTypeDef = CostTypeCatalog.GetCostTypeDef(purch.costType);
+                    pctx.rng = rng;
+                    pctx.avoidedItemIndex = ItemIndex.None; //paying items currently unsupported
+
+                    pctx.costTypeDef.PayCost(pctx, pres);
                     StatManager.OnPurchase(slot.characterBody, purch.costType, purch.purchaseStatNames.Select(new Func<string, StatDef>(StatDef.Find)));
+                    purch.onPurchase.Invoke(iac);
+                    purch.onDetailedPurchaseServer.Invoke(pctx, pres);
+
+                    //TODO: find a way to fire the PurchaseInteraction.onPurchaseGlobalServer event here. doesn't do anything ingame YET, but other mods or future updates may depend on it
+
+                    purch.lastActivator = iac;
+                }
             }
 
             cb.dropCount++;

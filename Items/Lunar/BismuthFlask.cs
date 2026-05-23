@@ -200,7 +200,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo) {
             if(inflictDotInfo.victimObject && inflictDotInfo.victimObject.TryGetComponent<CharacterBody>(out var victimBody)) {
-                var count = GetCount(victimBody);
+                var count = GetCountEffective(victimBody);
                 if(count > 0) {
                     inflictDotInfo.duration *= Mathf.Pow(1f - debuffReduction, count);
                 }
@@ -210,7 +210,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_AddTimedBuff_BuffDef_float_int(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float_int orig, CharacterBody self, BuffDef buffDef, float duration, int maxStacks) {
             if(self) {
-                var count = GetCount(self);
+                var count = GetCountEffective(self);
                 if(count > 0) {
                     duration *= Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
                 }
@@ -220,7 +220,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration) {
             if(self) {
-                var count = GetCount(self);
+                var count = GetCountEffective(self);
                 if(count > 0) {
                     duration *= Mathf.Pow(1f - (buffDef.isDebuff ? debuffReduction : buffReduction), count);
                 }

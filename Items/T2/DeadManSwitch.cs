@@ -87,7 +87,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body) {
-            if(GetCount(body) > 0
+            if(GetCountEffective(body) > 0
                 && body.healthComponent && body.equipmentSlot
                 && !body.GetComponent<DeadManSwitchTracker>())
                 body.gameObject.AddComponent<DeadManSwitchTracker>();
@@ -110,7 +110,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(icd > 0f) {
                 icd -= Time.fixedDeltaTime;
             }
-            var count = DeadManSwitch.instance.GetCount(body);
+            var count = DeadManSwitch.instance.GetCountEffective(body);
             if(count <= 0) return;
             var eqp = EquipmentCatalog.GetEquipmentDef(body.equipmentSlot.equipmentIndex);
             if(icd <= 0f
@@ -121,9 +121,11 @@ namespace ThinkInvisible.TinkersSatchel {
                     * (DeadManSwitch.instance.externalCdr ? body.inventory.CalculateEquipmentCooldownScale() : 1f);
                 body.AddTimedBuff(DeadManSwitch.instance.deadManSwitchBuff, icd);
                 if(body.equipmentSlot.PerformEquipmentAction(eqp)) {
-                    var es = body.inventory.GetEquipment(body.inventory.activeEquipmentSlot);
+                    var slot = body.inventory.activeEquipmentSlot;
+                    var set = body.inventory.FindBestEquipmentSetIndex(false);
+                    var es = body.inventory.GetEquipment(slot, set);
                     body.equipmentSlot.OnEquipmentExecuted();
-                    body.inventory.SetEquipment(es, body.inventory.activeEquipmentSlot);
+                    body.inventory.SetEquipment(es, slot, set);
                 }
             }
         }

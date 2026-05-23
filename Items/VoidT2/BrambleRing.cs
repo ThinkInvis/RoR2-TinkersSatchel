@@ -230,7 +230,7 @@ namespace ThinkInvisible.TinkersSatchel {
             }
             var barrierPre = self.barrier;
             orig(self, damageInfo);
-            var count = GetCount(self.body);
+            var count = GetCountEffective(self.body);
             if(count <= 0) return;
 
             //barrier retaliation
@@ -263,7 +263,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 effectData.SetHurtBoxReference(attackerHC.body.mainHurtBox);
                 EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OrbEffects/VoidLightningOrbEffect"), effectData, true);
 
-                DotController.InflictDot(damageInfo.attacker, self.gameObject, DotController.DotIndex.Bleed, 3f, deltaBarrier * frac / self.body.damage);
+                DotController.InflictDot(damageInfo.attacker, self.gameObject, attackerHC.body.mainHurtBox, DotController.DotIndex.Bleed, 3f, deltaBarrier * frac / self.body.damage);
             }
 
             //conversion to barrier

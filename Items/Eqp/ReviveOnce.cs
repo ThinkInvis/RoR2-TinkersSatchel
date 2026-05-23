@@ -255,8 +255,6 @@ namespace ThinkInvisible.TinkersSatchel {
             } else { //No dead ally, summon drone
                 //Prepare name list and select one
                 var validNames = new HashSet<string>(droneMasterPrefabNames);
-                if(!ItemDrone.instance.enabled)
-                    validNames.Remove("ItemDroneMaster");
                 if(!BulwarkDrone.instance.enabled)
                     validNames.Remove("BulwarkDroneMaster");
                 var whichName = rng.NextElementUniform(validNames.ToArray());

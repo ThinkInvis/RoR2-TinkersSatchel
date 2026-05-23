@@ -545,8 +545,8 @@ namespace ThinkInvisible.TinkersSatchel {
                 }
             } else {
                 var shopcpt = gameObject.GetComponent<MultiShopController>();
-                if(shopcpt && shopcpt._terminalGameObjects != null) {
-                    foreach(var terminal in shopcpt._terminalGameObjects) {
+                if(shopcpt && shopcpt.terminalGameObjects != null) {
+                    foreach(var terminal in shopcpt.terminalGameObjects) {
                         if(!terminal) continue;
                         auxiliaryPackedObjects.Add(terminal, terminal.transform.position - transform.position);
                     }

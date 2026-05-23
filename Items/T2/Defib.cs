@@ -268,7 +268,7 @@ namespace ThinkInvisible.TinkersSatchel {
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args) {
-            args.critAdd += (GetCount(sender) > 0) ? critBonus : 0f;
+            args.critAdd += (GetCountEffective(sender) > 0) ? critBonus : 0f;
         }
 
 
@@ -316,7 +316,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 wasCrit = false;
                 if(NetworkServer.active && healingSourceStack.Count > 0) {
                     var sourceBody = healingSourceStack.Peek();
-                    var sourceCount = GetCount(sourceBody);
+                    var sourceCount = GetCountEffective(sourceBody);
                     if(sourceCount > 0 && sourceBody.RollCrit()) {
                         wasCrit = true;
                         return origAmount * (1f + critFracStack * sourceCount);
@@ -534,11 +534,11 @@ namespace ThinkInvisible.TinkersSatchel {
             orig(self);
             if(localUser.cachedMaster != self) return;
             int matches = 0;
-            if(self.inventory.GetItemCount(RoR2Content.Items.Mushroom) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.Tooth) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.TPHealingNova) > 0) matches++;
-            if(self.inventory.GetItemCount(RoR2Content.Items.Plant) > 0) matches++;
-            if(ShootToHeal.instance.GetCount(self.inventory) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Mushroom) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Tooth) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.TPHealingNova) > 0) matches++;
+            if(self.inventory.GetItemCountEffective(RoR2Content.Items.Plant) > 0) matches++;
+            if(ShootToHeal.instance.GetCountEffective(self.inventory) > 0) matches++;
             if(self.inventory.currentEquipmentIndex == RoR2Content.Equipment.PassiveHealing.equipmentIndex
                 || self.inventory.alternateEquipmentIndex == RoR2Content.Equipment.PassiveHealing.equipmentIndex)
                 matches++;

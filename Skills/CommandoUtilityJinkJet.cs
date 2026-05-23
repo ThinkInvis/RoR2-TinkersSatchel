@@ -109,7 +109,7 @@ namespace ThinkInvisible.TinkersSatchel {
 					characterMotor.velocity = Vector3.zero;
 					float boost = 1f;
 					if(GoFaster.instance.enabled)
-						boost += (float)GoFaster.instance.GetCount(characterBody) * GoFaster.instance.buffFrac * CommandoUtilityJinkJet.instance.goFasterBuffFrac;
+						boost += (float)GoFaster.instance.GetCountEffective(characterBody) * GoFaster.instance.buffFrac * CommandoUtilityJinkJet.instance.goFasterBuffFrac;
 					characterMotor.velocity = skillForward * moveSpeedStat * sprintMult * 2.35f * boost;
 				}
 				if(isAuthority)

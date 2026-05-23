@@ -158,7 +158,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void PingerController_SetCurrentPing(On.RoR2.PingerController.orig_SetCurrentPing orig, PingerController self, PingerController.PingInfo newPingInfo) {
             orig(self, newPingInfo);
             if(
-                self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCount(pcmc.body) > 0
+                self.TryGetComponent<PlayerCharacterMasterController>(out var pcmc) && pcmc.body && GetCountEffective(pcmc.body) > 0
                 && newPingInfo.targetGameObject && newPingInfo.targetGameObject.TryGetComponent<CharacterBody>(out var cb)) {
                 new MsgDetonateNautilus(cb).Send(R2API.Networking.NetworkDestination.Server);
             }
@@ -179,7 +179,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(self.leader == null || !self.leader.characterBody)
                 cpt.SetWranglerCount(0);
             else
-                cpt.SetWranglerCount(GetCount(self.leader.characterBody));
+                cpt.SetWranglerCount(GetCountEffective(self.leader.characterBody));
 
             return retv;
         }

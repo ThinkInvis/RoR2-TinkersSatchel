@@ -329,7 +329,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			orig(self);
 			if(this.localUser.cachedMaster != self) return;
 			int count = Kintsugi.GetConsumedItemCount(self.inventory);
-			int totalCount = self.inventory.itemStacks.Sum();
+			int totalCount = self.inventory.effectiveItemStacks.GetTotalItemStacks();
 			if(totalCount >= 20 && count > Mathf.CeilToInt((float)totalCount / 2f))
 				Grant();
 		}

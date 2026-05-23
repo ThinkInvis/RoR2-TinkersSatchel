@@ -99,8 +99,8 @@ namespace ThinkInvisible.TinkersSatchel {
         private void ProjectileManager_InitializeProjectile(On.RoR2.Projectile.ProjectileManager.orig_InitializeProjectile orig, RoR2.Projectile.ProjectileController projectileController, RoR2.Projectile.FireProjectileInfo fireProjectileInfo) {
             orig(projectileController, fireProjectileInfo);
 
-            if(fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && GetCount(ownerBody) > 0) {
-                float speedDiv = 1f + GetCount(ownerBody) * speedReduc;
+            if(fireProjectileInfo.owner && fireProjectileInfo.owner.TryGetComponent<CharacterBody>(out var ownerBody) && GetCountEffective(ownerBody) > 0) {
+                float speedDiv = 1f + GetCountEffective(ownerBody) * speedReduc;
 
                 if(projectileController.TryGetComponent<RoR2.Projectile.ProjectileSimple>(out var ps)) {
                     ps.desiredForwardSpeed /= speedDiv;
@@ -127,14 +127,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo) {
             if(inflictDotInfo.attackerObject && inflictDotInfo.attackerObject.TryGetComponent<CharacterBody>(out var attackerBody))
-                inflictDotInfo.damageMultiplier *= 1f + damageBuff * GetCount(attackerBody);
+                inflictDotInfo.damageMultiplier *= 1f + damageBuff * GetCountEffective(attackerBody);
             orig(ref inflictDotInfo);
         }
 
         private void CharacterBody_AddTimedBuff_BuffDef_float_int(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float_int orig, CharacterBody self, BuffDef buffDef, float duration, int maxStacks) {
             if(self && buffDef.isDebuff) {
                 var targets = MiscUtil.GatherEnemies(TeamComponent.GetObjectTeam(self.gameObject));
-                var combatantStacks = targets.Sum(x => x.body ? GetCount(x.body) : 0);
+                var combatantStacks = targets.Sum(x => x.body ? GetCountEffective(x.body) : 0);
                 duration *= 1f + combatantStacks * durationBuff;
             }
             orig(self, buffDef, duration, maxStacks);
@@ -143,7 +143,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration) {
             if(self && buffDef.isDebuff) {
                 var targets = MiscUtil.GatherEnemies(TeamComponent.GetObjectTeam(self.gameObject));
-                var combatantStacks = targets.Sum(x => x.body ? GetCount(x.body) : 0);
+                var combatantStacks = targets.Sum(x => x.body ? GetCountEffective(x.body) : 0);
                 duration *= 1f + combatantStacks * durationBuff;
             }
             orig(self, buffDef, duration);
@@ -152,7 +152,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self) {
             var origRadius = self.radius;
             if(self.attacker && self.attacker.TryGetComponent<CharacterBody>(out var attackerBody)) {
-                var count = GetCount(attackerBody);
+                var count = GetCountEffective(attackerBody);
                 self.radius /= 1f + count * rangeReduc;
             }
             var retv = orig(self);
@@ -167,7 +167,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<Vector3, OverlapAttack, Vector3>>((origFullExtents, self) => {
                     if(!self.attacker) return origFullExtents;
-                    var count = GetCount(self.attacker.GetComponent<CharacterBody>());
+                    var count = GetCountEffective(self.attacker.GetComponent<CharacterBody>());
                     return origFullExtents / (1f + rangeReduc * count);
                 });
             } else {
@@ -178,7 +178,7 @@ namespace ThinkInvisible.TinkersSatchel {
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self) {
             float mdDiv = 1f;
             if(self.owner && self.owner.TryGetComponent<CharacterBody>(out var ownerBody))
-                mdDiv += GetCount(ownerBody) * hitscanReduc;
+                mdDiv += GetCountEffective(ownerBody) * hitscanReduc;
             self.maxDistance /= mdDiv;
             orig(self);
             self.maxDistance *= mdDiv;

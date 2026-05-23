@@ -94,10 +94,10 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.BulletAttack.FireSingle += BulletAttack_FireSingle;
         }
 
-        private void BulletAttack_FireSingle(On.RoR2.BulletAttack.orig_FireSingle orig, BulletAttack self, Vector3 normal, int muzzleIndex) {
+        private void BulletAttack_FireSingle(On.RoR2.BulletAttack.orig_FireSingle orig, BulletAttack self, BulletAttack.FireSingleArgs args) {
 			if(self.weapon == worldSpaceWeaponDummy)
 				self.weapon = null; //force tracer effect to happen in worldspace. BulletAttack.Fire sets weapon to owner if null, even if you set it to null on purpose >:(
-			orig(self, normal, muzzleIndex);
+			orig(self, args);
 		}
 
 		internal static void RetrieveDefaultMaterials(ItemDisplay disp) {
@@ -165,13 +165,13 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, PickupDropTable dropTable, WeightedSelection<List<PickupIndex>> fallback) {
-			var aiSafeSelector = new WeightedSelection<PickupIndex>();
+			var aiSafeSelector = new WeightedSelection<UniquePickup>();
 
 			if(dropTable is BasicPickupDropTable bpdt) {
-				foreach(var ch in bpdt.selector.choices.Where(c => PickupIndexIsAISafe(c.value)))
+				foreach(var ch in bpdt.selector.choices.Where(c => PickupIndexIsAISafe(c.value.pickupIndex)))
 					aiSafeSelector.AddChoice(ch);
 			} else if(dropTable is ExplicitPickupDropTable epdt) {
-				foreach(var ch in epdt.weightedSelection.choices.Where(c => PickupIndexIsAISafe(c.value)))
+				foreach(var ch in epdt.weightedSelection.choices.Where(c => PickupIndexIsAISafe(c.value.pickupIndex)))
 					aiSafeSelector.AddChoice(ch);
 			} 
 			
@@ -179,7 +179,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				foreach(var tier in fallback.choices) {
 					foreach(var pind in tier.value) {
 						if(!PickupIndexIsAISafe(pind)) continue;
-						aiSafeSelector.AddChoice(pind, tier.weight);
+						aiSafeSelector.AddChoice(new UniquePickup(pind), tier.weight);
 					}
 				}
 			}
@@ -189,24 +189,24 @@ namespace ThinkInvisible.TinkersSatchel {
 				return PickupIndex.none;
 			}
 
-			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
+			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat).pickupIndex;
 		}
 
 		public static PickupIndex GenerateAISafePickup(Xoroshiro128Plus rng, PickupDropTable dropTable, List<PickupIndex> fallback) {
-			var aiSafeSelector = new WeightedSelection<PickupIndex>();
+			var aiSafeSelector = new WeightedSelection<UniquePickup>();
 
 			if(dropTable is BasicPickupDropTable bpdt) {
-				foreach(var ch in bpdt.selector.choices.Where(c => PickupIndexIsAISafe(c.value)))
+				foreach(var ch in bpdt.selector.choices.Where(c => PickupIndexIsAISafe(c.value.pickupIndex)))
 					aiSafeSelector.AddChoice(ch);
 			} else if(dropTable is ExplicitPickupDropTable epdt) {
-				foreach(var ch in epdt.weightedSelection.choices.Where(c => PickupIndexIsAISafe(c.value)))
+				foreach(var ch in epdt.weightedSelection.choices.Where(c => PickupIndexIsAISafe(c.value.pickupIndex)))
 					aiSafeSelector.AddChoice(ch);
 			}
 
 			if(aiSafeSelector.choices.Length == 0) {
 				foreach(var pind in fallback) {
 					if(!PickupIndexIsAISafe(pind)) continue;
-					aiSafeSelector.AddChoice(pind, 1f);
+					aiSafeSelector.AddChoice(new UniquePickup(pind), 1f);
 				}
 			}
 
@@ -215,7 +215,7 @@ namespace ThinkInvisible.TinkersSatchel {
 				return PickupIndex.none;
 			}
 
-			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat);
+			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat).pickupIndex;
         }
 
         internal static Quaternion ApplyRandomSpread(Quaternion targetRotation, float coneHalfAngleDegr) {
