@@ -4,7 +4,7 @@
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 45 items/equipments:
+- 44 items/equipments:
 	- 7 tier-1,
 	- 10 tier-2,
 	- 7 tier-3,
@@ -13,7 +13,7 @@ Tinker's Satchel is a general content pack, containing assorted items, equipment
 	- 4 lunar equipments,
 	- 3 tier-1 void,
 	- 3 tier-2 void,
-	- 3 tier-3 void;
+	- 2 tier-3 void;
 - 1 interactable:
 	- 1 drone;
 - 8 skill variants:
