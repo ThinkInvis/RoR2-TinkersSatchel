@@ -1,19 +1,19 @@
 {
   "name": "TinkersSatchel",
-  "version_number": "5.2.5",
+  "version_number": "6.0.0",
   "website_url": "https://github.com/ThinkInvis/RoR2-TinkersSatchel",
   "description": "An adequate assortment of anomalous additions: acquisitions, artifacts, and abilities abound.",
   "dependencies": [
     "bbepis-BepInExPack-5.4.2103",
-    "RiskofThunder-R2API_Core-5.1.5",
+    "RiskofThunder-R2API_Core-5.3.0",
     "RiskofThunder-R2API_DamageType-1.1.7",
     "RiskofThunder-R2API_Deployable-1.0.1",
-    "RiskofThunder-R2API_Director-2.3.5",
-    "RiskofThunder-R2API_Items-1.0.5",
-    "RiskofThunder-R2API_Language-1.0.1",
-    "RiskofThunder-R2API_Networking-1.0.3",
-    "RiskofThunder-R2API_Prefab-1.0.4",
-    "RiskofThunder-R2API_RecalculateStats-1.6.0",
-    "ThinkInvis-TILER2-7.4.3"
+    "RiskofThunder-R2API_Director-2.3.9",
+    "RiskofThunder-R2API_Items-1.0.8",
+    "RiskofThunder-R2API_Language-1.1.0",
+    "RiskofThunder-R2API_Networking-1.0.4",
+    "RiskofThunder-R2API_Prefab-1.1.1",
+    "RiskofThunder-R2API_RecalculateStats-1.6.6",
+    "ThinkInvisible-NavYoink-1.0.0"
   ]
 }

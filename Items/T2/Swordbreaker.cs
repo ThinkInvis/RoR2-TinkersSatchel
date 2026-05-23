@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using static R2API.RecalculateStatsAPI;
 using UnityEngine.Networking;
 using R2API;
@@ -61,7 +60,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Swordbreaker() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Swordbreaker.prefab");

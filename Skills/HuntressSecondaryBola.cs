@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
@@ -10,7 +9,7 @@ using R2API.Networking.Interfaces;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class HuntressSecondaryBola : T2Module<HuntressSecondaryBola> {
+	public class HuntressSecondaryBola : Module<HuntressSecondaryBola> {
 
 		////// Module Data //////
 
@@ -33,7 +32,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public HuntressSecondaryBola() {
 		}

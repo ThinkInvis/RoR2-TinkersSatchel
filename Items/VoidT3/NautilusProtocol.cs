@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using UnityEngine.AddressableAssets;
 using System.Linq;
 using static R2API.RecalculateStatsAPI;
@@ -90,7 +89,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public NautilusProtocol() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Nautilus.prefab");

@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using RoR2.Projectile;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
@@ -41,7 +40,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public EMP() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/EMP.prefab");

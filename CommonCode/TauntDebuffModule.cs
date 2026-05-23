@@ -3,12 +3,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using RoR2.CharacterAI;
 using System.Linq;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class TauntDebuffModule : T2Module<TauntDebuffModule> {
+	public class TauntDebuffModule : Module<TauntDebuffModule> {
 		public override bool managedEnable => false;
 
 		public static BuffDef tauntDebuff;

@@ -1,8 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
-using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using R2API;
 using UnityEngine.AddressableAssets;
@@ -16,7 +14,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public override ReadOnlyCollection<ItemTag> itemTags => new(new[] { ItemTag.Healing });
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            bufferFrac.ToString("0%"), bufferDuration.ToString("N0"), GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2")), regenFrac.ToString("P0"), bufferFracCap.ToString("P0")
+            bufferFrac.ToString("0%"), bufferDuration.ToString("N0"), CommonCode.GetBestLanguage(langID).GetLocalizedFormattedStringByToken(bufferRate <= 0f ? "TINKERSSATCHEL_DAMAGEBUFFER_DESC_CTICK" : "TINKERSSATCHEL_DAMAGEBUFFER_DESC_DTICK", bufferRate.ToString("N2")), regenFrac.ToString("P0"), bufferFracCap.ToString("P0")
         };
 
 
@@ -61,7 +59,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public DamageBuffer() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/DamageBuffer.prefab");

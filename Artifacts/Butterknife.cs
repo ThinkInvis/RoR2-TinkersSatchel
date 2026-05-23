@@ -1,6 +1,5 @@
 ﻿using R2API.Utils;
 using RoR2;
-using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -13,7 +12,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Butterknife() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/butterknife_on.png");

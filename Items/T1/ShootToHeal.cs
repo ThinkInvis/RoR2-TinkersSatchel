@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
@@ -52,7 +51,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
         public ShootToHeal() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/ShootToHeal.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/shootToHealIcon.png");

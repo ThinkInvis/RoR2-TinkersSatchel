@@ -1,10 +1,9 @@
-﻿using RoR2;
-using UnityEngine;
-using TILER2;
-using UnityEngine.Networking;
-using R2API;
-using static TILER2.MiscUtil;
+﻿using R2API;
+using RoR2;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Networking;
 using static R2API.RecalculateStatsAPI;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -33,8 +32,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
-        #region TILER2 Module Setup
+        ////// Module Setup //////
+        #region Module Setup
         public PackTactics() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/tactics_on.png");
             iconResourceDisabled = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/tactics_off.png");
@@ -83,9 +82,9 @@ namespace ThinkInvisible.TinkersSatchel {
         public override void Install() {
             base.Install();
 
-            GetStatCoefficients += Evt_TILER2GetStatCoefficients;
+            GetStatCoefficients += Evt_GetStatCoefficients;
             if(IsActiveAndEnabled()) {
-                foreach(var cm in AliveList())
+                foreach(var cm in CharacterMaster.readOnlyInstancesList.Where(x => x.hasBody && x.GetBody().healthComponent.alive).ToList())
                     if(cm.hasBody) AddWard(cm.GetBody());
             }
             On.RoR2.CharacterMaster.OnBodyStart += On_CMOnBodyStart;
@@ -97,7 +96,7 @@ namespace ThinkInvisible.TinkersSatchel {
             On.RoR2.CharacterMaster.OnBodyStart -= On_CMOnBodyStart;
             foreach(var w in TacticsWard.instances)
                 UnityEngine.Object.Destroy(w.gameObject);
-            GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
+            GetStatCoefficients -= Evt_GetStatCoefficients;
         }
         #endregion
 
@@ -105,7 +104,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         ////// Hooks //////
 
-        private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
+        private void Evt_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
             var totalBuffs = Mathf.Max(sender.GetBuffCount(tacticsBuff) - 1, 0);
             args.moveSpeedMultAdd += totalBuffs * speedMod;

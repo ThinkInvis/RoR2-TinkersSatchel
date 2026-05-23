@@ -1,10 +1,9 @@
 ﻿using RoR2;
-using TILER2;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class EquipmentDroneLabels : T2Module<EquipmentDroneLabels> {
+	public class EquipmentDroneLabels : Module<EquipmentDroneLabels> {
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
         
         public override bool managedEnable => true;
 

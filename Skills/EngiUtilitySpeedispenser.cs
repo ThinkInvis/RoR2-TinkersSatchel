@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using System.Linq;
 using UnityEngine.AddressableAssets;
@@ -10,7 +9,7 @@ using UnityEngine.Networking;
 using UnityEngine.Events;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class EngiUtilitySpeedispenser : T2Module<EngiUtilitySpeedispenser> {
+    public class EngiUtilitySpeedispenser : Module<EngiUtilitySpeedispenser> {
 
         ////// Module Data //////
 
@@ -31,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public EngiUtilitySpeedispenser() {
         }

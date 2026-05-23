@@ -46,14 +46,15 @@
       <HintPath>..\NavYoink\Build\NavYoink\NavYoink.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="TILER2">
-      <HintPath>..\TILER2\Build\TILER2\TILER2.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="RiskOfOptions">
+      <HintPath>lib\RiskOfOptions.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="if not exist &quot;$(ProjectDir)Build\$(ProjectName)\&quot; mkdir &quot;$(ProjectDir)Build\$(ProjectName)&quot;&#xD;&#xA;xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)ModMeta&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)Lang&quot; &quot;$(ProjectDir)Build\$(ProjectName)&quot; /Y" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties modmeta_4manifest_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

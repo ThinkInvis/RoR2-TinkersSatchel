@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -38,7 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public BismuthFlask() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/BismuthFlask.prefab");

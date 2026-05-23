@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -59,7 +58,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Magnetism() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Magnetism.prefab");
@@ -107,7 +106,7 @@ namespace ThinkInvisible.TinkersSatchel {
             if(validHBCount == 0) return retv; //attack has no hitboxes, abort
             averageHitboxCentroid /= validHBCount;
             if((ownerBody.corePosition - averageHitboxCentroid).sqrMagnitude >= 25f) return retv; //attack is too far from owner, probably not melee, abort
-            var targets = MiscUtil.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
+            var targets = CommonCode.GatherEnemies(ownerBody.teamComponent.teamIndex, TeamIndex.Neutral);
             var maxRange = meleeAmount * GetCountEffective(ownerBody);
             foreach(var t in targets) {
                 if(!t || !t.body || (!t.body.characterMotor && !t.body.rigidbody) || (t.body.healthComponent && !t.body.healthComponent.alive)) continue;

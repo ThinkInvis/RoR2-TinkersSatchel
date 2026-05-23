@@ -1,8 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
@@ -83,7 +81,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public Pinball() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Pinball.prefab");
@@ -341,8 +339,8 @@ namespace ThinkInvisible.TinkersSatchel {
 
 				for(var i = 1; i <= maxBounces; i++) {
 					if(!Util.CheckRoll(bounceChance, body.master?.luck ?? 0, body.master)) return retv;
-					var enemies = GatherEnemies(TeamComponent.GetObjectTeam(self.owner), TeamIndex.Neutral)
-						.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+					var enemies = CommonCode.GatherEnemies(TeamComponent.GetObjectTeam(self.owner), TeamIndex.Neutral)
+						.Select(x => CommonCode.GetRootWithLocators(x.gameObject))
 						.Select(obj => {
 							if(obj == lastBounceTarget) return (null, default);
 							var hc = obj.GetComponent<HealthComponent>();
@@ -504,7 +502,7 @@ namespace ThinkInvisible.TinkersSatchel {
 		}
 
 		public void OnBounce(ProjectileImpactInfo impactInfo) {
-			var hit = GetRootWithLocators(impactInfo.collider.gameObject);
+			var hit = CommonCode.GetRootWithLocators(impactInfo.collider.gameObject);
 			if(lastTarget != null) {
 				if(hit == lastTarget)
 					return;
@@ -569,8 +567,8 @@ namespace ThinkInvisible.TinkersSatchel {
 				}
 			}
 			if(NetworkServer.active) {
-				var enemies = GatherEnemies(projectile.teamFilter.teamIndex, TeamIndex.Neutral)
-					.Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+				var enemies = CommonCode.GatherEnemies(projectile.teamFilter.teamIndex, TeamIndex.Neutral)
+					.Select(x => CommonCode.GetRootWithLocators(x.gameObject))
 					.Where(obj => {
 						if(obj == lastTarget) return false;
 						var hc = obj.GetComponent<HealthComponent>();

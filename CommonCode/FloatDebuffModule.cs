@@ -1,11 +1,10 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class FloatDebuffModule : T2Module<FloatDebuffModule> {
+	public class FloatDebuffModule : Module<FloatDebuffModule> {
 		public override bool managedEnable => false;
 
 		public static BuffDef floatDebuff;

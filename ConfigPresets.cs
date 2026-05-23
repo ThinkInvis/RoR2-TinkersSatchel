@@ -1,12 +1,11 @@
-﻿using TILER2;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class ConfigPresets : T2Module<ConfigPresets> {
+	public class ConfigPresets : Module<ConfigPresets> {
         public override bool managedEnable => false;
 
-        void SetEnabled(IEnumerable<T2Module> modules, bool enab) {
+        void SetEnabled(IEnumerable<Module> modules, bool enab) {
             HashSet<BepInEx.Configuration.ConfigFile> needsManualSave = new();
             foreach(var module in modules) {
                 var bind = module.FindConfig(nameof(module.enabled));
@@ -72,7 +71,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allModules.Where(m => m is Artifact), false));
 
-            HashSet<T2Module> allSkills = new() {
+            HashSet<Module> allSkills = new() {
                 CommandoPrimaryPulse.instance,
                 CommandoUtilityJinkJet.instance,
                 CommandoSpecialPlasmaGrenade.instance,
@@ -96,7 +95,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 modName = TinkersSatchelPlugin.ModName + "Presets"
             }, "Set", () => SetEnabled(allSkills, false));
 
-            HashSet<T2Module> allDrones = new() {
+            HashSet<Module> allDrones = new() {
                 BulwarkDrone.instance
             };
             Compat_RiskOfOptions.AddOption_Button(new Compat_RiskOfOptions.OptionIdentityStrings {

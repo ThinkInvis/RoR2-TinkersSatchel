@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
@@ -55,7 +54,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public ConcentratingAlembic() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/ConcentratingAlembic.prefab");
@@ -133,7 +132,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_AddTimedBuff_BuffDef_float_int(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float_int orig, CharacterBody self, BuffDef buffDef, float duration, int maxStacks) {
             if(self && buffDef.isDebuff) {
-                var targets = MiscUtil.GatherEnemies(TeamComponent.GetObjectTeam(self.gameObject));
+                var targets = CommonCode.GatherEnemies(TeamComponent.GetObjectTeam(self.gameObject));
                 var combatantStacks = targets.Sum(x => x.body ? GetCountEffective(x.body) : 0);
                 duration *= 1f + combatantStacks * durationBuff;
             }
@@ -142,7 +141,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
         private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration) {
             if(self && buffDef.isDebuff) {
-                var targets = MiscUtil.GatherEnemies(TeamComponent.GetObjectTeam(self.gameObject));
+                var targets = CommonCode.GatherEnemies(TeamComponent.GetObjectTeam(self.gameObject));
                 var combatantStacks = targets.Sum(x => x.body ? GetCountEffective(x.body) : 0);
                 duration *= 1f + combatantStacks * durationBuff;
             }

@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using System;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -40,7 +39,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Dodge() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Dodge.prefab");

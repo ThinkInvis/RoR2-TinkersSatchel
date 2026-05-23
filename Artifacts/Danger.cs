@@ -2,13 +2,12 @@
 using MonoMod.Cil;
 using RoR2;
 using System;
-using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Danger : Artifact<Danger> {
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
         
         public Danger() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/danger_on.png");

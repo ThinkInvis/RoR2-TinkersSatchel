@@ -1,11 +1,11 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using System.Linq;
 using System.Collections.Generic;
 using R2API;
 using System;
 using UnityEngine.AddressableAssets;
+using static ThinkInvisible.TinkersSatchel.MathUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Lodestone : Equipment<Lodestone> {
@@ -55,7 +55,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Lodestone() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Lodestone.prefab");
@@ -297,7 +297,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 var velVec = slot.characterBody.transform.position - rb.transform.position;
 
                 if(rb.useGravity && !rb.gameObject.name.Contains("TkSatPixie")) {
-                    var (vInitial, tFinal) = MiscUtil.CalculateVelocityForFinalPosition(rb.transform.position, slot.characterBody.transform.position, 1f);
+                    var (vInitial, tFinal) = CalculateVelocityForFinalPosition(rb.transform.position, slot.characterBody.transform.position, 1f);
                     velVec = vInitial;
                 } else {
                     velVec.Normalize();
@@ -328,7 +328,7 @@ namespace ThinkInvisible.TinkersSatchel {
             foreach(TeamComponent tcpt in teamMembers) {
                 var velVec = slot.characterBody.transform.position - tcpt.transform.position;
                 if(velVec.sqrMagnitude <= sqrad && tcpt.body && !tcpt.body.isBoss && !tcpt.body.isChampion && tcpt.body.isActiveAndEnabled) {
-                    var (vInitial, _) = MiscUtil.CalculateVelocityForFinalPosition(tcpt.transform.position, slot.characterBody.transform.position, 1f);
+                    var (vInitial, _) = CalculateVelocityForFinalPosition(tcpt.transform.position, slot.characterBody.transform.position, 1f);
                     var mcpt = tcpt.body.GetComponent<IPhysMotor>();
                     tcpt.body.healthComponent.TakeDamage(new DamageInfo {
                         attacker = slot.characterBody.gameObject,

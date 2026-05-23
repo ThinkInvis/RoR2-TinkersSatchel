@@ -1,9 +1,7 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API.Utils;
 using UnityEngine.Networking;
-using static TILER2.MiscUtil;
 using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -17,11 +15,11 @@ namespace ThinkInvisible.TinkersSatchel {
         public override float cooldown {get; protected set;} = 180f;
 
         protected override string[] GetDescStringArgs(string langID = null) => new[] {
-            applyPunishStack ? GetBestLanguage(langID).GetLocalizedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PUNISH") : "",
+            applyPunishStack ? CommonCode.GetBestLanguage(langID).GetLocalizedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PUNISH") : "",
             useLimitType == UseLimitType.NTimesPerStage
-                ? GetBestLanguage(langID).GetLocalizedFormattedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PERSTAGE", useLimitCount.ToString("N0"))
+                ? CommonCode.GetBestLanguage(langID).GetLocalizedFormattedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PERSTAGE", useLimitCount.ToString("N0"))
                 : (useLimitType == UseLimitType.NTimesPerCharacter
-                    ? GetBestLanguage(langID).GetLocalizedFormattedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PERPLAYER", useLimitCount.ToString("N0"))
+                    ? CommonCode.GetBestLanguage(langID).GetLocalizedFormattedStringByToken("TINKERSSATCHEL_COMPASS_DESC_PERPLAYER", useLimitCount.ToString("N0"))
                     : "")
         };
 
@@ -54,7 +52,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Compass() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/SilverCompass.prefab");

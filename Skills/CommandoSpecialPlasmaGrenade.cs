@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
@@ -7,7 +6,7 @@ using RoR2.Projectile;
 using RoR2;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class CommandoSpecialPlasmaGrenade : T2Module<CommandoSpecialPlasmaGrenade> {
+	public class CommandoSpecialPlasmaGrenade : Module<CommandoSpecialPlasmaGrenade> {
 
 		////// Module Data //////
 
@@ -27,7 +26,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public CommandoSpecialPlasmaGrenade() {
 		}

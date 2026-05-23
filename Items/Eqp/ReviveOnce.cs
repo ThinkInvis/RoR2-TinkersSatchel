@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using System.Linq;
 using RoR2.Navigation;
 using UnityEngine.Networking;
@@ -44,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public ReviveOnce() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/ReviveOnce.prefab");

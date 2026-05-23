@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Reflection;
-using TILER2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UIElements;
@@ -57,7 +56,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public MonkeysPaw() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/MonkeysPaw.prefab");
@@ -317,7 +316,7 @@ namespace ThinkInvisible.TinkersSatchel {
                 paramColors = new[] { ColorCatalog.GetColor(aiSafeTdef.colorIndex), new Color32(255, 255, 255, 255) }
             });
 
-            var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
+            var enemies = CommonCode.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
                 .Where(e => e.body && e.body.inventory);
 
             foreach(var enemy in enemies)

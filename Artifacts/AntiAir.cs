@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -12,7 +11,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public AntiAir() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/antiair_on.png");

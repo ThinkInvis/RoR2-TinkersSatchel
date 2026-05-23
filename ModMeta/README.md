@@ -4,28 +4,26 @@
 
 Tinker's Satchel is a general content pack, containing assorted items, equipments, interactables, artifacts, and skill variants. In total, this mod includes:
 
-- 47 items/equipments:
-	- 8 tier-1,
+- 45 items/equipments:
+	- 7 tier-1,
 	- 10 tier-2,
 	- 7 tier-3,
-	- 1 boss item,
 	- 6 equipments,
 	- 5 lunar items,
 	- 4 lunar equipments,
 	- 3 tier-1 void,
 	- 3 tier-2 void,
 	- 3 tier-3 void;
-- 2 interactables:
-	- 2 drones;
+- 1 interactable:
+	- 1 drone;
 - 8 skill variants:
 	- 3 for Commando,
 	- 2 for Huntress,
 	- and 3 for Engineer;
-- 6 artifacts;
-- and 3 other features:
+- 5 artifacts;
+- and 2 other features:
 	- a UI tweak,
-	- an off-by-default module allowing one-shot protection while cursed,
-	- and a module allowing easy changes to equipment max charges.
+	- and an off-by-default module allowing one-shot protection while cursed.
 
 Short summaries are provided below. For a full description of each item, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ContentSummary.md
 
@@ -61,13 +59,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Macho Moustache</b><br>
 				Chance to Taunt on hit. Resist Taunted enemies.
-			</td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mimicIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Mostly-Tame Mimic</b><br>
-				Mimics your other items at random.
 			</td>
 		</tr>
 		<tr>
@@ -221,16 +212,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td>
 				<b>Spacetime Skein</b><br>
 				Gain mass while stationary. Lose mass while moving.
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center"><h3>Boss Items</h3></td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extraEquipmentIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Scavenger's Rucksack</b><br>
-				Hold an extra Equipment. Activate with scoreboard open to rummage through the rucksack.
 			</td>
 		</tr>
 		<tr>
@@ -508,13 +489,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td colspan="2" align="center"><h3>Drones</h3></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/ItemDroneIcon.png?raw=true" width=128></td>
-			<td>
-				<b>Item Drone</b><br>
-				Give items to share them with allies near the drone.
-			</td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/BulwarkDroneIcon.png?raw=true" width=128></td>
 			<td>
 				<b>Bulwark Drone</b><br>
@@ -560,11 +534,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 			<td><b>Artifact of Safekeeping</b></td>
 			<td>All item drops are taken and guarded by the teleporter boss, which will explode in a shower of loot when killed.</td>
 		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/DisposableEquip_on.png?raw=true" width=128></td>
-			<td><b>Artifact of Reconfiguration</b></td>
-			<td>Start with 3 equipment slots. Equipment is more common, and is consumed instead of going on cooldown.</td>
-		</tr>
 	</tbody>
 </table>
 
@@ -581,10 +550,6 @@ Short summaries are provided below. For a full description of each item, see: ht
 		<tr>
 			<td><b>Equipment Drone Labels</b></td>
 			<td>If enabled, this module will apply the same naming scheme that Item Drones have ("Item Drone (colored name of item)") to vanilla Equipment Drones ("Equipment Drone (colored name of equipment)").</td>
-		</tr>
-		<tr>
-			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
-			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; Stamina Bar may not work correctly if disabled.</td>
 		</tr>
 		<tr>
 			<td><b>Curses Keep OSP</b></td>
@@ -611,6 +576,23 @@ Short summaries are provided below. For a full description of each item, see: ht
 The 5 latest updates are listed below. For a full changelog, see: https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/changelog.md
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
+
+**6.0.0**
+
+- Patched for recent game and R2API updates.
+- 🦀 TILER2 is gone 🦀 (BREAKING)
+	- Module system and utility code were migrated to this project.
+	- Nav node tracking/removal was migrated to the new NavYoink library.
+	- Net config sync is no longer available.
+	- Config file polling is no longer available.
+- Removed content (BREAKING):
+	- Item Drone, Mostly-Tame Mimic, Scavenger's Rucksack, Artifact of Reconfiguration: untenable to support due to added complexity in the inventory system; some of these may be reintroduced in the future.
+	- ModdableEquipmentMaxCharges tweak: no longer necessary.
+- Balance pass:
+	- En Passant:
+		- Cooldown reduction per hit increased to 0.15s (was 0.025s).
+		- Now gets cooldown reduction from a maximum of 5 hits per attack.
+- Fixed a potential once-per-frame NullReferenceException in Villainous Visage.
 
 **5.2.5**
 
@@ -655,17 +637,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 **5.2.2**
 
 - Further attempts to improve null safety of Ferrofluid.
-
-**5.2.1**
-
-- Balance pass:
-	- Swordbreaker:
-		- Removed reflected damage (25% to 0%, config option removed).
-		- Reduced per-projectile base damage from 50% to 40%.
-		- *I found out the hard way that enemies getting this item is a quick run-killer, and it was also overtuned compared to similar vanilla items.*
-	- Lodestone:
-		- Reduced base damage from 400% to 200%.
-		- *This was also kind of a lot compared to e.g. Disposable Missile Launcher.*
-- Attempted to improve null safety of Ferrofluid, Unstable Klein Bottle, and Sturdy Mug.
-- Fixed missing icon texture for Float debuff.
-- Fixed potential integer overflow in Stamina Bar charge count (will now cap at 255).

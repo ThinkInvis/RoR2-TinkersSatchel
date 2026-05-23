@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using static R2API.RecalculateStatsAPI;
 using R2API;
 using UnityEngine.AddressableAssets;
@@ -48,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public GoldenGear() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/GoldenGear.prefab");
@@ -81,21 +80,21 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
 
             On.RoR2.CharacterMaster.GiveMoney += CharacterMaster_GiveMoney;
-            GetStatCoefficients += Evt_TILER2GetStatCoefficients;
+            GetStatCoefficients += Evt_GetStatCoefficients;
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
             On.RoR2.CharacterMaster.GiveMoney -= CharacterMaster_GiveMoney;
-            GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
+            GetStatCoefficients -= Evt_GetStatCoefficients;
         }
 
 
 
         ////// Hooks //////
         
-        private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
+        private void Evt_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
             var cpt = sender.GetComponent<GoldenGearComponent>();
             if(cpt) {

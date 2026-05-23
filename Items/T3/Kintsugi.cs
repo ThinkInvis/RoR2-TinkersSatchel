@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
@@ -57,7 +56,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public Kintsugi() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Kintsugi.prefab");

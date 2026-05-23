@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
 using System;
@@ -42,7 +41,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public BuffDef eligibilityBuff { get; private set; }
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public MountainToken() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/MountainToken.prefab");
@@ -156,7 +155,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
             if(!CatalogUtil.TryGetItemDef(pickupIndex, out var itemDef)) return;
 
-            var enemies = MiscUtil.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
+            var enemies = CommonCode.GatherEnemies(TeamIndex.Player, TeamIndex.Neutral, TeamIndex.None)
                 .Where(e => e.body && e.body.inventory && TeleporterInteraction.instance.holdoutZoneController.IsBodyInChargingRadius(e.body));
             foreach(var enemy in enemies)
                 RoR2.Orbs.ItemTransferOrb.DispatchItemTransferOrb(TeleporterInteraction.instance.holdoutZoneController.transform.position, enemy.body.inventory, itemDef.itemIndex, 1);

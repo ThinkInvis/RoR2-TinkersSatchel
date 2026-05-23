@@ -1,14 +1,12 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
-using static TILER2.MiscUtil;
 using R2API;
 using RoR2.Projectile;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Networking;
-using static ThinkInvisible.TinkersSatchel.CommonCode;
+using static ThinkInvisible.TinkersSatchel.MathUtil;
 using UnityEngine.AddressableAssets;
 
 namespace ThinkInvisible.TinkersSatchel {
@@ -66,8 +64,8 @@ namespace ThinkInvisible.TinkersSatchel {
         float _gcStopwatch;
 
 
-        ////// TILER2 Module Setup //////
-        #region TILER2 Module Setup
+        ////// Module Setup //////
+        #region Module Setup
         public Mug() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Mug.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/mugIcon.png");

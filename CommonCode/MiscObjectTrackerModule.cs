@@ -3,11 +3,10 @@ using Rewired.Utils.Interfaces;
 using RoR2;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class MiscObjectTrackerModule : T2Module<MiscObjectTrackerModule> {
+	public class MiscObjectTrackerModule : Module<MiscObjectTrackerModule> {
 		public override bool managedEnable => false;
 
 		private static readonly List<GameObject> warbanners = new();

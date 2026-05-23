@@ -3,12 +3,11 @@ using UnityEngine;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using System.Collections.Generic;
-using TILER2;
 using RoR2.Skills;
 using R2API;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class TimedSkillDisableModule : T2Module<TimedSkillDisableModule> {
+	public class TimedSkillDisableModule : Module<TimedSkillDisableModule> {
 		public override bool managedEnable => false;
 
 		public static SkillDef disabledSkillDef;

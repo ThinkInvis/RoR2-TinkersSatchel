@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 using EntityStates;
@@ -8,7 +7,7 @@ using RoR2.Skills;
 using System.Collections.Generic;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class CommandoPrimaryPulse : T2Module<CommandoPrimaryPulse> {
+	public class CommandoPrimaryPulse : Module<CommandoPrimaryPulse> {
 
 		////// Module Data //////
 
@@ -31,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public CommandoPrimaryPulse() {
 		}

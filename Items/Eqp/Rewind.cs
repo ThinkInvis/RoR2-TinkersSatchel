@@ -1,13 +1,12 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
 using R2API.Networking.Interfaces;
 using UnityEngine.Networking;
 using EntityStates;
-using static TILER2.MiscUtil;
+using static ThinkInvisible.TinkersSatchel.MathUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class Rewind : Equipment<Rewind> {
@@ -63,7 +62,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Rewind() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Rewind.prefab");

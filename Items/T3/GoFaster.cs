@@ -1,13 +1,13 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using RoR2.Projectile;
 using RoR2.Skills;
+using static ThinkInvisible.TinkersSatchel.MathUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
 	public class GoFaster : Item<GoFaster> {
@@ -134,7 +134,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public GoFaster() {
 			modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/GoFaster.prefab");
@@ -656,7 +656,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			line.positionCount = 100;
 			List<Keyframe> kfmArr = new();
 			for(int i = 0; i < line.positionCount; i++) {
-				kfmArr.Add(new Keyframe(i / 100f, (1f - MiscUtil.Wrap(i / 5f, 0f, 1f)) * 0.875f));
+				kfmArr.Add(new Keyframe(i / 100f, (1f - Wrap(i / 5f, 0f, 1f)) * 0.875f));
 			}
 			line.widthCurve = new AnimationCurve {
 				keys = kfmArr.ToArray()

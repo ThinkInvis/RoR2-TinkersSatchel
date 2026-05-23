@@ -1,13 +1,12 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 using EntityStates;
 using RoR2.Skills;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class CommandoUtilityJinkJet : T2Module<CommandoUtilityJinkJet> {
+	public class CommandoUtilityJinkJet : Module<CommandoUtilityJinkJet> {
 
 		////// Module Data //////
 
@@ -31,7 +30,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public CommandoUtilityJinkJet() {
 		}

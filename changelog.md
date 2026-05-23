@@ -2,6 +2,24 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**6.0.0**
+
+- Patched for recent game and R2API updates.
+- 🦀 TILER2 is gone 🦀 (BREAKING)
+	- Module system and utility code were migrated to this project.
+	- Nav node tracking/removal was migrated to the new NavYoink library.
+	- Net config sync is no longer available.
+	- Config file polling is no longer available.
+	- Chat announcement of config changes is no longer available.
+- Removed content (BREAKING):
+	- Item Drone, Mostly-Tame Mimic, Scavenger's Rucksack, Artifact of Reconfiguration: untenable to support due to added complexity in the inventory system and/or redundancy with new DLC content; some of these may be reintroduced in the future.
+	- ModdableEquipmentMaxCharges tweak: no longer necessary.
+- Balance pass:
+	- En Passant:
+		- Cooldown reduction per hit increased to 0.15s (was 0.025s).
+		- Now gets cooldown reduction from a maximum of 5 hits per attack.
+- Fixed a potential once-per-frame NullReferenceException in Villainous Visage.
+
 **5.2.5**
 
 - Fixed corruption in Item Drone interactable prefab causing it to not display its pickup select menu on interact.

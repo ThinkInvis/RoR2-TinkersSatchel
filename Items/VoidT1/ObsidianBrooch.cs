@@ -1,8 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
-using static TILER2.MiscUtil;
 using System.Linq;
 using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
@@ -45,7 +43,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
         public ObsidianBrooch() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/ObsidianBrooch.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/obsidianBroochIcon.png");
@@ -226,8 +224,8 @@ namespace ThinkInvisible.TinkersSatchel {
             var count = GetCountEffective(body);
             if(count <= 0) return;
 
-            var enemies = GatherEnemies(body.teamComponent.teamIndex, TeamIndex.Neutral)
-                .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+            var enemies = CommonCode.GatherEnemies(body.teamComponent.teamIndex, TeamIndex.Neutral)
+                .Select(x => CommonCode.GetRootWithLocators(x.gameObject))
                 .Where(obj => {
                     var hc = obj.GetComponent<HealthComponent>();
                     if(!hc || !hc.alive || hc == self) return false;

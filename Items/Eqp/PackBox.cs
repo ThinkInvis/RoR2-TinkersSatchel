@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using System.Linq;
 using System.Collections.Generic;
@@ -86,7 +85,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public PackBox() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/PackBox.prefab");
@@ -413,7 +412,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI/180f);
             return results
                 .Where(x => x && x.gameObject)
-                .Select(x => MiscUtil.GetRootWithLocators(x.gameObject))
+                .Select(x => CommonCode.GetRootWithLocators(x.gameObject))
                 .Concat( //OverlapSphere doesn't hit Warbanners
                     MiscObjectTrackerModule.readOnlyWarbanners
                     .Where(x => Vector3.Distance(x.transform.position, aim.origin) < maxDistance + camAdjust))

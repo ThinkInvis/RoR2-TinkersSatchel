@@ -1,8 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
-using static TILER2.MiscUtil;
 using System.Collections.Generic;
 using RoR2.Projectile;
 using System.Linq;
@@ -10,6 +8,7 @@ using MonoMod.Cil;
 using System;
 using Mono.Cecil.Cil;
 using UnityEngine.AddressableAssets;
+using static ThinkInvisible.TinkersSatchel.MathUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class TimelostRum : Item<TimelostRum> {
@@ -54,8 +53,8 @@ namespace ThinkInvisible.TinkersSatchel {
 		
 		
 
-        ////// TILER2 Module Setup //////
-        #region TILER2 Module Setup
+        ////// Module Setup //////
+        #region Module Setup
         public TimelostRum() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/TimelostRum.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/timelostRumIcon.png");

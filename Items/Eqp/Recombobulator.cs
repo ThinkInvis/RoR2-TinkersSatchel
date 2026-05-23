@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using System.Linq;
 using R2API;
 using MonoMod.Cil;
@@ -79,7 +78,7 @@ namespace ThinkInvisible.TinkersSatchel {
         public GameObject idrPrefab { get; private set; }
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Recombobulator() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Recombobulator.prefab");

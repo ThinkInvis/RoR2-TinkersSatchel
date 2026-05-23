@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using static R2API.RecalculateStatsAPI;
 using System.Linq;
 using R2API.Networking.Interfaces;
@@ -72,7 +71,7 @@ AutoConfigFlags.DeferForever)]
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public Wrangler() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Wrangler.prefab");

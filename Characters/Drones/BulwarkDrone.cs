@@ -2,13 +2,12 @@
 using RoR2;
 using RoR2.CharacterAI;
 using System.Linq;
-using TILER2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class BulwarkDrone : T2Module<BulwarkDrone> {
+    public class BulwarkDrone : Module<BulwarkDrone> {
 
         ////// Other Fields/Properties //////
 
@@ -22,7 +21,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public override void SetupAttributes() {
             base.SetupAttributes();

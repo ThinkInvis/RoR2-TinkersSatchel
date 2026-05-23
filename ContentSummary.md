@@ -15,20 +15,6 @@
 			<td colspan="3" align="center"><h3>Tier-1 Items</h3></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mimicIcon.png?raw=true" width=256></td>
-			<td>
-				<b>Mostly-Tame Mimic</b><br>
-				<details>
-					<summary>Mimics your other items at random.</summary>
-					<small>Picks one of your other items to mimic (each stack is tracked separately) from a weighted selection of 20% of your item types of each tier. Every 15 seconds, all mimics will scramble to a new selection.</small>
-				</details>
-			</td>
-			<td><ul>
-				<li>Each individual stack has a small chance over time to switch which item it's mimicking.</li>
-				<li>Has weighted tiers similar to a T1 chest. Tier weights can be configured.</li>
-			</ul></td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/mugIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Sturdy Mug</b><br>
@@ -213,7 +199,7 @@
 				<b>En Passant</b><br>
 				<details>
 					<summary>Melee strike with your Utility skill to recharge it.</summary>
-					<small>After activating your Utility skill, fire a horizontal melee attack which lasts 1.5 seconds and deals 70% damage (+70% per stack). Each hit with this attack recharges your Utility skill by 0.025 seconds (+0.025 s per stack).</small>
+					<small>After activating your Utility skill, fire a horizontal melee attack which lasts 1.5 seconds and deals 70% damage (+70% per stack). Each hit with this attack, up to 5 hits, recharges your Utility skill by 0.15 seconds (+0.15 s per stack).</small>
 				</details>
 			</td>
 			<td><ul>
@@ -359,22 +345,6 @@
 				</details>
 			</td>
 			<td><ul>
-			</ul></td>
-		</tr>
-		<tr>
-			<td colspan="3" align="center"><h3>Boss Items</h3></td>
-		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/extraEquipmentIcon.png?raw=true" width=256></td>
-			<td>
-				<b>Scavenger's Rucksack</b><br>
-				<details>
-					<summary>Hold an extra Equipment. Activate with scoreboard open to rummage through the rucksack.</summary>
-					<small>Gain 1 extra Equipment slot (+1 per stack). Activating your Equipment while the scoreboard is open will cycle through equipment slots instead.</small>
-				</details>
-			</td>
-			<td><ul>
-				<li>Has a 5% chance (configurable) to replace a drop from a Scavenger backpack.</li>
 			</ul></td>
 		</tr>
 		<tr>
@@ -790,20 +760,6 @@
 			<td colspan="3" align="center"><h3>Drones</h3></td>
 		</tr>
 		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/ItemDroneIcon.png?raw=true" width=256></td>
-			<td>
-				<b>Item Drone</b><br>
-				<details>
-					<summary>Give items to share them with allies near the drone.</summary>
-					<small>Found slightly more commonly than Equipment Drones, an Item Drone is activated by giving it some of your items. The number of transferred items will depend on which tier you select (5 T1 <i>or</i> 3 T2 <i>or</i> 1 T3). An activated Item Drone will follow you (or, if dead, another ally) closely, sharing its items' effects with all allies in a large radius.</small>
-				</details>
-			</td>
-			<td><ul>
-				<li>Will drop contained items on death.</li>
-				<li>By default, cannot accept Void nor Lunar items, as well as a select few others.</li>
-			</ul></td>
-		</tr>
-		<tr>
 			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/BulwarkDroneIcon.png?raw=true" width=256></td>
 			<td>
 				<b>Bulwark Drone</b><br>
@@ -871,15 +827,6 @@
 				<li>Provides a config option to control the level of detail of chat announcements when the boss is killed.</li>
 			</ul></td>
 		</tr>
-		<tr>
-			<td><img src="https://github.com/ThinkInvis/RoR2-TinkersSatchel/blob/master/ModMeta/Assets/DisposableEquip_on.png?raw=true" width=128></td>
-			<td><b>Artifact of Reconfiguration</b></td>
-			<td>Start with 3 equipment slots. Equipment is more common, and is consumed instead of going on cooldown.</td>
-			<td><ul>
-				<li>Provides a config option to control the number of extra equipment slots (provided as a Scavenger's Rucksack item on spawn).</li>
-				<li>Provides a config option to control how many extra equipment interactables spawn per player per stage.</li>
-			</ul></td>
-		</tr>
 	</tbody>
 </table>
 
@@ -896,10 +843,6 @@
 		<tr>
 			<td><b>Equipment Drone Labels</b></td>
 			<td>If enabled, this module will apply the same naming scheme that Item Drones have ("Item Drone (colored name of item)") to vanilla Equipment Drones ("Equipment Drone (colored name of equipment)").</td>
-		</tr>
-		<tr>
-			<td><b>Moddable Equipment Slot Max Charges Patch</b></td>
-			<td>This module causes `Inventory.GetEquipmentSlotMaxCharges`, which is normally only referenced by UI code, to also affect the actual max stock of each equipment slot of an inventory. Dependency of some mod content; Stamina Bar may not work correctly if disabled.</td>
 		</tr>
 		<tr>
 			<td><b>Curses Keep OSP</b></td>

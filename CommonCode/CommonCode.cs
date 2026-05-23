@@ -1,17 +1,19 @@
 ﻿using R2API;
 using RoR2;
+using RoR2.EntitlementManagement;
+using RoR2.ExpansionManagement;
+using RoR2.Navigation;
 using RoR2.Skills;
-using TILER2;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
-using RoR2.ExpansionManagement;
-using RoR2.EntitlementManagement;
-using System;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class CommonCode : T2Module<CommonCode> {
+	public class CommonCode : Module<CommonCode> {
         public override bool managedEnable => false;
 
 		[Obsolete("Replaced by TimedSkillDisableModule.disabledSkillDef.")]
@@ -108,7 +110,31 @@ namespace ThinkInvisible.TinkersSatchel {
 			}
 		}
 
-		internal static GameObject FindNearestInteractable(GameObject senderObj, HashSet<string> validObjectNames, Ray aim, float maxAngle, float maxDistance, bool requireLoS) {
+        /// <summary>
+        /// Iterates towards the root of a GameObject, including jumping through EntityLocators.
+        /// </summary>
+        /// <param name="target">The GameObject to search for the 'true' root of.</param>
+        /// <param name="maxSearch">The maximum amount of recursion to go through.</param>
+        /// <returns>Null if the given object was null; the most top-level object with the given constraints otherwise.</returns>
+        public static GameObject GetRootWithLocators(GameObject target, int maxSearch = 5) {
+            if(!target) return null;
+            GameObject scan = target;
+            for(int i = 0; i < maxSearch; i++) {
+                if(scan.TryGetComponent<EntityLocator>(out var eloc) && eloc.entity) {
+                    scan = eloc.entity;
+                    continue;
+                }
+
+                var next = scan.transform.root;
+                if(next && next.gameObject != scan)
+                    scan = next.gameObject;
+                else
+                    return scan;
+            }
+            return scan;
+        }
+
+        internal static GameObject FindNearestInteractable(GameObject senderObj, HashSet<string> validObjectNames, Ray aim, float maxAngle, float maxDistance, bool requireLoS) {
 			aim = CameraRigController.ModifyAimRayIfApplicable(aim, senderObj, out float camAdjust);
 			var results = Physics.OverlapSphere(aim.origin, maxDistance + camAdjust, Physics.AllLayers, QueryTriggerInteraction.Collide);
 			var minDot = Mathf.Cos(Mathf.Clamp(maxAngle, 0f, 180f) * Mathf.PI / 180f);
@@ -116,7 +142,7 @@ namespace ThinkInvisible.TinkersSatchel {
 			var lowestC = float.MaxValue;
 			foreach(var obj in results) {
 				if(!obj || !obj.gameObject) continue;
-				var root = MiscUtil.GetRootWithLocators(obj.gameObject);
+				var root = GetRootWithLocators(obj.gameObject);
 				if(!validObjectNames.Contains(root.name.Replace("(Clone)", ""))) continue;
 				var vdot = Vector3.Dot(aim.direction, (root.transform.position - aim.origin).normalized);
 				if(vdot < minDot) continue;
@@ -218,13 +244,23 @@ namespace ThinkInvisible.TinkersSatchel {
 			return aiSafeSelector.Evaluate(rng.nextNormalizedFloat).pickupIndex;
         }
 
-        internal static Quaternion ApplyRandomSpread(Quaternion targetRotation, float coneHalfAngleDegr) {
-            var phi = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
-            var z = UnityEngine.Random.Range(Mathf.Cos(coneHalfAngleDegr * Mathf.PI / 180f), 1f);
-            var zf = Mathf.Sqrt(1f - z * z);
-            var rDir = new Vector3(zf * Mathf.Cos(phi), zf * Mathf.Sin(phi), z);
-            return targetRotation * Quaternion.LookRotation(rDir);
+        /// <summary>
+        /// Returns a list of enemy TeamComponents given an ally team (to ignore while friendly fire is off) and a list of ignored teams (to ignore under all circumstances).
+        /// </summary>
+        /// <param name="allyIndex">The team to ignore if friendly fire is off.</param>
+        /// <param name="ignore">Additional teams to always ignore.</param>
+        /// <returns>A list of all TeamComponents that match the provided team constraints.</returns>
+        public static List<TeamComponent> GatherEnemies(TeamIndex allyIndex, params TeamIndex[] ignore) {
+            var retv = new List<TeamComponent>();
+            bool isFF = FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off;
+            var scan = ((TeamIndex[])Enum.GetValues(typeof(TeamIndex))).Except(ignore);
+            foreach(var ind in scan) {
+                if(isFF || allyIndex != ind)
+                    retv.AddRange(TeamComponent.GetTeamMembers(ind));
+            }
+            return retv;
         }
+        public static Language GetBestLanguage(string langID) => ((langID == null) ? null : Language.FindLanguageByName(langID)) ?? Language.currentLanguage ?? Language.english;
     }
 	public static class CommonCodeExtensions {
 		internal static Quaternion ApplyRandomSpread(this Xoroshiro128Plus rng, Quaternion targetRotation, float coneHalfAngleDegr) {
@@ -234,5 +270,17 @@ namespace ThinkInvisible.TinkersSatchel {
 			var rDir = new Vector3(zf * Mathf.Cos(phi), zf * Mathf.Sin(phi), z);
 			return targetRotation * Quaternion.LookRotation(rDir);
 		}
-	}
+
+        /// <summary>
+        /// Uses reflection to subscribe an event handler to an EventInfo.
+        /// </summary>
+        /// <param name="evt">The EventInfo to subscribe to.</param>
+        /// <param name="o">The object instance to apply this subscription to.</param>
+        /// <param name="lam">The method to subscribe with.</param>
+        public static void ReflAddEventHandler(this EventInfo evt, object o, Action<object, EventArgs> lam) {
+            var pArr = evt.EventHandlerType.GetMethod("Invoke").GetParameters().Select(p => Expression.Parameter(p.ParameterType)).ToArray();
+            var h = Expression.Lambda(evt.EventHandlerType, Expression.Call(Expression.Constant(lam), lam.GetType().GetMethod("Invoke"), pArr[0], pArr[1]), pArr).Compile();
+            evt.AddEventHandler(o, h);
+        }
+    }
 }

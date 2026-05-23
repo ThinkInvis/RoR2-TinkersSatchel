@@ -2,11 +2,10 @@
 using MonoMod.Cil;
 using RoR2;
 using System;
-using TILER2;
 using UnityEngine;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class CursesKeepOSP : T2Module<CursesKeepOSP> {
+    public class CursesKeepOSP : Module<CursesKeepOSP> {
 
         public CursesKeepOSP() {
             enabled = false; //default value only, config may override
@@ -14,7 +13,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
         
         public override bool managedEnable => true;
 

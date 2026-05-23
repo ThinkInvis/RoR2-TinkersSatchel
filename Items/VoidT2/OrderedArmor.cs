@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TILER2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using static R2API.RecalculateStatsAPI;
@@ -48,7 +47,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public OrderedArmor() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/OrderedArmor.prefab");
@@ -82,14 +81,14 @@ namespace ThinkInvisible.TinkersSatchel {
             base.Install();
 
             On.RoR2.CharacterBody.FixedUpdate += On_CBFixedUpdate;
-            GetStatCoefficients += Evt_TILER2GetStatCoefficients;
+            GetStatCoefficients += Evt_GetStatCoefficients;
         }
 
         public override void Uninstall() {
             base.Uninstall();
 
             On.RoR2.CharacterBody.FixedUpdate -= On_CBFixedUpdate;
-            GetStatCoefficients -= Evt_TILER2GetStatCoefficients;
+            GetStatCoefficients -= Evt_GetStatCoefficients;
         }
 
 
@@ -101,7 +100,7 @@ namespace ThinkInvisible.TinkersSatchel {
             UpdateGGBuff(self);
         }
 
-        private void Evt_TILER2GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
+        private void Evt_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args) {
             if(!sender) return;
             var cpt = sender.GetComponent<OrderedArmorComponent>();
             if(cpt) args.armorAdd += cpt.calculatedArmorBonus;

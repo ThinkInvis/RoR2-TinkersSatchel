@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using System.Collections.ObjectModel;
-using TILER2;
 using R2API;
 using System.Linq;
 using UnityEngine.AddressableAssets;
@@ -54,7 +53,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
         public Moustache() {
             modelResource = TinkersSatchelPlugin.resources.LoadAsset<GameObject>("Assets/TinkersSatchel/Prefabs/Items/Moustache.prefab");
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ItemIcons/moustacheIcon.png");
@@ -268,7 +267,7 @@ namespace ThinkInvisible.TinkersSatchel {
             _stopwatch -= Time.fixedDeltaTime;
             if(_stopwatch < 0f) {
                 _stopwatch = UPDATE_INTERVAL;
-                int count = MiscUtil.GatherEnemies(self.teamComponent.teamIndex).Count(e => e.body && (!e.body.outOfCombat || !e.body.outOfDanger) && Vector3.Distance(e.transform.position, self.transform.position) < MAX_RANGE);
+                int count = CommonCode.GatherEnemies(self.teamComponent.teamIndex).Count(e => e.body && (!e.body.outOfCombat || !e.body.outOfDanger) && Vector3.Distance(e.transform.position, self.transform.position) < MAX_RANGE);
                 if(count > TARGET_COUNT)
                     Grant();
             }

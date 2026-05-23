@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using RoR2.Skills;
 using RoR2.Projectile;
 
 namespace ThinkInvisible.TinkersSatchel {
-    public class EngiSecondaryChaff : T2Module<EngiSecondaryChaff> {
+    public class EngiSecondaryChaff : Module<EngiSecondaryChaff> {
 
         ////// Module Data //////
 
@@ -26,7 +25,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public EngiSecondaryChaff() {
         }

@@ -4,10 +4,9 @@ using RoR2;
 using RoR2.Navigation;
 using System;
 using System.Collections.Generic;
-using TILER2;
 using UnityEngine;
 using UnityEngine.Networking;
-using static TILER2.MiscUtil;
+using static ThinkInvisible.TinkersSatchel.MathUtil;
 
 namespace ThinkInvisible.TinkersSatchel {
     public class DelayLoot : Artifact<DelayLoot> {
@@ -38,7 +37,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-        ////// TILER2 Module Setup //////
+        ////// Module Setup //////
 
         public DelayLoot() {
             iconResource = TinkersSatchelPlugin.resources.LoadAsset<Sprite>("Assets/TinkersSatchel/Textures/ArtifactIcons/delayitems_on.png");

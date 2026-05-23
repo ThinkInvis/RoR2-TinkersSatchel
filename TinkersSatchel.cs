@@ -4,8 +4,6 @@ using System.Reflection;
 using UnityEngine;
 using BepInEx.Configuration;
 using Path = System.IO.Path;
-using TILER2;
-using static TILER2.MiscUtil;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using System;
@@ -13,24 +11,24 @@ using System;
 namespace ThinkInvisible.TinkersSatchel {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
-    [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
+    [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(AncientScepter.AncientScepterMain.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(Dronemeld.DronemeldPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class TinkersSatchelPlugin:BaseUnityPlugin {
-        public const string ModVer = "5.2.5";
+        public const string ModVer = "6.0.0";
         public const string ModName = "TinkersSatchel";
         public const string ModGuid = "com.ThinkInvisible.TinkersSatchel";
 
         private static ConfigFile cfgFile;
         
-        internal static FilingDictionary<T2Module> allModules = new();
+        internal static FilingDictionary<Module> allModules = new();
         
         internal static BepInEx.Logging.ManualLogSource _logger;
 
         internal static AssetBundle resources;
 
-        T2Module[] earlyLoad;
+        Module[] earlyLoad;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void Awake() {
@@ -48,17 +46,20 @@ namespace ThinkInvisible.TinkersSatchel {
 
             cfgFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
-            var modInfo = new T2Module.ModInfo {
+            Module.SetupModuleClass();
+
+            var modInfo = new Module.ModInfo {
                 displayName = "Tinker's Satchel",
                 longIdentifier = "TinkersSatchel",
                 shortIdentifier = "TKSAT",
                 mainConfigFile = cfgFile
             };
-            allModules = T2Module.InitAll<T2Module>(modInfo);
 
-            earlyLoad = new T2Module[] { CommonCode.instance, TauntDebuffModule.instance, TimedSkillDisableModule.instance };
-            T2Module.SetupAll_PluginAwake(earlyLoad);
-            T2Module.SetupAll_PluginAwake(allModules.Except(earlyLoad));
+            allModules = Module.InitAll<Module>(modInfo);
+
+            earlyLoad = new Module[] { CommonCode.instance, TauntDebuffModule.instance, TimedSkillDisableModule.instance };
+            Module.SetupAll_PluginAwake(earlyLoad);
+            Module.SetupAll_PluginAwake(allModules.Except(earlyLoad));
 
             foreach(var mod in allModules.Except(earlyLoad)) {
                 if(mod is Item item) {
@@ -84,8 +85,14 @@ namespace ThinkInvisible.TinkersSatchel {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
         private void Start() {
-            T2Module.SetupAll_PluginStart(earlyLoad);
-            T2Module.SetupAll_PluginStart(allModules.Except(earlyLoad));
+            Module.SetupAll_PluginStart(earlyLoad);
+            Module.SetupAll_PluginStart(allModules.Except(earlyLoad));
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used by Unity Engine.")]
+        private void Update() {
+            if(!RoR2.RoR2Application.loadFinished) return;
+            AutoConfigModule.Update();
         }
     }
 }

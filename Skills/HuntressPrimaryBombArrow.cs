@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using TILER2;
 using R2API;
 using UnityEngine.AddressableAssets;
 using EntityStates;
@@ -8,7 +7,7 @@ using RoR2.Skills;
 using RoR2.Projectile;
 
 namespace ThinkInvisible.TinkersSatchel {
-	public class HuntressPrimaryBombArrow : T2Module<HuntressPrimaryBombArrow> {
+	public class HuntressPrimaryBombArrow : Module<HuntressPrimaryBombArrow> {
 
 		////// Module Data //////
 
@@ -30,7 +29,7 @@ namespace ThinkInvisible.TinkersSatchel {
 
 
 
-		////// TILER2 Module Setup //////
+		////// Module Setup //////
 
 		public HuntressPrimaryBombArrow() {
 		}
