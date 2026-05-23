@@ -42,7 +42,7 @@ namespace ThinkInvisible.TinkersSatchel {
         [AutoConfig("Proc coefficient of the item attack.", AutoConfigFlags.None, 0f, 1f)]
         public float procCoefficient { get; private set; } = 1f;
 
-        [AutoConfigRoOSlider("{0:N0}", 0, 50)]
+        [AutoConfigRoOIntSlider("{0:N0}", 0, 50)]
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum number of hits to apply CDR from per attack, per stack.", AutoConfigFlags.None, 0, int.MaxValue)]
         public int maxCdrHits { get; private set; } = 5;
