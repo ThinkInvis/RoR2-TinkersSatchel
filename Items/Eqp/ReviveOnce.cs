@@ -216,7 +216,7 @@ namespace ThinkInvisible.TinkersSatchel {
         ////// Hooks //////
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot) {
-            var candidates = CharacterMaster.readOnlyInstancesList.Where(x => x.IsDeadAndOutOfLivesServer() && x.teamIndex == TeamIndex.Player);
+            var candidates = CharacterMaster.readOnlyInstancesList.Where(x => x.IsDeadAndOutOfLivesServer() && x.playerCharacterMasterController && x.teamIndex == TeamIndex.Player);
 
             GameObject obj;
             GameObject podPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/RoboCratePod");
