@@ -570,6 +570,10 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**6.0.1**
+
+- Hotfix for incorrect item tiers.
+
 **6.0.0**
 
 - Patched for recent game and R2API updates.
@@ -632,7 +636,3 @@ The 5 latest updates are listed below. For a full changelog, see: https://github
 - Added an unlock achievement to the following items:
 	- Command Terminal: Get Some! (Get 20 direct Primary kills in a row without using another skill.)
 	- Negative Feedback Loop: Encased (Reach maximum barrier.)
-
-**5.2.2**
-
-- Further attempts to improve null safety of Ferrofluid.

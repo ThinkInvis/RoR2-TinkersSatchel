@@ -2,6 +2,10 @@
 
 (🌧︎: Involves an accepted GitHub Pull Request or other significant assistance from the community. Thanks for your help!)
 
+**6.0.1**
+
+- Hotfix for incorrect item tiers.
+
 **6.0.0**
 
 - Patched for recent game and R2API updates.

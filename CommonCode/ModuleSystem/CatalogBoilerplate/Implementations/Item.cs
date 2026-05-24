@@ -75,7 +75,7 @@ namespace ThinkInvisible.TinkersSatchel {
             var iarr = _itemTags.ToArray();
             itemDef = ScriptableObject.CreateInstance<ItemDef>();
             itemDef.name = modInfo.shortIdentifier + name;
-            itemDef.tier = itemTier;
+            itemDef.deprecatedTier = itemTier;
             itemDef.pickupModelPrefab = modelResource;
             itemDef.pickupIconSprite = iconResource;
             itemDef.nameToken = this.nameToken + "_RENDERED";
